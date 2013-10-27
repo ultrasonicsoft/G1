@@ -1,0 +1,24 @@
+﻿<Window x:Class="GlassProductManager.Dashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:pageTransitions="clr-namespace:WpfPageTransitions;assembly=WpfPageTransitions"
+        
+        WindowStartupLocation="CenterScreen"  WindowState="Maximized"
+        Title="Dashboard" Height="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}" Width="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="125"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <pageTransitions:PageTransition Grid.Row="0" Grid.ColumnSpan="2" Name="ucWelcomeUser" TransitionType="SpinAndFade" />
+        <pageTransitions:PageTransition Grid.Row="1" Grid.Column="0" Name="ucDashboardMenu" TransitionType="FlipAndFade" />
+        
+        <pageTransitions:PageTransition Grid.Row="1" Grid.Column="1" Name="ucMainContent" TransitionType="Flip" />
+        
+    </Grid>
+</Window>

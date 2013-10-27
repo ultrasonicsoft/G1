@@ -20,41 +20,31 @@ namespace GlassProductManager
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            if (pageTransitionControl.CurrentPage == null)
+        private void btnSignIn_Click(object sender, RoutedEventArgs e)
+        {
+            if (BusinessLogic.IsValidUser(txtUserName.Text, txtPassword.Password))
             {
-                Login loginPage = new Login();
-
-                pageTransitionControl.ShowPage(loginPage);
+                Dashboard dialog = new Dashboard();
+                dialog.UserName = txtUserName.Text;
+                dialog.Show();
+                this.Close();
+            }
+            else
+            {
+                Helper.ShowErrorMessageBox("Invalid User name or Password");
+                txtUserName.Focus();
             }
         }
 
-        private void btnNextPage_Click(object sender, RoutedEventArgs e)
+        private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            //if (pageTransitionControl.CurrentPage == null)
-            //{
-            //    Login loginPage = new Login();
-
-            //    pageTransitionControl.ShowPage(loginPage);
-            //}
-            //else
-            //{
-            //    if (pageTransitionControl.CurrentPage is NewPage)
-            //    {
-            //        NewUserCntrl newPage = new NewUserCntrl();
-
-            //        pageTransitionControl.ShowPage(newPage);
-            //    }
-            //    else if (pageTransitionControl.CurrentPage is NewUserCntrl)
-            //    {
-            //        NewPage newPage = new NewPage();
-
-            //        pageTransitionControl.ShowPage(newPage);
-            //    }
-            //}
+            Environment.Exit(0);
         }
     }
 }

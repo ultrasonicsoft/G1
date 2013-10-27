@@ -3,17 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:pageTransitions="clr-namespace:WpfPageTransitions;assembly=WpfPageTransitions"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Title="Glass Manager" Height="250" Width="400">
+        Title="Glass Manager" Height="200" Width="300">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-
-        <pageTransitions:PageTransition Name="pageTransitionControl" HorizontalAlignment="Center" VerticalAlignment="Center" TransitionType="SlideAndFade" />
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="User Name" Height="28" HorizontalAlignment="Right" VerticalAlignment="Center" Name="label1" />
+        <TextBox  Text="admin" Grid.Row="0" Grid.Column="1" Height="23" HorizontalAlignment="Left" Name="txtUserName" VerticalAlignment="Center" Width="120" TabIndex="0" ForceCursor="True" />
+        <Label Grid.Row="1" Grid.Column="0" Content="Password" Height="28" HorizontalAlignment="Right" Name="label2" VerticalAlignment="Center" />
+        <PasswordBox Password="admin" Grid.Row="1" Grid.Column="1"  Height="23" HorizontalAlignment="Left" Name="txtPassword" VerticalAlignment="Center" Width="120" TabIndex="1" />
+        <Button Grid.Row="2" Grid.Column="0" Content="Sign In" Height="23" HorizontalAlignment="Center" Name="btnSignIn" VerticalAlignment="Center" Width="75" IsDefault="True" Click="btnSignIn_Click" TabIndex="2" />
+        <Button Grid.Row="2" Grid.Column="1"  Content="Cloe" Height="23" HorizontalAlignment="Center" Name="btnClose" VerticalAlignment="Center" Width="75" IsCancel="True" Click="btnClose_Click" />
     </Grid>
 </Window>

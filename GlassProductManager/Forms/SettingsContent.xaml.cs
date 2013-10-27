@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -15,25 +16,13 @@ using System.Windows.Shapes;
 namespace GlassProductManager
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for SettingsContent.xaml
     /// </summary>
-    public partial class Login : UserControl
+    public partial class SettingsContent : UserControl
     {
-        public Login()
+        public SettingsContent()
         {
             InitializeComponent();
-        }
-
-        private void btnSignIn_Click(object sender, RoutedEventArgs e)
-        {
-            if (BusinessLogic.IsValidUser(txtUserName.Text,txtPassword.Password))
-            {
-                MessageBox.Show("Jai Ganesh");
-            }
-            else
-            {
-                Helper.ShowErrorMessageBox("Invalid User name or Password");
-            }
         }
     }
 }

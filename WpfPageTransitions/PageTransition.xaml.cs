@@ -46,8 +46,8 @@ namespace WpfPageTransitions
 		public void ShowPage(UserControl newPage)
 		{			
 			pages.Push(newPage);
-
-			Task.Factory.StartNew(() => ShowNewPage());
+            //Task.Factory.StartNew(() => ShowNewPage());
+            ShowNewPage();
 		}
 
 		void ShowNewPage()
