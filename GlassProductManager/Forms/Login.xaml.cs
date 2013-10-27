@@ -32,7 +32,7 @@ namespace GlassProductManager
             }
             else
             {
-                MessageBox.Show("no");
+                Helper.ShowErrorMessageBox("Invalid User name or Password");
             }
         }
     }
