@@ -75,12 +75,16 @@
     <Compile Include="Forms\NewQuoteContent.xaml.cs">
       <DependentUpon>NewQuoteContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PriceSettingsContent.xaml.cs">
+      <DependentUpon>PriceSettingsContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SettingsContent.xaml.cs">
       <DependentUpon>SettingsContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\WelcomeUser.xaml.cs">
       <DependentUpon>WelcomeUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Queries\ColumnNames.cs" />
     <Compile Include="Queries\SelectQueries.cs" />
     <Page Include="Forms\DashboardMenu.xaml">
       <SubType>Designer</SubType>
@@ -95,6 +99,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\NewQuoteContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\PriceSettingsContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

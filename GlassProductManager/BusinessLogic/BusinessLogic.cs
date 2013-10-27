@@ -1,6 +1,7 @@
 ﻿using DBHelper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,20 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
             return isValid;
+        }
+
+        internal static DataTable GetAllGlassTypes()
+        {
+            DataTable result = null;
+            try
+            {
+                result = SQLHelper.GetDataTable(SelectQueries.GET_ALL_GLASS_TYPES);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result;
         }
     }
 }

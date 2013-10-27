@@ -39,8 +39,11 @@ namespace GlassProductManager
             UpdateToggleButtonStatus(UserSelection.Home);
 
             Dashboard parent = Window.GetWindow(this) as Dashboard;
-            HomeContent homeContent = new HomeContent();
-            parent.ucMainContent.ShowPage(homeContent);
+            if (parent != null)
+            {
+                HomeContent homeContent = new HomeContent();
+                parent.ucMainContent.ShowPage(homeContent);
+            }
         }
 
         private void btnCreateNewQuote_Checked(object sender, RoutedEventArgs e)
@@ -58,8 +61,9 @@ namespace GlassProductManager
             UpdateToggleButtonStatus(UserSelection.Settings);
 
             Dashboard parent = Window.GetWindow(this) as Dashboard;
-            SettingsContent settingContent = new SettingsContent();
-            parent.ucMainContent.ShowPage(settingContent);
+            //SettingsContent settingContent = new SettingsContent();
+            PriceSettingsContent priceSettings = new PriceSettingsContent();
+            parent.ucMainContent.ShowPage(priceSettings);
         }
 
         private void UpdateToggleButtonStatus(UserSelection selection)

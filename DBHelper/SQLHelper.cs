@@ -62,10 +62,35 @@ namespace DBHelper
             }
             catch (Exception ex)
             {
-                //Logger;
+                throw ex;
             }
 
             return scalarValue;
+        }
+
+        public static DataTable GetDataTable(string sqlQuery)
+        {
+            DataTable result = null;
+            try
+            {
+                using (SqlConnection _con = new SqlConnection(dbConnectionString))
+                {
+                    using (SqlCommand _cmd = new SqlCommand(sqlQuery, _con))
+                    {
+                        DataSet dsData = new DataSet();
+                        SqlDataAdapter _dap = new SqlDataAdapter(_cmd);
+                        _con.Open();
+                        _dap.Fill(dsData);
+                        result = dsData.Tables[0];
+                        _con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //Logger;
+            }
+            return result;
         }
     }
 }

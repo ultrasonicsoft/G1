@@ -9,7 +9,7 @@
         <StackPanel Grid.Row="1" Grid.Column="0" Height="auto" Background="DarkGray">
             <ToggleButton Content="Home" Focusable="True" Height="40" Name="btnHome" Checked="btnHome_Checked"/>
             <ToggleButton Content="Create New Quote" Focusable="True" Height="40" Name="btnCreateNewQuote" Checked="btnCreateNewQuote_Checked" />
-            <ToggleButton Content="Firm Settings" Focusable="True" Height="40" Name="btnFirmSettings" Checked="btnFirmSettings_Checked"/>
+            <ToggleButton Content="Price Settings" Focusable="True" Height="40" Name="btnFirmSettings" Checked="btnFirmSettings_Checked"/>
 
         </StackPanel>
     </Grid>

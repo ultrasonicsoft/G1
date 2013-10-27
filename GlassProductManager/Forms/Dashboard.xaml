@@ -15,10 +15,9 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         
-        <pageTransitions:PageTransition Grid.Row="0" Grid.ColumnSpan="2" Name="ucWelcomeUser" TransitionType="SpinAndFade" />
-        <pageTransitions:PageTransition Grid.Row="1" Grid.Column="0" Name="ucDashboardMenu" TransitionType="FlipAndFade" />
-        
-        <pageTransitions:PageTransition Grid.Row="1" Grid.Column="1" Name="ucMainContent" TransitionType="Flip" />
+        <pageTransitions:PageTransition Grid.Row="0" Grid.ColumnSpan="2" Name="ucWelcomeUser" TransitionType="Grow" />
+        <pageTransitions:PageTransition Grid.Row="1" Grid.Column="0" Name="ucDashboardMenu" TransitionType="Grow" />
+        <pageTransitions:PageTransition Grid.Row="1" Grid.Column="1" Name="ucMainContent" TransitionType="Grow" />
         
     </Grid>
 </Window>
