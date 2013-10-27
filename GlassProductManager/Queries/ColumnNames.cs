@@ -10,5 +10,10 @@ namespace GlassProductManager
     {
         internal const string GLASS_TYPE = "GlassType";
         internal const string GLASS_ID = "ID";
+        internal const string THICKNESS = "Thickness";
+        internal const string CUTSQFT = "CutSQFT";
+        internal const string TEMPEREDSQFT = "TemperedSQFT";
+        internal const string POLISHSTRAIGHT = "PolishStraight";
+        internal const string POLISHSHAPE = "PolishShape";
     }
 }

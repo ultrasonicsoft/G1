@@ -43,5 +43,20 @@ namespace GlassProductManager
             }
         }
 
+        private void cmbGlassType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdatePriceList();
+        }
+
+        private void UpdatePriceList()
+        {
+            string selectedValue = cmbGlassType.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(selectedValue))
+                return;
+
+            var result = BusinessLogic.GetPriceListByGlassTypeID(selectedValue);
+            dgPriceList.ItemsSource = result;
+        }
+
     }
 }

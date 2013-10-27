@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="500">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -17,8 +17,17 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Label Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,38"/>
-        <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Name="cmbGlassType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Margin="0,40"/>
+        <Label Grid.Row="0" Grid.Column="0" Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Name="cmbGlassType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbGlassType_SelectionChanged" />
+        <DataGrid Name="dgPriceList" Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="300" Width="500" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Thickness" Binding="{Binding Thickness}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="Cut SQ/FT" Binding="{Binding CutSQFT}" Width="100" SortDirection="Descending"></DataGridTextColumn>
+                <DataGridTextColumn Header="Tempered SQ/FT" Binding="{Binding TemperedSQFT}" Width="100" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Polish/Straight Per 1 inch" Binding="{Binding PolishStraight}" Width="100" ></DataGridTextColumn>
+                <DataGridTextColumn Header="Polish/Shape Per 1 inch" Binding="{Binding PolishShape}" Width="100" ></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
 </UserControl>

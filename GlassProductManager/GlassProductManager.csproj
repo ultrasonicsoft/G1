@@ -69,6 +69,7 @@
     <Compile Include="Forms\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\GlassRate.cs" />
     <Compile Include="Forms\HomeContent.xaml.cs">
       <DependentUpon>HomeContent.xaml</DependentUpon>
     </Compile>

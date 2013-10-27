@@ -1,6 +1,7 @@
 ﻿using DBHelper;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,37 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
             return result;
+        }
+
+        internal static ObservableCollection<GlassRate> GetPriceListByGlassTypeID(string selectedValue)
+        {
+            ObservableCollection<GlassRate> rateStructure = new ObservableCollection<GlassRate>();
+
+            try
+            {
+                var result = SQLHelper.GetDataTable(string.Format(SelectQueries.GET_GLASS_RATES_BY_ID,selectedValue));
+                if (result == null)
+                    return null;
+
+                for (int rowIndex = 0; rowIndex < result.Rows.Count; rowIndex++)
+                {
+                    rateStructure.Add(new GlassRate()
+                    {
+                        ID = result.Rows[rowIndex][ColumnNames.GLASS_ID].ToString(),
+                        Thickness = result.Rows[rowIndex][ColumnNames.THICKNESS].ToString(),
+                        CutSQFT = result.Rows[rowIndex][ColumnNames.CUTSQFT].ToString(),
+                        TemperedSQFT = result.Rows[rowIndex][ColumnNames.TEMPEREDSQFT].ToString(),
+                        PolishStraight = result.Rows[rowIndex][ColumnNames.POLISHSTRAIGHT].ToString(),
+                        PolishShape = result.Rows[rowIndex][ColumnNames.POLISHSHAPE].ToString(),
+                    });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return rateStructure;
         }
     }
 }
