@@ -76,6 +76,9 @@
     <Compile Include="Forms\NewQuoteContent.xaml.cs">
       <DependentUpon>NewQuoteContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\NewQuoteItemsContent.xaml.cs">
+      <DependentUpon>NewQuoteItemsContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PriceSettingsContent.xaml.cs">
       <DependentUpon>PriceSettingsContent.xaml</DependentUpon>
     </Compile>
@@ -100,6 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\NewQuoteContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\NewQuoteItemsContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
