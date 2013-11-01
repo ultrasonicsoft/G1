@@ -1,0 +1,133 @@
+﻿<UserControl x:Class="GlassProductManager.Forms.NewQuoteGridContent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="700">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="300" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Content="Quote No.:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
+        <TextBox  Name="txtQuoteNumber" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5"/>
+        
+        <Label Content="Client ID:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
+        <ComboBox Name="cmbClientID" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Width="100"/>
+        
+        
+        
+        <Label Content="Quote Created On:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2"/>
+        <TextBox  Name="txtQuoteCreatedOn" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5"/>
+        
+        <Label Content="Sold to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
+        <Label Content="Ship  to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" />
+        <Label Content="Requested Ship Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"/>
+        <Label Name="lblQuoteRequestedDate" Content="[Date]" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="5" />
+
+        <Label Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" />
+        <TextBox  Name="txtSoldToAddress" TextWrapping="Wrap" Width="150"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label Content="Phone:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
+        <TextBox  Name="txtSoldToPhone" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1"/>
+        <Label Content="Fax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" />
+        <TextBox  Name="txtSoldToFax" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1"/>
+        <Label Content="Email:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" />
+        <TextBox  Name="txtSoldToEmail" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" Grid.Column="1"/>
+        <Label Content="Misc:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Grid.Column="0" />
+        <TextBox  Name="txtSoldToMisc" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="1"/>
+
+        <Label Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="3" />
+        <TextBox  Name="txtShipToName" TextWrapping="Wrap" Width="150"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4"/>
+        <Label Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="3" />
+        <TextBox  Name="txtShipToAddress" TextWrapping="Wrap" Width="200"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4"/>
+        <Label Content="Phone:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="3" />
+        <TextBox  Name="txtShipToPhone" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="4"/>
+        
+        <Label Content="Shipping Method:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Grid.Column="4" />
+        <ComboBox Name="cmbShippingMethod" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="3" Grid.Column="5" />
+
+        <Label Content="Lead Time:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="4" />
+        <ComboBox Name="cmbLeadTime" HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Grid.Row="7" Grid.Column="7" />
+        <ComboBox Name="cmbLeadTimeUnit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Grid.Row="7" Grid.Column="5" />
+        <CheckBox Name="cbUseAsDefault" Content="Use as default" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Grid.Column="4" />
+
+        <DataGrid AutoGenerateColumns="False" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="9" Grid.ColumnSpan="6">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Line Item No." Binding="{Binding TransactionID}" Width="85" >
+                    <DataGridTextColumn.CellStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <!--TODO: Make it Combo box-->
+                <DataGridTextColumn Header="Qty" Binding="{Binding TransactionDate}" Width="45" SortDirection="Descending"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="250"></DataGridTextColumn>
+                <DataGridTextColumn Header="Dimension (in)" Binding="{Binding BillingType}" Width="90"></DataGridTextColumn>
+                <DataGridTextColumn Header="Sq.Ft." Binding="{Binding BillingType}" Width="50"></DataGridTextColumn>
+                <DataGridTextColumn Header="Price/Pc" Binding="{Binding GeneralFund}" Width="80">
+                    <DataGridTextColumn.CellStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Total" Binding="{Binding CheckNo}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label Content="SubTotal:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="4" />
+        <Label Name="lblSubTotal" Content="[SubTotal]" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="5" />
+
+        <!--<Label Content="Additional cost:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="4" />-->
+        
+        <CheckBox Name="cbDollar" Content="Dollar" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="11" Grid.Column="3" />
+        
+        <Label Content="Energy Surcharge:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="11" Grid.Column="4" />
+        <TextBox  Name="txtSubTotal" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="11" Grid.Column="5"/>
+
+        <Label Content="Discount (%):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="12" Grid.Column="4" />
+        <TextBox  Name="txtDiscount" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="12" Grid.Column="5"/>
+
+        <Label Content="Delivery:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
+        <TextBox  Name="txtDelivery" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="5"/>
+
+        <CheckBox Name="cbRush" Content="Rush" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="3" />
+        
+        <Label Content="Rush Order:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="4" />
+        <TextBox  Name="txtRushOrder" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="14" Grid.Column="5"/>
+
+        <Label Content="Tax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="15" Grid.Column="4" />
+        <TextBox  Name="txtTax" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="15" Grid.Column="5"/>
+
+        <Label Content="Grand Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
+        <Label Name="lblGrandTotal" Content="[Grand Total]" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="16" Grid.Column="5" />
+
+    </Grid>
+</UserControl>
