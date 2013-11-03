@@ -203,3 +203,122 @@
 [1:23:34 PM] Jay: we simply need to talk about holes, notches, patches, and hinges
 [1:23:38 PM] Jay: and then we are done for pricing basically
 [1:23:42 PM] Balram: okay
+
+[11/2/2013 1:52:36 PM] Balram: 1. What are possible shapes to be put in Select Shape
+[11/2/2013 1:53:00 PM] Balram: 2. In Custom Shape Polish we are going to accept only total inches
+[11/2/2013 1:53:23 PM] Balram: 3. In Striaght Polish, we will have two option user can provide Long side+short side or he can give total inches
+[11/2/2013 1:54:58 PM] Balram: 4. will cutout wil be always square? since in UI it is only single vallue dropdown. do we need width n height of cut out to be entered?
+[11/2/2013 1:59:38 PM] Balram: 5. for various shape, how price wil be calcualted? we are going to consider them as rectangle irespective of any shape.
+[11/2/2013 1:59:52 PM] Balram: so we will be computing price by perimeter?
+[11/2/2013 2:35:51 PM] Jay: im back
+[11/2/2013 2:36:03 PM] Balram: i hv put questions
+[11/2/2013 2:36:07 PM] Balram: plz hv look
+[11/2/2013 2:36:28 PM] Jay: 1.) square, triangle, quadrilateral, parallelogram, trapezoid, circle
+[11/2/2013 2:36:56 PM] Jay: 2.) as pricing is concerned, total inches
+[11/2/2013 2:37:30 PM] Jay: 3.) # of short side, # of long side, e.g., 1 short 2 long
+[11/2/2013 2:37:46 PM] Jay: 3.) total inches yes
+[11/2/2013 2:38:07 PM] Jay: 4.) cutout is sq.inches cutout
+[11/2/2013 2:38:12 PM] Jay: and dimensions
+[11/2/2013 2:38:23 PM] Jay: in order to cut a square hole out of a glass, we need to give it dimensions
+[11/2/2013 2:38:44 PM] Jay: square hole is DIFFERENT than a circular "hole" as seen on the price sheet
+[11/2/2013 2:38:57 PM] Jay: a square hole is AKA "cutout"
+[11/2/2013 2:39:07 PM] Balram: ok
+[11/2/2013 2:39:25 PM] Balram: so when cutout is selected its square so one input value is enough
+[11/2/2013 2:39:34 PM] Jay: for various shapes, like i said earlier, the glass rectangular shape required to contain the custom shape
+[11/2/2013 2:39:49 PM] Jay: i take that back, cutout can be rectangular
+[11/2/2013 2:39:56 PM] Jay: width x height
+[11/2/2013 2:39:58 PM] Balram: ok
+[11/2/2013 2:40:20 PM] Balram: so cutout will take width n height
+[11/2/2013 2:40:27 PM] Jay: yes
+[11/2/2013 2:40:46 PM] Jay: and it will also calculate the total sq footage from that width x height
+[11/2/2013 2:41:24 PM] Balram: e.g.?
+[11/2/2013 2:41:33 PM] Balram: say user enter 10x30
+[11/2/2013 2:41:37 PM] Balram: so total would be?
+[11/2/2013 2:42:34 PM] Jay: are we talking about cutout
+[11/2/2013 2:42:43 PM] Balram: yes
+[11/2/2013 2:44:00 PM] Jay: one sec
+[11/2/2013 2:44:02 PM] Jay: looking at notes
+[11/2/2013 2:45:34 PM] Jay: hm u know what
+[11/2/2013 2:45:41 PM] Jay: i dont see anything in my notes about charging for a cutout
+[11/2/2013 2:45:41 PM] Jay: fuck
+[11/2/2013 2:45:48 PM] Jay: i will have to ask my girlfriend in the morning
+[11/2/2013 2:45:52 PM] Balram: ok
+[11/2/2013 2:45:55 PM] Balram: no prblm
+[11/2/2013 2:45:57 PM] Jay: we still need to list
+[11/2/2013 2:46:00 PM] Jay: that there is a cutout
+[11/2/2013 2:46:03 PM] Jay: and what its dimensions are
+[11/2/2013 2:46:22 PM] Balram: ok
+[11/2/2013 2:46:32 PM] Balram: can we discuss about holes..
+[11/2/2013 2:46:36 PM] Jay: sure
+[11/2/2013 2:46:38 PM] Balram: from that price list
+[11/2/2013 2:46:42 PM] Balram: its confusing
+[11/2/2013 2:46:44 PM] Jay: easy
+[11/2/2013 2:46:55 PM] Balram: plz explain
+[11/2/2013 2:47:17 PM] Jay: depending on thickness of glass
+[11/2/2013 2:47:22 PM] Jay: gives price per hole
+[11/2/2013 2:47:37 PM] Balram: okay so column 2 and 3 are realted
+[11/2/2013 2:47:42 PM] Balram: 1/4 ->9.50
+[11/2/2013 2:47:42 PM] Jay: yes
+[11/2/2013 2:47:46 PM] Balram: like that
+[11/2/2013 2:47:46 PM] Jay: yes
+[11/2/2013 2:47:52 PM] Balram: for Notch its fixed 15
+[11/2/2013 2:47:55 PM] Jay: yes
+[11/2/2013 2:47:56 PM] Balram: irrespective of thickness
+[11/2/2013 2:48:00 PM] Balram: or glass type
+[11/2/2013 2:48:00 PM] Jay: yes
+[11/2/2013 2:48:01 PM] Balram: same for hinge n patc
+[11/2/2013 2:48:01 PM] Jay: yes
+[11/2/2013 2:48:01 PM] Balram: n insulate?
+[11/2/2013 2:48:02 PM] Jay: yup i think so
+[11/2/2013 2:48:03 PM] Jay: insulate
+[11/2/2013 2:48:10 PM] Jay: let me look that up real quick
+[11/2/2013 2:48:21 PM] Balram: n logo too
+[11/2/2013 2:48:46 PM] Jay: logo i dont think has a charge
+[11/2/2013 2:48:50 PM] Balram: ok
+[11/2/2013 2:51:45 PM] Balram: i m surprised tim is doing something free of cost
+[11/2/2013 2:51:49 PM] Balram: ]:)
+[11/2/2013 2:52:21 PM] Jay: yea i know u are making me second guess myself and my notes
+[11/2/2013 2:52:24 PM] Jay: i am looking at all of them
+[11/2/2013 2:52:25 PM] Jay: to make sure
+[11/2/2013 2:53:50 PM] Jay: oh
+[11/2/2013 2:53:52 PM] Jay: i think i found it
+[11/2/2013 2:53:55 PM] Jay: about insulating
+[11/2/2013 2:53:59 PM] Jay: let me make sense of this again
+[11/2/2013 2:54:01 PM] Jay: one minute
+[11/2/2013 2:54:10 PM] Balram: ok
+[11/2/2013 2:57:09 PM] Jay: alright
+[11/2/2013 2:57:11 PM] Jay: so insulating
+[11/2/2013 2:57:17 PM] Jay: is smacking 2 pieces of glass together
+[11/2/2013 2:57:24 PM] Jay: with a gap in between the 2
+[11/2/2013 2:57:40 PM] Jay: the way we charge
+[11/2/2013 2:58:01 PM] Jay: type of glass + thickness + sq foot
+[11/2/2013 2:58:06 PM] Jay: +
+[11/2/2013 2:58:14 PM] Jay: type of glass + thickness + sq foot
+[11/2/2013 2:58:18 PM] Jay: +
+[11/2/2013 2:58:21 PM] Jay: insulating charge
+[11/2/2013 2:58:30 PM] Jay: the insulating charge is arbitrary
+[11/2/2013 2:58:40 PM] Jay: its the charge / sq foot
+[11/2/2013 2:58:59 PM] Jay: now
+[11/2/2013 2:59:03 PM] Jay: here is where it gets tricky
+[11/2/2013 2:59:40 PM] Jay: from 1 -> 35 square feet
+[11/2/2013 3:00:14 PM] Jay: charge (glass type 1) + (glass type 2) + (insulating charge/sq foot)
+[11/2/2013 3:00:23 PM] Jay: from 35 - > 50 square feet
+[11/2/2013 3:00:49 PM] Jay: charge (glass type 1) + (glass type 2) + (insulating charge/sq foot) + 30%
+[11/2/2013 3:00:59 PM] Jay: from 50 -> onwards
+[11/2/2013 3:01:09 PM] Jay: + 50%
+[11/2/2013 3:01:16 PM] Jay: now u see tim's greediness
+[11/2/2013 3:01:17 PM] Jay: hahahaha
+[11/2/2013 3:01:24 PM] Balram: man..
+[11/2/2013 3:01:40 PM] Balram: can we make its table
+[11/2/2013 3:02:00 PM] Balram: since there are 8 glass types
+[11/2/2013 3:02:14 PM] Jay: im thinking of best way to make this table
+[11/2/2013 3:02:19 PM] Jay: before we get to that
+[11/2/2013 3:02:22 PM] Jay: does it make sense what i just said?
+[11/2/2013 3:02:24 PM] Jay: insulating logic
+[11/2/2013 3:03:31 PM] Balram: yes
+[11/2/2013 3:10:05 PM] Balram: u creating that table?
+[11/2/2013 3:10:16 PM] Jay: have a sheet of paper in front of me
+[11/2/2013 3:10:24 PM] Jay: thinking of the best way to make this
+
+1. Does Long Side n Short Side of Straight Polish and custom polish will play some role in computing Price? Or we will just compute price according to total inches.
+2. 

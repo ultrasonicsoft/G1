@@ -12,17 +12,33 @@ namespace GlassProductManager
 
         private int _glassTypeID;
         private int _thicknessID;
-        private double _totalSqFT;
+        private int _totalSqFT;
         private bool _isTempered;
+        private bool _isMiter;
         private bool _isStraightPolish;
-        private double _straightPolishLongSide=0;
-        private double _straightPolishShortSide=0;
+        private bool _isNotch;
+        private bool _isHinges;
+        private bool _isPatches;
+        private int _straightPolishLongSide = 0;
+        private int _straightPolishShortSide = 0;
+        private int _straightPolishTotalInches = 0;
+
+        private bool _isCustomShapePolish;
+        private int _customPolishTotalInches;
+        private int _miterTotalInches;
+        private int _notches;
+        private int _hinges;
+        private int _patches;
 
         //Rates
         private double _cutsqftRate = 0;
         private double _temperedSQFT = 0;
         private double _polishStraight = 0;
         private double _polishShape = 0;
+        private double _miterRate = 0;
+        private double _notchRate = 0;
+        private double _hingeRate = 0;
+        private double _patchRate = 0;
 
         internal int GlassTypeID
         {
@@ -48,7 +64,7 @@ namespace GlassProductManager
         }
         internal string Thickness { get; set; }
 
-        internal double TotalSqFT
+        internal int TotalSqFT
         {
             get { return _totalSqFT; }
             set
@@ -83,7 +99,7 @@ namespace GlassProductManager
             }
         }
 
-        internal double StraightPolishLongSide
+        internal int StraightPolishLongSide
         {
             get { return _straightPolishLongSide; }
             set
@@ -92,7 +108,7 @@ namespace GlassProductManager
                 CalculateTotal();
             }
         }
-        internal double StraightPolishShortSide
+        internal int StraightPolishShortSide
         {
             get { return _straightPolishShortSide; }
             set
@@ -101,21 +117,120 @@ namespace GlassProductManager
                 CalculateTotal();
             }
         }
-        internal double StraightPolishTotalInches { get; set; }
 
-        internal bool IsCustomShapePolish { get; set; }
-        internal double CustomPolishLongSide { get; set; }
-        internal double CustomPolishShortSide { get; set; }
+        internal int StraightPolishTotalInches
+        {
+            get { return _straightPolishTotalInches; }
+            set
+            {
+                _straightPolishTotalInches = value;
+                CalculateTotal();
+            }
+        }
 
-        internal bool IsMiter { get; set; }
-        internal double MiterLongSide { get; set; }
-        internal double MiterShortSide { get; set; }
-        internal double MiterTotalInches { get; set; }
+        internal bool IsCustomShapePolish
+        {
+            get { return _isCustomShapePolish; }
+            set
+            {
+                _isCustomShapePolish = value;
+                CalculateTotal();
+            }
+        }
+        internal int CustomPolishLongSide { get; set; }
+        internal int CustomPolishShortSide { get; set; }
+
+        internal int CustomPolishTotalInches
+        {
+            get { return _customPolishTotalInches; }
+            set
+            {
+                _customPolishTotalInches = value;
+                CalculateTotal();
+            }
+        }
+
+        internal bool IsMiter
+        {
+            get { return _isMiter; }
+            set
+            {
+                _isMiter = value;
+                CalculateTotal();
+            }
+        }
+        internal int MiterLongSide { get; set; }
+        internal int MiterShortSide { get; set; }
+        internal int MiterTotalInches
+        {
+            get { return _miterTotalInches; }
+            set
+            {
+                _miterTotalInches = value;
+                CalculateTotal();
+            }
+        }
 
         internal int Holes { get; set; }
-        internal int Notches { get; set; }
-        internal int Hinges { get; set; }
-        internal int Patches { get; set; }
+
+        public bool IsNotch
+        {
+            get { return _isNotch; }
+            set
+            {
+                _isNotch = value;
+                CalculateTotal();
+            }
+        }
+
+        internal int Notches
+        {
+            get { return _notches; }
+            set
+            {
+                _notches = value;
+                CalculateTotal();
+            }
+        }
+
+        public bool IsHinges
+        {
+            get { return _isHinges; }
+            set
+            {
+                _isHinges = value;
+                CalculateTotal();
+            }
+        }
+
+        internal int Hinges
+        {
+            get { return _hinges; }
+            set
+            {
+                _hinges = value;
+                CalculateTotal();
+            }
+        }
+
+        public bool IsPatches
+        {
+            get { return _isPatches; }
+            set
+            {
+                _isPatches = value;
+                CalculateTotal();
+            }
+        }
+        internal int Patches
+        {
+            get { return _patches; }
+            set
+            {
+                _patches = value;
+                CalculateTotal();
+            }
+        }
         internal bool IsLogoRequired { get; set; }
         internal double Insulate { get; set; }
 
@@ -135,23 +250,44 @@ namespace GlassProductManager
             _temperedSQFT = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
             _polishStraight = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT].ToString());
             _polishShape = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE].ToString());
+            _miterRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.MITER_RATE].ToString());
+            _notchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE].ToString());
+            _hingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
+            _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
 
-            if (false==_isTempered)
+            if (false == _isTempered)
             {
-                _currentTotal = _totalSqFT == 0 ? 0 : (_totalSqFT / 12.0) * _cutsqftRate;
+                _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _cutsqftRate;
             }
             else
             {
-                _currentTotal = _totalSqFT == 0 ? 0 : (_totalSqFT / 12.0) * _temperedSQFT;
+                _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _temperedSQFT;
             }
 
             if (true == _isStraightPolish)
             {
-                _currentTotal += ((2.0 * StraightPolishLongSide) + (2.0 * StraightPolishShortSide)) * _polishStraight;
+                _currentTotal += _straightPolishTotalInches * _polishStraight;
             }
-            else
+
+            if (true == _isCustomShapePolish)
             {
-                _currentTotal += ((2.0 * 0) + (2.0 * 0)) * _polishStraight;
+                _currentTotal += _customPolishTotalInches * _polishShape;
+            }
+            if (true == _isMiter)
+            {
+                _currentTotal += _miterTotalInches * _miterRate;
+            }
+            if (true == _isNotch)
+            {
+                _currentTotal += _notches * _notchRate;
+            }
+            if (true == _isHinges)
+            {
+                _currentTotal += _hinges* _hingeRate;
+            }
+            if (true == _isPatches)
+            {
+                _currentTotal += _patches * _patchRate;
             }
         }
 

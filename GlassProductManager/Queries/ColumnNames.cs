@@ -16,5 +16,9 @@ namespace GlassProductManager
         internal const string TEMPEREDSQFT = "TemperedSQFT";
         internal const string POLISHSTRAIGHT = "PolishStraight";
         internal const string POLISHSHAPE = "PolishShape";
+        internal const string MITER_RATE = "MiterRate";
+        internal const string NOTCH_RATE = "NotchRate";
+        internal const string HINGE_RATE = "HingeRate";
+        internal const string PATCH_RATE = "PatchRate";
     }
 }
