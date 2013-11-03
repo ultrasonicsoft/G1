@@ -92,5 +92,47 @@ namespace DBHelper
             }
             return result;
         }
+
+        public static DataSet ExecuteStoredProcedure(string procedureName, params object[] parameters)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                using (SqlConnection _con = new SqlConnection(dbConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.CommandText = procedureName;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Connection = _con;
+                        
+                        if (parameters != null)
+                        {
+                            foreach (SqlParameter currentParameter in parameters)
+                            {
+                                command.Parameters.AddWithValue(currentParameter.ParameterName, currentParameter.Value);
+                            }
+                        }
+                        DataSet dsData = new DataSet();
+                        SqlDataAdapter _dap = new SqlDataAdapter(command);
+                        SqlDataAdapter da = new SqlDataAdapter(command);
+                        da.Fill(result);
+                        da.Dispose();
+                    }
+                }
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
     }
+
+
 }

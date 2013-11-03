@@ -9,8 +9,9 @@ namespace GlassProductManager
     internal class ColumnNames
     {
         internal const string GLASS_TYPE = "GlassType";
-        internal const string GLASS_ID = "ID";
+        internal const string ID = "ID";
         internal const string THICKNESS = "Thickness";
+        internal const string THICKNESSID = "ThicknessID";
         internal const string CUTSQFT = "CutSQFT";
         internal const string TEMPEREDSQFT = "TemperedSQFT";
         internal const string POLISHSTRAIGHT = "PolishStraight";

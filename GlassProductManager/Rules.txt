@@ -1,0 +1,205 @@
+﻿[12:52:11 PM] Jay: variables that movidy and add to a total
+[12:52:14 PM] Jay: modify*
+[12:52:23 PM] Jay: let me list out the main topics
+[12:52:32 PM] Jay: 1.) type of glass is chosen
+[12:52:39 PM] Jay: 2.) thickness is chosen
+[12:53:18 PM] Jay: 3.) square foot of total piece of glass of the imaginary rectangle needed to create whatever shape
+[12:53:33 PM] Jay: 4.) if it is to be tempered or not
+[12:53:41 PM] Jay: 5.) how much polish in inches
+[12:53:45 PM] Jay: 6.) custom shape polish
+[12:53:52 PM] Jay: 7.) if a hole needs to be cut
+[12:54:06 PM] Jay: 8.) if a notch needs to be cut
+[12:54:13 PM] Jay: 9.) if a hinge or patch is required
+[12:52:11 PM] Jay: variables that movidy and add to a total
+[12:52:14 PM] Jay: modify*
+[12:52:23 PM] Jay: let me list out the main topics
+[12:52:32 PM] Jay: 1.) type of glass is chosen
+[12:52:39 PM] Jay: 2.) thickness is chosen
+[12:53:18 PM] Jay: 3.) square foot of total piece of glass of the imaginary rectangle needed to create whatever shape
+[12:53:33 PM] Jay: 4.) if it is to be tempered or not
+[12:53:41 PM] Jay: 5.) how much polish in inches
+[12:53:45 PM] Jay: 6.) custom shape polish
+[12:53:52 PM] Jay: 7.) if a hole needs to be cut
+[12:54:06 PM] Jay: 8.) if a notch needs to be cut
+[12:54:13 PM] Jay: 9.) if a hinge or patch is required
+[12:54:28 PM] Balram: ok
+[12:54:32 PM] Jay: now
+[12:54:35 PM] Jay: lets break down each one of these
+[12:55:05 PM] Jay: do u still have the price matrix tim gave me that i gave to u?
+[12:55:09 PM] Balram: yes
+[12:55:26 PM] Jay: lets talk about type of glass
+[12:56:09 PM] Jay: i think this part is the easiest to demonstrate
+[12:56:22 PM] Balram: yes
+[12:56:26 PM] Jay: looking at that matrix
+[12:56:30 PM] Jay: u see the various types of glass
+[12:56:34 PM] Jay: and the thickness associated with it
+[12:56:36 PM] Balram: yes
+[12:56:42 PM] Jay: self explanatory
+[12:56:45 PM] Jay: 3rd column
+[12:56:50 PM] Jay: Cut SQ/FT
+[12:56:53 PM] Jay: this is not tempered
+[12:57:14 PM] Jay: so if the user does not want tempered glass, this is what we are charging at this point for the total sq. footage required
+[12:57:31 PM] Jay: lets say they want a square
+[12:57:39 PM] Jay: 12inches x 12 inches
+[12:57:42 PM] Jay: so 1 foot x 1 foot
+[12:57:50 PM] Jay: then we will charge $1.65
+[12:58:02 PM] Jay: assuming its 3/16 , or 1/4 inches thick
+[12:58:16 PM] Jay: u with me so far?
+[12:58:18 PM] Jay: this part is easy
+[12:58:25 PM] Balram: yes
+[12:58:27 PM] Balram: but
+[12:58:44 PM] Balram: what will be total length in above case
+[12:58:59 PM] Balram: i mean 1.65 will be multiplied to with which number
+[12:59:11 PM] Jay: that is that starting number of which we charge
+[12:59:21 PM] Jay: so far the owes the business $1.65
+[12:59:31 PM] Jay: for a 1 sq foot piece of untempered glass
+[12:59:51 PM] Balram: ok
+[12:59:58 PM] Jay: did that answer your question
+[1:00:02 PM] Balram: yes
+[1:00:13 PM] Jay: if its tempered glass they want, then the price goes up ever so slightly
+[1:01:04 PM] Balram: ok
+[1:01:06 PM] Jay: next is polish
+[1:01:10 PM] Jay: essentially the logic is
+[1:01:19 PM] Jay: how many fucking inches are we polishing along the edge of the glass
+[1:01:20 PM] Jay: 10?
+[1:01:21 PM] Jay: 50?
+[1:01:22 PM] Jay: whatever it is
+[1:01:26 PM] Jay: charge that amount
+[1:01:43 PM] Jay: for example
+[1:01:48 PM] Jay: we have 12 inches x 12 inches
+[1:02:01 PM] Jay: so thats 12 + 12 + 12 + 12 inches of chargable polishing
+[1:02:05 PM] Balram: ohh
+[1:02:07 PM] Jay: 48 inches total perimeter inches
+[1:02:14 PM] Balram: 48* 0.08?
+[1:02:31 PM] Jay: correct
+[1:02:46 PM] Jay: so $3.84
+[1:02:49 PM] Jay: lets say
+[1:02:53 PM] Jay: there is a cutout for custom shape
+[1:02:58 PM] Jay: that needs its insides polished too
+[1:03:08 PM] Jay: lets say we took a chunk out of a side of the square
+[1:03:26 PM] Jay: then we would charge 48 inches + however many inches is on the interior perimeter we just took out
+[1:03:27 PM] Jay: got it?
+[1:04:16 PM] Balram: umm
+[1:04:29 PM] Balram: ok
+[1:05:22 PM] *** Jay sent custom polish.png ***
+[1:05:26 PM] Jay: here you go retard
+[1:05:30 PM] Jay: just to make sure u get it
+[1:06:55 PM] Balram: ques
+[1:07:04 PM] Balram: first we will charge for polish
+[1:07:14 PM] Balram: + custom cutout
+[1:07:34 PM] Jay: yes
+[1:07:36 PM] Jay: thats right
+[1:07:49 PM] Jay: so 48 + 4 inches for that example i showed u
+[1:07:58 PM] Balram: ok
+[1:08:42 PM] Balram: so in our design
+[1:08:50 PM] Balram: when user select checkbox "tempered"
+[1:09:02 PM] Jay: it reverts to that column in our price matrix
+[1:09:26 PM] Balram: we will enable Straight Polish n Custom Shape Polish controls
+[1:09:31 PM] Jay: yes
+[1:09:33 PM] Jay: i was thinking man
+[1:09:37 PM] Jay: if we can have some "config file"
+[1:09:42 PM] Jay: to put all of this pricing shit in
+[1:09:50 PM] Jay: and we can treat pricing categories like "modules"
+[1:09:56 PM] Balram: yes i m going to create one form for pricing
+[1:09:58 PM] Jay: in the scenario they want to add more methods of charging
+[1:10:02 PM] Balram: where admin user can update it
+[1:10:07 PM] Jay: lets say they have some new technique or technology for processing glass
+[1:10:14 PM] Jay: instead of reinventing everything, we can just add another category
+[1:10:24 PM] Jay: and make the front end controls in the GUI to connect to that new category
+[1:10:37 PM] Jay: i think it would be future proof
+[1:11:08 PM] Balram: so u mean GUI too be dynamic
+[1:11:09 PM] Balram: ?
+[1:11:17 PM] Jay: no no
+[1:11:18 PM] Jay: i mean
+[1:11:28 PM] Jay: obviously it require some small hardcode changes
+[1:11:31 PM] Jay: but it wouldnt be a big deal
+[1:11:41 PM] Jay: we just add in a chunk of pricing data in the config file
+[1:11:47 PM] Jay: and u code the program to then look at that new data
+[1:11:56 PM] Jay: it would be a super easy method for you as the developer
+[1:12:03 PM] Jay: incase tim is a faggot homosexual and changes his mind
+[1:12:16 PM] Jay: know what im saying?
+[1:12:34 PM] Balram: yes..
+[1:12:46 PM] Jay: next up
+[1:12:47 PM] Jay: is miter
+[1:12:49 PM] Jay: what miter is
+[1:12:58 PM] Jay: instead of having glass look like this |_
+[1:13:00 PM] Balram: 1 min
+[1:13:01 PM] Jay: 90 degrees edge
+[1:13:09 PM] Jay: miter is where they cut the glass edge at an angle
+[1:13:37 PM] Balram: i will keep all pricing data in db
+[1:13:59 PM] Balram: n wil create on egrid with same column as of pricing list u gave
+[1:14:07 PM] Balram: and he can update that settings n save to database
+[1:14:10 PM] Jay: miter is not on that grid
+[1:14:12 PM] Jay: so miter is a good example
+[1:14:17 PM] Balram: no for pricing i m talking
+[1:14:18 PM] Jay: tim might approach us one day
+[1:14:35 PM] Jay: and be like "oh hey, i now am starting to charge my customers this, i need this added to my flow of cost control"
+[1:14:55 PM] Jay: what ever method you feel is best to mitigate a headache over that, i support it
+[1:15:04 PM] Balram: yes
+[1:15:05 PM] Balram: i will
+[1:15:10 PM] Balram: plz continue on miter
+[1:15:20 PM] Jay: miter is easy
+[1:15:26 PM] Jay: if the glass is 1/4 thick
+[1:15:32 PM] Jay: $0.35
+[1:15:38 PM] Jay: if the glass is 3/8 inch thick
+[1:15:42 PM] Jay: $0.45
+[1:15:48 PM] Jay: if the glass is 1/2 inch thick
+[1:15:51 PM] Jay: $0.55
+[1:15:52 PM] Jay: done
+[1:16:06 PM] Balram: where is this in pricing list?
+[1:16:10 PM] Jay: it is not
+[1:16:13 PM] Jay: i am telling u this now
+[1:16:20 PM] Jay: oh wait
+[1:16:21 PM] Jay: WAIT
+[1:16:23 PM] Jay: thats not thickness
+[1:16:25 PM] Jay: thats length
+[1:16:30 PM] Jay: as they run along the perimter
+[1:16:34 PM] Jay: perimeter
+[1:16:45 PM] Jay: thickness is irrelevant
+[1:18:36 PM] Balram: for miter
+[1:18:50 PM] Balram: we will take long sides n short side
+[1:19:08 PM] Balram: say x, y
+[1:19:11 PM] Jay: sure
+[1:19:19 PM] Balram: so we will be (x +y ) * $a
+[1:19:35 PM] Jay: say its a rectangle
+[1:19:37 PM] Jay: the system will have to know
+[1:19:39 PM] Jay: what a short side is
+[1:19:43 PM] Jay: and what a long side is in that case
+[1:19:50 PM] Balram: then
+[1:20:10 PM] Jay: based off of dimensions
+[1:20:10 PM] Balram: how to compute price based on perimeter?
+[1:20:14 PM] Jay: well
+[1:20:15 PM] Jay: wait
+[1:20:22 PM] Jay: maybe we are doing this more difficult than we need it to be
+[1:20:35 PM] Jay: maybe we should just have a field
+[1:20:41 PM] Jay: for the operator to input total inches of miter?
+[1:20:46 PM] Jay: duh duh
+[1:21:02 PM] Balram: and multiply that with $cost itself?
+[1:21:05 PM] Jay: yes
+[1:21:06 PM] Jay: lol
+[1:21:07 PM] Jay: easy
+[1:21:12 PM] Balram: ok
+[1:21:14 PM] Jay: retarded easy
+[1:21:20 PM] Jay: and then next to that input field
+[1:21:27 PM] Jay: have 2 radio buttons
+[1:21:28 PM] Jay: long side
+[1:21:30 PM] Jay: short side
+[1:21:36 PM] Jay: so the idiots on the workshop floor know what they are doing
+[1:21:48 PM] Balram: means for miter
+[1:21:54 PM] Balram: we will have one textbox for total inches
+[1:22:02 PM] Balram: and other long side + short side
+[1:22:15 PM] Balram: total n long+short are optional
+[1:22:20 PM] Balram: one of them can be given at a time
+[1:22:48 PM] Jay: that would be great
+[1:22:53 PM] Jay: i hate to break with you real quick man
+[1:22:58 PM] Jay: but i need to go to my best friends house real fast
+[1:23:01 PM] Jay: and bring his girl friend hoe
+[1:23:02 PM] Jay: home
+[1:23:06 PM] Jay: he has the flu
+[1:23:10 PM] Balram: okay
+[1:23:10 PM] Jay: cant drive =(
+[1:23:14 PM] Jay: but we are almost done
+[1:23:15 PM] Jay: i promise
+[1:23:34 PM] Jay: we simply need to talk about holes, notches, patches, and hinges
+[1:23:38 PM] Jay: and then we are done for pricing basically
+[1:23:42 PM] Balram: okay

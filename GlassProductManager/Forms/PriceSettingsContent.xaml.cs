@@ -34,7 +34,7 @@ namespace GlassProductManager
             {
                 var result = BusinessLogic.GetAllGlassTypes();
                 cmbGlassType.DisplayMemberPath = ColumnNames.GLASS_TYPE;
-                cmbGlassType.SelectedValuePath = ColumnNames.GLASS_ID;
+                cmbGlassType.SelectedValuePath = ColumnNames.ID;
                 cmbGlassType.ItemsSource = result.DefaultView;
             }
             catch (Exception ex)

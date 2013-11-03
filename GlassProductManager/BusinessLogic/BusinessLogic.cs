@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,16 +32,16 @@ namespace GlassProductManager
 
         internal static DataTable GetAllGlassTypes()
         {
-            DataTable result = null;
+            DataSet result = null;
             try
             {
-                result = SQLHelper.GetDataTable(SelectQueries.GET_ALL_GLASS_TYPES);
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllGlassTypes,null);
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
             }
-            return result;
+            return result.Tables[0];
         }
 
         internal static ObservableCollection<GlassRate> GetPriceListByGlassTypeID(string selectedValue)
@@ -49,6 +50,7 @@ namespace GlassProductManager
 
             try
             {
+                //TODO: change query to SP. 
                 var result = SQLHelper.GetDataTable(string.Format(SelectQueries.GET_GLASS_RATES_BY_ID,selectedValue));
                 if (result == null)
                     return null;
@@ -57,7 +59,7 @@ namespace GlassProductManager
                 {
                     rateStructure.Add(new GlassRate()
                     {
-                        ID = result.Rows[rowIndex][ColumnNames.GLASS_ID].ToString(),
+                        ID = result.Rows[rowIndex][ColumnNames.ID].ToString(),
                         Thickness = result.Rows[rowIndex][ColumnNames.THICKNESS].ToString(),
                         CutSQFT = result.Rows[rowIndex][ColumnNames.CUTSQFT].ToString(),
                         TemperedSQFT = result.Rows[rowIndex][ColumnNames.TEMPEREDSQFT].ToString(),
@@ -72,6 +74,46 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
             return rateStructure;
+        }
+
+        internal static DataTable GetThicknessByGlassID(string glassID)
+        {
+            DataSet result = null;
+            try
+            {
+                SqlParameter paramGlassID = new SqlParameter();
+                paramGlassID.ParameterName = "GlassID";
+                paramGlassID.Value = glassID;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetThicknessByGlassID, paramGlassID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result.Tables[0];
+        }
+
+        internal static DataSet GetRatesByGlassTypeAndThickness(int _glassTypeID, int _thicknessID)
+        {
+            DataSet result = null;
+            try
+            {
+                SqlParameter paramGlassID = new SqlParameter();
+                paramGlassID.ParameterName = "GlassID";
+                paramGlassID.Value = _glassTypeID;
+
+                SqlParameter paramThicknessID = new SqlParameter();
+                paramThicknessID.ParameterName = "ThicknessID";
+                paramThicknessID.Value = _thicknessID;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetRates, paramGlassID, paramThicknessID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result;
         }
     }
 }

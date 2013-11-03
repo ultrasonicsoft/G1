@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GlassProductManager.Forms
+namespace GlassProductManager
 {
     /// <summary>
     /// Interaction logic for NewQuoteGridContent.xaml

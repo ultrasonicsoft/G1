@@ -79,6 +79,8 @@
     <Compile Include="Forms\NewQuoteGridContent.xaml.cs">
       <DependentUpon>NewQuoteGridContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlassShape.cs" />
+    <Compile Include="NewQuoteItemEntity.cs" />
     <Compile Include="Forms\NewQuoteItemsContent.xaml.cs">
       <DependentUpon>NewQuoteItemsContent.xaml</DependentUpon>
     </Compile>
@@ -93,6 +95,7 @@
     </Compile>
     <Compile Include="Queries\ColumnNames.cs" />
     <Compile Include="Queries\SelectQueries.cs" />
+    <Compile Include="Queries\StoredProcedures.cs" />
     <Page Include="Forms\DashboardMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,7 +172,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBHelper\DBHelper.csproj">
@@ -187,6 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Temp.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Rules.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

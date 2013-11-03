@@ -23,6 +23,18 @@ namespace GlassProductManager
         public NewQuoteContent()
         {
             InitializeComponent();
+
+            if (ucNewQuoteItems.CurrentPage == null)
+            {
+                NewQuoteItemsContent items = new NewQuoteItemsContent();
+                ucNewQuoteItems.ShowPage(items);
+            }
+
+            if (ucNewQuoteGrid.CurrentPage == null)
+            {
+                NewQuoteGridContent grid = new NewQuoteGridContent();
+                ucNewQuoteGrid.ShowPage(grid);
+            }
         }
     }
 }
