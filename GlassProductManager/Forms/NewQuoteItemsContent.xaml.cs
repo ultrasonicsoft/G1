@@ -29,6 +29,7 @@ namespace GlassProductManager
             currentItem = new NewQuoteItemEntity();
 
             FillGlassTypes();
+            FillShapes();
         }
 
         private void FillGlassTypes()
@@ -37,6 +38,14 @@ namespace GlassProductManager
             cmbGlassType.DisplayMemberPath = ColumnNames.GLASS_TYPE;
             cmbGlassType.SelectedValuePath = ColumnNames.ID;
             cmbGlassType.ItemsSource = result.DefaultView;
+        }
+        
+        private void FillShapes()
+        {
+            var result = BusinessLogic.GetAllShapes();
+            cmbShape.DisplayMemberPath = ColumnNames.SHAPE;
+            cmbShape.SelectedValuePath = ColumnNames.ID;
+            cmbShape.ItemsSource = result.DefaultView;
         }
 
         private void cmbGlassType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -221,7 +230,6 @@ namespace GlassProductManager
             UpdateCurrentTotal();
         }
 
-
         private void txtHingesNumber_LostFocus(object sender, RoutedEventArgs e)
         {
             txtHingesNumber.Text = string.IsNullOrEmpty(txtHingesNumber.Text) ? "0" : txtHingesNumber.Text;
@@ -298,9 +306,6 @@ namespace GlassProductManager
 
             UpdateCurrentTotal();
         }
-
-     
-
        
     }
 }

@@ -29,3 +29,8 @@
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </ToggleButton.Template>-->
+
+				http://gsselle.wordpress.com/2013/05/26/wpf-datagrid-update-insert-and-delete-operations/
+				http://www.dotnetcurry.com/ShowArticle.aspx?ID=566
+				http://social.msdn.microsoft.com/Forums/vstudio/en-US/4face39e-55d2-41db-b698-ff4c8271f658/wpf-datagrid-addeditdelete-item-by-row?forum=wpf
+				http://blogs.u2u.be/diederik/post/2009/09/29/Inserting-Updating-and-Deleting-from-a-WPF-DataGrid.aspx

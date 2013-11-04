@@ -9,6 +9,7 @@ namespace GlassProductManager
     internal class StoredProcedures
     {
         internal const string GetAllGlassTypes = "GetAllGlassTypes";
+        internal const string GetAllShapes = "[GetAllShapes]";
         internal const string GetThicknessByGlassID = "GetThicknessByGlassID";
         internal const string GetRates = "GetRates";
     }

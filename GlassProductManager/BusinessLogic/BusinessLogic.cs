@@ -44,6 +44,20 @@ namespace GlassProductManager
             return result.Tables[0];
         }
 
+        internal static DataTable GetAllShapes()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllShapes, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result.Tables[0];
+        }
+
         internal static ObservableCollection<GlassRate> GetPriceListByGlassTypeID(string selectedValue)
         {
             ObservableCollection<GlassRate> rateStructure = new ObservableCollection<GlassRate>();

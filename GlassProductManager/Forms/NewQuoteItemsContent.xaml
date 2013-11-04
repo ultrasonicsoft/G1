@@ -41,12 +41,12 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Label  Content="Select Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                <ComboBox Name="cmbGlassType" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="1" SelectionChanged="cmbGlassType_SelectionChanged" />
-                <Label Content="Select Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
-                <ComboBox Name="cmbThickness" HorizontalAlignment="Right" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="3" Margin="0,4,2,4" SelectionChanged="cmbThickness_SelectionChanged" />
+                <Label  Content="Select Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                <ComboBox Name="cmbGlassType" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1" SelectionChanged="cmbGlassType_SelectionChanged" />
+                <Label Content="Select Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
+                <ComboBox Name="cmbThickness" HorizontalAlignment="Right" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="3" Margin="0,4,2,4" SelectionChanged="cmbThickness_SelectionChanged" />
 
-                <GroupBox Header="Dimension of Glass" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Grid.ColumnSpan="4" Width="500" Height="80" Grid.RowSpan="3">
+                <GroupBox Header="Dimension of Glass" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Grid.ColumnSpan="4" Width="500" Height="80" Grid.RowSpan="3">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -61,18 +61,23 @@
                         <Label Content="Total Sq. Ft. of glass:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
                         <TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="120"  LostFocus="txtTotalSqFt_LostFocus" TextChanged="txtTotalSqFt_TextChanged" />
                         <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                        <TextBox Name="txtGlassHeight" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
+                        <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2" Margin="121,4,0,4"/>
                         <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
-                        <TextBox Name="txtGlassWidth" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" Height="23" Width="50" />
+                        <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" Height="23" Width="50" />
                     </Grid>
                 </GroupBox>
 
 
-                <Label Content="Select Shape" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" />
-                <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Grid.Row="4" Grid.Column="1" />
+                <Label Content="Select Shape" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
+                <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Grid.Row="5" Grid.Column="1" />
+
+                <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" />
+                <TextBox Name="txtShapeHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="6" Grid.ColumnSpan="2" Margin="121,4,0,4"/>
+                <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" />
+                <TextBox Name="txtShapeWidth" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="7" Grid.ColumnSpan="2" Margin="121,4,0,4"/>
 
                 <!--Show Shape dimension user control here-->
-                <pageTransitions:PageTransition  Name="ucShapeDimension" TransitionType="Slide" Grid.Row="5" Grid.ColumnSpan="4" Grid.RowSpan="3"/>
+                <!--<pageTransitions:PageTransition  Name="ucShapeDimension" TransitionType="Slide" Grid.Row="5" Grid.ColumnSpan="4" Grid.RowSpan="3"/>-->
 
                 <CheckBox Name="cbIsTempered" Content="Is Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="8" Grid.Column="0" Checked="cbIsTempered_Checked" Unchecked="cbIsTempered_Unchecked"/>
 
@@ -116,14 +121,15 @@
                 <Label Content="Enter Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="19" Grid.Column="2" />
                 <TextBox Name="txtInsulateThickness" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="19" Grid.Column="3"/>
 
-                <Label Content="Total till now:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="20" Grid.Column="0" FontSize="13" FontWeight="Bold" />
-                <Label Name="lblTotalTillNow" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="20" Grid.Column="1" FontSize="13" FontWeight="Bold"/>
+                <Label Content="Total till now:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="20" Grid.Column="1" FontSize="13" FontWeight="Bold" />
+                <Label Name="lblTotalTillNow" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="20" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
 
-                <Button Name="btnNewItem" Content="New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="21" Grid.Column="0"/>
-                <Button Name="btnResetItem" Content="Reset" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="21" Grid.Column="1"/>
-                <Button Name="btnAddToQuote" Grid.ColumnSpan="2" Content="Add to Quote" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="21" Grid.Column="2"/>
+                <Button Name="btnNewItem" Content="New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0"/>
+                <Button Name="btnResetItem" Content="Reset" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="1"/>
+                <Button Name="btnAddToQuote" Grid.ColumnSpan="4" Content="Add to Quote" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="21" Grid.Column="0"/>
                 
             </Grid>
         </Border>
+        <Image HorizontalAlignment="Left" Height="100" Margin="789,160,-389,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </UserControl>
