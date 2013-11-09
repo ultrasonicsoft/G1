@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +16,20 @@ using System.Windows.Shapes;
 
 namespace GlassProductManager
 {
+
     /// <summary>
     /// Interaction logic for NewQuoteItemsContent.xaml
     /// </summary>
     public partial class NewQuoteItemsContent : UserControl
     {
         NewQuoteItemEntity currentItem = null;
+
+        private ObservableCollection<InsulationDetails> _DS = new ObservableCollection<InsulationDetails>();
+        public ObservableCollection<InsulationDetails> allInsulationData
+        {
+            get { return _DS; }
+            set { _DS = value; }
+        }
         
         public NewQuoteItemsContent()
         {
@@ -30,6 +39,35 @@ namespace GlassProductManager
 
             FillGlassTypes();
             FillShapes();
+
+            FillInsulationDetails();
+        }
+
+        private void FillInsulationDetails()
+        {
+
+            InsulationDetails gridData = GeInsulationGlassTypeColumnData();
+            allInsulationData.Add(gridData);
+
+
+            dgInsulateDetails.SelectionChanged += new SelectionChangedEventHandler(dg_SelectionChanged);
+        }
+
+        private static InsulationDetails GeInsulationGlassTypeColumnData()
+        {
+            var result = BusinessLogic.GetAllGlassTypes();
+
+            InsulationDetails gridData = new InsulationDetails();
+
+            foreach (System.Data.DataRow currentRow in result.Rows)
+            {
+                gridData.Glass.Add(new ValueIDPair(int.Parse(currentRow[ColumnNames.ID].ToString()), currentRow[ColumnNames.GLASS_TYPE].ToString()));
+
+            }
+            gridData.Tempered.Add(new ValueIDPair() { Value = "Yes" });
+            gridData.Tempered.Add(new ValueIDPair() { Value = "No" });
+
+            return gridData;
         }
 
         private void FillGlassTypes()
@@ -306,6 +344,58 @@ namespace GlassProductManager
 
             UpdateCurrentTotal();
         }
-       
+
+        #region Insulation Methods
+
+        void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void GlassCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox GlassCB = sender as ComboBox;
+            if (GlassCB != null && GlassCB.SelectedItem is ValueIDPair)
+            {
+                InsulationDetails currentDO = dgInsulateDetails.SelectedItem as InsulationDetails;
+                if (currentDO != null)
+                {
+                    PopulateThicknessBasedOnGlassID((GlassCB.SelectedItem as ValueIDPair).ID.ToString(), currentDO);
+                }
+            }
+        }
+
+        public void PopulateThicknessBasedOnGlassID(string glassID, InsulationDetails currentDO)
+        {
+            currentDO.Thickness.Clear();
+            
+            var result = BusinessLogic.GetThicknessByGlassID(glassID);
+
+            foreach (System.Data.DataRow currentRow in result.Rows)
+            {
+                currentDO.Thickness.Add(new ValueIDPair(int.Parse(currentRow[ColumnNames.THICKNESSID].ToString()), currentRow[ColumnNames.THICKNESS].ToString()));
+
+            }
+        }
+
+        private void btnAddNewInsulation_Click(object sender, RoutedEventArgs e)
+        {
+            InsulationDetails gridData = GeInsulationGlassTypeColumnData();
+            allInsulationData.Add(gridData);
+        }
+
+        private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // Lookup for the source to be DataGridCell
+            if (e.OriginalSource.GetType() == typeof(DataGridCell))
+            {
+                // Starts the Edit on the row;
+                DataGrid grd = (DataGrid)sender;
+                grd.BeginEdit(e);
+            }
+        }
+        #endregion
+
+      
     }
 }

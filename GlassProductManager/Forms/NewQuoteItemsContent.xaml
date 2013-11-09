@@ -67,7 +67,7 @@
                         </Grid.ColumnDefinitions>
                         <Label Content="Total Sq. Ft. of glass:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
                         <TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="50"  LostFocus="txtTotalSqFt_LostFocus" TextChanged="txtTotalSqFt_TextChanged" />
-                        
+
                         <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
                         <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="3" />
                         <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
@@ -111,12 +111,12 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <CheckBox Name="cbIsStraightPolish" Content="Straight Polish?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Checked="cbIsStraightPolish_Checked" Unchecked="cbIsStraightPolish_Unchecked" />
-                        
+
                         <Label Content="Total Inches:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
                         <TextBox Name="txtStraightPolishTotalInches" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" TextChanged="txtStraightPolishTotalInches_TextChanged" LostFocus="txtStraightPolishTotalInches_LostFocus" />
-                        
+
                         <Label Content="Long Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
                         <TextBox Name="txtStraightPolishLongSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" LostFocus="txtStraightPolishLongSide_LostFocus" TextChanged="txtStraightPolishLongSide_TextChanged"/>
                         <Label Content="Short Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
@@ -163,7 +163,7 @@
                         <TextBox Name="txtMiterLongSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4"/>
                         <Label Content="Short Sides #:"  HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
                         <TextBox Name="txtMiterShortSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6"/>
-                        </Grid>
+                    </Grid>
                 </GroupBox>
 
                 <GroupBox Header="Misc" HorizontalAlignment="Center" Grid.Row="12" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="80" Grid.RowSpan="3">
@@ -191,11 +191,101 @@
                         <TextBox Name="txtPatchesNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" TextChanged="txtPatchesNumber_TextChanged" LostFocus="txtPatchesNumber_LostFocus"/>
                     </Grid>
                 </GroupBox>
-                
+
+                <GroupBox Header="Cutout" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="0,0,20,0">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  />
+                        </Grid.ColumnDefinitions>
+                        <DataGrid  AutoGenerateColumns="False" CanUserAddRows="false" Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="80" />
+                                <DataGridTextColumn Header="Width" Binding="{Binding Width}" Width="80"/>
+                                <DataGridTextColumn Header="Height" Binding="{Binding Height}" Width="80"/>
+                                <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="80"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Grid Grid.Row="1" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Name="btnAddNewCutout" Content="Add New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0"/>
+                            <Button Name="btnDeleteCutout" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="1"/>
+                            <Label Content="Total:" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
+                            <Label Name="lblCutoutTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Insulation" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="-15,0,10,0" >
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid Name="dgInsulateDetails" Grid.ColumnSpan="3" CanUserAddRows="false" Margin="0,5,0,0" DataGridCell.Selected="DataGrid_GotFocus" HorizontalAlignment="Left" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" ItemsSource="{Binding allInsulationData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Glass" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox Name="GlassCB" ItemsSource="{Binding Glass}" DisplayMemberPath="Value" SelectedValuePath="ID" SelectionChanged="GlassCB_SelectionChanged"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Thickness">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox Name="ThicknessCB" ItemsSource="{Binding Thickness}" DisplayMemberPath="Value" SelectedValuePath="ID"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Tempered?">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox Name="cmbTempered" ItemsSource="{Binding Tempered}" DisplayMemberPath="Value" SelectedValuePath="Value"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="SQ.FT." Binding="{Binding SqFt}" />
+                                <DataGridTextColumn Header="Total" Binding="{Binding Total}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Name="btnAddNewInsulation" Content="Add" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0" Click="btnAddNewInsulation_Click"/>
+                            <Button Name="btnEditInsulation" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="1"/>
+                            <Label Content="Total:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
+                            <Label Name="lblInsulationTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
+                        </Grid>
+
+                    </Grid>
+                </GroupBox>
+
                 <!--<CheckBox Name="cbCutout" Content="Cutout?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="16" Grid.Column="0"/>
                 <TextBox Name="txtCutoutNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="16" Grid.Column="1"/>-->
 
-                
+
                 <Label Content="Total till now:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="24" Grid.Column="1" FontSize="13" FontWeight="Bold" />
                 <Label Name="lblTotalTillNow" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
 
