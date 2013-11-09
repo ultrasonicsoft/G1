@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\QuoteGridEntity.cs" />
     <Compile Include="Classes\CutoutData.cs" />
     <Compile Include="Classes\Insulation.cs" />
     <Compile Include="Forms\DashboardMenu.xaml.cs">

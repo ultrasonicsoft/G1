@@ -531,10 +531,7 @@ namespace GlassProductManager
             }
         }
 
-        private void btnAddToQuote_Click(object sender, RoutedEventArgs e)
-        {
-            string itemDescription = currentItem.GetDescriptionString();
-        }
+    
 
         private void cbHoles_Checked(object sender, RoutedEventArgs e)
         {
@@ -559,5 +556,77 @@ namespace GlassProductManager
         {
             txtHoleNumbers.Text = string.IsNullOrEmpty(txtHoleNumbers.Text) ? "0" : txtHoleNumbers.Text;
         }
+
+        private void cbLogo_Unchecked(object sender, RoutedEventArgs e)
+        {
+            currentItem.IsLogoRequired = false;
+        }
+
+        private void cbLogo_Checked(object sender, RoutedEventArgs e)
+        {
+            currentItem.IsLogoRequired = true;
+        }
+
+        private void txtMiterLongSide_LostFocus(object sender, RoutedEventArgs e)
+        {
+            txtMiterLongSide.Text = string.IsNullOrEmpty(txtMiterLongSide.Text) ? "0" : txtMiterLongSide.Text;
+            currentItem.MiterLongSide = int.Parse(txtMiterLongSide.Text);
+        }
+
+        private void txtMiterShortSide_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (currentItem == null)
+                return;
+
+            txtMiterShortSide.Text = string.IsNullOrEmpty(txtMiterShortSide.Text) ? "0" : txtMiterShortSide.Text;
+            currentItem.MiterShortSide = int.Parse(txtMiterShortSide.Text);
+        }
+
+        private void btnAddToQuote_Click(object sender, RoutedEventArgs e)
+        {
+            string itemDescription = currentItem.GetDescriptionString();
+
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+            if (parent != null)
+            {
+                NewQuoteContent content = parent.ucMainContent.CurrentPage as NewQuoteContent;
+                if (content != null)
+                {
+                    NewQuoteGridContent grid = content.ucNewQuoteGrid.CurrentPage as NewQuoteGridContent;
+                    if (grid != null)
+                    {
+                        QuoteGridEntity newItem = new QuoteGridEntity();
+                        newItem.LineID = grid.allQuoteData.Count + 1;
+                        newItem.Quantity = 1;
+                        newItem.Description = itemDescription;
+                        newItem.Dimension = string.Format(@"{0}"" x {1}""",currentItem.GlassWidth,currentItem.GlassHeight);
+                        newItem.TotalSqFt = currentItem.TotalSqFT.ToString();
+                        newItem.UnitPrice = currentItem.CurrentTotal.ToString();
+                        newItem.Total = currentItem.CurrentTotal;
+                        grid.allQuoteData.Add(newItem);
+                    }
+                }
+            }
+        }
+
+        private void txtGlassWidth_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (currentItem == null)
+                return;
+
+            txtGlassWidth.Text = string.IsNullOrEmpty(txtGlassWidth.Text) ? "0" : txtGlassWidth.Text;
+            currentItem.GlassWidth = int.Parse(txtGlassWidth.Text);
+        }
+
+        private void txtGlassHeight_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (currentItem == null)
+                return;
+
+            txtGlassHeight.Text = string.IsNullOrEmpty(txtGlassHeight.Text) ? "0" : txtGlassHeight.Text;
+            currentItem.GlassHeight = int.Parse(txtGlassHeight.Text);
+        }
+
+       
     }
 }

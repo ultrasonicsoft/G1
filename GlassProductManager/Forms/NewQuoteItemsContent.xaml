@@ -50,7 +50,7 @@
                 <ComboBox Name="cmbGlassType" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="1" SelectionChanged="cmbGlassType_SelectionChanged" />
                 <Label Content="Select Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
                 <ComboBox Name="cmbThickness" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="3" SelectionChanged="cmbThickness_SelectionChanged" />
-                <CheckBox Name="cbLogo" Content="Is Logo Required?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4"/>
+                <CheckBox Name="cbLogo" Content="Is Logo Required?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" Unchecked="cbLogo_Unchecked" Checked="cbLogo_Checked"/>
                 <CheckBox Name="cbIsTempered" Content="Is Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5" Checked="cbIsTempered_Checked" Unchecked="cbIsTempered_Unchecked"/>
                 <GroupBox Header="Dimension of Glass" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
                     <Grid>
@@ -69,9 +69,9 @@
                         <TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="50"  LostFocus="txtTotalSqFt_LostFocus" TextChanged="txtTotalSqFt_TextChanged" />
 
                         <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
-                        <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="3" />
+                        <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="3" TextChanged="txtGlassHeight_TextChanged" />
                         <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                        <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" Height="23" Width="50" />
+                        <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" />
                     </Grid>
                 </GroupBox>
 
@@ -160,9 +160,9 @@
                         <TextBox Name="txtMiterTotalInches" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" TextChanged="txtMiterTotalInches_TextChanged" LostFocus="txtMiterTotalInches_LostFocus"/>
                         <CheckBox Name="cbIsMiter" Content="Miter?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Unchecked="cbIsMiter_Unchecked" Checked="cbIsMiter_Checked" />
                         <Label Content="Long Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
-                        <TextBox Name="txtMiterLongSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4"/>
+                        <TextBox Name="txtMiterLongSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" LostFocus="txtMiterLongSide_LostFocus" />
                         <Label Content="Short Sides #:"  HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
-                        <TextBox Name="txtMiterShortSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6"/>
+                        <TextBox Name="txtMiterShortSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6" TextChanged="txtMiterShortSide_TextChanged"/>
                     </Grid>
                 </GroupBox>
 

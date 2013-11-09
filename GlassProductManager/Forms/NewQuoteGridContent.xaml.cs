@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,14 @@ namespace GlassProductManager
     /// </summary>
     public partial class NewQuoteGridContent : UserControl
     {
+        private ObservableCollection<QuoteGridEntity> _allQuoteData = new ObservableCollection<QuoteGridEntity>();
+
+        public ObservableCollection<QuoteGridEntity> allQuoteData
+        {
+            get { return _allQuoteData; }
+            set { _allQuoteData = value; }
+        }
+
         public NewQuoteGridContent()
         {
             InitializeComponent();
