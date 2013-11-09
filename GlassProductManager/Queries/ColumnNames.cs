@@ -20,6 +20,7 @@ namespace GlassProductManager
         internal const string NOTCH_RATE = "NotchRate";
         internal const string HINGE_RATE = "HingeRate";
         internal const string PATCH_RATE = "PatchRate";
+        internal const string HOLE_RATE = "HoleRate";
 
         internal const string SHAPE = "Shape";
 

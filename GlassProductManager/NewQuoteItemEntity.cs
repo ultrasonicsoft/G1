@@ -19,6 +19,7 @@ namespace GlassProductManager
         private bool _isNotch;
         private bool _isHinges;
         private bool _isPatches;
+        private bool _isHoles;
         private int _straightPolishLongSide = 0;
         private int _straightPolishShortSide = 0;
         private int _straightPolishTotalInches = 0;
@@ -29,18 +30,21 @@ namespace GlassProductManager
         private int _notches;
         private int _hinges;
         private int _patches;
+        private int _holes;
         private double _insulateTotalCost;
         private double _cutoutTotal;
         
         //Rates
         private double _cutsqftRate = 0;
-        private double _temperedSQFT = 0;
-        private double _polishStraight = 0;
-        private double _polishShape = 0;
+        private double _temperedRate = 0;
+        private double _polishStraightRate = 0;
+        private double _polishShapeRate = 0;
         private double _miterRate = 0;
         private double _notchRate = 0;
         private double _hingeRate = 0;
         private double _patchRate = 0;
+        private double _holeRate = 0;
+
         internal int GlassTypeID
         {
             get { return _glassTypeID; }
@@ -172,7 +176,25 @@ namespace GlassProductManager
             }
         }
 
-        internal int Holes { get; set; }
+        internal bool IsHoles
+        {
+            get { return _isHoles; }
+            set
+            {
+                _isHoles = value;
+                CalculateTotal();
+            }
+        }
+
+        internal int Holes
+        {
+            get { return _holes; }
+            set
+            {
+                _holes = value;
+                CalculateTotal();
+            }
+        }
 
         public bool IsNotch
         {
@@ -267,51 +289,70 @@ namespace GlassProductManager
                 return;
 
             _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
-            _temperedSQFT = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
-            _polishStraight = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT].ToString());
-            _polishShape = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE].ToString());
+            _temperedRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
+            _polishStraightRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT].ToString());
+            _polishShapeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE].ToString());
             _miterRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.MITER_RATE].ToString());
             _notchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE].ToString());
             _hingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
             _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
+            _holeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HOLE_RATE].ToString());
 
             if (false == _isTempered)
             {
                 _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _cutsqftRate;
             }
-            else
+            else if (_temperedRate != 0)
             {
-                _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _temperedSQFT;
+                _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _temperedRate;
             }
+         
 
             if (true == _isStraightPolish)
             {
-                _currentTotal += _straightPolishTotalInches * _polishStraight;
+                _currentTotal += _straightPolishTotalInches * _polishStraightRate;
             }
 
             if (true == _isCustomShapePolish)
             {
-                _currentTotal += _customPolishTotalInches * _polishShape;
+                _currentTotal += _customPolishTotalInches * _polishShapeRate;
             }
             if (true == _isMiter)
             {
                 _currentTotal += _miterTotalInches * _miterRate;
             }
-            if (true == _isNotch)
+            if (true == _isNotch && _totalSqFT != 0)
             {
                 _currentTotal += _notches * _notchRate;
             }
-            if (true == _isHinges)
+            if (true == _isHinges && _totalSqFT != 0)
             {
                 _currentTotal += _hinges* _hingeRate;
             }
-            if (true == _isPatches)
+            if (true == _isPatches && _totalSqFT != 0)
             {
                 _currentTotal += _patches * _patchRate;
             }
+
+            if (true == _isHoles && _totalSqFT != 0)
+            {
+                _currentTotal += _holes * _holeRate;
+            }
+
             _currentTotal += _insulateTotalCost;
             _currentTotal += _cutoutTotal;
         }
 
+
+        internal string GetDescriptionString()
+        {
+            StringBuilder description = new StringBuilder();
+
+            description.Append(GlassType);
+
+            //if(Holes
+
+            return description.ToString();
+        }
     }
 }

@@ -178,8 +178,8 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Name="cbHoles" Content="Holes?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2"/>
-                        <TextBox Name="txtHoleNumbers" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3"/>
+                        <CheckBox Name="cbHoles" Content="Holes?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" Checked="cbHoles_Checked" Unchecked="cbHoles_Unchecked" />
+                        <TextBox Name="txtHoleNumbers" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" TextChanged="txtHoleNumbers_TextChanged" LostFocus="txtHoleNumbers_LostFocus"/>
 
                         <CheckBox Name="cbNotches" Content="Notches?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Unchecked="cbNotches_Unchecked" Checked="cbNotches_Checked"/>
                         <TextBox Name="txtNotchesNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" TextChanged="txtNotchesNumber_TextChanged" LostFocus="txtNotchesNumber_LostFocus"/>
@@ -290,7 +290,7 @@
 
                 <Button Name="btnNewItem" Content="New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0"/>
                 <Button Name="btnResetItem" Content="Reset" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="1"/>
-                <Button Name="btnAddToQuote" Grid.ColumnSpan="6" Content="Add to Quote" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="25" Grid.Column="0"/>
+                <Button Name="btnAddToQuote" Grid.ColumnSpan="6" Content="Add to Quote" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="25" Grid.Column="0" Click="btnAddToQuote_Click"/>
 
             </Grid>
         </Border>

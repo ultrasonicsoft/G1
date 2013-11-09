@@ -111,6 +111,8 @@ namespace GlassProductManager
             cmbThickness.ItemsSource = result.DefaultView;
 
             currentItem.GlassTypeID = int.Parse(glassID);
+            currentItem.GlassType = cmbGlassType.SelectedItem.ToString();
+            currentItem.GlassType = (cmbGlassType.SelectedItem as System.Data.DataRowView)[1].ToString();
         }
 
         private void cmbThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -351,6 +353,9 @@ namespace GlassProductManager
                 case "Patches":
                     currentItem.Patches = tempValue;
                     break;
+                case "Holes":
+                    currentItem.Holes = tempValue;
+                    break;
                 default:
                     break;
             }
@@ -524,6 +529,35 @@ namespace GlassProductManager
             {
                 txtSqFt1.Text = "0";
             }
+        }
+
+        private void btnAddToQuote_Click(object sender, RoutedEventArgs e)
+        {
+            string itemDescription = currentItem.GetDescriptionString();
+        }
+
+        private void cbHoles_Checked(object sender, RoutedEventArgs e)
+        {
+            currentItem.IsHoles = true;
+            UpdateCurrentTotal();
+        }
+
+        private void cbHoles_Unchecked(object sender, RoutedEventArgs e)
+        {
+            currentItem.IsHoles = false;
+            txtHoleNumbers.Text = "0";
+            UpdateCurrentTotal();
+        }
+
+        private void txtHoleNumbers_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            NewItemsChanged(txtHoleNumbers.Text, "Holes");
+
+        }
+
+        private void txtHoleNumbers_LostFocus(object sender, RoutedEventArgs e)
+        {
+            txtHoleNumbers.Text = string.IsNullOrEmpty(txtHoleNumbers.Text) ? "0" : txtHoleNumbers.Text;
         }
     }
 }
