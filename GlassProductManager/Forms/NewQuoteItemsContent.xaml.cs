@@ -24,19 +24,15 @@ namespace GlassProductManager
     {
         NewQuoteItemEntity currentItem = null;
 
-        private ObservableCollection<InsulationDetails> _allInsulationData = new ObservableCollection<InsulationDetails>();
-        public ObservableCollection<InsulationDetails> allInsulationData
-        {
-            get { return _allInsulationData; }
-            set { _allInsulationData = value; }
-        }
-
         private ObservableCollection<CutoutData> _allCutoutData = new ObservableCollection<CutoutData>();
         public ObservableCollection<CutoutData> allCutoutData
         {
             get { return _allCutoutData; }
             set { _allCutoutData = value; }
         }
+
+        private InsulationDetails GlassType1;
+        private InsulationDetails GlassType2;
 
         public NewQuoteItemsContent()
         {
@@ -49,43 +45,38 @@ namespace GlassProductManager
 
             FillCutoutData();
             FillInsulationDetails();
+            GlassType1 = new InsulationDetails();
+            GlassType2 = new InsulationDetails();
         }
 
         private void FillCutoutData()
         {
             CutoutData cutout = GetNewCutoutObject();
-            allCutoutData.Add(cutout);
+            allCutoutData.Add(GetNewCutoutObject());
 
             dgCutoutDetails.SelectionChanged += new SelectionChangedEventHandler(dgCutout_SelectionChanged);
         }
 
         private void FillInsulationDetails()
         {
-
-            InsulationDetails gridData = GeInsulationGlassTypeColumnData();
-            allInsulationData.Add(gridData);
-
-
-            dgInsulateDetails.SelectionChanged += new SelectionChangedEventHandler(dgInsulation_SelectionChanged);
-        }
-
-        private  InsulationDetails GeInsulationGlassTypeColumnData()
-        {
             var result = BusinessLogic.GetAllGlassTypes();
+            cmbGlassType1.DisplayMemberPath = ColumnNames.GLASS_TYPE;
+            cmbGlassType1.SelectedValuePath = ColumnNames.ID;
+            cmbGlassType1.ItemsSource = result.DefaultView;
 
-            InsulationDetails gridData = new InsulationDetails();
+            cmbGlassType2.DisplayMemberPath = ColumnNames.GLASS_TYPE;
+            cmbGlassType2.SelectedValuePath = ColumnNames.ID;
+            cmbGlassType2.ItemsSource = result.DefaultView;
 
-            foreach (System.Data.DataRow currentRow in result.Rows)
-            {
-                gridData.Glass.Add(new ValueIDPair(int.Parse(currentRow[ColumnNames.ID].ToString()), currentRow[ColumnNames.GLASS_TYPE].ToString()));
+            ObservableCollection<string> list = new ObservableCollection<string>();
+            list.Add("Yes");
+            list.Add("No");
 
-            }
-            gridData.Tempered.Add(new ValueIDPair() { Value = "Yes" });
-            gridData.Tempered.Add(new ValueIDPair() { Value = "No" });
+            cmbTemp1.ItemsSource = list;
+            cmbTemp2.ItemsSource = list;
 
-            return gridData;
         }
-        
+
         private CutoutData GetNewCutoutObject()
         {
             CutoutData data = new CutoutData() { Height = 0, Price = 0, Quantity = 0, Width = 0 };
@@ -99,7 +90,7 @@ namespace GlassProductManager
             cmbGlassType.SelectedValuePath = ColumnNames.ID;
             cmbGlassType.ItemsSource = result.DefaultView;
         }
-        
+
         private void FillShapes()
         {
             var result = BusinessLogic.GetAllShapes();
@@ -124,7 +115,7 @@ namespace GlassProductManager
 
         private void cmbThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbThickness.SelectedValue==null)
+            if (cmbThickness.SelectedValue == null)
                 return;
 
             string thicknessID = cmbThickness.SelectedValue.ToString();
@@ -299,10 +290,10 @@ namespace GlassProductManager
         {
             NewItemsChanged(txtHingesNumber.Text, "Hinges");
         }
-     
+
         private void cbPatches_Unchecked(object sender, RoutedEventArgs e)
         {
-            currentItem.IsPatches= false;
+            currentItem.IsPatches = false;
             txtPatchesNumber.Text = "0";
             UpdateCurrentTotal();
         }
@@ -369,44 +360,6 @@ namespace GlassProductManager
 
         #region Insulation Methods
 
-        void dgInsulation_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        
-        private void GlassCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox GlassCB = sender as ComboBox;
-            if (GlassCB != null && GlassCB.SelectedItem is ValueIDPair)
-            {
-                InsulationDetails currentDO = dgInsulateDetails.SelectedItem as InsulationDetails;
-                if (currentDO != null)
-                {
-                    PopulateThicknessBasedOnGlassID((GlassCB.SelectedItem as ValueIDPair).ID.ToString(), currentDO);
-                }
-            }
-        }
-
-        public void PopulateThicknessBasedOnGlassID(string glassID, InsulationDetails currentDO)
-        {
-            currentDO.Thickness.Clear();
-            
-            var result = BusinessLogic.GetThicknessByGlassID(glassID);
-
-            foreach (System.Data.DataRow currentRow in result.Rows)
-            {
-                currentDO.Thickness.Add(new ValueIDPair(int.Parse(currentRow[ColumnNames.THICKNESSID].ToString()), currentRow[ColumnNames.THICKNESS].ToString()));
-
-            }
-        }
-
-        private void btnAddNewInsulation_Click(object sender, RoutedEventArgs e)
-        {
-            InsulationDetails gridData = GeInsulationGlassTypeColumnData();
-            allInsulationData.Add(gridData);
-        }
-
         private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
         {
             // Lookup for the source to be DataGridCell
@@ -419,7 +372,7 @@ namespace GlassProductManager
         }
         #endregion
 
-       
+
 
         void dgCutout_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -454,8 +407,123 @@ namespace GlassProductManager
                     continue;
                 totalPrice += item.Quantity * item.Price;
             }
-            lblCutoutTotal.Content = totalPrice.ToString();
+            lblCutoutTotal.Content = "$ " + totalPrice.ToString();
+
+            currentItem.CutoutTotal = totalPrice;
+            UpdateCurrentTotal();
         }
-      
+
+        private void cmbGlassType1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string glassID = cmbGlassType1.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(glassID))
+                return;
+
+            var result = BusinessLogic.GetThicknessByGlassID(glassID);
+            cmbThickness1.DisplayMemberPath = ColumnNames.THICKNESS;
+            cmbThickness1.SelectedValuePath = ColumnNames.THICKNESSID;
+            cmbThickness1.ItemsSource = result.DefaultView;
+
+            UpdateInsulationGlassTotal(cmbGlassType1,cmbThickness1,cmbTemp1,GlassType1,txtSqFt1,txtGlassType1Total);
+        }
+
+        private void cmbGlassType2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string glassID = cmbGlassType2.SelectedValue.ToString();
+            if (string.IsNullOrEmpty(glassID))
+                return;
+
+            var result = BusinessLogic.GetThicknessByGlassID(glassID);
+            cmbThickness2.DisplayMemberPath = ColumnNames.THICKNESS;
+            cmbThickness2.SelectedValuePath = ColumnNames.THICKNESSID;
+            cmbThickness2.ItemsSource = result.DefaultView;
+
+            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, GlassType2, txtSqFt2, txtGlassType2Total);
+
+        }
+
+        private void UpdateInsulationGlassTotal(ComboBox glassType, ComboBox thickness,ComboBox isTempered, InsulationDetails currentGlassType, TextBox currentSQFT, TextBox currentGlassTotal)
+        {
+            if (glassType.SelectedValue == null || thickness.SelectedValue == null || string.IsNullOrEmpty(currentSQFT.Text))
+                return;
+
+            currentGlassType.GlassTypeID = int.Parse(glassType.SelectedValue.ToString());
+            currentGlassType.ThicknessID = int.Parse(thickness.SelectedValue.ToString());
+
+            var result = BusinessLogic.GetRatesByGlassTypeAndThickness(currentGlassType.GlassTypeID, currentGlassType.ThicknessID);
+            if (result == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                return;
+
+            double _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
+            double _temperedSQFT = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
+
+            currentGlassType.IsTempered = isTempered.SelectedValue.ToString() == "Yes";
+            currentGlassType.SqFt = int.Parse(currentSQFT.Text);
+
+            if (currentGlassType.IsTempered)
+            {
+                currentGlassType.Total = currentGlassType.SqFt == 0 ? 0 : currentGlassType.SqFt * _temperedSQFT;
+            }
+            else
+            {
+                currentGlassType.Total = currentGlassType.SqFt == 0 ? 0 : currentGlassType.SqFt * _cutsqftRate;
+            }
+
+            currentGlassTotal.Text = currentGlassType.Total.ToString();
+
+            UpdateInsulationTotal();
+        }
+
+        private void UpdateInsulationTotal()
+        {
+            lblMaterialCost.Content = "$ " + (GlassType1.Total + GlassType2.Total).ToString();
+            
+            double insulationTierCost = BusinessLogic.GetInsulationTierCost(GlassType1.SqFt);
+            lblInsulationTier.Content = "$ " + insulationTierCost.ToString();
+
+            double insulationTierTotal = insulationTierCost * GlassType1.SqFt;
+            lblInsulationTierTotal.Content = "$ " + insulationTierTotal.ToString();
+
+            double insulationTotal = insulationTierTotal + GlassType1.Total + GlassType2.Total;
+            lblInsulationTotal.Content = "$ " + insulationTotal.ToString();
+
+            currentItem.InsulateTotalCost = insulationTotal;
+            UpdateCurrentTotal();
+        }
+
+        private void cmbTemp1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, GlassType1, txtSqFt1, txtGlassType1Total);
+        }
+
+        private void cmbThickness1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, GlassType1, txtSqFt1, txtGlassType1Total);
+        }
+
+        private void txtSqFt1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(txtSqFt2 != null)
+            txtSqFt2.Text = txtSqFt1.Text;
+            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, GlassType1, txtSqFt1, txtGlassType1Total);
+        }
+
+        private void cmbThickness2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, GlassType2, txtSqFt2, txtGlassType2Total);
+        }
+
+        private void cmbTemp2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, GlassType2, txtSqFt2, txtGlassType2Total);
+        }
+
+        private void txtSqFt1_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtSqFt1.Text))
+            {
+                txtSqFt1.Text = "0";
+            }
+        }
     }
 }

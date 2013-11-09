@@ -129,5 +129,41 @@ namespace GlassProductManager
             }
             return result;
         }
+
+        internal static double GetInsulationTierCost(int sqft)
+        {
+            double insulationCost = 0;
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetInsulationCost);
+                if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count == 0)
+                {
+                    Logger.LogMessage("Error: Failed to read Insulation cost from database. GetInsulationTierCost()");
+                    return insulationCost;
+                }
+
+                int ceiling1 = int.Parse(result.Tables[0].Rows[0][ColumnNames.Ceiling1].ToString());
+                int ceiling2= int.Parse(result.Tables[0].Rows[0][ColumnNames.Ceiling2].ToString());
+
+                if (sqft > ceiling2)
+                {
+                    insulationCost = double.Parse(result.Tables[0].Rows[0][ColumnNames.Cost3].ToString());
+                }
+                else if(sqft >=ceiling1 && sqft <= ceiling2)
+                {
+                    insulationCost = double.Parse(result.Tables[0].Rows[0][ColumnNames.Cost2].ToString());
+                }
+                else
+                {
+                    insulationCost = double.Parse(result.Tables[0].Rows[0][ColumnNames.Cost1].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return insulationCost;
+        }
     }
 }

@@ -29,7 +29,9 @@ namespace GlassProductManager
         private int _notches;
         private int _hinges;
         private int _patches;
-
+        private double _insulateTotalCost;
+        private double _cutoutTotal;
+        
         //Rates
         private double _cutsqftRate = 0;
         private double _temperedSQFT = 0;
@@ -39,7 +41,6 @@ namespace GlassProductManager
         private double _notchRate = 0;
         private double _hingeRate = 0;
         private double _patchRate = 0;
-
         internal int GlassTypeID
         {
             get { return _glassTypeID; }
@@ -232,7 +233,26 @@ namespace GlassProductManager
             }
         }
         internal bool IsLogoRequired { get; set; }
-        internal double Insulate { get; set; }
+
+        public double CutoutTotal
+        {
+            get { return _cutoutTotal; }
+            set
+            {
+                _cutoutTotal = value;
+                CalculateTotal();
+            }
+        }
+
+        internal double InsulateTotalCost
+        {
+            get { return _insulateTotalCost; }
+            set
+            {
+                _insulateTotalCost = value;
+                CalculateTotal();
+            }
+        }
 
         internal double CurrentTotal
         {
@@ -289,6 +309,8 @@ namespace GlassProductManager
             {
                 _currentTotal += _patches * _patchRate;
             }
+            _currentTotal += _insulateTotalCost;
+            _currentTotal += _cutoutTotal;
         }
 
     }

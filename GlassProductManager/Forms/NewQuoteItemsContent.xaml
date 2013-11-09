@@ -89,7 +89,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Select Shape" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                        <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="1" />
+                        <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="0" Grid.Column="1" />
                         <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
                         <TextBox Name="txtShapeHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3"/>
                         <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
@@ -229,56 +229,55 @@
                 <GroupBox Header="Insulation" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="-15,0,10,0" >
                     <Grid >
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="60"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid Name="dgInsulateDetails" Grid.ColumnSpan="3" CanUserAddRows="false" Margin="0,5,0,0" DataGridCell.Selected="DataGrid_GotFocus" HorizontalAlignment="Left" Grid.Column="0" AutoGenerateColumns="False" SelectionMode="Single" ItemsSource="{Binding allInsulationData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}">
-                            <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Glass" Width="100">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <ComboBox Name="GlassCB" ItemsSource="{Binding Glass}" DisplayMemberPath="Value" SelectedValuePath="ID" SelectionChanged="GlassCB_SelectionChanged"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Thickness">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <ComboBox Name="ThicknessCB" ItemsSource="{Binding Thickness}" DisplayMemberPath="Value" SelectedValuePath="ID"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Tempered?">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <ComboBox Name="cmbTempered" ItemsSource="{Binding Tempered}" DisplayMemberPath="Value" SelectedValuePath="Value"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="SQ.FT." Binding="{Binding SqFt}" />
-                                <DataGridTextColumn Header="Total" Binding="{Binding Total}" />
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <Label Content="Glass Type 1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                        <ComboBox Name="cmbGlassType1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="0" SelectionChanged="cmbGlassType1_SelectionChanged" />
+                        <Label Content="Thickness" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
+                        <ComboBox Name="cmbThickness1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="1" Grid.Column="1" SelectionChanged="cmbThickness1_SelectionChanged" />
+                        <Label Content="Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
+                        <ComboBox Name="cmbTemp1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="1" Grid.Column="2" SelectionChanged="cmbTemp1_SelectionChanged" SelectedIndex="0"/>
+                        <Label Content="Sq. Ft." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
+                        <TextBox  Name="txtSqFt1" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" TextChanged="txtSqFt1_TextChanged" LostFocus="txtSqFt1_LostFocus" />
+                        <Label Content="Total" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
+                        <TextBox  Name="txtGlassType1Total" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" IsReadOnly="True"/>
 
-                        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Button Name="btnAddNewInsulation" Content="Add" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0" Click="btnAddNewInsulation_Click"/>
-                            <Button Name="btnEditInsulation" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="1"/>
-                            <Label Content="Insulation Total:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
-                            <Label Name="lblInsulationTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
-                        </Grid>
+                        <Label Content="Glass Type 1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
+                        <ComboBox Name="cmbGlassType2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="3" Grid.Column="0" SelectionChanged="cmbGlassType2_SelectionChanged" />
+                        <Label Content="Thickness" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" />
+                        <ComboBox Name="cmbThickness2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="3" Grid.Column="1" SelectionChanged="cmbThickness2_SelectionChanged" />
+                        <Label Content="Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" />
+                        <ComboBox Name="cmbTemp2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="3" Grid.Column="2" SelectedIndex="0" SelectionChanged="cmbTemp2_SelectionChanged"/>
+                        <Label Content="Sq. Ft." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" />
+                        <TextBox  Name="txtSqFt2" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" IsReadOnly="True" />
+                        <Label Content="Total" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="4" />
+                        <TextBox  Name="txtGlassType2Total" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="4" IsReadOnly="True" />
 
+                        <Label Content="Material Cost:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" FontWeight="Bold"/>
+                        <Label Name="lblMaterialCost" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" FontWeight="Bold"/>
+
+                        <Label Content="Insulation Tier:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                        <Label Name="lblInsulationTier" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" FontWeight="Bold"/>
+
+                        <Label Content="Insulation Tier Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                        <Label Name="lblInsulationTierTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="2" FontWeight="Bold"/>
+
+                        <Label Content="Insulation Total:" VerticalAlignment="Top" Grid.Row="6" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
+                        <Label Name="lblInsulationTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
                     </Grid>
                 </GroupBox>
 
@@ -286,8 +285,8 @@
                 <TextBox Name="txtCutoutNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="16" Grid.Column="1"/>-->
 
 
-                <Label Content="Total till now:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="24" Grid.Column="1" FontSize="13" FontWeight="Bold" />
-                <Label Name="lblTotalTillNow" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
+                <Label Content="Total till now:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold" />
+                <Label Name="lblTotalTillNow" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="3" FontSize="13" FontWeight="Bold"/>
 
                 <Button Name="btnNewItem" Content="New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0"/>
                 <Button Name="btnResetItem" Content="Reset" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="1"/>

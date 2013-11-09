@@ -22,5 +22,12 @@ namespace GlassProductManager
         internal const string PATCH_RATE = "PatchRate";
 
         internal const string SHAPE = "Shape";
+
+        internal const string Ceiling1 = "Ceiling1";
+        internal const string Cost1 = "Cost1";
+        internal const string Ceiling2 = "Ceiling2";
+        internal const string Cost2 = "Cost2";
+        internal const string Cost3 = "Cost3";
+       
     }
 }
