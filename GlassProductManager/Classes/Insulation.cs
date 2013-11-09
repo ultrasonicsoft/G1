@@ -32,7 +32,7 @@ namespace GlassProductManager
             set
             {
                 _sqft = value;
-                OnPropertyChanged("Area");
+                OnPropertyChanged("SqFt");
             }
         }
 

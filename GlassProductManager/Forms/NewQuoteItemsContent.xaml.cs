@@ -24,13 +24,20 @@ namespace GlassProductManager
     {
         NewQuoteItemEntity currentItem = null;
 
-        private ObservableCollection<InsulationDetails> _DS = new ObservableCollection<InsulationDetails>();
+        private ObservableCollection<InsulationDetails> _allInsulationData = new ObservableCollection<InsulationDetails>();
         public ObservableCollection<InsulationDetails> allInsulationData
         {
-            get { return _DS; }
-            set { _DS = value; }
+            get { return _allInsulationData; }
+            set { _allInsulationData = value; }
         }
-        
+
+        private ObservableCollection<CutoutData> _allCutoutData = new ObservableCollection<CutoutData>();
+        public ObservableCollection<CutoutData> allCutoutData
+        {
+            get { return _allCutoutData; }
+            set { _allCutoutData = value; }
+        }
+
         public NewQuoteItemsContent()
         {
             InitializeComponent();
@@ -40,7 +47,16 @@ namespace GlassProductManager
             FillGlassTypes();
             FillShapes();
 
+            FillCutoutData();
             FillInsulationDetails();
+        }
+
+        private void FillCutoutData()
+        {
+            CutoutData cutout = GetNewCutoutObject();
+            allCutoutData.Add(cutout);
+
+            dgCutoutDetails.SelectionChanged += new SelectionChangedEventHandler(dgCutout_SelectionChanged);
         }
 
         private void FillInsulationDetails()
@@ -50,10 +66,10 @@ namespace GlassProductManager
             allInsulationData.Add(gridData);
 
 
-            dgInsulateDetails.SelectionChanged += new SelectionChangedEventHandler(dg_SelectionChanged);
+            dgInsulateDetails.SelectionChanged += new SelectionChangedEventHandler(dgInsulation_SelectionChanged);
         }
 
-        private static InsulationDetails GeInsulationGlassTypeColumnData()
+        private  InsulationDetails GeInsulationGlassTypeColumnData()
         {
             var result = BusinessLogic.GetAllGlassTypes();
 
@@ -68,6 +84,12 @@ namespace GlassProductManager
             gridData.Tempered.Add(new ValueIDPair() { Value = "No" });
 
             return gridData;
+        }
+        
+        private CutoutData GetNewCutoutObject()
+        {
+            CutoutData data = new CutoutData() { Height = 0, Price = 0, Quantity = 0, Width = 0 };
+            return data;
         }
 
         private void FillGlassTypes()
@@ -347,11 +369,12 @@ namespace GlassProductManager
 
         #region Insulation Methods
 
-        void dg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void dgInsulation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
+        
         private void GlassCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox GlassCB = sender as ComboBox;
@@ -396,6 +419,43 @@ namespace GlassProductManager
         }
         #endregion
 
+       
+
+        void dgCutout_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CalculateCutoutTotalPrice();
+        }
+
+        private void btnAddNewCutout_Click(object sender, RoutedEventArgs e)
+        {
+            CutoutData gridData = GetNewCutoutObject();
+            allCutoutData.Add(gridData);
+        }
+
+        private void btnDeleteCutout_Click(object sender, RoutedEventArgs e)
+        {
+            CutoutData selectedItem = dgCutoutDetails.SelectedItem as CutoutData;
+            if (selectedItem == null)
+                return;
+            allCutoutData.Remove(selectedItem);
+        }
+
+        private void dgCutoutDetails_LostFocus(object sender, RoutedEventArgs e)
+        {
+            CalculateCutoutTotalPrice();
+        }
+
+        private void CalculateCutoutTotalPrice()
+        {
+            double totalPrice = 0;
+            foreach (CutoutData item in dgCutoutDetails.Items)
+            {
+                if (item == null)
+                    continue;
+                totalPrice += item.Quantity * item.Price;
+            }
+            lblCutoutTotal.Content = totalPrice.ToString();
+        }
       
     }
 }

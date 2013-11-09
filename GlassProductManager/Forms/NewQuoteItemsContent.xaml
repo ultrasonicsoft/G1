@@ -201,12 +201,12 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition  />
                         </Grid.ColumnDefinitions>
-                        <DataGrid  AutoGenerateColumns="False" CanUserAddRows="false" Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0">
+                        <DataGrid  AutoGenerateColumns="False" DataGridCell.Selected="DataGrid_GotFocus"  CanUserAddRows="false" Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding allCutoutData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgCutoutDetails_LostFocus">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="80" />
-                                <DataGridTextColumn Header="Width" Binding="{Binding Width}" Width="80"/>
-                                <DataGridTextColumn Header="Height" Binding="{Binding Height}" Width="80"/>
-                                <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="80"/>
+                                <DataGridTextColumn Header="Quantity"  Binding="{Binding Quantity}" Width="80" />
+                                <DataGridTextColumn Header="Width (in)" Binding="{Binding Width}" Width="80"/>
+                                <DataGridTextColumn Header="Height (in)" Binding="{Binding Height}" Width="80"/>
+                                <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="70"/>
                             </DataGrid.Columns>
                         </DataGrid>
                         <Grid Grid.Row="1" VerticalAlignment="Center">
@@ -218,9 +218,9 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Button Name="btnAddNewCutout" Content="Add New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0"/>
-                            <Button Name="btnDeleteCutout" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="1"/>
-                            <Label Content="Total:" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
+                            <Button Name="btnAddNewCutout" Content="Add New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0" Click="btnAddNewCutout_Click"/>
+                            <Button Name="btnDeleteCutout" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Width="75" Grid.Row="0" Grid.Column="1" Margin="42,0" Click="btnDeleteCutout_Click"/>
+                            <Label Content="Cutout Total:" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
                             <Label Name="lblCutoutTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
                         </Grid>
                     </Grid>
@@ -275,7 +275,7 @@
                             </Grid.ColumnDefinitions>
                             <Button Name="btnAddNewInsulation" Content="Add" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0" Click="btnAddNewInsulation_Click"/>
                             <Button Name="btnEditInsulation" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="1"/>
-                            <Label Content="Total:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
+                            <Label Content="Insulation Total:" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
                             <Label Name="lblInsulationTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
                         </Grid>
 
