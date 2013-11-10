@@ -28,7 +28,7 @@ namespace GlassProductManager
             } 
             set 
             {
-                lblUserName.Content = value; 
+                lblUserName.Content = "Welcome " + value + "!"; 
             } 
         }
 

@@ -399,7 +399,7 @@ namespace GlassProductManager
             bool isStraightPolishDataAvailable = false;
             if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches >0)
             {
-                description.AppendFormat(" [Straight Polish -> Log Sides - {0}, Short Sides - {1}, Total (in) - {2}]", _straightPolishLongSide, _straightPolishShortSide, _straightPolishTotalInches);
+                description.AppendFormat(" [Straight Polish -> Long Sides - {0}, Short Sides - {1}, Total (in) - {2}]", _straightPolishLongSide, _straightPolishShortSide, _straightPolishTotalInches);
                 isStraightPolishDataAvailable = true;
             }
 

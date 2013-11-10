@@ -101,9 +101,9 @@ namespace GlassProductManager
 
         private void cmbGlassType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string glassID = cmbGlassType.SelectedValue.ToString();
-            if (string.IsNullOrEmpty(glassID))
+            if (cmbGlassType.SelectedValue == null)
                 return;
+            string glassID = cmbGlassType.SelectedValue.ToString();
 
             var result = BusinessLogic.GetThicknessByGlassID(glassID);
             cmbThickness.DisplayMemberPath = ColumnNames.THICKNESS;
@@ -420,9 +420,10 @@ namespace GlassProductManager
 
         private void cmbGlassType1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string glassID = cmbGlassType1.SelectedValue.ToString();
-            if (string.IsNullOrEmpty(glassID))
+            if (cmbGlassType1.SelectedValue == null)
                 return;
+
+            string glassID = cmbGlassType1.SelectedValue.ToString();
 
             var result = BusinessLogic.GetThicknessByGlassID(glassID);
             cmbThickness1.DisplayMemberPath = ColumnNames.THICKNESS;
@@ -434,9 +435,10 @@ namespace GlassProductManager
 
         private void cmbGlassType2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string glassID = cmbGlassType2.SelectedValue.ToString();
-            if (string.IsNullOrEmpty(glassID))
+            if (cmbGlassType2.SelectedValue == null)
                 return;
+
+            string glassID = cmbGlassType2.SelectedValue.ToString();
 
             var result = BusinessLogic.GetThicknessByGlassID(glassID);
             cmbThickness2.DisplayMemberPath = ColumnNames.THICKNESS;
@@ -625,6 +627,114 @@ namespace GlassProductManager
 
             txtGlassHeight.Text = string.IsNullOrEmpty(txtGlassHeight.Text) ? "0" : txtGlassHeight.Text;
             currentItem.GlassHeight = int.Parse(txtGlassHeight.Text);
+        }
+
+        private void btnNewItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentItem != null)
+            {
+                var result = Helper.ShowQuestionMessageBox("Are you sure to discard current changes?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    currentItem = new NewQuoteItemEntity();
+                    allCutoutData.Clear();
+                    GlassType1 = new InsulationDetails();
+                    GlassType2 = new InsulationDetails();
+
+                    UpdateCurrentTotal();
+                    ResetAllControls();
+                }
+            }
+            else
+            {
+                currentItem = new NewQuoteItemEntity();
+                allCutoutData.Clear();
+                GlassType1 = new InsulationDetails();
+                GlassType2 = new InsulationDetails();
+
+                UpdateCurrentTotal();
+                ResetAllControls();
+            }
+           
+        }
+
+        private void ResetAllControls()
+        {
+            //Glass Type and thickness
+            cmbGlassType.SelectedIndex = -1;
+            cmbThickness.SelectedIndex = -1;
+            
+            cbLogo.IsChecked = false;
+            cbIsTempered.IsChecked = false;
+            
+            // Dimension
+            txtTotalSqFt.Text = "0";
+            txtGlassHeight.Text = "0";
+            txtGlassWidth.Text = "0";
+            txtGlassWidth.Text = "0";
+            
+            // Custom Shape
+            cmbShape.SelectedIndex = -1;
+            txtShapeHeight.Text = "0";
+            txtShapeWidth.Text = "0";
+
+            // Straight Polish
+            cbIsStraightPolish.IsChecked = false;
+            txtStraightPolishTotalInches.Text = "0";
+            txtStraightPolishLongSide.Text = "0";
+            txtStraightPolishShortSide.Text = "0";
+
+            // Custom Polish
+            cbCustomShapePolish.IsChecked = false;
+            txtCustomShapePolishSize.Text = "0";
+
+            // Miter
+            cbIsMiter.IsChecked = false;
+            txtMiterTotalInches.Text = "0";
+            txtMiterLongSide.Text = "0";
+            txtMiterShortSide.Text = "0";
+
+            // Misc
+            cbNotches.IsChecked = false;
+            cbPatches.IsChecked = false;
+            cbHoles.IsChecked = false;
+            cbHinges.IsChecked = false;
+
+            //Insulation
+            cmbGlassType1.SelectedIndex = -1;
+            cmbThickness1.SelectedIndex = -1;
+            cmbTemp1.SelectedIndex = -1;
+            txtSqFt1.Text = "0";
+            txtGlassType1Total.Text = "0";
+
+            cmbGlassType2.SelectedIndex = -1;
+            cmbThickness2.SelectedIndex = -1;
+            cmbTemp2.SelectedIndex = -1;
+            txtSqFt2.Text = "0";
+            txtGlassType2Total.Text = "0";
+
+            // Total labels
+            lblCutoutTotal.Content = "$ 0";
+            lblMaterialCost.Content = "$ 0";
+            lblInsulationTier.Content = "$ 0";
+            lblInsulationTierTotal.Content = "$ 0";
+            lblInsulationTotal.Content = "$ 0";
+        }
+
+        private void btnResetItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentItem != null)
+            {
+                var result = Helper.ShowQuestionMessageBox("Are you sure to discard current changes?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    ResetAllControls();
+                }
+            }
+            else
+            {
+                ResetAllControls();
+            }
         }
 
        

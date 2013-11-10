@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" />
         <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Name="cmbGlassType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbGlassType_SelectionChanged" />
-        <DataGrid Name="dgPriceList" Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="300" Width="500" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <DataGrid Name="dgPriceList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="300" Width="500" ItemsSource="{Binding}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Thickness" Binding="{Binding Thickness}" Width="100"></DataGridTextColumn>
                 <DataGridTextColumn Header="Cut SQ/FT" Binding="{Binding CutSQFT}" Width="100" SortDirection="Descending"></DataGridTextColumn>

@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Grid.ColumnSpan="2" Background="CadetBlue">
-        <Label Content="[User Name]" Name="lblUserName" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Label Content="Welcome [User Name]!" Name="lblUserName" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="White"/>
     </Grid>
 </UserControl>

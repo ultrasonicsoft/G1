@@ -1,0 +1,30 @@
+﻿1. make grooup name bold
+2. height n width should allow entering actual fractions
+3. cutout n insulation as checkbox
+4. price should be in x.xx format all over
+5. operator name on quote. dropdown for admin\textbox for user
+6. generate quote auto
+7. Client section
+8. "Send to WS/SA/PO" button below regenerate
+9. Smart search in Client ID
+10. First name, Last Name in Sold to parse from name using space
+11. Quote created on and Reqeusted ship date - calendar
+12. Lead time [11:41:06 AM] Jay: first box
+[11:41:09 AM] Jay: "Days"
+[11:41:11 AM] Jay: "Weeks"
+[11:41:13 AM] Jay: "Months"
+13. change "Total till now" to "Running Total"
+14. in Lead time secod combo wil have 1-31 values
+14. "Use as default" - Save config to DB. Whenever user changes this update db. this lead time wil be used for all quotes
+15. Add Insulation in quote description
+16. Add Cutout in quote description
+17. Regerate button should clear grid n pricing
+18. Shiping methods - Delivery, Pickup, Courier
+19. Update Selected Item -> (Additional Cost + Price/Pc) * Qty
+20  Use 19th for all items
+21. If Dollar is selected, Energy Surcharge will be $ otherwise % to add in Subtotal
+22. Rush checked, enable Rush Order and add value in total.
+23. Tax in $ to add in total
+24. Logo on quote
+25. Customer PO under Phone.
+26. Open saved quotes

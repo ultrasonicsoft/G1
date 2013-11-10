@@ -197,7 +197,7 @@
     <Resource Include="Temp.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Rules.txt" />
+    <Resource Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\GlassManagerDB.sql" />

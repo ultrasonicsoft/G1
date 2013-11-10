@@ -4,7 +4,7 @@
 		xmlns:pageTransitions="clr-namespace:WpfPageTransitions;assembly=WpfPageTransitions"
         
         WindowStartupLocation="CenterScreen"  WindowState="Maximized"
-        Title="Dashboard" Height="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}" Width="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}">
+        Title="Glass Manager" Height="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}" Width="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
