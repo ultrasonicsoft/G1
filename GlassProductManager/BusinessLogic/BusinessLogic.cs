@@ -165,5 +165,47 @@ namespace GlassProductManager
             }
             return insulationCost;
         }
+
+        internal static DataTable GetAllShippingMethods()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllShippingMethods, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result.Tables[0];
+        }
+
+        internal static DataTable GetAllLeadTimeTypes()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllLeadTimeTypes, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result.Tables[0];
+        }
+
+        internal static DataTable GetAllLeadTime()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllLeadTime, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result.Tables[0];
+        }
     }
 }

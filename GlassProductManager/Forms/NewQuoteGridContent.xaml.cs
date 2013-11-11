@@ -32,6 +32,53 @@ namespace GlassProductManager
         public NewQuoteGridContent()
         {
             InitializeComponent();
+
+            FillShippingMethods();
+            FillLeadTimeTypes();
+            FillLeadTime();
         }
+
+        private void FillShippingMethods()
+        {
+            var result = BusinessLogic.GetAllShippingMethods();
+            cmbShippingMethod.DisplayMemberPath = ColumnNames.Shipping;
+            cmbShippingMethod.SelectedValuePath = ColumnNames.ID;
+            cmbShippingMethod.ItemsSource = result.DefaultView;
+        }
+        private void FillLeadTimeTypes()
+        {
+            var result = BusinessLogic.GetAllLeadTimeTypes();
+            cmbLeadTimeType.DisplayMemberPath = ColumnNames.LeadTimeType;
+            cmbLeadTimeType.SelectedValuePath = ColumnNames.ID;
+            cmbLeadTimeType.ItemsSource = result.DefaultView;
+        }
+
+        private void FillLeadTime()
+        {
+            var result = BusinessLogic.GetAllLeadTime();
+            cmbLeadTime.DisplayMemberPath = ColumnNames.LeadTime;
+            cmbLeadTime.SelectedValuePath = ColumnNames.ID;
+            cmbLeadTime.ItemsSource = result.DefaultView;
+        }
+
+        private void btnRegenerate_Click(object sender, RoutedEventArgs e)
+        {
+            allQuoteData.Clear();
+
+            ClearSubTotalSection();
+        }
+
+        private void ClearSubTotalSection()
+        {
+            lblSubTotal.Content = "0.00";
+            txtSubTotal.Text = "0.00";
+            txtDiscount.Text = "0.00";
+            txtDelivery.Text = "0.00";
+            txtRushOrder.Text = "0.00";
+            txtTax.Text = "0.00";
+            lblGrandTotal.Content = "0.00";
+        }
+
+       
     }
 }

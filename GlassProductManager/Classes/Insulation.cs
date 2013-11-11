@@ -10,8 +10,10 @@ namespace GlassProductManager
 {
     internal class InsulationDetails 
     {
-        public int GlassTypeID{ get; set; }
+        public int GlassTypeID { get; set; }
+        public string GlassType { get; set; }
         public int ThicknessID { get; set; }
+        public string Thickness { get; set; }
         public bool IsTempered { get; set; }
         public int SqFt { get; set; }
         public double Total { get; set; }

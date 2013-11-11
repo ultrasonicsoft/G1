@@ -58,11 +58,13 @@
                             <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
                             <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition />
                             <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="50"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Label Content="Total Sq. Ft. of glass:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
@@ -70,8 +72,10 @@
 
                         <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
                         <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="3" TextChanged="txtGlassHeight_TextChanged" />
-                        <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                        <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" />
+                        <TextBox Name="txtGlassHeightFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" GotFocus="txtGlassHeightFraction_GotFocus" LostFocus="txtGlassHeightFraction_LostFocus" />
+                        <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
+                        <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" />
+                        <TextBox Name="txtGlassWidthFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" LostFocus="txtGlassWidthFraction_LostFocus" GotFocus="txtGlassWidthFraction_GotFocus" />
                     </Grid>
                 </GroupBox>
 
@@ -192,7 +196,10 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Header="Cutout" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="0,0,20,0">
+                <GroupBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="0,0,20,0">
+                    <GroupBox.Header>
+                        <CheckBox Content="Cutout" Name="cbCutout" Unchecked="cbCutout_Unchecked" Checked="cbCutout_Checked" />
+                    </GroupBox.Header>
                     <Grid >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -201,7 +208,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition  />
                         </Grid.ColumnDefinitions>
-                        <DataGrid  AutoGenerateColumns="False" DataGridCell.Selected="DataGrid_GotFocus"  CanUserAddRows="false" Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding allCutoutData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgCutoutDetails_LostFocus">
+                        <DataGrid  AutoGenerateColumns="False"  SelectionUnit="FullRow" DataGridCell.Selected="DataGrid_GotFocus"  Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding allCutoutData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgCutoutDetails_LostFocus" RowEditEnding="dgCutoutDetails_RowEditEnding">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Quantity"  Binding="{Binding Quantity}" Width="80" />
                                 <DataGridTextColumn Header="Width (in)" Binding="{Binding Width}" Width="80"/>
@@ -221,12 +228,15 @@
                             <Button Name="btnAddNewCutout" Content="Add New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0" Click="btnAddNewCutout_Click"/>
                             <Button Name="btnDeleteCutout" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Width="75" Grid.Row="0" Grid.Column="1" Margin="42,0" Click="btnDeleteCutout_Click"/>
                             <Label Content="Cutout Total:" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
-                            <Label Name="lblCutoutTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
+                            <Label Name="lblCutoutTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
                         </Grid>
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Header="Insulation" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="-15,0,10,0" >
+                <GroupBox  Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="-15,0,10,0" >
+                    <GroupBox.Header>
+                        <CheckBox Content="Insulation" Name="cbInsulation" Checked="cbInsulation_Checked" Unchecked="cbInsulation_Unchecked"/>
+                    </GroupBox.Header>
                     <Grid >
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -268,16 +278,16 @@
                         <TextBox  Name="txtGlassType2Total" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="4" IsReadOnly="True" />
 
                         <Label Content="Material Cost:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" FontWeight="Bold"/>
-                        <Label Name="lblMaterialCost" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" FontWeight="Bold"/>
+                        <Label Name="lblMaterialCost" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" FontWeight="Bold"/>
 
                         <Label Content="Insulation Tier:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" FontWeight="Bold" Grid.ColumnSpan="2"/>
-                        <Label Name="lblInsulationTier" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" FontWeight="Bold"/>
+                        <Label Name="lblInsulationTier" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" FontWeight="Bold"/>
 
                         <Label Content="Insulation Tier Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" FontWeight="Bold" Grid.ColumnSpan="2"/>
-                        <Label Name="lblInsulationTierTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="2" FontWeight="Bold"/>
+                        <Label Name="lblInsulationTierTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="2" FontWeight="Bold"/>
 
                         <Label Content="Insulation Total:" VerticalAlignment="Top" Grid.Row="6" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
-                        <Label Name="lblInsulationTotal" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
+                        <Label Name="lblInsulationTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
                     </Grid>
                 </GroupBox>
 
@@ -285,8 +295,8 @@
                 <TextBox Name="txtCutoutNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="16" Grid.Column="1"/>-->
 
 
-                <Label Content="Total till now:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold" />
-                <Label Name="lblTotalTillNow" Content="$ 0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="3" FontSize="13" FontWeight="Bold"/>
+                <Label Content="Running Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold" />
+                <Label Name="lblTotalTillNow" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="3" FontSize="13" FontWeight="Bold"/>
 
                 <Button Name="btnNewItem" Content="New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="2" Click="btnNewItem_Click"/>
                 <Button Name="btnResetItem" Content="Reset" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="3" Click="btnResetItem_Click"/>

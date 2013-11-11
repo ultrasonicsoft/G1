@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\DataGridHelper.cs" />
     <Compile Include="Classes\QuoteGridEntity.cs" />
     <Compile Include="Classes\CutoutData.cs" />
     <Compile Include="Classes\Insulation.cs" />
@@ -201,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\GlassManagerDB.sql" />
+    <Resource Include="Logo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

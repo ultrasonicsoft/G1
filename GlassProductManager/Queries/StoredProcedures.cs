@@ -13,5 +13,8 @@ namespace GlassProductManager
         internal const string GetThicknessByGlassID = "GetThicknessByGlassID";
         internal const string GetRates = "GetRates";
         internal const string GetInsulationCost = "[GetInsulationCost]";
+        internal const string GetAllShippingMethods = "[GetAllShippingMethods]";
+        internal const string GetAllLeadTimeTypes = "[GetAllLeadTimeTypes]";
+        internal const string GetAllLeadTime = "[GetAllLeadTime]";
     }
 }

@@ -29,6 +29,10 @@ namespace GlassProductManager
         internal const string Ceiling2 = "Ceiling2";
         internal const string Cost2 = "Cost2";
         internal const string Cost3 = "Cost3";
+
+        internal const string Shipping = "Shipping";
+        internal const string LeadTimeType = "LeadTimeType";
+        internal const string LeadTime = "LeadTime";
        
     }
 }

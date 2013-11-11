@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace GlassProductManager
         private bool _isHinges;
         private bool _isPatches;
         private bool _isHoles;
+        private bool _isInsulation;
+        private bool _isCutout;
         private int _straightPolishLongSide = 0;
         private int _straightPolishShortSide = 0;
         private int _straightPolishTotalInches = 0;
@@ -35,7 +38,7 @@ namespace GlassProductManager
         private int _holes;
         private double _insulateTotalCost;
         private double _cutoutTotal;
-        
+
         //Rates
         private double _cutsqftRate = 0;
         private double _temperedRate = 0;
@@ -46,6 +49,8 @@ namespace GlassProductManager
         private double _hingeRate = 0;
         private double _patchRate = 0;
         private double _holeRate = 0;
+
+        internal ObservableCollection<CutoutData> _allCutoutData = new ObservableCollection<CutoutData>();
 
         internal int GlassTypeID
         {
@@ -82,7 +87,10 @@ namespace GlassProductManager
         }
 
         internal int GlassHeight { get; set; }
+        internal string GlassHeightFraction { get; set; }
+
         internal int GlassWidth { get; set; }
+        internal string GlassWidthFraction { get; set; }
 
         internal GlassShape Shape { get; set; }
 
@@ -272,12 +280,31 @@ namespace GlassProductManager
         }
         internal bool IsLogoRequired { get; set; }
 
+        public bool IsCutout
+        {
+            get { return _isCutout; }
+            set
+            {
+                _isCutout = value;
+                CalculateTotal();
+            }
+        }
         public double CutoutTotal
         {
             get { return _cutoutTotal; }
             set
             {
                 _cutoutTotal = value;
+                CalculateTotal();
+            }
+        }
+
+        public bool IsInsulation
+        {
+            get { return _isInsulation; }
+            set
+            {
+                _isInsulation = value;
                 CalculateTotal();
             }
         }
@@ -297,6 +324,9 @@ namespace GlassProductManager
             get { return _currentTotal; }
             set { _currentTotal = value; }
         }
+
+        internal InsulationDetails GlassType1;
+        internal InsulationDetails GlassType2;
 
         private void CalculateTotal()
         {
@@ -322,7 +352,7 @@ namespace GlassProductManager
             {
                 _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _temperedRate;
             }
-         
+
 
             if (true == _isStraightPolish)
             {
@@ -343,7 +373,7 @@ namespace GlassProductManager
             }
             if (true == _isHinges && _totalSqFT != 0)
             {
-                _currentTotal += _hinges* _hingeRate;
+                _currentTotal += _hinges * _hingeRate;
             }
             if (true == _isPatches && _totalSqFT != 0)
             {
@@ -355,10 +385,15 @@ namespace GlassProductManager
                 _currentTotal += _holes * _holeRate;
             }
 
-            _currentTotal += _insulateTotalCost;
-            _currentTotal += _cutoutTotal;
+            if (true == _isInsulation && _totalSqFT != 0)
+            {
+                _currentTotal += _insulateTotalCost;
+            }
+            if (true == _isCutout && _totalSqFT != 0)
+            {
+                _currentTotal += _cutoutTotal;
+            }
         }
-
 
         internal string GetDescriptionString()
         {
@@ -385,7 +420,7 @@ namespace GlassProductManager
                 description.AppendFormat(" [Patches - {0}]", _patches);
                 isAnyMiscAvailable = true;
             }
-            if (_isNotch && _notches>= 0)
+            if (_isNotch && _notches >= 0)
             {
                 description.AppendFormat(" [Notches - {0}]", _notches);
                 isAnyMiscAvailable = true;
@@ -396,14 +431,39 @@ namespace GlassProductManager
                 description.Append(Environment.NewLine);
             }
 
+            bool IsInsulationDataAvailable = false;
+
+            if (_isInsulation)
+            {
+                string isTemp1 = GlassType1.IsTempered? "Temp" : "Not Temp";
+                string isTemp2 = GlassType2.IsTempered? "Temp" : "Not Temp";
+                description.AppendFormat(" [Insulation: ({0}-{1}-{2}) ({3}-{4}-{5}) {6} SqFt]", GlassType1.GlassType, GlassType1.Thickness, isTemp1, GlassType2.GlassType, GlassType2.Thickness, isTemp2, GlassType1.SqFt);
+                IsInsulationDataAvailable = true;
+            }
+            if (IsInsulationDataAvailable)
+            {
+                description.Append(Environment.NewLine);
+            }
+
+            bool isCutoutDataAvailable = false;
+            if (_isCutout)
+            {
+                description.AppendFormat(" [Cutout: {0}]", _allCutoutData.Count);
+                isCutoutDataAvailable = true;
+            }
+            if (isCutoutDataAvailable)
+            {
+                description.Append(Environment.NewLine);
+            }
+
             bool isStraightPolishDataAvailable = false;
-            if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches >0)
+            if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches > 0)
             {
                 description.AppendFormat(" [Straight Polish -> Long Sides - {0}, Short Sides - {1}, Total (in) - {2}]", _straightPolishLongSide, _straightPolishShortSide, _straightPolishTotalInches);
                 isStraightPolishDataAvailable = true;
             }
 
-            if (_isCustomShapePolish && _customPolishTotalInches> 0 )
+            if (_isCustomShapePolish && _customPolishTotalInches > 0)
             {
                 description.AppendFormat(" [Custom Polish -> Total (in) - {0}]", _customPolishTotalInches);
                 isStraightPolishDataAvailable = true;

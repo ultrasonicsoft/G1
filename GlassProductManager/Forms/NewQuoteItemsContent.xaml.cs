@@ -24,15 +24,13 @@ namespace GlassProductManager
     {
         NewQuoteItemEntity currentItem = null;
 
-        private ObservableCollection<CutoutData> _allCutoutData = new ObservableCollection<CutoutData>();
         public ObservableCollection<CutoutData> allCutoutData
         {
-            get { return _allCutoutData; }
-            set { _allCutoutData = value; }
+            get { return currentItem._allCutoutData; }
+            set { currentItem._allCutoutData = value; }
         }
 
-        private InsulationDetails GlassType1;
-        private InsulationDetails GlassType2;
+        
 
         public NewQuoteItemsContent()
         {
@@ -45,14 +43,14 @@ namespace GlassProductManager
 
             FillCutoutData();
             FillInsulationDetails();
-            GlassType1 = new InsulationDetails();
-            GlassType2 = new InsulationDetails();
+            currentItem.GlassType1 = new InsulationDetails();
+            currentItem.GlassType2 = new InsulationDetails();
         }
 
         private void FillCutoutData()
         {
-            CutoutData cutout = GetNewCutoutObject();
-            allCutoutData.Add(GetNewCutoutObject());
+            //CutoutData cutout = GetNewCutoutObject();
+            //allCutoutData.Add(GetNewCutoutObject());
 
             dgCutoutDetails.SelectionChanged += new SelectionChangedEventHandler(dgCutout_SelectionChanged);
         }
@@ -406,13 +404,24 @@ namespace GlassProductManager
         private void CalculateCutoutTotalPrice()
         {
             double totalPrice = 0;
-            foreach (CutoutData item in dgCutoutDetails.Items)
+
+            CutoutData item = null;
+            for (int index = 0; index < dgCutoutDetails.Items.Count; index++)
             {
+                item = dgCutoutDetails.Items[index] as CutoutData;
                 if (item == null)
                     continue;
                 totalPrice += item.Quantity * item.Price;
+
             }
-            lblCutoutTotal.Content = "$ " + totalPrice.ToString();
+
+            //foreach (CutoutData item in dgCutoutDetails.Items)
+            //{
+            //    if (item == null)
+            //        continue;
+            //    totalPrice += item.Quantity * item.Price;
+            //}
+            lblCutoutTotal.Content = "$ " + totalPrice.ToString("0.00");
 
             currentItem.CutoutTotal = totalPrice;
             UpdateCurrentTotal();
@@ -430,7 +439,7 @@ namespace GlassProductManager
             cmbThickness1.SelectedValuePath = ColumnNames.THICKNESSID;
             cmbThickness1.ItemsSource = result.DefaultView;
 
-            UpdateInsulationGlassTotal(cmbGlassType1,cmbThickness1,cmbTemp1,GlassType1,txtSqFt1,txtGlassType1Total);
+            UpdateInsulationGlassTotal(cmbGlassType1,cmbThickness1,cmbTemp1,currentItem.GlassType1,txtSqFt1,txtGlassType1Total);
         }
 
         private void cmbGlassType2_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -445,7 +454,7 @@ namespace GlassProductManager
             cmbThickness2.SelectedValuePath = ColumnNames.THICKNESSID;
             cmbThickness2.ItemsSource = result.DefaultView;
 
-            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, GlassType2, txtSqFt2, txtGlassType2Total);
+            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, currentItem.GlassType2, txtSqFt2, txtGlassType2Total);
 
         }
 
@@ -455,7 +464,10 @@ namespace GlassProductManager
                 return;
 
             currentGlassType.GlassTypeID = int.Parse(glassType.SelectedValue.ToString());
+            currentGlassType.GlassType = (glassType.SelectedItem as System.Data.DataRowView)[1].ToString();
+
             currentGlassType.ThicknessID = int.Parse(thickness.SelectedValue.ToString());
+            currentGlassType.Thickness = (thickness.SelectedItem as System.Data.DataRowView)[1].ToString();
 
             var result = BusinessLogic.GetRatesByGlassTypeAndThickness(currentGlassType.GlassTypeID, currentGlassType.ThicknessID);
             if (result == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
@@ -483,16 +495,16 @@ namespace GlassProductManager
 
         private void UpdateInsulationTotal()
         {
-            lblMaterialCost.Content = "$ " + (GlassType1.Total + GlassType2.Total).ToString();
+            lblMaterialCost.Content = "$ " + (currentItem.GlassType1.Total + currentItem.GlassType2.Total).ToString("0.00");
             
-            double insulationTierCost = BusinessLogic.GetInsulationTierCost(GlassType1.SqFt);
-            lblInsulationTier.Content = "$ " + insulationTierCost.ToString();
+            double insulationTierCost = BusinessLogic.GetInsulationTierCost(currentItem.GlassType1.SqFt);
+            lblInsulationTier.Content = "$ " + insulationTierCost.ToString("0.00");
 
-            double insulationTierTotal = insulationTierCost * GlassType1.SqFt;
-            lblInsulationTierTotal.Content = "$ " + insulationTierTotal.ToString();
+            double insulationTierTotal = insulationTierCost * currentItem.GlassType1.SqFt;
+            lblInsulationTierTotal.Content = "$ " + insulationTierTotal.ToString("0.00");
 
-            double insulationTotal = insulationTierTotal + GlassType1.Total + GlassType2.Total;
-            lblInsulationTotal.Content = "$ " + insulationTotal.ToString();
+            double insulationTotal = insulationTierTotal + currentItem.GlassType1.Total + currentItem.GlassType2.Total;
+            lblInsulationTotal.Content = "$ " + insulationTotal.ToString("0.00");
 
             currentItem.InsulateTotalCost = insulationTotal;
             UpdateCurrentTotal();
@@ -500,29 +512,32 @@ namespace GlassProductManager
 
         private void cmbTemp1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, GlassType1, txtSqFt1, txtGlassType1Total);
+            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
         }
 
         private void cmbThickness1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, GlassType1, txtSqFt1, txtGlassType1Total);
+            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
         }
 
         private void txtSqFt1_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (currentItem == null)
+                return;
+
             if(txtSqFt2 != null)
             txtSqFt2.Text = txtSqFt1.Text;
-            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, GlassType1, txtSqFt1, txtGlassType1Total);
+            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
         }
 
         private void cmbThickness2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, GlassType2, txtSqFt2, txtGlassType2Total);
+            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, currentItem.GlassType2, txtSqFt2, txtGlassType2Total);
         }
 
         private void cmbTemp2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, GlassType2, txtSqFt2, txtGlassType2Total);
+            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, currentItem.GlassType2, txtSqFt2, txtGlassType2Total);
         }
 
         private void txtSqFt1_LostFocus(object sender, RoutedEventArgs e)
@@ -532,8 +547,6 @@ namespace GlassProductManager
                 txtSqFt1.Text = "0";
             }
         }
-
-    
 
         private void cbHoles_Checked(object sender, RoutedEventArgs e)
         {
@@ -601,7 +614,7 @@ namespace GlassProductManager
                         newItem.LineID = grid.allQuoteData.Count + 1;
                         newItem.Quantity = 1;
                         newItem.Description = itemDescription;
-                        newItem.Dimension = string.Format(@"{0}"" x {1}""",currentItem.GlassWidth,currentItem.GlassHeight);
+                        newItem.Dimension = GetDimensionString();
                         newItem.TotalSqFt = currentItem.TotalSqFT.ToString();
                         newItem.UnitPrice = currentItem.CurrentTotal.ToString();
                         newItem.Total = currentItem.CurrentTotal;
@@ -609,6 +622,22 @@ namespace GlassProductManager
                     }
                 }
             }
+        }
+
+        private string GetDimensionString()
+        {
+            string defaultFraction = "x/y";
+            
+            if(string.Equals(currentItem.GlassWidthFraction,defaultFraction) && string.Equals(currentItem.GlassHeightFraction,defaultFraction))
+                return string.Format(@"{0}"" x {1}""", currentItem.GlassWidth,currentItem.GlassHeight);
+
+            else if (false == string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                return string.Format(@"{0} {1}"" x {2}""", currentItem.GlassWidth,currentItem.GlassWidthFraction, currentItem.GlassHeight);
+
+            else if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && false == string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                return string.Format(@"{0}"" x {1} {2}""", currentItem.GlassWidth, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+            else
+                return string.Format(@"{0} {1}"" x  {2} {3}""", currentItem.GlassWidth,currentItem.GlassWidthFraction, currentItem.GlassHeight, currentItem.GlassHeightFraction);
         }
 
         private void txtGlassWidth_TextChanged(object sender, TextChangedEventArgs e)
@@ -638,8 +667,8 @@ namespace GlassProductManager
                 {
                     currentItem = new NewQuoteItemEntity();
                     allCutoutData.Clear();
-                    GlassType1 = new InsulationDetails();
-                    GlassType2 = new InsulationDetails();
+                    currentItem.GlassType1 = new InsulationDetails();
+                    currentItem.GlassType2 = new InsulationDetails();
 
                     UpdateCurrentTotal();
                     ResetAllControls();
@@ -649,8 +678,8 @@ namespace GlassProductManager
             {
                 currentItem = new NewQuoteItemEntity();
                 allCutoutData.Clear();
-                GlassType1 = new InsulationDetails();
-                GlassType2 = new InsulationDetails();
+                currentItem.GlassType1 = new InsulationDetails();
+                currentItem.GlassType2 = new InsulationDetails();
 
                 UpdateCurrentTotal();
                 ResetAllControls();
@@ -701,6 +730,15 @@ namespace GlassProductManager
             cbHinges.IsChecked = false;
 
             //Insulation
+            ResetInsulation();
+
+            // Total labels
+            lblCutoutTotal.Content = "$ 0.00";
+            
+        }
+
+        private void ResetInsulation()
+        {
             cmbGlassType1.SelectedIndex = -1;
             cmbThickness1.SelectedIndex = -1;
             cmbTemp1.SelectedIndex = -1;
@@ -713,12 +751,10 @@ namespace GlassProductManager
             txtSqFt2.Text = "0";
             txtGlassType2Total.Text = "0";
 
-            // Total labels
-            lblCutoutTotal.Content = "$ 0";
-            lblMaterialCost.Content = "$ 0";
-            lblInsulationTier.Content = "$ 0";
-            lblInsulationTierTotal.Content = "$ 0";
-            lblInsulationTotal.Content = "$ 0";
+            lblMaterialCost.Content = "$ 0.00";
+            lblInsulationTier.Content = "$ 0.00";
+            lblInsulationTierTotal.Content = "$ 0.00";
+            lblInsulationTotal.Content = "$ 0.00";
         }
 
         private void btnResetItem_Click(object sender, RoutedEventArgs e)
@@ -737,6 +773,95 @@ namespace GlassProductManager
             }
         }
 
-       
+        private void txtGlassHeightFraction_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtGlassHeightFraction.Text = string.Empty;
+        }
+
+        private void txtGlassHeightFraction_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (currentItem == null)
+                return;
+
+            txtGlassHeightFraction.Text = string.IsNullOrEmpty(txtGlassHeightFraction.Text) ? "x/y" : txtGlassHeightFraction.Text;
+            currentItem.GlassHeightFraction = txtGlassHeightFraction.Text;
+        }
+
+        private void txtGlassWidthFraction_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (currentItem == null)
+                return;
+            txtGlassWidthFraction.Text = string.IsNullOrEmpty(txtGlassWidthFraction.Text) ? "x/y" : txtGlassWidthFraction.Text;
+            currentItem.GlassWidthFraction = txtGlassWidthFraction.Text;
+        }
+
+        private void txtGlassWidthFraction_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtGlassWidthFraction.Text = string.Empty;
+        }
+
+        private void cbInsulation_Checked(object sender, RoutedEventArgs e)
+        {
+            currentItem.IsInsulation = true;
+            UpdateCurrentTotal();
+        }
+
+        private void cbInsulation_Unchecked(object sender, RoutedEventArgs e)
+        {
+            currentItem.IsInsulation = false;
+            ResetInsulation();
+            UpdateCurrentTotal();
+        }
+
+        private void cbCutout_Unchecked(object sender, RoutedEventArgs e)
+        {
+            currentItem.IsCutout = false;
+            allCutoutData.Clear();
+            lblCutoutTotal.Content = "$ 0.00";
+            UpdateCurrentTotal();
+        }
+
+        private void cbCutout_Checked(object sender, RoutedEventArgs e)
+        {
+            currentItem.IsCutout = true;
+            UpdateCurrentTotal();
+        }
+
+        private void dgCutoutDetails_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            //if (e.EditAction == DataGridEditAction.Commit)
+            //{
+            //    //
+            //    // custom commit action:
+            //    // tab specific behavior for editing workflow.
+            //    // moves to the next row and opens the second cell for edit
+            //    // if the next row is the NewItemPlaceholder
+            //    //
+
+            //    if (e.Row.Item == dgCutoutDetails.Items[dgCutoutDetails.Items.Count - 2])
+            //    {
+            //        // set the new cell to be the last row and the second column
+            //        int colIndex = 0;
+            //        var rowToSelect = dgCutoutDetails.Items[dgCutoutDetails.Items.Count - 1];
+            //        var colToSelect = dgCutoutDetails.Columns[colIndex];
+            //        int rowIndex = dgCutoutDetails.Items.IndexOf(rowToSelect);
+
+            //        // select the new cell
+            //        dgCutoutDetails.SelectedCells.Clear();
+            //        dgCutoutDetails.SelectedCells.Add(
+            //            new DataGridCellInfo(rowToSelect, colToSelect));
+
+            //        this.Dispatcher.BeginInvoke(new System.Windows.Threading.DispatcherOperationCallback((param) =>
+            //        {
+            //            // get the new cell, set focus, then open for edit
+            //            var cell = DataGridHelper.GetCell(dgCutoutDetails, rowIndex, colIndex);
+            //            cell.Focus();
+
+            //            dgCutoutDetails.BeginEdit();
+            //            return null;
+            //        }), System.Windows.Threading.DispatcherPriority.Background, new object[] { null });
+            //    }
+            //}
+        }
     }
 }
