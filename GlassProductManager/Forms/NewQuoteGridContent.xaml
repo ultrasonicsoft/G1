@@ -48,12 +48,12 @@
 
 
                 <Label Content="Quote Created On:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2"/>
-                <TextBox  Name="txtQuoteCreatedOn" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="5" Margin="686,31,-621,249"/>
-
+                <DatePicker Name="dtQuoteCreatedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Column="5" Grid.Row="1"/>
+                
                 <Label Content="Sold to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
                 <Label Content="Ship  to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" />
                 <Label Content="Requested Ship Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"/>
-                <Label Name="lblQuoteRequestedDate" Content="[Date]" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="5" />
+                <DatePicker Name="dtQuoteRequestedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Column="5" Grid.Row="2"/>
 
                 <Label Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" />
                 <TextBox  Name="txtSoldToAddress" TextWrapping="Wrap" Width="150"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"/>
@@ -81,7 +81,7 @@
                 <Label Content="Lead Time:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="4" />
                 <ComboBox Name="cmbLeadTimeType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="80" Grid.Row="7" Grid.Column="7" IsTextSearchEnabled="True" IsEditable="True"/>
                 <ComboBox Name="cmbLeadTime" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Grid.Row="7" Grid.Column="5"  Margin="55,0,0,0" IsTextSearchEnabled="True" IsEditable="True"/>
-                <CheckBox Name="cbUseAsDefault" Content="Use as default" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Grid.Column="4" />
+                <CheckBox Name="cbUseAsDefault" Content="Use as default" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Grid.Column="4" Checked="cbUseAsDefault_Checked" Unchecked="cbUseAsDefault_Unchecked" />
 
                 <DataGrid AutoGenerateColumns="False"  Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="9" Grid.ColumnSpan="6" SelectionMode="Single" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" >
                     <DataGrid.Columns>
@@ -160,6 +160,7 @@
                     <Button Name="btnSendToWS" Content="Send to WS"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="7" Width="75"/>
                 </Grid>
                 
+
             </Grid>
         </Border>
     </Grid>

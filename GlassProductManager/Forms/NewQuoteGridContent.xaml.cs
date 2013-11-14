@@ -36,6 +36,21 @@ namespace GlassProductManager
             FillShippingMethods();
             FillLeadTimeTypes();
             FillLeadTime();
+
+            dtQuoteCreatedOn.SelectedDate = DateTime.Now;
+            dtQuoteRequestedOn.SelectedDate = DateTime.Now;
+
+            UpdateDefaultLeadTimeSettings();
+        }
+
+        private void UpdateDefaultLeadTimeSettings()
+        {
+            var result = BusinessLogic.GetLeadTimeSettings();
+            if (result == null)
+                return;
+            cmbLeadTime.SelectedIndex = int.Parse(result.Rows[0][ColumnNames.LeadTimeID].ToString());
+            cmbLeadTimeType.SelectedIndex = int.Parse(result.Rows[0][ColumnNames.LeadTimeTypeID].ToString());
+            cbUseAsDefault.IsChecked = bool.Parse(result.Rows[0][ColumnNames.IsDefaultLeadTime].ToString());
         }
 
         private void FillShippingMethods()
@@ -77,6 +92,25 @@ namespace GlassProductManager
             txtRushOrder.Text = "0.00";
             txtTax.Text = "0.00";
             lblGrandTotal.Content = "0.00";
+        }
+
+        private void cbUseAsDefault_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cmbLeadTime.SelectedIndex == -1 || cmbLeadTimeType.SelectedIndex == -1)
+            {
+                Helper.ShowErrorMessageBox("Please select Lead Time first");
+                cbUseAsDefault.IsChecked = false;
+                return;
+            }
+
+            BusinessLogic.SetDefaultLeadTime(cmbLeadTime.SelectedIndex, cmbLeadTimeType.SelectedIndex);
+        }
+
+        private void cbUseAsDefault_Unchecked(object sender, RoutedEventArgs e)
+        {
+            BusinessLogic.ResetDefaultLeadTime();
+            cmbLeadTime.SelectedIndex = -1;
+            cmbLeadTimeType.SelectedIndex = -1;
         }
 
        

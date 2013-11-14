@@ -8,7 +8,7 @@
 8. "Send to WS/SA/PO" button below regenerate  ==========> Done
 9. Smart search in Client ID
 10. First name, Last Name in Sold to parse from name using space
-11. Quote created on and Reqeusted ship date - calendar
+11. Quote created on and Reqeusted ship date - calendar ==========> Done
 12. Lead time - first box"Days""Weeks""Months"  ==========> Done
 13. change "Total till now" to "Running Total" ==========> Done
 14. in Lead time secod combo wil have 1-31 values ==========> Done
@@ -25,3 +25,4 @@
 24. Logo on quote   ==========> Done
 25. Customer PO under Phone.    ==========> Done
 26. Open saved quotes
+27. Is Default Lead Time setting ==========> Done

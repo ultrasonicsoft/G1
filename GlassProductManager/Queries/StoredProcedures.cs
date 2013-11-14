@@ -16,5 +16,9 @@ namespace GlassProductManager
         internal const string GetAllShippingMethods = "[GetAllShippingMethods]";
         internal const string GetAllLeadTimeTypes = "[GetAllLeadTimeTypes]";
         internal const string GetAllLeadTime = "[GetAllLeadTime]";
+        internal const string IsDefaultLeadTimeSet = "[IsDefaultLeadTimeSet]";
+        internal const string GetDefaultLeadTimeSet = "[GetDefaultLeadTimeSet]";
+        internal const string SetDefaultLeadTime = "[SetDefaultLeadTime]";
+        internal const string ResetDefaultLeadTime = "[ResetDefaultLeadTime]";
     }
 }

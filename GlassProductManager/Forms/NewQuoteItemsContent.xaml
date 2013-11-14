@@ -208,7 +208,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition  />
                         </Grid.ColumnDefinitions>
-                        <DataGrid  AutoGenerateColumns="False"  SelectionUnit="FullRow" DataGridCell.Selected="DataGrid_GotFocus"  Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding allCutoutData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgCutoutDetails_LostFocus" RowEditEnding="dgCutoutDetails_RowEditEnding">
+                        <DataGrid  AutoGenerateColumns="False" CanUserAddRows="True"  CanUserDeleteRows="True"  SelectionUnit="FullRow" DataGridCell.Selected="DataGrid_GotFocus"  Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding allCutoutData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgCutoutDetails_LostFocus" RowEditEnding="dgCutoutDetails_RowEditEnding">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Quantity"  Binding="{Binding Quantity}" Width="80" />
                                 <DataGridTextColumn Header="Width (in)" Binding="{Binding Width}" Width="80"/>

@@ -18,7 +18,7 @@ namespace GlassProductManager
             bool isValid = false;
             try
             {
-                var result = SQLHelper.GetScalarValue(string.Format(SelectQueries.USER_LOGIN_QUERY,userName,password));
+                var result = SQLHelper.GetScalarValue(string.Format(SelectQueries.USER_LOGIN_QUERY, userName, password));
                 if (result == null)
                     return false;
                 return result.ToString() == "1";
@@ -35,13 +35,13 @@ namespace GlassProductManager
             DataSet result = null;
             try
             {
-                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllGlassTypes,null);
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllGlassTypes, null);
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
             }
-            return result.Tables[0];
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
         internal static DataTable GetAllShapes()
@@ -55,7 +55,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            return result.Tables[0];
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
         internal static ObservableCollection<GlassRate> GetPriceListByGlassTypeID(string selectedValue)
@@ -65,7 +65,7 @@ namespace GlassProductManager
             try
             {
                 //TODO: change query to SP. 
-                var result = SQLHelper.GetDataTable(string.Format(SelectQueries.GET_GLASS_RATES_BY_ID,selectedValue));
+                var result = SQLHelper.GetDataTable(string.Format(SelectQueries.GET_GLASS_RATES_BY_ID, selectedValue));
                 if (result == null)
                     return null;
 
@@ -105,7 +105,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            return result.Tables[0];
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
         internal static DataSet GetRatesByGlassTypeAndThickness(int _glassTypeID, int _thicknessID)
@@ -144,13 +144,13 @@ namespace GlassProductManager
                 }
 
                 int ceiling1 = int.Parse(result.Tables[0].Rows[0][ColumnNames.Ceiling1].ToString());
-                int ceiling2= int.Parse(result.Tables[0].Rows[0][ColumnNames.Ceiling2].ToString());
+                int ceiling2 = int.Parse(result.Tables[0].Rows[0][ColumnNames.Ceiling2].ToString());
 
                 if (sqft > ceiling2)
                 {
                     insulationCost = double.Parse(result.Tables[0].Rows[0][ColumnNames.Cost3].ToString());
                 }
-                else if(sqft >=ceiling1 && sqft <= ceiling2)
+                else if (sqft >= ceiling1 && sqft <= ceiling2)
                 {
                     insulationCost = double.Parse(result.Tables[0].Rows[0][ColumnNames.Cost2].ToString());
                 }
@@ -177,7 +177,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            return result.Tables[0];
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
         internal static DataTable GetAllLeadTimeTypes()
@@ -191,7 +191,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            return result.Tables[0];
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
         internal static DataTable GetAllLeadTime()
@@ -205,7 +205,60 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            return result.Tables[0];
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static DataTable GetLeadTimeSettings()
+        {
+            DataSet result = null;
+            try
+            {
+                var isDefaultLeadSet = SQLHelper.ExecuteStoredProcedure(StoredProcedures.IsDefaultLeadTimeSet);
+
+                if (isDefaultLeadSet.Tables == null || isDefaultLeadSet.Tables.Count == 0 || isDefaultLeadSet.Tables[0].Rows == null || isDefaultLeadSet.Tables[0].Rows.Count == 0)
+                    return null;
+                bool setting = bool.Parse(isDefaultLeadSet.Tables[0].Rows[0][0].ToString());
+                if (setting)
+                    result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetDefaultLeadTimeSet);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static void SetDefaultLeadTime(int leadTimeID, int leadTimeTypeID)
+        {
+            try
+            {
+                SqlParameter paramGlassID = new SqlParameter();
+                paramGlassID.ParameterName = "leadTimeID";
+                paramGlassID.Value = leadTimeID;
+
+                SqlParameter paramThicknessID = new SqlParameter();
+                paramThicknessID.ParameterName = "leadTimeTypeID";
+                paramThicknessID.Value = leadTimeTypeID;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.SetDefaultLeadTime, paramGlassID, paramThicknessID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void ResetDefaultLeadTime()
+        {
+            try
+            {
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.ResetDefaultLeadTime);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
     }
 }
