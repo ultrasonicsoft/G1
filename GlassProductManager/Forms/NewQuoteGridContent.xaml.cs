@@ -41,6 +41,14 @@ namespace GlassProductManager
             dtQuoteRequestedOn.SelectedDate = DateTime.Now;
 
             UpdateDefaultLeadTimeSettings();
+
+            GetNewQuoteID();
+        }
+
+        private void GetNewQuoteID()
+        {
+            string quoteID = BusinessLogic.GetNewQuoteID();
+            txtQuoteNumber.Text = quoteID; 
         }
 
         private void UpdateDefaultLeadTimeSettings()
@@ -113,6 +121,69 @@ namespace GlassProductManager
             cmbLeadTimeType.SelectedIndex = -1;
         }
 
+        private void txtQuoteNumber_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //TODO: add validation control n put logic over there
+            bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
+            if (isQuoteNumberPresent)
+            {
+                txtQuoteNumber.Text = string.Empty;
+                Helper.ShowErrorMessageBox("Quote Number already used! Kindly provide new quote number.");
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveQuoteHeader();
+
+        }
+
+        private void SaveQuoteHeader()
+        {
+            QuoteHeader header = new QuoteHeader();
+            header.QuoteNumber = txtQuoteNumber.Text;
+            header.QuoteCreatedOn = dtQuoteCreatedOn.SelectedDate.Value.ToShortDateString();
+            header.QuoteRequestedOn = dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString();
+            header.CustomerPO = txtCustomerPO.Text;
+            header.IsNewCustomer = cbIsNewClient.IsChecked == true;
+            header.IsShipToOtherAddress = cbIsShipToSameAddress.IsChecked == true;
+            header.ShippingMethodID = cmbShippingMethod.SelectedIndex;
+            header.LeadTimeID = cmbLeadTime.SelectedIndex;
+            header.LeadTimeTypeID = cmbLeadTimeType.SelectedIndex;
+
+            header.SoldTo = new ShippingDetails();
+            header.SoldTo.FirstName = txtSoldToFirstName.Text;
+            header.SoldTo.LastName = txtSoldToLastName.Text;
+            header.SoldTo.Address = txtSoldToAddress.Text;
+            header.SoldTo.Phone = txtSoldToPhone.Text;
+            header.SoldTo.Email = txtSoldToEmail.Text;
+            header.SoldTo.Fax = txtSoldToFax.Text;
+            header.SoldTo.Misc = txtShipToMisc.Text;
+
+            if (cbIsShipToSameAddress.IsChecked == true)
+            {
+                header.ShipTo = new ShippingDetails();
+                header.ShipTo.FirstName = txtShiptoFirstName.Text;
+                header.ShipTo.LastName = txtShiptoLastName.Text;
+                header.ShipTo.Address = txtShipToAddress.Text;
+                header.ShipTo.Phone = txtShipToPhone.Text;
+                header.ShipTo.Email = txtShipToEmail.Text;
+                header.ShipTo.Fax = txtShipToFax.Text;
+                header.ShipTo.Misc = txtShipToMisc.Text;
+            }
+
+            BusinessLogic.SaveQuoteHeader(header);
+        }
+
+        private void cbIsNewClient_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cbIsNewClient_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
        
     }
 }

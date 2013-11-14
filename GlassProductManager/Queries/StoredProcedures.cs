@@ -20,5 +20,10 @@ namespace GlassProductManager
         internal const string GetDefaultLeadTimeSet = "[GetDefaultLeadTimeSet]";
         internal const string SetDefaultLeadTime = "[SetDefaultLeadTime]";
         internal const string ResetDefaultLeadTime = "[ResetDefaultLeadTime]";
+        internal const string GetNewQuoteID = "[GetNewQuoteID]";
+        internal const string IsQuoteNumberPresent = "[IsQuoteNumberPresent]";
+        internal const string AddQuoteHeader = "[AddQuoteHeader]";
+        internal const string CreateNewCustomer = "[CreateNewCustomer]";
+        internal const string InsertShippingDetails = "[InsertShippingDetails]";
     }
 }

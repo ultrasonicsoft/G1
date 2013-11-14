@@ -3,8 +3,8 @@
 3. cutout n insulation as checkbox ==========> Done
 4. price should be in x.xx format all over ==========> Done
 5. operator name on quote. dropdown for admin\textbox for user
-6. generate quote auto
-7. Client section
+6. generate quote auto  ==========> Done
+7. Client section  ==========> Done
 8. "Send to WS/SA/PO" button below regenerate  ==========> Done
 9. Smart search in Client ID
 10. First name, Last Name in Sold to parse from name using space
@@ -26,3 +26,4 @@
 25. Customer PO under Phone.    ==========> Done
 26. Open saved quotes
 27. Is Default Lead Time setting ==========> Done
+28. Quote ID validation ==========> Done

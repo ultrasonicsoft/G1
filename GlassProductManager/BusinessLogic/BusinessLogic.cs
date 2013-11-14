@@ -260,5 +260,188 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
         }
+
+        internal static string GetNewQuoteID()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetNewQuoteID, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? string.Empty : result.Tables[0].Rows[0][0].ToString();
+        }
+
+        internal static bool IsQuoteNumberPresent(string quoteNumber)
+        {
+            DataSet result = null;
+            try
+            {
+                SqlParameter paramQuoteNumber = new SqlParameter();
+                paramQuoteNumber.ParameterName = "quoteNumber";
+                paramQuoteNumber.Value = quoteNumber;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.IsQuoteNumberPresent, paramQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? false : result.Tables[0].Rows[0][0].ToString() == "1";
+        }
+
+        internal static void SaveQuoteHeader(QuoteHeader header)
+        {
+            try
+            {
+                SqlParameter pQuoteCreatedOn = new SqlParameter();
+                pQuoteCreatedOn.ParameterName = "CreatedOn";
+                pQuoteCreatedOn.Value = header.QuoteCreatedOn;
+
+                SqlParameter pRequestedShipDate = new SqlParameter();
+                pRequestedShipDate.ParameterName = "RequestedShipDate";
+                pRequestedShipDate.Value = header.QuoteRequestedOn;
+
+                SqlParameter pCustomerPO = new SqlParameter();
+                pCustomerPO.ParameterName = "CustomerPO";
+                pCustomerPO.Value = header.CustomerPO;
+
+                SqlParameter pLeadTimeID = new SqlParameter();
+                pLeadTimeID.ParameterName = "LeadTimeID";
+                pLeadTimeID.Value = header.LeadTimeID;
+
+                SqlParameter pLeadTimeTypeID = new SqlParameter();
+                pLeadTimeTypeID.ParameterName = "LeadTimeTypeID";
+                pLeadTimeTypeID.Value = header.LeadTimeTypeID;
+
+                SqlParameter pShipToOtherAddress = new SqlParameter();
+                pShipToOtherAddress.ParameterName = "ShipToOtherAddress";
+                pShipToOtherAddress.Value = header.IsShipToOtherAddress;
+
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = header.QuoteNumber;
+
+                SqlParameter pCustomerID = new SqlParameter();
+                pCustomerID.ParameterName = "CustomerID";
+                pCustomerID.Value = header.CustomerID;
+
+                if (header.IsNewCustomer)
+                {
+                   string customerID = CreateNewCustomer(header.SoldTo);
+                   
+                    if (header.IsShipToOtherAddress == true && string.IsNullOrEmpty(customerID) == false)
+                   {
+                       InsertShippingDetails(customerID, header.QuoteNumber, header.ShipTo);
+                   }
+                }
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddQuoteHeader, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID, pShipToOtherAddress, pQuoteNumber, pCustomerID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        private static string CreateNewCustomer(ShippingDetails soldTo)
+        {
+            string customerID = string.Empty;
+            try
+            {
+                SqlParameter pAddress = new SqlParameter();
+                pAddress.ParameterName = "Address";
+                pAddress.Value = soldTo.Address;
+
+                SqlParameter pFirstName = new SqlParameter();
+                pFirstName.ParameterName = "FirstName";
+                pFirstName.Value = soldTo.FirstName;
+
+                SqlParameter pLastName = new SqlParameter();
+                pLastName.ParameterName = "LastName";
+                pLastName.Value = soldTo.LastName;
+
+                SqlParameter pPhone = new SqlParameter();
+                pPhone.ParameterName = "Phone";
+                pPhone.Value = soldTo.Phone;
+
+                SqlParameter pFax = new SqlParameter();
+                pFax.ParameterName = "Fax";
+                pFax.Value = soldTo.Fax;
+
+                SqlParameter pEmail = new SqlParameter();
+                pEmail.ParameterName = "Email";
+                pEmail.Value = soldTo.Email;
+
+                SqlParameter pMisc = new SqlParameter();
+                pMisc.ParameterName = "Misc";
+                pMisc.Value = soldTo.Misc;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.CreateNewCustomer, pAddress, pFirstName, pLastName, pPhone, pFax, pEmail, pMisc);
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                {
+                    return customerID;
+                }
+                customerID = result.Tables[0].Rows[0][0].ToString();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return customerID;
+        }
+
+        private static void InsertShippingDetails(string customerID, string quoteNumber, ShippingDetails shipTo)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pCustomerID = new SqlParameter();
+                pCustomerID.ParameterName = "CustomerID";
+                pCustomerID.Value = customerID;
+
+                SqlParameter pAddress = new SqlParameter();
+                pAddress.ParameterName = "Address";
+                pAddress.Value = shipTo.Address;
+
+                SqlParameter pFirstName = new SqlParameter();
+                pFirstName.ParameterName = "FirstName";
+                pFirstName.Value = shipTo.FirstName;
+
+                SqlParameter pLastName = new SqlParameter();
+                pLastName.ParameterName = "LastName";
+                pLastName.Value = shipTo.LastName;
+
+                SqlParameter pPhone = new SqlParameter();
+                pPhone.ParameterName = "Phone";
+                pPhone.Value = shipTo.Phone;
+
+                SqlParameter pFax = new SqlParameter();
+                pFax.ParameterName = "Fax";
+                pFax.Value = shipTo.Fax;
+
+                SqlParameter pEmail = new SqlParameter();
+                pEmail.ParameterName = "Email";
+                pEmail.Value = shipTo.Email;
+
+                SqlParameter pMisc = new SqlParameter();
+                pMisc.ParameterName = "Misc";
+                pMisc.Value = shipTo.Misc;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertShippingDetails, pQuoteNumber,pCustomerID, pAddress, pFirstName, pLastName, pPhone, pFax, pEmail, pMisc);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
     }
 }
