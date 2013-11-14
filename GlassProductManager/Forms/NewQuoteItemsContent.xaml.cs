@@ -415,12 +415,6 @@ namespace GlassProductManager
 
             }
 
-            //foreach (CutoutData item in dgCutoutDetails.Items)
-            //{
-            //    if (item == null)
-            //        continue;
-            //    totalPrice += item.Quantity * item.Price;
-            //}
             lblCutoutTotal.Content = "$ " + totalPrice.ToString("0.00");
 
             currentItem.CutoutTotal = totalPrice;

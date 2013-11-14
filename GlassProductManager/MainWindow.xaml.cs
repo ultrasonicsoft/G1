@@ -30,6 +30,7 @@ namespace GlassProductManager
         {
             if (BusinessLogic.IsValidUser(txtUserName.Text, txtPassword.Password))
             {
+                
                 Dashboard dialog = new Dashboard();
                 dialog.UserName = txtUserName.Text;
                 dialog.Show();

@@ -64,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\DataGridHelper.cs" />
+    <Compile Include="Classes\FirmSettings.cs" />
     <Compile Include="Classes\QuoteFooter.cs" />
     <Compile Include="Classes\QuoteGridEntity.cs" />
     <Compile Include="Classes\CutoutData.cs" />

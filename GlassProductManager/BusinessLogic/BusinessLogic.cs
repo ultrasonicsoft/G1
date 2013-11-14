@@ -21,7 +21,18 @@ namespace GlassProductManager
                 var result = SQLHelper.GetScalarValue(string.Format(SelectQueries.USER_LOGIN_QUERY, userName, password));
                 if (result == null)
                     return false;
-                return result.ToString() == "1";
+                isValid = result.ToString() == "1";
+                
+                if (isValid)
+                {
+                    result = SQLHelper.GetScalarValue(string.Format(SelectQueries.IS_ADMIN_QUERY, userName, password));
+                    if (result == null)
+                        FirmSettings.IsAdmin=  false;
+                    FirmSettings.IsAdmin = bool.Parse(result.ToString());
+                    FirmSettings.UserName = userName;
+                }
+
+                return isValid;
             }
             catch (Exception ex)
             {
@@ -552,6 +563,20 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
+        }
+
+        internal static DataTable GetAllOperatorNames()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllOperatorNames, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
     }
 }

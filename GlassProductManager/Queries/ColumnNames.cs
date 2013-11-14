@@ -37,6 +37,8 @@ namespace GlassProductManager
         internal const string LeadTimeID = "LeadTimeID";
         internal const string LeadTimeTypeID = "LeadTimeTypeID";
         internal const string IsDefaultLeadTime = "IsDefaultLeadTime";
+
+        internal const string UserName = "UserName";
        
     }
 }

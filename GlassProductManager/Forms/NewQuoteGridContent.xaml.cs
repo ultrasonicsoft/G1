@@ -44,6 +44,29 @@ namespace GlassProductManager
 
             _allQuoteData.CollectionChanged += _allQuoteData_CollectionChanged;
             GetNewQuoteID();
+
+            SetOperatorAccess();
+        }
+
+        private void SetOperatorAccess()
+        {
+            if (FirmSettings.IsAdmin)
+            {
+                cmbOperator.Visibility = System.Windows.Visibility.Visible;
+                txtOperatorName.Visibility = System.Windows.Visibility.Hidden;
+
+                var result = BusinessLogic.GetAllOperatorNames();
+                cmbOperator.DisplayMemberPath = ColumnNames.UserName;
+                cmbOperator.SelectedValuePath = ColumnNames.ID;
+                cmbOperator.ItemsSource = result.DefaultView;
+            }
+            else
+            {
+                cmbOperator.Visibility = System.Windows.Visibility.Hidden;
+                txtOperatorName.Visibility = System.Windows.Visibility.Visible;
+                txtOperatorName.Text = FirmSettings.UserName;
+            }
+
         }
 
         void _allQuoteData_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

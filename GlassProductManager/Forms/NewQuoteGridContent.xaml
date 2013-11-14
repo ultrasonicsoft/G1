@@ -47,7 +47,9 @@
                 <ComboBox Name="cmbClientID" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Width="100"/>
                 <CheckBox Name="cbIsNewClient" Content="Is New Client" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Checked="cbIsNewClient_Checked" Unchecked="cbIsNewClient_Unchecked" />
 
-
+                <Label Content="Operator:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
+                <ComboBox Name="cmbOperator"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="3" Grid.Column="1"/>
+                <TextBox  Name="txtOperatorName" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
 
                 <Label Content="Quote Created On:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2"/>
                 <DatePicker Name="dtQuoteCreatedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Column="5" Grid.Row="1"/>
