@@ -42,13 +42,71 @@ namespace GlassProductManager
 
             UpdateDefaultLeadTimeSettings();
 
+            _allQuoteData.CollectionChanged += _allQuoteData_CollectionChanged;
             GetNewQuoteID();
+        }
+
+        void _allQuoteData_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            UpdateQuoteTotal();
+        }
+
+        private void UpdateQuoteTotal()
+        {
+            double subTotal = 0;
+            double grandTotal = 0;
+
+            foreach (var item in allQuoteData)
+            {
+                subTotal += item.Total;
+            }
+            lblSubTotal.Content = "$ " + subTotal.ToString("0.00");
+
+            double energySurcharge = double.Parse(txtEnergySurcharge.Text);
+
+            if (energySurcharge >0 &&  cbDollar.IsChecked == true)
+            {
+                grandTotal = subTotal + energySurcharge; 
+            }
+            else if(energySurcharge >0 )
+            {
+                grandTotal = subTotal + (energySurcharge / 100) * subTotal;
+            }
+            else
+            {
+                grandTotal = subTotal;
+            }
+            double discount = double.Parse(txtDiscount.Text);
+            if (discount > 0)
+            {
+                grandTotal = grandTotal - (discount / 100) * subTotal;                
+            }
+            double deliveryCharges = double.Parse(txtDelivery.Text);
+
+            if (deliveryCharges > 0)
+            {
+                grandTotal = grandTotal + deliveryCharges;
+            }
+
+            double rushOrder = double.Parse(txtRushOrder.Text);
+
+            if (rushOrder > 0 && cbRush.IsChecked == true)
+            {
+                grandTotal = grandTotal + rushOrder;
+            }
+            double tax = double.Parse(txtTax.Text);
+            if (tax > 0 )
+            {
+                grandTotal = grandTotal + tax;
+            }
+
+            lblGrandTotal.Content = "$ " + grandTotal.ToString("0.00");
         }
 
         private void GetNewQuoteID()
         {
             string quoteID = BusinessLogic.GetNewQuoteID();
-            txtQuoteNumber.Text = quoteID; 
+            txtQuoteNumber.Text = quoteID;
         }
 
         private void UpdateDefaultLeadTimeSettings()
@@ -94,7 +152,6 @@ namespace GlassProductManager
         private void ClearSubTotalSection()
         {
             lblSubTotal.Content = "0.00";
-            txtSubTotal.Text = "0.00";
             txtDiscount.Text = "0.00";
             txtDelivery.Text = "0.00";
             txtRushOrder.Text = "0.00";
@@ -134,8 +191,14 @@ namespace GlassProductManager
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (allQuoteData.Count == 0)
+            {
+                Helper.ShowErrorMessageBox("There is no item in the quote. Please add atleast one.");
+                return;
+            }
             SaveQuoteHeader();
-
+            SaveQuoteItems();
+            SaveQuoteFooter();
         }
 
         private void SaveQuoteHeader()
@@ -175,15 +238,188 @@ namespace GlassProductManager
             BusinessLogic.SaveQuoteHeader(header);
         }
 
+        private void SaveQuoteItems()
+        {
+            BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData);
+        }
+
+        private void SaveQuoteFooter()
+        {
+            QuoteFooter footer = new QuoteFooter();
+            footer.SubTotal = double.Parse(lblSubTotal.Content.ToString().Replace("$ ", string.Empty));
+            footer.IsDollar = cbDollar.IsChecked.Value == true;
+            footer.EnergySurcharge = double.Parse(txtEnergySurcharge.Text);
+            footer.Discount = double.Parse(txtDiscount.Text);
+            footer.Delivery = double.Parse(txtDelivery.Text);
+            footer.IsRushOrder = cbRush.IsChecked.Value == true;
+            footer.RushOrder = double.Parse(txtRushOrder.Text);
+            footer.Tax = double.Parse(txtTax.Text);
+            footer.GrandTotal = double.Parse(lblGrandTotal.Content.ToString().Replace("$ ", string.Empty));
+
+            BusinessLogic.SaveQuoteFooter(txtQuoteNumber.Text, footer);
+        }
+
         private void cbIsNewClient_Checked(object sender, RoutedEventArgs e)
         {
-
+            cmbClientID.IsEnabled = false;
         }
 
         private void cbIsNewClient_Unchecked(object sender, RoutedEventArgs e)
         {
+            cmbClientID.IsEnabled = true;
+        }
+
+        private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            // Lookup for the source to be DataGridCell
+            if (e.OriginalSource.GetType() == typeof(DataGridCell))
+            {
+                // Starts the Edit on the row;
+                DataGrid grd = (DataGrid)sender;
+                grd.BeginEdit(e);
+            }
+        }
+
+        private void dgQuoteItems_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateQuoteTotal();
+        }
+
+        private void txtEnergySurcharge_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void txtEnergySurcharge_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0)
+            {
+                txtEnergySurcharge.Text = string.IsNullOrEmpty(txtEnergySurcharge.Text) ? "0.00" : txtEnergySurcharge.Text;
+            }
+        }
+
+        private void cbDollar_Checked(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void cbDollar_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void txtDiscount_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtDiscount.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void txtDiscount_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0)
+            {
+                txtDiscount.Text = string.IsNullOrEmpty(txtDiscount.Text) ? "0.00" : txtDiscount.Text;
+            }
+        }
+
+        private void txtDelivery_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0)
+            {
+                txtDelivery.Text = string.IsNullOrEmpty(txtDelivery.Text) ? "0.00" : txtDelivery.Text;
+            }
+        }
+
+        private void txtDelivery_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtDelivery.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void txtRushOrder_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && cbRush.IsChecked == true && string.IsNullOrEmpty(txtRushOrder.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void txtRushOrder_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && cbRush.IsChecked == true)
+            {
+                txtRushOrder.Text = string.IsNullOrEmpty(txtRushOrder.Text) ? "0.00" : txtRushOrder.Text;
+            }
+        }
+
+        private void txtTax_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0)
+            {
+                txtTax.Text = string.IsNullOrEmpty(txtTax.Text) ? "0.00" : txtTax.Text;
+            }
+        }
+
+        private void txtTax_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtTax.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void cbRush_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtRushOrder.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void cbRush_Checked(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtRushOrder.Text) == false)
+            {
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void btnUpdateSelectedItem_Click(object sender, RoutedEventArgs e)
+        {
+            QuoteGridEntity selectedLineItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
+            if (selectedLineItem == null)
+                return;
+            selectedLineItem.Total = (double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity;
+            UpdateQuoteTotal();
 
         }
-       
+
+        private void btnUpdateAllItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0)
+            {
+                foreach (QuoteGridEntity selectedLineItem in allQuoteData)
+                {
+                    if (selectedLineItem == null)
+                        continue;
+                    selectedLineItem.Total = (double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity;
+                }
+                UpdateQuoteTotal();
+            }
+        }
+
     }
 }

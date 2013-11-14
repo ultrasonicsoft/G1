@@ -7,12 +7,12 @@
 7. Client section  ==========> Done
 8. "Send to WS/SA/PO" button below regenerate  ==========> Done
 9. Smart search in Client ID
-10. First name, Last Name in Sold to parse from name using space
+10. First name, Last Name in Sold to parse from name using space ==========> Done
 11. Quote created on and Reqeusted ship date - calendar ==========> Done
 12. Lead time - first box"Days""Weeks""Months"  ==========> Done
 13. change "Total till now" to "Running Total" ==========> Done
 14. in Lead time secod combo wil have 1-31 values ==========> Done
-14. "Use as default" - Save config to DB. Whenever user changes this update db. this lead time wil be used for all quotes
+14. "Use as default" - Save config to DB. Whenever user changes this update db. this lead time wil be used for all quotes ==========> Done
 15. Add Insulation in quote description  ==========> Done
 16. Add Cutout in quote description  ==========> Done
 17. Regerate button should clear grid n pricing  ==========> Done

@@ -331,12 +331,12 @@ namespace GlassProductManager
 
                 if (header.IsNewCustomer)
                 {
-                   string customerID = CreateNewCustomer(header.SoldTo);
-                   
+                    string customerID = CreateNewCustomer(header.SoldTo);
+
                     if (header.IsShipToOtherAddress == true && string.IsNullOrEmpty(customerID) == false)
-                   {
-                       InsertShippingDetails(customerID, header.QuoteNumber, header.ShipTo);
-                   }
+                    {
+                        InsertShippingDetails(customerID, header.QuoteNumber, header.ShipTo);
+                    }
                 }
 
                 SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddQuoteHeader, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID, pShipToOtherAddress, pQuoteNumber, pCustomerID);
@@ -435,7 +435,117 @@ namespace GlassProductManager
                 pMisc.ParameterName = "Misc";
                 pMisc.Value = shipTo.Misc;
 
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertShippingDetails, pQuoteNumber,pCustomerID, pAddress, pFirstName, pLastName, pPhone, pFax, pEmail, pMisc);
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteLineItem, pQuoteNumber, pCustomerID, pAddress, pFirstName, pLastName, pPhone, pFax, pEmail, pMisc);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void SaveQuoteItems(string quoteNumber, ObservableCollection<QuoteGridEntity> allQuoteData)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pLineID = null;
+                SqlParameter pQuantity = null;
+                SqlParameter pDescription = null;
+                SqlParameter pDimension = null;
+                SqlParameter pSqFt = null;
+                SqlParameter pPricePerUnit = null;
+                SqlParameter pTotal = null;
+
+                foreach (QuoteGridEntity item in allQuoteData)
+                {
+                    pQuantity = new SqlParameter();
+                    pQuantity.ParameterName = "Quantity";
+                    pQuantity.Value = item.Quantity;
+
+                    pLineID = new SqlParameter();
+                    pLineID.ParameterName = "LineID";
+                    pLineID.Value = item.LineID;
+
+
+                    pDescription = new SqlParameter();
+                    pDescription.ParameterName = "Description";
+                    pDescription.Value = item.Description;
+
+                    pDimension = new SqlParameter();
+                    pDimension.ParameterName = "Dimension";
+                    pDimension.Value = item.Dimension;
+
+                    pSqFt = new SqlParameter();
+                    pSqFt.ParameterName = "SqFt";
+                    pSqFt.Value = int.Parse(item.TotalSqFt);
+
+                    pPricePerUnit = new SqlParameter();
+                    pPricePerUnit.ParameterName = "PricePerUnit";
+                    pPricePerUnit.Value = double.Parse(item.UnitPrice);
+
+                    pTotal = new SqlParameter();
+                    pTotal.ParameterName = "Total";
+                    pTotal.Value = item.Total;
+
+                    SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteLineItem,pLineID, pQuoteNumber, pQuantity,pDescription,pDimension,pSqFt,pPricePerUnit,pTotal);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void SaveQuoteFooter(string quoteNumber, QuoteFooter footer)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pSubTotal = new SqlParameter();
+                pSubTotal.ParameterName = "SubTotal";
+                pSubTotal.Value = footer.SubTotal;
+
+                SqlParameter pIsDollar = new SqlParameter();
+                pIsDollar.ParameterName = "IsDollar";
+                pIsDollar.Value = footer.IsDollar;
+
+                SqlParameter pEnergySurcharge = new SqlParameter();
+                pEnergySurcharge.ParameterName = "EnergySurcharge";
+                pEnergySurcharge.Value = footer.EnergySurcharge;
+
+                SqlParameter pDiscount = new SqlParameter();
+                pDiscount.ParameterName = "Discount";
+                pDiscount.Value = footer.Discount;
+
+                SqlParameter pDelivery = new SqlParameter();
+                pDelivery.ParameterName = "Delivery";
+                pDelivery.Value = footer.Delivery;
+
+                SqlParameter pIsRushOrder = new SqlParameter();
+                pIsRushOrder.ParameterName = "IsRush";
+                pIsRushOrder.Value = footer.IsRushOrder;
+
+                SqlParameter pRushOrder = new SqlParameter();
+                pRushOrder.ParameterName = "RushOrder";
+                pRushOrder.Value = footer.RushOrder;
+
+                SqlParameter pTax = new SqlParameter();
+                pTax.ParameterName = "Tax";
+                pTax.Value = footer.Tax;
+
+                SqlParameter pGrandTotal = new SqlParameter();
+                pGrandTotal.ParameterName = "GrandTotal";
+                pGrandTotal.Value = footer.GrandTotal;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteFooter, pQuoteNumber,pSubTotal,pIsDollar,pEnergySurcharge,pDiscount,pDelivery,pIsRushOrder,pRushOrder,pTax,pGrandTotal );
 
             }
             catch (Exception ex)

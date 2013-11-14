@@ -25,5 +25,7 @@ namespace GlassProductManager
         internal const string AddQuoteHeader = "[AddQuoteHeader]";
         internal const string CreateNewCustomer = "[CreateNewCustomer]";
         internal const string InsertShippingDetails = "[InsertShippingDetails]";
+        internal const string InsertQuoteLineItem = "[InsertQuoteLineItem]";
+        internal const string InsertQuoteFooter = "[InsertQuoteFooter]";
     }
 }
