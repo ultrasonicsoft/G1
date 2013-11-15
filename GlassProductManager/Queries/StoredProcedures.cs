@@ -32,5 +32,6 @@ namespace GlassProductManager
         internal const string GetQuoteDetails = "[GetQuoteDetails]";
         internal const string GetAllCustomerNames = "[GetAllCustomerNames]";
         internal const string GetCustomerDetails = "[GetCustomerDetails]";
+        internal const string DeleteQuote = "[DeleteQuote]";
     }
 }

@@ -754,5 +754,21 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
         }
+
+        internal static void DeleteQuote(string quoteNumber)
+        {
+            try
+            {
+                 SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteQuote, pQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
     }
 }

@@ -41,8 +41,8 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Image Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.RowSpan="2" VerticalAlignment="Top" Height="50"  Width="auto" Grid.Row="0" Grid.Column="0" Source="/GlassProductManager;component/Logo.jpg" />
-                
-               
+
+
                 <Grid Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25"/>
@@ -63,7 +63,7 @@
                     <Label Content="Requested Ship Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
                     <DatePicker Name="dtQuoteRequestedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" />
                 </Grid>
-                
+
 
                 <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6">
                     <Grid.ColumnDefinitions>
@@ -95,8 +95,8 @@
                         </controls:AutoCompleteBox.ItemTemplate>
                     </controls:AutoCompleteBox>-->
 
-                    <Button Name="btnOpenQuote" Content="Open Quote"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="2" Click="btnOpenQuote_Click"/>
-                    <Button Name="btnNewQuote" Content="New Quote"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="3" Click="btnOpenQuote_Click"/>
+                    <Button Name="btnOpenQuote" Content="Open Quote"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Grid.Row="0" Grid.Column="2" Click="btnOpenQuote_Click" Margin="0,2,0,0"/>
+                    <Button Name="btnNewQuote" Content="New Quote"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="3" Click="btnNewQuote_Click" />
                     <CheckBox Name="cbIsNewClient" Content="New Client?" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4"  Checked="cbIsNewClient_Checked" Unchecked="cbIsNewClient_Unchecked" />
                     <ComboBox Name="cmbCustomers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="5" SelectionChanged="cmbCustomers_SelectionChanged" />
                 </Grid>
@@ -106,16 +106,16 @@
                 <ComboBox Name="cmbOperator"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="5" Grid.Column="5"/>
                 <TextBox  Name="txtOperatorName" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="5"/>
 
-               
+
                 <Label Content="Sold to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" />
-                
+
                 <CheckBox Name="cbIsShipToSameAddress" Content="Ship to other address" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Margin="90,0,0,0" Grid.ColumnSpan="3" Checked="cbUseAsDefault_Checked" Unchecked="cbUseAsDefault_Unchecked" />
-                
+
                 <Label Content="Ship  to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" />
-                
-                
-                
-                
+
+
+
+
                 <Label Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
                 <TextBox  Name="txtSoldToFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" />
                 <TextBox  Name="txtSoldToLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Margin="80,0,0,0" Grid.ColumnSpan="2"/>
@@ -143,7 +143,7 @@
                 <TextBox  Name="txtShipToEmail" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="4"/>
                 <Label Content="Misc:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="3" />
                 <TextBox  Name="txtShipToMisc" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="4"/>
-                
+
                 <Label Content="Shipping Method:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="5" />
                 <ComboBox Name="cmbShippingMethod" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="7" Grid.Column="5" />
 
@@ -221,14 +221,14 @@
                     </Grid.ColumnDefinitions>
                     <Button Name="btnRegenerate" Content="Regenerate"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="0" Width="75" Click="btnRegenerate_Click"/>
                     <Button Name="btnSave" Content="_Save"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnSave_Click"/>
-                    <Button Name="btnDelete" Content="_Delete"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="75"/>
+                    <Button Name="btnDelete" Content="_Delete"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="75" Click="btnDelete_Click"/>
                     <Button Name="btnClone" Content="_Clone"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="3" Width="75"/>
                     <Button Name="btnPrint" Content="_Print"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" Width="75"/>
                     <Button Name="btnEmail" Content="E_mail"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" Width="75"/>
                     <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="6" Width="75"/>
                     <Button Name="btnSendToWS" Content="Send to WS"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="7" Width="75"/>
                 </Grid>
-                
+
 
             </Grid>
         </Border>

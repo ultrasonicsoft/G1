@@ -76,6 +76,8 @@ namespace GlassProductManager
                 cmbOperator.DisplayMemberPath = ColumnNames.UserName;
                 cmbOperator.SelectedValuePath = ColumnNames.ID;
                 cmbOperator.ItemsSource = result.DefaultView;
+
+                cmbOperator.Text = FirmSettings.UserName;
             }
             else
             {
@@ -165,6 +167,7 @@ namespace GlassProductManager
             cmbShippingMethod.DisplayMemberPath = ColumnNames.Shipping;
             cmbShippingMethod.SelectedValuePath = ColumnNames.ID;
             cmbShippingMethod.ItemsSource = result.DefaultView;
+            cmbShippingMethod.SelectedIndex = 0;
         }
         private void FillLeadTimeTypes()
         {
@@ -239,6 +242,7 @@ namespace GlassProductManager
             SaveQuoteHeader();
             SaveQuoteItems();
             SaveQuoteFooter();
+            Helper.ShowInformationMessageBox("Quote saved successfully!");
         }
 
         private void SaveQuoteHeader()
@@ -253,6 +257,7 @@ namespace GlassProductManager
             header.ShippingMethodID = cmbShippingMethod.SelectedIndex;
             header.LeadTimeID = cmbLeadTime.SelectedIndex;
             header.LeadTimeTypeID = cmbLeadTimeType.SelectedIndex;
+            
             if(FirmSettings.IsAdmin)
             {
                 header.OperatorName = cmbOperator.Text;
@@ -261,7 +266,10 @@ namespace GlassProductManager
             {
                 header.OperatorName = txtOperatorName.Text;
             }
-                        
+            if (cbIsNewClient.IsChecked.Value == false)
+            {
+                header.CustomerID = int.Parse(cmbCustomers.SelectedValue.ToString());
+            }
             header.SoldTo = new ShippingDetails();
             header.SoldTo.FirstName = txtSoldToFirstName.Text;
             header.SoldTo.LastName = txtSoldToLastName.Text;
@@ -498,7 +506,10 @@ namespace GlassProductManager
         {
             QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
             if (result == null)
+            {
+                Helper.ShowInformationMessageBox("No data found for selected quote!");
                 return;
+            }
             #region Fill Header Information
 
             txtQuoteNumber.Text = result.Header.QuoteNumber;
@@ -533,7 +544,10 @@ namespace GlassProductManager
             #endregion
 
             #region Fill Footer Information
-
+            
+            if (result.Footer == null)
+                return;
+            
             lblSubTotal.Content = result.Footer.SubTotal.ToString("0.00");
             cbDollar.IsChecked = result.Footer.IsDollar;
             txtEnergySurcharge.Text = result.Footer.EnergySurcharge.ToString("0.00");
@@ -571,8 +585,12 @@ namespace GlassProductManager
 
         private void cmbCustomers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (cmbCustomers.SelectedValue == null)
+                return;
+
             ShippingDetails soldTo = null;
             ShippingDetails shipTo = null;
+            
             BusinessLogic.GetCustomerDetails(out soldTo, out shipTo, cmbCustomers.SelectedValue.ToString());
 
             if (soldTo != null)
@@ -585,6 +603,86 @@ namespace GlassProductManager
             }
         }
 
+        private void btnNewQuote_Click(object sender, RoutedEventArgs e)
+        {
+            var result = Helper.ShowQuestionMessageBox("Are you sure to create new quote?");
+            if (result == MessageBoxResult.Yes)
+            {
+                ResetQuote();
+                GetNewQuoteID();
+            }
+        }
 
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var result = Helper.ShowQuestionMessageBox("Are you sure to delete this quote?");
+            if (result == MessageBoxResult.Yes)
+            {
+                BusinessLogic.DeleteQuote(txtQuoteNumber.Text);
+                Helper.ShowInformationMessageBox("Quote deleted successfully.");
+                ResetQuote();
+            }
+        }
+
+        private void ResetQuote()
+        {
+            ResetQuoteHeader();
+            ResetShipTo();
+            ResetSoldTo();
+            ResetQuoteItems();
+            ResetQuoteFooter();
+        }
+       
+        private void ResetQuoteHeader()
+        {
+            txtQuoteNumber.Text = string.Empty;
+            txtCustomerPO.Text = string.Empty;
+            dtQuoteCreatedOn.SelectedDate = DateTime.Now;
+            dtQuoteRequestedOn.SelectedDate = DateTime.Now;
+            cbIsNewClient.IsChecked = true;
+            cmbCustomers.SelectedIndex = -1;
+            cbIsShipToSameAddress.IsChecked = false;
+        }
+
+        private void ResetQuoteItems()
+        {
+            allQuoteData.Clear();
+            dgQuoteItems.ItemsSource = allQuoteData;
+        }
+
+        private void ResetShipTo()
+        {
+            txtShiptoFirstName.Text = string.Empty;
+            txtShiptoLastName.Text = string.Empty;
+            txtShipToAddress.Text = string.Empty;
+            txtShipToPhone.Text = string.Empty;
+            txtShipToFax.Text = string.Empty;
+            txtShipToEmail.Text = string.Empty;
+            txtShipToMisc.Text = string.Empty;
+        }
+
+        private void ResetSoldTo()
+        {
+            txtSoldToFirstName.Text = string.Empty;
+            txtSoldToLastName.Text = string.Empty;
+            txtSoldToAddress.Text = string.Empty;
+            txtSoldToPhone.Text = string.Empty;
+            txtSoldToFax.Text = string.Empty;
+            txtSoldToEmail.Text = string.Empty;
+            txtSoldToMisc.Text = string.Empty;
+        }
+
+        private void ResetQuoteFooter()
+        {
+            lblSubTotal.Content = "0.00";
+            cbDollar.IsChecked = false;
+            txtEnergySurcharge.Text  = "0.00";
+            txtDiscount.Text  = "0.00";
+            txtDelivery.Text  = "0.00";
+            cbRush.IsChecked  = false;
+            txtRushOrder.Text  = "0.00";
+            txtTax.Text  = "0.00";
+            lblGrandTotal.Content = "0.00";
+        }
     }
 }
