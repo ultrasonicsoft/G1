@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="700">
     <Grid>
@@ -40,30 +41,80 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Image Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.RowSpan="2" VerticalAlignment="Top" Height="50"  Width="auto" Grid.Row="0" Grid.Column="0" Source="/GlassProductManager;component/Logo.jpg" />
-                <Label Content="Quote No.:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                <TextBox  Name="txtQuoteNumber" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" LostFocus="txtQuoteNumber_LostFocus" />
+                
+               
+                <Grid Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Quote No.:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                    <TextBox  Name="txtQuoteNumber" TextWrapping="Wrap" Width="90"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" LostFocus="txtQuoteNumber_LostFocus" />
+                    <Label Content="Customer PO:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
+                    <TextBox  Name="txtCustomerPO" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3"/>
+                    <Label Content="Quote Created On:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                    <DatePicker Name="dtQuoteCreatedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" />
+                    <Label Content="Requested Ship Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
+                    <DatePicker Name="dtQuoteRequestedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" />
+                </Grid>
+                
 
-                <Label Content="Client ID:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                <ComboBox Name="cmbClientID" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Width="100"/>
-                <CheckBox Name="cbIsNewClient" Content="Is New Client" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Checked="cbIsNewClient_Checked" Unchecked="cbIsNewClient_Unchecked" />
+                <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                    <controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="130"/>
+                    <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Text="Name/Quote No." LostFocus="txtSmartSearch_LostFocus">
+                        <controls:AutoCompleteBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="600">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock  TextWrapping="Wrap" Width="50"  HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding FirstName}" Grid.Column="0"/>
+                                    <TextBlock  TextWrapping="Wrap" Width="50"  HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding LastName}" Grid.Column="1"/>
+                                    <TextBlock  TextWrapping="Wrap" Width="50"  HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding Phone}" Grid.Column="2"/>
+                                    <TextBlock  TextWrapping="Wrap" Width="50"  HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding QuoteNumber}" Grid.Column="3"/>
+                                </Grid>
+                            </DataTemplate>
+                        </controls:AutoCompleteBox.ItemTemplate>
+                    </controls:AutoCompleteBox>-->
 
-                <Label Content="Operator:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
-                <ComboBox Name="cmbOperator"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="3" Grid.Column="1"/>
-                <TextBox  Name="txtOperatorName" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+                    <Button Name="btnOpenQuote" Content="Open Quote"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="2" Click="btnOpenQuote_Click"/>
+                    <Button Name="btnNewQuote" Content="New Quote"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="3" Click="btnOpenQuote_Click"/>
+                    <CheckBox Name="cbIsNewClient" Content="New Client?" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4"  Checked="cbIsNewClient_Checked" Unchecked="cbIsNewClient_Unchecked" />
+                    <ComboBox Name="cmbCustomers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="5" SelectionChanged="cmbCustomers_SelectionChanged" />
+                </Grid>
 
-                <Label Content="Quote Created On:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2"/>
-                <DatePicker Name="dtQuoteCreatedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Column="5" Grid.Row="1"/>
+
+                <Label Content="Operator:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="5" />
+                <ComboBox Name="cmbOperator"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="5" Grid.Column="5"/>
+                <TextBox  Name="txtOperatorName" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="5"/>
+
+               
+                <Label Content="Sold to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" />
                 
-                <Label Content="Sold to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" />
+                <CheckBox Name="cbIsShipToSameAddress" Content="Ship to other address" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Margin="90,0,0,0" Grid.ColumnSpan="3" Checked="cbUseAsDefault_Checked" Unchecked="cbUseAsDefault_Unchecked" />
                 
-                <CheckBox Name="cbIsShipToSameAddress" Content="Ship to other address" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Checked="cbUseAsDefault_Checked" Unchecked="cbUseAsDefault_Unchecked" />
+                <Label Content="Ship  to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" />
                 
-                <Label Content="Ship  to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="3" />
                 
-                <Label Content="Requested Ship Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"/>
-                <DatePicker Name="dtQuoteRequestedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Column="5" Grid.Row="2"/>
-                <Label Content="Customer PO:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Grid.Column="4" />
-                <TextBox  Name="txtCustomerPO" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="5"/>
+                
                 
                 <Label Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
                 <TextBox  Name="txtSoldToFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" />
@@ -93,8 +144,8 @@
                 <Label Content="Misc:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="3" />
                 <TextBox  Name="txtShipToMisc" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="4"/>
                 
-                <Label Content="Shipping Method:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" />
-                <ComboBox Name="cmbShippingMethod" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="4" Grid.Column="5" />
+                <Label Content="Shipping Method:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="5" />
+                <ComboBox Name="cmbShippingMethod" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="7" Grid.Column="5" />
 
                 <Label Content="Lead Time:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="5" />
                 <ComboBox Name="cmbLeadTimeType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="80" Grid.Row="9" Grid.Column="7" IsTextSearchEnabled="True" IsEditable="True"/>

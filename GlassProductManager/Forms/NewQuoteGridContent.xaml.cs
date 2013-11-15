@@ -46,6 +46,23 @@ namespace GlassProductManager
             GetNewQuoteID();
 
             SetOperatorAccess();
+            FillSmartSearchData();
+
+            FillCustomerNames();
+  
+        }
+
+        private void FillCustomerNames()
+        {
+            var result = BusinessLogic.GetAllCustomerNames();
+            cmbCustomers.DisplayMemberPath = ColumnNames.Item;
+            cmbCustomers.SelectedValuePath = ColumnNames.ID;
+            cmbCustomers.ItemsSource = result.DefaultView;
+        }
+
+        private void FillSmartSearchData()
+        {
+            txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
         }
 
         private void SetOperatorAccess()
@@ -236,7 +253,15 @@ namespace GlassProductManager
             header.ShippingMethodID = cmbShippingMethod.SelectedIndex;
             header.LeadTimeID = cmbLeadTime.SelectedIndex;
             header.LeadTimeTypeID = cmbLeadTimeType.SelectedIndex;
-
+            if(FirmSettings.IsAdmin)
+            {
+                header.OperatorName = cmbOperator.Text;
+            }
+            else
+            {
+                header.OperatorName = txtOperatorName.Text;
+            }
+                        
             header.SoldTo = new ShippingDetails();
             header.SoldTo.FirstName = txtSoldToFirstName.Text;
             header.SoldTo.LastName = txtSoldToLastName.Text;
@@ -284,12 +309,12 @@ namespace GlassProductManager
 
         private void cbIsNewClient_Checked(object sender, RoutedEventArgs e)
         {
-            cmbClientID.IsEnabled = false;
+            cmbCustomers.IsEnabled = false;
         }
 
         private void cbIsNewClient_Unchecked(object sender, RoutedEventArgs e)
         {
-            cmbClientID.IsEnabled = true;
+            cmbCustomers.IsEnabled = true;
         }
 
         private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
@@ -436,13 +461,130 @@ namespace GlassProductManager
             {
                 foreach (QuoteGridEntity selectedLineItem in allQuoteData)
                 {
-                    if (selectedLineItem == null)
+                    if (selectedLineItem == null || string.IsNullOrEmpty(txtAdditionalCostForItem.Text) || string.IsNullOrEmpty(selectedLineItem.UnitPrice))
                         continue;
+                    
                     selectedLineItem.Total = (double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity;
                 }
                 UpdateQuoteTotal();
             }
         }
+
+        private void btnOpenQuote_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtSmartSearch.Text))
+            {
+                Helper.ShowErrorMessageBox("Please select Customer/Quote No. first");
+                return;
+            }
+            string quoteNumber = string.Empty;
+            foreach (string item in txtSmartSearch.Text.Split('-'))
+            {
+                if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
+                {
+                    quoteNumber = item.Trim();
+                    break;
+                }
+            }
+            if (string.IsNullOrEmpty(quoteNumber))
+            {
+                Helper.ShowErrorMessageBox("Invalid Quote Number");
+                return;
+            }
+            OpenSelectedQuote(quoteNumber);
+        }
+
+        private void OpenSelectedQuote(string quoteNumber)
+        {
+            QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
+            if (result == null)
+                return;
+            #region Fill Header Information
+
+            txtQuoteNumber.Text = result.Header.QuoteNumber;
+            txtCustomerPO.Text = result.Header.CustomerPO;
+            dtQuoteCreatedOn.SelectedDate = DateTime.Parse(result.Header.QuoteCreatedOn);
+            dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
+
+            SetSoldToDetails(result.Header.SoldTo);
+
+            if (FirmSettings.IsAdmin)
+            {
+                cmbOperator.Text = result.Header.OperatorName;
+            }
+            {
+                txtOperatorName.Text = result.Header.OperatorName;
+            }
+            if (result.Header.IsShipToOtherAddress)
+            {
+                SetShipToDetails(result.Header.ShipTo);
+            }
+            cmbShippingMethod.SelectedIndex = result.Header.ShippingMethodID;
+            cmbLeadTime.SelectedIndex = result.Header.LeadTimeID;
+            cmbLeadTimeType.SelectedIndex = result.Header.LeadTimeTypeID;
+
+            #endregion
+
+            #region Fill Line Items
+
+            allQuoteData = result.LineItems;
+            dgQuoteItems.ItemsSource = allQuoteData;
+
+            #endregion
+
+            #region Fill Footer Information
+
+            lblSubTotal.Content = result.Footer.SubTotal.ToString("0.00");
+            cbDollar.IsChecked = result.Footer.IsDollar;
+            txtEnergySurcharge.Text = result.Footer.EnergySurcharge.ToString("0.00");
+            txtDiscount.Text = result.Footer.Discount.ToString("0.00");
+            txtDelivery.Text = result.Footer.Delivery.ToString("0.00");
+            cbRush.IsChecked = result.Footer.IsRushOrder;
+            txtRushOrder.Text = result.Footer.RushOrder.ToString("0.00");
+            txtTax.Text = result.Footer.Tax.ToString("0.00");
+            lblGrandTotal.Content= result.Footer.GrandTotal.ToString("0.00");
+
+            #endregion
+        }
+
+        private void SetShipToDetails(ShippingDetails shipTo)
+        {
+            txtShiptoFirstName.Text = shipTo.FirstName;
+            txtShiptoLastName.Text = shipTo.LastName;
+            txtShipToAddress.Text = shipTo.Address;
+            txtShipToPhone.Text = shipTo.Phone;
+            txtShipToFax.Text = shipTo.Fax;
+            txtShipToEmail.Text = shipTo.Email;
+            txtShipToMisc.Text = shipTo.Misc;
+        }
+
+        private void SetSoldToDetails(ShippingDetails soldTo)
+        {
+            txtSoldToFirstName.Text = soldTo.FirstName;
+            txtSoldToLastName.Text = soldTo.LastName;
+            txtSoldToAddress.Text = soldTo.Address;
+            txtSoldToPhone.Text = soldTo.Phone;
+            txtSoldToFax.Text = soldTo.Fax;
+            txtSoldToEmail.Text = soldTo.Email;
+            txtSoldToMisc.Text = soldTo.Misc;
+        }
+
+        private void cmbCustomers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ShippingDetails soldTo = null;
+            ShippingDetails shipTo = null;
+            BusinessLogic.GetCustomerDetails(out soldTo, out shipTo, cmbCustomers.SelectedValue.ToString());
+
+            if (soldTo != null)
+            {
+                SetSoldToDetails(soldTo);
+            }
+            if (shipTo != null)
+            {
+                SetShipToDetails(shipTo);
+            }
+        }
+
 
     }
 }

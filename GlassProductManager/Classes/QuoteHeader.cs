@@ -20,6 +20,7 @@ namespace GlassProductManager
         public int LeadTimeID { get; set; }
         public int LeadTimeTypeID { get; set; }
         public int CustomerID { get; set; }
+        public string OperatorName { get; set; }
     }
 
     internal class ShippingDetails

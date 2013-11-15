@@ -336,9 +336,17 @@ namespace GlassProductManager
                 pQuoteNumber.ParameterName = "QuoteNumber";
                 pQuoteNumber.Value = header.QuoteNumber;
 
+                SqlParameter pShippingMethodID = new SqlParameter();
+                pShippingMethodID.ParameterName = "ShippingMethodID";
+                pShippingMethodID.Value = header.ShippingMethodID;
+
                 SqlParameter pCustomerID = new SqlParameter();
                 pCustomerID.ParameterName = "CustomerID";
                 pCustomerID.Value = header.CustomerID;
+
+                SqlParameter pOperatorName = new SqlParameter();
+                pOperatorName.ParameterName = "OperatorName";
+                pOperatorName.Value = header.OperatorName;
 
                 if (header.IsNewCustomer)
                 {
@@ -350,7 +358,7 @@ namespace GlassProductManager
                     }
                 }
 
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddQuoteHeader, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID, pShipToOtherAddress, pQuoteNumber, pCustomerID);
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddQuoteHeader, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID, pShipToOtherAddress, pQuoteNumber, pCustomerID, pShippingMethodID, pOperatorName);
             }
             catch (Exception ex)
             {
@@ -577,6 +585,174 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
             return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static List<string> GetSmartSearchData()
+        {
+            List<string> data = new List<string>();
+
+            try
+            {
+                DataSet result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetSmartSearchData, null);
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                    return data;
+                foreach (DataRow item in result.Tables[0].Rows)
+                {
+                    data.Add(item[0].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return data;
+        }
+
+        internal static QuoteEntity GetQuoteDetails(string quoteNumber)
+        {
+            QuoteEntity quoteDetails = null;
+
+            DataSet result = null;
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetQuoteDetails, pQuoteNumber);
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count==0)
+                {
+                    return quoteDetails;
+                }
+                quoteDetails = new QuoteEntity();
+                quoteDetails.Header = new QuoteHeader();
+                quoteDetails.Header.CustomerPO = result.Tables[0].Rows[0][ColumnNames.CustomerPO].ToString();
+                quoteDetails.Header.IsShipToOtherAddress = bool.Parse( result.Tables[0].Rows[0][ColumnNames.ShipToOtherAddress].ToString());
+                quoteDetails.Header.LeadTimeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.LeadTimeID].ToString());
+                quoteDetails.Header.LeadTimeTypeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.LeadTimeTypeID].ToString());
+                quoteDetails.Header.QuoteCreatedOn = result.Tables[0].Rows[0][ColumnNames.CreatedOn].ToString();
+                quoteDetails.Header.QuoteNumber = result.Tables[0].Rows[0][ColumnNames.QuoteNumber].ToString();
+                quoteDetails.Header.QuoteRequestedOn = result.Tables[0].Rows[0][ColumnNames.RequestedShipDate].ToString();
+                quoteDetails.Header.ShippingMethodID = int.Parse(result.Tables[0].Rows[0][ColumnNames.ShippingMethodID].ToString());
+                quoteDetails.Header.OperatorName = result.Tables[0].Rows[0][ColumnNames.OperatorName].ToString();
+
+                quoteDetails.Header.SoldTo= new ShippingDetails();
+                quoteDetails.Header.SoldTo.FirstName = result.Tables[0].Rows[0][ColumnNames.SoldTo_FirstName].ToString();
+                quoteDetails.Header.SoldTo.LastName = result.Tables[0].Rows[0][ColumnNames.SoldTo_LastName].ToString();
+                quoteDetails.Header.SoldTo.Address = result.Tables[0].Rows[0][ColumnNames.SoldTo_Address].ToString();
+                quoteDetails.Header.SoldTo.Email = result.Tables[0].Rows[0][ColumnNames.SoldTo_Email].ToString();
+                quoteDetails.Header.SoldTo.Fax = result.Tables[0].Rows[0][ColumnNames.SoldTo_Fax].ToString();
+                quoteDetails.Header.SoldTo.Phone = result.Tables[0].Rows[0][ColumnNames.SoldTo_Phone].ToString();
+                quoteDetails.Header.SoldTo.Misc = result.Tables[0].Rows[0][ColumnNames.SoldTo_Misc].ToString();
+
+                if (quoteDetails.Header.IsShipToOtherAddress)
+                {
+                    quoteDetails.Header.ShipTo = new ShippingDetails();
+                    quoteDetails.Header.ShipTo.FirstName = result.Tables[0].Rows[0][ColumnNames.ShipTo_FirstName].ToString();
+                    quoteDetails.Header.ShipTo.LastName = result.Tables[0].Rows[0][ColumnNames.ShipTo_LastName].ToString();
+                    quoteDetails.Header.ShipTo.Address = result.Tables[0].Rows[0][ColumnNames.ShipTo_Address].ToString();
+                    quoteDetails.Header.ShipTo.Email = result.Tables[0].Rows[0][ColumnNames.ShipTo_Email].ToString();
+                    quoteDetails.Header.ShipTo.Fax = result.Tables[0].Rows[0][ColumnNames.ShipTo_Fax].ToString();
+                    quoteDetails.Header.ShipTo.Phone = result.Tables[0].Rows[0][ColumnNames.ShipTo_Phone].ToString();
+                    quoteDetails.Header.ShipTo.Misc = result.Tables[0].Rows[0][ColumnNames.ShipTo_Misc].ToString();
+                }
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[1].Rows.Count == 0)
+                {
+                    return quoteDetails;
+                }
+
+                quoteDetails.LineItems = new ObservableCollection<QuoteGridEntity>();
+                QuoteGridEntity lineItem = null;
+                foreach (DataRow currentRow in result.Tables[1].Rows)
+                {
+                    lineItem = new QuoteGridEntity();
+                    lineItem.LineID = int.Parse(currentRow[ColumnNames.LineID].ToString());
+                    lineItem.Quantity = int.Parse(currentRow[ColumnNames.Quantity].ToString());
+                    lineItem.Description = currentRow[ColumnNames.Description].ToString();
+                    lineItem.Dimension = currentRow[ColumnNames.Dimension].ToString();
+                    lineItem.TotalSqFt = currentRow[ColumnNames.SqFt].ToString();
+                    lineItem.UnitPrice = currentRow[ColumnNames.PricePerUnit].ToString();
+                    lineItem.Total = double.Parse(currentRow[ColumnNames.PricePerUnit].ToString());
+
+                    quoteDetails.LineItems.Add(lineItem);
+                }
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[2].Rows.Count == 0)
+                {
+                    return quoteDetails;
+                }
+                quoteDetails.Footer = new QuoteFooter();
+                quoteDetails.Footer.SubTotal = double.Parse(result.Tables[2].Rows[0][ColumnNames.SubTotal].ToString());
+                quoteDetails.Footer.IsDollar = bool.Parse(result.Tables[2].Rows[0][ColumnNames.IsDollar].ToString());
+                quoteDetails.Footer.EnergySurcharge = double.Parse(result.Tables[2].Rows[0][ColumnNames.EnergySurcharge].ToString());
+                quoteDetails.Footer.Discount = double.Parse(result.Tables[2].Rows[0][ColumnNames.Discount].ToString());
+                quoteDetails.Footer.Delivery = double.Parse(result.Tables[2].Rows[0][ColumnNames.Delivery].ToString());
+                quoteDetails.Footer.IsRushOrder = bool.Parse(result.Tables[2].Rows[0][ColumnNames.IsRush].ToString());
+                quoteDetails.Footer.RushOrder = double.Parse(result.Tables[2].Rows[0][ColumnNames.RushOrder].ToString());
+                quoteDetails.Footer.Tax = double.Parse(result.Tables[2].Rows[0][ColumnNames.Tax].ToString());
+                quoteDetails.Footer.GrandTotal = double.Parse(result.Tables[2].Rows[0][ColumnNames.GrandTotal].ToString());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return quoteDetails;
+        }
+
+        internal static DataTable GetAllCustomerNames()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllCustomerNames, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static void GetCustomerDetails(out ShippingDetails soldTo, out ShippingDetails shipTo, string customerID)
+        {
+            DataSet result = null;
+            soldTo = null;
+            shipTo = null;
+            try
+            {
+                SqlParameter pCustomerID = new SqlParameter();
+                pCustomerID.ParameterName = "CustomerID";
+                pCustomerID.Value = customerID;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetCustomerDetails, pCustomerID);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                {
+                    return;
+                }
+                soldTo = new ShippingDetails();
+                soldTo.FirstName = result.Tables[0].Rows[0][ColumnNames.SoldTo_FirstName].ToString();
+                soldTo.LastName = result.Tables[0].Rows[0][ColumnNames.SoldTo_LastName].ToString();
+                soldTo.Address = result.Tables[0].Rows[0][ColumnNames.SoldTo_Address].ToString();
+                soldTo.Email = result.Tables[0].Rows[0][ColumnNames.SoldTo_Email].ToString();
+                soldTo.Fax = result.Tables[0].Rows[0][ColumnNames.SoldTo_Fax].ToString();
+                soldTo.Phone = result.Tables[0].Rows[0][ColumnNames.SoldTo_Phone].ToString();
+                soldTo.Misc = result.Tables[0].Rows[0][ColumnNames.SoldTo_Misc].ToString();
+
+                shipTo = new ShippingDetails();
+                shipTo.FirstName = result.Tables[0].Rows[0][ColumnNames.ShipTo_FirstName].ToString();
+                shipTo.LastName = result.Tables[0].Rows[0][ColumnNames.ShipTo_LastName].ToString();
+                shipTo.Address = result.Tables[0].Rows[0][ColumnNames.ShipTo_Address].ToString();
+                shipTo.Email = result.Tables[0].Rows[0][ColumnNames.ShipTo_Email].ToString();
+                shipTo.Fax = result.Tables[0].Rows[0][ColumnNames.ShipTo_Fax].ToString();
+                shipTo.Phone = result.Tables[0].Rows[0][ColumnNames.ShipTo_Phone].ToString();
+                shipTo.Misc = result.Tables[0].Rows[0][ColumnNames.ShipTo_Misc].ToString();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
     }
 }
