@@ -366,7 +366,7 @@ namespace GlassProductManager
             }
         }
 
-        private static string CreateNewCustomer(ShippingDetails soldTo)
+        internal static string CreateNewCustomer(CustomerDetails soldTo)
         {
             string customerID = string.Empty;
             try
@@ -414,7 +414,7 @@ namespace GlassProductManager
             return customerID;
         }
 
-        private static void InsertShippingDetails(string customerID, string quoteNumber, ShippingDetails shipTo)
+        private static void InsertShippingDetails(string customerID, string quoteNumber, CustomerDetails shipTo)
         {
             try
             {
@@ -636,7 +636,7 @@ namespace GlassProductManager
                 quoteDetails.Header.ShippingMethodID = int.Parse(result.Tables[0].Rows[0][ColumnNames.ShippingMethodID].ToString());
                 quoteDetails.Header.OperatorName = result.Tables[0].Rows[0][ColumnNames.OperatorName].ToString();
 
-                quoteDetails.Header.SoldTo= new ShippingDetails();
+                quoteDetails.Header.SoldTo= new CustomerDetails();
                 quoteDetails.Header.SoldTo.FirstName = result.Tables[0].Rows[0][ColumnNames.SoldTo_FirstName].ToString();
                 quoteDetails.Header.SoldTo.LastName = result.Tables[0].Rows[0][ColumnNames.SoldTo_LastName].ToString();
                 quoteDetails.Header.SoldTo.Address = result.Tables[0].Rows[0][ColumnNames.SoldTo_Address].ToString();
@@ -647,7 +647,7 @@ namespace GlassProductManager
 
                 if (quoteDetails.Header.IsShipToOtherAddress)
                 {
-                    quoteDetails.Header.ShipTo = new ShippingDetails();
+                    quoteDetails.Header.ShipTo = new CustomerDetails();
                     quoteDetails.Header.ShipTo.FirstName = result.Tables[0].Rows[0][ColumnNames.ShipTo_FirstName].ToString();
                     quoteDetails.Header.ShipTo.LastName = result.Tables[0].Rows[0][ColumnNames.ShipTo_LastName].ToString();
                     quoteDetails.Header.ShipTo.Address = result.Tables[0].Rows[0][ColumnNames.ShipTo_Address].ToString();
@@ -714,7 +714,7 @@ namespace GlassProductManager
             return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
-        internal static void GetCustomerDetails(out ShippingDetails soldTo, out ShippingDetails shipTo, string customerID)
+        internal static void GetCustomerDetails(out CustomerDetails soldTo, out CustomerDetails shipTo, string customerID)
         {
             DataSet result = null;
             soldTo = null;
@@ -731,7 +731,7 @@ namespace GlassProductManager
                 {
                     return;
                 }
-                soldTo = new ShippingDetails();
+                soldTo = new CustomerDetails();
                 soldTo.FirstName = result.Tables[0].Rows[0][ColumnNames.SoldTo_FirstName].ToString();
                 soldTo.LastName = result.Tables[0].Rows[0][ColumnNames.SoldTo_LastName].ToString();
                 soldTo.Address = result.Tables[0].Rows[0][ColumnNames.SoldTo_Address].ToString();
@@ -740,7 +740,7 @@ namespace GlassProductManager
                 soldTo.Phone = result.Tables[0].Rows[0][ColumnNames.SoldTo_Phone].ToString();
                 soldTo.Misc = result.Tables[0].Rows[0][ColumnNames.SoldTo_Misc].ToString();
 
-                shipTo = new ShippingDetails();
+                shipTo = new CustomerDetails();
                 shipTo.FirstName = result.Tables[0].Rows[0][ColumnNames.ShipTo_FirstName].ToString();
                 shipTo.LastName = result.Tables[0].Rows[0][ColumnNames.ShipTo_LastName].ToString();
                 shipTo.Address = result.Tables[0].Rows[0][ColumnNames.ShipTo_Address].ToString();
@@ -764,6 +764,61 @@ namespace GlassProductManager
                 pQuoteNumber.Value = quoteNumber;
 
                 SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteQuote, pQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static ObservableCollection<CustomerSmartDataEntity> GetAllCustomerDetails()
+        {
+            ObservableCollection<CustomerSmartDataEntity> customerList = new ObservableCollection<CustomerSmartDataEntity>();
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllCustomerDetails, null);
+                if(result == null || result.Tables == null || result.Tables.Count == 0)
+                    return customerList;
+
+                CustomerSmartDataEntity newCustomer = null;
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    newCustomer = new CustomerSmartDataEntity();
+                    newCustomer.ID = result.Tables[0].Rows[rowIndex][ColumnNames.ID].ToString();
+                    newCustomer.FirstName = result.Tables[0].Rows[rowIndex][ColumnNames.FirstName].ToString();
+                    newCustomer.LastName=  result.Tables[0].Rows[rowIndex][ColumnNames.LastName].ToString();
+                    newCustomer.Address=  result.Tables[0].Rows[rowIndex][ColumnNames.Address].ToString();
+                    newCustomer.Phone = result.Tables[0].Rows[rowIndex][ColumnNames.Phone].ToString();
+                    newCustomer.Fax = result.Tables[0].Rows[rowIndex][ColumnNames.Fax].ToString();
+                    newCustomer.Email = result.Tables[0].Rows[rowIndex][ColumnNames.Email].ToString();
+                    newCustomer.Misc = result.Tables[0].Rows[rowIndex][ColumnNames.Misc].ToString();
+                    newCustomer.SONumber = result.Tables[0].Rows[rowIndex][ColumnNames.SONumber].ToString();
+                    newCustomer.WorksheetNumber = result.Tables[0].Rows[rowIndex][ColumnNames.WorksheetNumber].ToString();
+                    newCustomer.PONumber = result.Tables[0].Rows[rowIndex][ColumnNames.PONumber].ToString();
+                    newCustomer.InvoiceNumber = result.Tables[0].Rows[rowIndex][ColumnNames.InvoiceNumber].ToString();
+
+                    newCustomer.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber].ToString();
+
+                    customerList.Add(newCustomer);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return customerList;
+        }
+
+        internal static void DeleteCustomer(string customerID)
+        {
+            try
+            {
+                SqlParameter pCustomerID = new SqlParameter();
+                pCustomerID.ParameterName = "CustomerID";
+                pCustomerID.Value = customerID;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteCustomer, pCustomerID);
             }
             catch (Exception ex)
             {

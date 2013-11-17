@@ -270,7 +270,7 @@ namespace GlassProductManager
             {
                 header.CustomerID = int.Parse(cmbCustomers.SelectedValue.ToString());
             }
-            header.SoldTo = new ShippingDetails();
+            header.SoldTo = new CustomerDetails();
             header.SoldTo.FirstName = txtSoldToFirstName.Text;
             header.SoldTo.LastName = txtSoldToLastName.Text;
             header.SoldTo.Address = txtSoldToAddress.Text;
@@ -281,7 +281,7 @@ namespace GlassProductManager
 
             if (cbIsShipToSameAddress.IsChecked == true)
             {
-                header.ShipTo = new ShippingDetails();
+                header.ShipTo = new CustomerDetails();
                 header.ShipTo.FirstName = txtShiptoFirstName.Text;
                 header.ShipTo.LastName = txtShiptoLastName.Text;
                 header.ShipTo.Address = txtShipToAddress.Text;
@@ -561,7 +561,7 @@ namespace GlassProductManager
             #endregion
         }
 
-        private void SetShipToDetails(ShippingDetails shipTo)
+        private void SetShipToDetails(CustomerDetails shipTo)
         {
             txtShiptoFirstName.Text = shipTo.FirstName;
             txtShiptoLastName.Text = shipTo.LastName;
@@ -572,7 +572,7 @@ namespace GlassProductManager
             txtShipToMisc.Text = shipTo.Misc;
         }
 
-        private void SetSoldToDetails(ShippingDetails soldTo)
+        private void SetSoldToDetails(CustomerDetails soldTo)
         {
             txtSoldToFirstName.Text = soldTo.FirstName;
             txtSoldToLastName.Text = soldTo.LastName;
@@ -588,8 +588,8 @@ namespace GlassProductManager
             if (cmbCustomers.SelectedValue == null)
                 return;
 
-            ShippingDetails soldTo = null;
-            ShippingDetails shipTo = null;
+            CustomerDetails soldTo = null;
+            CustomerDetails shipTo = null;
             
             BusinessLogic.GetCustomerDetails(out soldTo, out shipTo, cmbCustomers.SelectedValue.ToString());
 

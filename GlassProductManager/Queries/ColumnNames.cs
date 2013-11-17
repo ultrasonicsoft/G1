@@ -89,6 +89,11 @@ namespace GlassProductManager
         internal const string GrandTotal = "GrandTotal";
 
         internal const string Item = "Item";
+        internal const string Address = "Address";
+        internal const string SONumber = "SONumber";
+        internal const string WorksheetNumber = "WorksheetNumber";
+        internal const string PONumber = "PONumber";
+        internal const string InvoiceNumber = "InvoiceNumber";
 
     }
 }

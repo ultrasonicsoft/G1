@@ -22,7 +22,8 @@ namespace GlassProductManager
     {
         Home,
         NewQuote,
-        Settings
+        RateSettings,
+        CustomerSettings
     }
 
     public partial class DashboardMenu : UserControl
@@ -56,12 +57,19 @@ namespace GlassProductManager
 
         }
 
+        private void btnCustomerSettings_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateToggleButtonStatus(UserSelection.CustomerSettings);
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+            CustomerSettingsContent newQuote = new CustomerSettingsContent();
+            parent.ucMainContent.ShowPage(newQuote);
+        }
+
         private void btnFirmSettings_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateToggleButtonStatus(UserSelection.Settings);
+            UpdateToggleButtonStatus(UserSelection.RateSettings);
 
             Dashboard parent = Window.GetWindow(this) as Dashboard;
-            //SettingsContent settingContent = new SettingsContent();
             PriceSettingsContent priceSettings = new PriceSettingsContent();
             parent.ucMainContent.ShowPage(priceSettings);
         }
@@ -73,18 +81,28 @@ namespace GlassProductManager
                 case UserSelection.Home:
                     btnCreateNewQuote.IsChecked = false;
                     btnFirmSettings.IsChecked = false;
+                    btnCustomerSettings.IsChecked = false;
                     break;
                 case UserSelection.NewQuote:
                     btnHome.IsChecked = false;
                     btnFirmSettings.IsChecked = false;
+                    btnCustomerSettings.IsChecked = false;
                     break;
-                case UserSelection.Settings:
+                case UserSelection.RateSettings:
                     btnHome.IsChecked = false;
                     btnCreateNewQuote.IsChecked = false;
+                    btnCustomerSettings.IsChecked = false;
+                    break;
+                case UserSelection.CustomerSettings:
+                    btnHome.IsChecked = false;
+                    btnCreateNewQuote.IsChecked = false;
+                    btnFirmSettings.IsChecked = false;
                     break;
                 default:
                     break;
             }
         }
+
+       
     }
 }

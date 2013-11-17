@@ -33,5 +33,7 @@ namespace GlassProductManager
         internal const string GetAllCustomerNames = "[GetAllCustomerNames]";
         internal const string GetCustomerDetails = "[GetCustomerDetails]";
         internal const string DeleteQuote = "[DeleteQuote]";
+        internal const string GetAllCustomerDetails = "[GetAllCustomerDetails]";
+        internal const string DeleteCustomer = "[DeleteCustomer]";
     }
 }

@@ -14,16 +14,16 @@ namespace GlassProductManager
         public bool IsNewCustomer { get; set; }
         public string CustomerPO { get; set; }
         public int ShippingMethodID { get; set; }
-        public ShippingDetails SoldTo { get; set; }
+        public CustomerDetails SoldTo { get; set; }
         public bool IsShipToOtherAddress { get; set; }
-        public ShippingDetails ShipTo { get; set; }
+        public CustomerDetails ShipTo { get; set; }
         public int LeadTimeID { get; set; }
         public int LeadTimeTypeID { get; set; }
         public int CustomerID { get; set; }
         public string OperatorName { get; set; }
     }
 
-    internal class ShippingDetails
+    public class CustomerDetails
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
