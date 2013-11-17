@@ -4,30 +4,220 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="500">
+             d:DesignHeight="800" d:DesignWidth="1000">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="500"/>
+            <ColumnDefinition Width="500"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" />
-        <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Name="cmbGlassType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbGlassType_SelectionChanged" />
-        <DataGrid Name="dgPriceList" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="300" Width="500" ItemsSource="{Binding}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Thickness" Binding="{Binding Thickness}" Width="100"></DataGridTextColumn>
-                <DataGridTextColumn Header="Cut SQ/FT" Binding="{Binding CutSQFT}" Width="100" SortDirection="Descending"></DataGridTextColumn>
-                <DataGridTextColumn Header="Tempered SQ/FT" Binding="{Binding TemperedSQFT}" Width="100" ></DataGridTextColumn>
-                <DataGridTextColumn Header="Polish/Straight Per 1 inch" Binding="{Binding PolishStraight}" Width="100" ></DataGridTextColumn>
-                <DataGridTextColumn Header="Polish/Shape Per 1 inch" Binding="{Binding PolishShape}" Width="100" ></DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
 
+        <GroupBox Header="Manage Glass Types" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top"  Width="500" Height="150" Grid.RowSpan="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <ComboBox Grid.Row="0" Grid.Column="1"  Name="cmbGlassTypeManageGlassType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbGlassTypeManageGlassType_SelectionChanged" />
+                
+                <Label  Content="Glass Type Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Name="txtGlassTypeName"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1"  IsEnabled="True"/>
+                
+                <Grid Grid.Row="2" Grid.ColumnSpan="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Name="btnAddNewGlassType" Content="Add New" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="0" Click="btnAddNewGlassType_Click" />
+                    <Button Name="btnEditGlassType" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="1" Click="btnEditGlassType_Click" />
+                    <Button Name="btnSaveNewGlassType" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="3" Click="btnSaveNewGlassType_Click" />
+                    <Button Name="btnCancelGlassType" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="2" />
+                    <Button Name="btnDeleteGlassType" Content="Delete" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="4" Click="btnDeleteGlassType_Click" />
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Manage Thickness" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top"  Width="500" Height="175" Grid.RowSpan="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <ComboBox Grid.Row="0" Grid.Column="1"  Name="cmbGlassTypeManageThickness" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbGlassTypeManageThickness_SelectionChanged" />
+                <Label  Content="Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Name="txtThicknessManage"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1"/>
+                <ListBox Name="lbThickness"  HorizontalAlignment="Left" Height="120"  Grid.RowSpan="4" VerticalAlignment="Top" Width="100" Grid.Row="0" Grid.Column="2" SelectionChanged="lbThickness_SelectionChanged"/>
+
+                <Grid Grid.Row="4" Grid.ColumnSpan="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Name="btnAddNewThickness" Content="Add New" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="0" Click="btnAddNewThickness_Click" />
+                    <Button Name="btnEditThickness" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="1" Click="btnEditThickness_Click" />
+                    <Button Name="btnSaveThickness" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="3" Click="btnSaveThickness_Click" />
+                    <Button Name="btnCancelEditThickness" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="2" Click="btnCancelEditThickness_Click" />
+                    <Button Name="btnDeleteThickness" Content="Delete" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="4" />
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Glass Details" HorizontalAlignment="Left"  VerticalAlignment="Top"  Width="500" Height="200" Grid.Row="0" Grid.Column="1" Grid.RowSpan="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <ComboBox Grid.Row="0" Grid.Column="1"  Name="cmbGlassType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbGlassType_SelectionChanged" />
+                <Label  Content="Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2"/>
+                <ComboBox Name="cmbThickness" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbThickness_SelectionChanged" Grid.Row="0" Grid.Column="3"/>
+                <Label  Content="Cutout SqFt Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Name="txtCutoutSqFtRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1"/>
+                <Label  Content="Tempered Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
+                <TextBox Name="txtTemperedRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="3"/>
+                <Label  Content="Polish Straight Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
+                <TextBox Name="txtPolishStraightRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="2" Grid.Column="1"/>
+                <Label  Content="Polish Shape Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2"/>
+                <TextBox Name="txtPolishShapeRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="2" Grid.Column="3"/>
+                <Label  Content="Miter Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
+                <TextBox Name="txtMiterRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="3" Grid.Column="1"/>
+                <Button Name="btnEditGlassDetails" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="5" Grid.Column="1" Click="btnEditGlassDetails_Click" />
+                <Button Name="btnSaveGlassDetails" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="5" Grid.Column="2" Click="btnSaveGlassDetails_Click" />
+                <Button Name="btnCancelEditGlassDetails" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="5" Grid.Column="3" Click="btnCancelEditGlassDetails_Click" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Insulation Rate" HorizontalAlignment="Left"  VerticalAlignment="Top"  Width="500" Height="150" Grid.Row="4" Grid.Column="1" Grid.RowSpan="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Tier 1 (Sq.Ft.):" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <TextBox Name="txtTier1"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="1"/>
+                <Label Content="Cost 1 ($):" HorizontalAlignment="Right" VerticalAlignment="Center"  Grid.Row="0" Grid.Column="2"  />
+                <TextBox Name="txtTierCost1"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="3"/>
+                <Label  Content="Tier 2 (Sq.Ft.):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Name="txtTier2"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1"/>
+                <Label Content="Cost 2 ($):" HorizontalAlignment="Right" VerticalAlignment="Center"  Grid.Row="1" Grid.Column="2"  />
+                <TextBox Name="txtTierCost2"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="3"/>
+                <Label  Content="Max (Sq.Ft.):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
+                <TextBox Name="txtTierCostMax"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="2" Grid.Column="1"/>
+                <Button Name="btnEditInsulation" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="3" Grid.Column="1" />
+                <Button Name="btnSaveInsulation" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="3" Grid.Column="2" Click="btnSaveInsulation_Click" />
+                <Button Name="btnCancelInsulation" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="3" Grid.Column="3" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Misc Rates" HorizontalAlignment="Left"  VerticalAlignment="Top"  Width="500" Height="120" Grid.Row="7" Grid.Column="0" Grid.RowSpan="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Notch Rate" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <TextBox Name="txtNotchRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="1"/>
+                <Label Content="Hinge Rate" HorizontalAlignment="Right" VerticalAlignment="Center"  Grid.Row="0" Grid.Column="2"  />
+                <TextBox Name="txtHingeRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="3"/>
+                <Label  Content="Patch Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Name="txtPatchRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1"/>
+                <Button Name="btnEditMiscRate" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="1" />
+                <Button Name="btnSaveMiscRate" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="2" Click="btnSaveMiscRate_Click" />
+                <Button Name="btnCancelMiscRate" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="3" />
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Hole Rates" HorizontalAlignment="Left"  VerticalAlignment="Top"  Width="500" Height="120" Grid.Row="7" Grid.Column="1" Grid.RowSpan="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Thickness" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <ComboBox Grid.Row="0" Grid.Column="1"  Name="cmbThicknessHoleRates" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbThicknessHoleRates_SelectionChanged"  />
+                <Label Content="Hole Rate" HorizontalAlignment="Right" VerticalAlignment="Center"  Grid.Row="0" Grid.Column="2"  />
+                <TextBox Name="txtHoleRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="3"/>
+               
+                <Button Name="btnEditHoleRate" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="2" Grid.Column="1" Click="btnEditHoleRate_Click"  />
+                <Button Name="btnSaveHoleRate" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="2" Grid.Column="2" Click="btnSaveHoleRate_Click"  />
+                <Button Name="btnCancelHoleRate" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="2" Grid.Column="3" Click="btnCancelHoleRate_Click"  />
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>

@@ -35,5 +35,16 @@ namespace GlassProductManager
         internal const string DeleteQuote = "[DeleteQuote]";
         internal const string GetAllCustomerDetails = "[GetAllCustomerDetails]";
         internal const string DeleteCustomer = "[DeleteCustomer]";
+        internal const string UpdateGlassRates = "[UpdateGlassRates]";
+        internal const string AddNewGlassType = "[AddNewGlassType]";
+        internal const string DeleteGlassType = "[DeleteGlassType]";
+        internal const string CreateNewThickness = "[CreateNewThickness]";
+        internal const string GetAllInsulationCost = "[GetAllInsulationCost]";
+        internal const string UpdateInsulationCost = "[UpdateInsulationCost]";
+        internal const string GetMiscRates = "[GetMiscRates]";
+        internal const string UpdateMiscRate = "[UpdateMiscRate]";
+        internal const string GetThicknesses = "[GetThicknesses]";
+        internal const string GetHoleRateByThicknessID = "[GetHoleRateByThicknessID]";
+        internal const string UpdateHoleRate = "[UpdateHoleRate]";
     }
 }

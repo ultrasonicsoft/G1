@@ -80,6 +80,9 @@
     <Compile Include="Classes\CustomerSmartDataEntity.cs" />
     <Compile Include="Classes\DataGridHelper.cs" />
     <Compile Include="Classes\FirmSettings.cs" />
+    <Compile Include="Classes\GlassRateEntity.cs" />
+    <Compile Include="Classes\InsulationCostEntity.cs" />
+    <Compile Include="Classes\MiscRateEntity.cs" />
     <Compile Include="Classes\QuoteEntity.cs" />
     <Compile Include="Classes\QuoteFooter.cs" />
     <Compile Include="Classes\QuoteGridEntity.cs" />
@@ -106,7 +109,7 @@
       <DependentUpon>NewQuoteGridContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlassShape.cs" />
-    <Compile Include="NewQuoteItemEntity.cs" />
+    <Compile Include="Classes\NewQuoteItemEntity.cs" />
     <Compile Include="Forms\NewQuoteItemsContent.xaml.cs">
       <DependentUpon>NewQuoteItemsContent.xaml</DependentUpon>
     </Compile>

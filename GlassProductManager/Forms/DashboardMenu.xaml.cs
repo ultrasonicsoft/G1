@@ -65,7 +65,7 @@ namespace GlassProductManager
             parent.ucMainContent.ShowPage(newQuote);
         }
 
-        private void btnFirmSettings_Checked(object sender, RoutedEventArgs e)
+        private void btnPriceSettings_Checked(object sender, RoutedEventArgs e)
         {
             UpdateToggleButtonStatus(UserSelection.RateSettings);
 
@@ -80,12 +80,12 @@ namespace GlassProductManager
             {
                 case UserSelection.Home:
                     btnCreateNewQuote.IsChecked = false;
-                    btnFirmSettings.IsChecked = false;
+                    btnPriceSettings.IsChecked = false;
                     btnCustomerSettings.IsChecked = false;
                     break;
                 case UserSelection.NewQuote:
                     btnHome.IsChecked = false;
-                    btnFirmSettings.IsChecked = false;
+                    btnPriceSettings.IsChecked = false;
                     btnCustomerSettings.IsChecked = false;
                     break;
                 case UserSelection.RateSettings:
@@ -96,7 +96,7 @@ namespace GlassProductManager
                 case UserSelection.CustomerSettings:
                     btnHome.IsChecked = false;
                     btnCreateNewQuote.IsChecked = false;
-                    btnFirmSettings.IsChecked = false;
+                    btnPriceSettings.IsChecked = false;
                     break;
                 default:
                     break;

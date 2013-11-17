@@ -825,5 +825,279 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
         }
+
+        internal static bool UpdateGlassRate(GlassRateEntity updatedRate)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pGlassID = new SqlParameter();
+                pGlassID.ParameterName = "GlassID";
+                pGlassID.Value = updatedRate.GlassID;
+
+                SqlParameter pThicknessID = new SqlParameter();
+                pThicknessID.ParameterName = "ThicknessID";
+                pThicknessID.Value = updatedRate.ThicknessID;
+
+                SqlParameter pCutoutSqFtRate = new SqlParameter();
+                pCutoutSqFtRate.ParameterName = "cutSqft";
+                pCutoutSqFtRate.Value = updatedRate.CutoutSqFtRate;
+
+                SqlParameter pTemperedRate = new SqlParameter();
+                pTemperedRate.ParameterName = "temperedSqft";
+                pTemperedRate.Value = updatedRate.TemperedRate;
+
+                SqlParameter pPolishStraightRate = new SqlParameter();
+                pPolishStraightRate.ParameterName = "polishStraight";
+                pPolishStraightRate.Value = updatedRate.PolishStraightRate;
+
+                SqlParameter pPolishShapeRate = new SqlParameter();
+                pPolishShapeRate.ParameterName = "polishShape";
+                pPolishShapeRate.Value = updatedRate.PolishShapeRate;
+
+                SqlParameter pMiterRate = new SqlParameter();
+                pMiterRate.ParameterName = "miterRate";
+                pMiterRate.Value = updatedRate.MiterRate;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateGlassRates, pGlassID,pThicknessID,pCutoutSqFtRate,pTemperedRate,pPolishShapeRate,pPolishStraightRate,pMiterRate);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        internal static bool CreateNewGlassType(string glassType)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pGlassType = new SqlParameter();
+                pGlassType.ParameterName = "glassType";
+                pGlassType.Value = glassType;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddNewGlassType, pGlassType);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        internal static bool DeleteGlassType(int glassID)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pGlassID = new SqlParameter();
+                pGlassID.ParameterName = "glassID";
+                pGlassID.Value = glassID;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteGlassType, pGlassID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        internal static bool CreateNewThickness(int glassID, string thickness)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pGlassID = new SqlParameter();
+                pGlassID.ParameterName = "glassID";
+                pGlassID.Value = glassID;
+
+                SqlParameter pThickness = new SqlParameter();
+                pThickness.ParameterName = "thickness";
+                pThickness.Value = thickness;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.CreateNewThickness, pGlassID, pThickness);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        internal static InsulationCostEntity GetAllInsulationCost()
+        {
+            InsulationCostEntity rates = null;
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllInsulationCost, null);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                {
+                    return rates;
+                }
+                rates = new InsulationCostEntity();
+                rates.TierCost1 = double.Parse(result.Tables[0].Rows[0][ColumnNames.Cost1].ToString());
+                rates.TierSqFt1 = int.Parse(result.Tables[0].Rows[0][ColumnNames.Ceiling1].ToString());
+                rates.TierCost2 = double.Parse(result.Tables[0].Rows[0][ColumnNames.Cost2].ToString());
+                rates.TierSqFt2 = int.Parse(result.Tables[0].Rows[0][ColumnNames.Ceiling2].ToString());
+                rates.TierCost3 = double.Parse(result.Tables[0].Rows[0][ColumnNames.Cost3].ToString());
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return rates;
+        }
+
+        internal static bool UpdateInsulationCost(InsulationCostEntity insualtionRate)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pCeiling1 = new SqlParameter();
+                pCeiling1.ParameterName = "Ceiling1";
+                pCeiling1.Value = insualtionRate.TierSqFt1;
+
+                SqlParameter pCost1 = new SqlParameter();
+                pCost1.ParameterName = "Cost1";
+                pCost1.Value = insualtionRate.TierCost1;
+
+                SqlParameter pCeiling2 = new SqlParameter();
+                pCeiling2.ParameterName = "Ceiling2";
+                pCeiling2.Value = insualtionRate.TierSqFt2;
+
+                SqlParameter pCost2 = new SqlParameter();
+                pCost2.ParameterName = "Cost2";
+                pCost2.Value = insualtionRate.TierCost2;
+
+                SqlParameter pCost3 = new SqlParameter();
+                pCost3.ParameterName = "Cost3";
+                pCost3.Value = insualtionRate.TierCost3;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateInsulationCost, pCeiling1, pCost1, pCeiling2, pCost2, pCost3);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        internal static  MiscRateEntity GetMiscRates()
+        {
+            MiscRateEntity rates = null;
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetMiscRates, null);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                {
+                    return rates;
+                }
+                rates = new MiscRateEntity();
+                rates.NotchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE].ToString());
+                rates.HingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
+                rates.PatchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return rates;
+        }
+
+        internal static bool UpdateMiscRate(MiscRateEntity miscRate)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pNotchRate = new SqlParameter();
+                pNotchRate.ParameterName = "NotchRate";
+                pNotchRate.Value = miscRate.NotchRate;
+
+                SqlParameter pHingeRate = new SqlParameter();
+                pHingeRate.ParameterName = "HingeRate";
+                pHingeRate.Value = miscRate.HingeRate;
+
+                SqlParameter pPatchRate = new SqlParameter();
+                pPatchRate.ParameterName = "PatchRate";
+                pPatchRate.Value = miscRate.PatchRate;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateMiscRate, pNotchRate,pHingeRate,pPatchRate);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        internal static DataTable GetThicknesses()
+        {
+            DataSet result = null;
+            try
+            {
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetThicknesses, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static string GetHoleRateByThicknessID(int thicknessID)
+        {
+            DataSet result = null;
+            try
+            {
+                SqlParameter pThicknessID = new SqlParameter();
+                pThicknessID.ParameterName = "ThicknessID";
+                pThicknessID.Value = thicknessID;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetHoleRateByThicknessID, pThicknessID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count== 0 ? string.Empty : result.Tables[0].Rows[0][0].ToString();
+        }
+
+        internal static bool UpdateHoleRate(int thicknessID, double holeRate)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pThicknessID = new SqlParameter();
+                pThicknessID.ParameterName = "thicknessID";
+                pThicknessID.Value = thicknessID;
+
+                SqlParameter pHoleRate = new SqlParameter();
+                pHoleRate.ParameterName = "holeRate";
+                pHoleRate.Value = holeRate;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateHoleRate, pThicknessID, pHoleRate);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
     }
 }
