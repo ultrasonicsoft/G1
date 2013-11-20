@@ -23,5 +23,105 @@
             </Style.Triggers>
         </Style>
 
+        <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#A5FFFFFF"/>
+        <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
+        <SolidColorBrush x:Key="TextBackColor" Color="#FFF"/>
+        <SolidColorBrush x:Key="TextColor" Color="#444"/>
+        <SolidColorBrush x:Key="TextColorDisabled" Color="#888"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#97a8ac"/>
+        <SolidColorBrush x:Key="SolidBorderBrush" Color="#ddd" />
+        
+        <Style  x:Key="textBoxNormalStyle"
+            TargetType="{x:Type TextBox}">
+            <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+            Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation"
+            Value="None" />
+            <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+            <Setter Property="MinWidth"
+            Value="100" />
+            <Setter Property="MaxWidth"
+            Value="200" />
+            <Setter Property="Height"
+            Value="22" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="AllowDrop"
+            Value="true" />
+            <Setter Property="Language" Value="tr-TR"></Setter>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border Name="Border"
+                  CornerRadius="2"
+                  Padding="2"
+                  BorderThickness="1">
+                            <Border.Background>
+                                <SolidColorBrush Color="{DynamicResource ControlLightColor}" />
+                            </Border.Background>
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="{DynamicResource BorderMediumColor}" />
+                            </Border.BorderBrush>
+                            <ScrollViewer Margin="0"
+                          x:Name="PART_ContentHost" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Value="{StaticResource DisabledBackgroundBrush}" Property="Background" />
+                                <Setter Value="{StaticResource DisabledForegroundBrush}" Property="Foreground" />
+                                <Setter TargetName="PART_ContentHost" Property="Background" Value="{StaticResource DisabledBackgroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsReadOnly" Value="True">
+                                <Setter Value="{StaticResource DisabledBackgroundBrush}" Property="Background" />
+                                <Setter Value="{StaticResource DisabledForegroundBrush}" Property="Foreground" />
+                                <Setter TargetName="PART_ContentHost" Property="Background" Value="{StaticResource DisabledBackgroundBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  x:Key="textBoxErrorStyle"
+            TargetType="{x:Type TextBox}">
+            <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+            Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation"
+            Value="None" />
+            <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+            <Setter Property="MinWidth"
+            Value="10" />
+            <Setter Property="MaxWidth"
+            Value="120" />
+            <Setter Property="Height"
+            Value="22" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="AllowDrop"
+            Value="true" />
+            <Setter Property="ToolTip" Value="Please enter only numbers!"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid Name="test">
+                            <Border Background="{StaticResource TextBackColor}" BorderBrush="#FF888888" x:Name="Bd" CornerRadius="1" BorderThickness="1">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                            </Border>
+                            <Image Name="ErrorImage" Width="15" Height="15" Margin="0,0,4,0" Source="Images/validate.png" HorizontalAlignment="Right">
+
+                            </Image>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
     </Application.Resources>
 </Application>

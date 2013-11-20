@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,9 @@ namespace GlassProductManager
     public partial class NewQuoteItemsContent : UserControl
     {
         NewQuoteItemEntity currentItem = null;
+        public Style textBoxNormalStyle;
+        public Style textBoxErrorStyle;
+
 
         public ObservableCollection<CutoutData> allCutoutData
         {
@@ -30,7 +34,7 @@ namespace GlassProductManager
             set { currentItem._allCutoutData = value; }
         }
 
-        
+
 
         public NewQuoteItemsContent()
         {
@@ -45,6 +49,11 @@ namespace GlassProductManager
             FillInsulationDetails();
             currentItem.GlassType1 = new InsulationDetails();
             currentItem.GlassType2 = new InsulationDetails();
+            FrameworkElement frameworkElement;
+
+            frameworkElement = new FrameworkElement();
+            //textBoxNormalStyle = (Style)frameworkElement.TryFindResource("textBoxNormalStyle");
+            textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxErrorStyle");
         }
 
         private void FillCutoutData()
@@ -148,10 +157,28 @@ namespace GlassProductManager
             txtTotalSqFt.Text = string.IsNullOrEmpty(txtTotalSqFt.Text) ? "0" : txtTotalSqFt.Text;
         }
 
+        private bool IsNumberOnly(TextBox input)
+        {
+            bool result = false;
+            if (Regex.IsMatch(input.Text, @"^\d+$"))
+            {
+                input.Style = null;
+                result = true;
+            }
+            else
+            {
+                textBoxNormalStyle = input.Style;
+                input.Style = textBoxErrorStyle;
+            }
+            return result;
+        }
+
         private void txtTotalSqFt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtTotalSqFt.Text, "TotalSqFT");
-
+            if (IsNumberOnly(txtTotalSqFt))
+            {
+                NewItemsChanged(txtTotalSqFt.Text, "TotalSqFT");
+            }
         }
 
         private void cbIsStraightPolish_Checked(object sender, RoutedEventArgs e)
@@ -167,12 +194,18 @@ namespace GlassProductManager
 
         private void txtStraightPolishLongSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtStraightPolishLongSide.Text, "StraightPolishLongSide");
+            if (IsNumberOnly(txtStraightPolishLongSide))
+            {
+                NewItemsChanged(txtStraightPolishLongSide.Text, "StraightPolishLongSide");
+            }
         }
 
         private void txtStraightPolishShortSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtStraightPolishShortSide.Text, "StraightPolishShortSide");
+            if (IsNumberOnly(txtStraightPolishShortSide))
+            {
+                NewItemsChanged(txtStraightPolishShortSide.Text, "StraightPolishShortSide");
+            }
         }
 
         private void txtStraightPolishShortSide_LostFocus(object sender, RoutedEventArgs e)
@@ -182,7 +215,10 @@ namespace GlassProductManager
 
         private void txtStraightPolishTotalInches_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtStraightPolishTotalInches.Text, "StraightPolishTotalInches");
+            if (IsNumberOnly(txtStraightPolishTotalInches))
+            {
+                NewItemsChanged(txtStraightPolishTotalInches.Text, "StraightPolishTotalInches");
+            }
         }
 
         private void txtStraightPolishTotalInches_LostFocus(object sender, RoutedEventArgs e)
@@ -197,7 +233,10 @@ namespace GlassProductManager
 
         private void txtCustomShapePolishSize_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtCustomShapePolishSize.Text, "CustomPolishTotalInches");
+            if (IsNumberOnly(txtCustomShapePolishSize))
+            {
+                NewItemsChanged(txtCustomShapePolishSize.Text, "CustomPolishTotalInches");
+            }
         }
 
         private void cbIsStraightPolish_Unchecked(object sender, RoutedEventArgs e)
@@ -237,7 +276,10 @@ namespace GlassProductManager
 
         private void txtMiterTotalInches_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtMiterTotalInches.Text, "MiterTotalInches");
+            if (IsNumberOnly(txtMiterTotalInches))
+            {
+                NewItemsChanged(txtMiterTotalInches.Text, "MiterTotalInches");
+            }
         }
 
         private void txtMiterTotalInches_LostFocus(object sender, RoutedEventArgs e)
@@ -260,7 +302,10 @@ namespace GlassProductManager
 
         private void txtNotchesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtNotchesNumber.Text, "Notches");
+            if (IsNumberOnly(txtNotchesNumber))
+            {
+                NewItemsChanged(txtNotchesNumber.Text, "Notches");
+            }
         }
 
         private void txtNotchesNumber_LostFocus(object sender, RoutedEventArgs e)
@@ -288,7 +333,10 @@ namespace GlassProductManager
 
         private void txtHingesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtHingesNumber.Text, "Hinges");
+            if (IsNumberOnly(txtHingesNumber))
+            {
+                NewItemsChanged(txtHingesNumber.Text, "Hinges");
+            }
         }
 
         private void cbPatches_Unchecked(object sender, RoutedEventArgs e)
@@ -306,7 +354,10 @@ namespace GlassProductManager
 
         private void txtPatchesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtPatchesNumber.Text, "Patches");
+            if (IsNumberOnly(txtPatchesNumber))
+            {
+                NewItemsChanged(txtPatchesNumber.Text, "Patches");
+            }
         }
 
         private void txtPatchesNumber_LostFocus(object sender, RoutedEventArgs e)
@@ -433,7 +484,7 @@ namespace GlassProductManager
             cmbThickness1.SelectedValuePath = ColumnNames.THICKNESSID;
             cmbThickness1.ItemsSource = result.DefaultView;
 
-            UpdateInsulationGlassTotal(cmbGlassType1,cmbThickness1,cmbTemp1,currentItem.GlassType1,txtSqFt1,txtGlassType1Total);
+            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
         }
 
         private void cmbGlassType2_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -452,7 +503,7 @@ namespace GlassProductManager
 
         }
 
-        private void UpdateInsulationGlassTotal(ComboBox glassType, ComboBox thickness,ComboBox isTempered, InsulationDetails currentGlassType, TextBox currentSQFT, TextBox currentGlassTotal)
+        private void UpdateInsulationGlassTotal(ComboBox glassType, ComboBox thickness, ComboBox isTempered, InsulationDetails currentGlassType, TextBox currentSQFT, TextBox currentGlassTotal)
         {
             if (glassType.SelectedValue == null || thickness.SelectedValue == null || string.IsNullOrEmpty(currentSQFT.Text))
                 return;
@@ -490,7 +541,7 @@ namespace GlassProductManager
         private void UpdateInsulationTotal()
         {
             lblMaterialCost.Content = "$ " + (currentItem.GlassType1.Total + currentItem.GlassType2.Total).ToString("0.00");
-            
+
             double insulationTierCost = BusinessLogic.GetInsulationTierCost(currentItem.GlassType1.SqFt);
             lblInsulationTier.Content = "$ " + insulationTierCost.ToString("0.00");
 
@@ -516,12 +567,15 @@ namespace GlassProductManager
 
         private void txtSqFt1_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentItem == null)
-                return;
+            if (IsNumberOnly(txtSqFt1))
+            {
+                if (currentItem == null)
+                    return;
 
-            if(txtSqFt2 != null)
-            txtSqFt2.Text = txtSqFt1.Text;
-            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
+                if (txtSqFt2 != null)
+                    txtSqFt2.Text = txtSqFt1.Text;
+                UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
+            }
         }
 
         private void cmbThickness2_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -557,8 +611,10 @@ namespace GlassProductManager
 
         private void txtHoleNumbers_TextChanged(object sender, TextChangedEventArgs e)
         {
-            NewItemsChanged(txtHoleNumbers.Text, "Holes");
-
+            if (IsNumberOnly(txtHoleNumbers))
+            {
+                NewItemsChanged(txtHoleNumbers.Text, "Holes");
+            }
         }
 
         private void txtHoleNumbers_LostFocus(object sender, RoutedEventArgs e)
@@ -579,7 +635,10 @@ namespace GlassProductManager
         private void txtMiterLongSide_LostFocus(object sender, RoutedEventArgs e)
         {
             txtMiterLongSide.Text = string.IsNullOrEmpty(txtMiterLongSide.Text) ? "0" : txtMiterLongSide.Text;
-            currentItem.MiterLongSide = int.Parse(txtMiterLongSide.Text);
+            if (IsNumberOnly(txtMiterLongSide))
+            {
+                currentItem.MiterLongSide = int.Parse(txtMiterLongSide.Text);
+            }
         }
 
         private void txtMiterShortSide_TextChanged(object sender, TextChangedEventArgs e)
@@ -587,8 +646,11 @@ namespace GlassProductManager
             if (currentItem == null)
                 return;
 
-            txtMiterShortSide.Text = string.IsNullOrEmpty(txtMiterShortSide.Text) ? "0" : txtMiterShortSide.Text;
-            currentItem.MiterShortSide = int.Parse(txtMiterShortSide.Text);
+            if (IsNumberOnly(txtMiterShortSide))
+            {
+                txtMiterShortSide.Text = string.IsNullOrEmpty(txtMiterShortSide.Text) ? "0" : txtMiterShortSide.Text;
+                currentItem.MiterShortSide = int.Parse(txtMiterShortSide.Text);
+            }
         }
 
         private void btnAddToQuote_Click(object sender, RoutedEventArgs e)
@@ -621,17 +683,17 @@ namespace GlassProductManager
         private string GetDimensionString()
         {
             string defaultFraction = "x/y";
-            
-            if(string.Equals(currentItem.GlassWidthFraction,defaultFraction) && string.Equals(currentItem.GlassHeightFraction,defaultFraction))
-                return string.Format(@"{0}"" x {1}""", currentItem.GlassWidth,currentItem.GlassHeight);
+
+            if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                return string.Format(@"{0}"" x {1}""", currentItem.GlassWidth, currentItem.GlassHeight);
 
             else if (false == string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
-                return string.Format(@"{0} {1}"" x {2}""", currentItem.GlassWidth,currentItem.GlassWidthFraction, currentItem.GlassHeight);
+                return string.Format(@"{0} {1}"" x {2}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight);
 
             else if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && false == string.Equals(currentItem.GlassHeightFraction, defaultFraction))
                 return string.Format(@"{0}"" x {1} {2}""", currentItem.GlassWidth, currentItem.GlassHeight, currentItem.GlassHeightFraction);
             else
-                return string.Format(@"{0} {1}"" x  {2} {3}""", currentItem.GlassWidth,currentItem.GlassWidthFraction, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+                return string.Format(@"{0} {1}"" x  {2} {3}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight, currentItem.GlassHeightFraction);
         }
 
         private void txtGlassWidth_TextChanged(object sender, TextChangedEventArgs e)
@@ -639,8 +701,11 @@ namespace GlassProductManager
             if (currentItem == null)
                 return;
 
-            txtGlassWidth.Text = string.IsNullOrEmpty(txtGlassWidth.Text) ? "0" : txtGlassWidth.Text;
-            currentItem.GlassWidth = int.Parse(txtGlassWidth.Text);
+            if (IsNumberOnly(txtGlassWidth))
+            {
+                txtGlassWidth.Text = string.IsNullOrEmpty(txtGlassWidth.Text) ? "0" : txtGlassWidth.Text;
+                currentItem.GlassWidth = int.Parse(txtGlassWidth.Text);
+            }
         }
 
         private void txtGlassHeight_TextChanged(object sender, TextChangedEventArgs e)
@@ -648,8 +713,11 @@ namespace GlassProductManager
             if (currentItem == null)
                 return;
 
-            txtGlassHeight.Text = string.IsNullOrEmpty(txtGlassHeight.Text) ? "0" : txtGlassHeight.Text;
-            currentItem.GlassHeight = int.Parse(txtGlassHeight.Text);
+            if (IsNumberOnly(txtGlassHeight))
+            {
+                txtGlassHeight.Text = string.IsNullOrEmpty(txtGlassHeight.Text) ? "0" : txtGlassHeight.Text;
+                currentItem.GlassHeight = int.Parse(txtGlassHeight.Text);
+            }
         }
 
         private void btnNewItem_Click(object sender, RoutedEventArgs e)
@@ -678,7 +746,7 @@ namespace GlassProductManager
                 UpdateCurrentTotal();
                 ResetAllControls();
             }
-           
+
         }
 
         private void ResetAllControls()
@@ -686,16 +754,16 @@ namespace GlassProductManager
             //Glass Type and thickness
             cmbGlassType.SelectedIndex = -1;
             cmbThickness.SelectedIndex = -1;
-            
+
             cbLogo.IsChecked = false;
             cbIsTempered.IsChecked = false;
-            
+
             // Dimension
             txtTotalSqFt.Text = "0";
             txtGlassHeight.Text = "0";
             txtGlassWidth.Text = "0";
             txtGlassWidth.Text = "0";
-            
+
             // Custom Shape
             cmbShape.SelectedIndex = -1;
             txtShapeHeight.Text = "0";
@@ -728,7 +796,7 @@ namespace GlassProductManager
 
             // Total labels
             lblCutoutTotal.Content = "$ 0.00";
-            
+
         }
 
         private void ResetInsulation()
@@ -856,6 +924,20 @@ namespace GlassProductManager
             //        }), System.Windows.Threading.DispatcherPriority.Background, new object[] { null });
             //    }
             //}
+        }
+
+        private void txtShapeHeight_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IsNumberOnly(txtShapeHeight))
+            {
+            }
+        }
+
+        private void txtShapeWidth_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (IsNumberOnly(txtShapeWidth))
+            {
+            }
         }
     }
 }

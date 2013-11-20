@@ -401,28 +401,53 @@ namespace GlassProductManager
 
             description.Append(GlassType);
 
+            if (_isTempered)
+            {
+                description.Append(" [Temp]");
+            }
+
+            if (_isCutout)
+            {
+                description.AppendFormat(" [Cutout: {0}]", _allCutoutData.Count);
+            }
+
+            if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches > 0)
+            {
+                description.AppendFormat(" [Polish: -> Long {0}, Short {1}, (in) {2}]", _straightPolishLongSide, _straightPolishShortSide, _straightPolishTotalInches);
+            }
+
+            if (_isCustomShapePolish && _customPolishTotalInches > 0)
+            {
+                description.AppendFormat(" [CusPolish: (in) {0}]", _customPolishTotalInches);
+            }
+
             description.AppendFormat(" " + Environment.NewLine);
 
             bool isAnyMiscAvailable = false;
 
             if (_isHoles && _holes >= 0)
             {
-                description.AppendFormat(" [Holes - {0}]", _holes);
+                description.AppendFormat(" [Holes: {0}]", _holes);
                 isAnyMiscAvailable = true;
             }
             if (_isHinges && _hinges >= 0)
             {
-                description.AppendFormat(" [Hinges - {0}]", _hinges);
+                description.AppendFormat(" [Hinges: {0}]", _hinges);
                 isAnyMiscAvailable = true;
             }
             if (_isPatches && _patches >= 0)
             {
-                description.AppendFormat(" [Patches - {0}]", _patches);
+                description.AppendFormat(" [Patches: {0}]", _patches);
                 isAnyMiscAvailable = true;
             }
             if (_isNotch && _notches >= 0)
             {
-                description.AppendFormat(" [Notches - {0}]", _notches);
+                description.AppendFormat(" [Notches: {0}]", _notches);
+                isAnyMiscAvailable = true;
+            }
+            if (_isMiter && _miterLongSide > 0 && _miterShortSide > 0 && _miterTotalInches > 0)
+            {
+                description.AppendFormat(" [Miter: Log {0}, Short {1}, (in) {2}]", _miterLongSide, _miterShortSide, _miterTotalInches);
                 isAnyMiscAvailable = true;
             }
 
@@ -431,65 +456,16 @@ namespace GlassProductManager
                 description.Append(Environment.NewLine);
             }
 
-            bool IsInsulationDataAvailable = false;
-
+            if (IsLogoRequired)
+            {
+                description.AppendFormat(" [Logo]");
+            }
             if (_isInsulation)
             {
                 string isTemp1 = GlassType1.IsTempered? "Temp" : "Not Temp";
                 string isTemp2 = GlassType2.IsTempered? "Temp" : "Not Temp";
                 description.AppendFormat(" [Insulation: ({0}-{1}-{2}) ({3}-{4}-{5}) {6} SqFt]", GlassType1.GlassType, GlassType1.Thickness, isTemp1, GlassType2.GlassType, GlassType2.Thickness, isTemp2, GlassType1.SqFt);
-                IsInsulationDataAvailable = true;
             }
-            if (IsInsulationDataAvailable)
-            {
-                description.Append(Environment.NewLine);
-            }
-
-            bool isCutoutDataAvailable = false;
-            if (_isCutout)
-            {
-                description.AppendFormat(" [Cutout: {0}]", _allCutoutData.Count);
-                isCutoutDataAvailable = true;
-            }
-            if (isCutoutDataAvailable)
-            {
-                description.Append(Environment.NewLine);
-            }
-
-            bool isStraightPolishDataAvailable = false;
-            if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches > 0)
-            {
-                description.AppendFormat(" [Straight Polish -> Long Sides - {0}, Short Sides - {1}, Total (in) - {2}]", _straightPolishLongSide, _straightPolishShortSide, _straightPolishTotalInches);
-                isStraightPolishDataAvailable = true;
-            }
-
-            if (_isCustomShapePolish && _customPolishTotalInches > 0)
-            {
-                description.AppendFormat(" [Custom Polish -> Total (in) - {0}]", _customPolishTotalInches);
-                isStraightPolishDataAvailable = true;
-            }
-
-            if (isStraightPolishDataAvailable)
-            {
-                description.Append(Environment.NewLine);
-            }
-
-            bool isMiterDataAvailable = false;
-            if (_isMiter && _miterLongSide > 0 && _miterShortSide > 0 && _miterTotalInches > 0)
-            {
-                description.AppendFormat(" [Miter -> Log Sides - {0}, Short Sides - {1}, Total (in) - {2}]", _miterLongSide, _miterShortSide, _miterTotalInches);
-                isMiterDataAvailable = true;
-            }
-            if (isMiterDataAvailable)
-            {
-                description.Append(Environment.NewLine);
-            }
-
-            if (IsLogoRequired)
-            {
-                description.AppendFormat(" [Logo]");
-            }
-
             return description.ToString();
         }
     }

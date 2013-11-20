@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="700">
+             d:DesignHeight="800" d:DesignWidth="900">
     <Grid>
         <Border  HorizontalAlignment="Center" VerticalAlignment="Center"  BorderBrush="Black" BorderThickness="2">
 
-            <Grid>
+            <Grid Width="900">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
                     <RowDefinition Height="25" />
@@ -163,7 +163,7 @@
                         </DataGridTextColumn>
                         <!--TODO: Make it Combo box-->
                         <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="45" SortDirection="Descending"/>
-                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="250" ></DataGridTextColumn>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="350" ></DataGridTextColumn>
                         <DataGridTextColumn Header="Dimension (in)" Binding="{Binding Dimension}" Width="90"></DataGridTextColumn>
                         <DataGridTextColumn Header="Sq.Ft." Binding="{Binding TotalSqFt}" Width="50"></DataGridTextColumn>
                         <DataGridTextColumn Header="Price/Pc" Binding="{Binding UnitPrice}" Width="80">
@@ -173,7 +173,7 @@
                                 </Style>
                             </DataGridTextColumn.CellStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="Total" Binding="{Binding Total}" ></DataGridTextColumn>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="90"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 
