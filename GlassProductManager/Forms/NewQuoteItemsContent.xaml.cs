@@ -49,11 +49,8 @@ namespace GlassProductManager
             FillInsulationDetails();
             currentItem.GlassType1 = new InsulationDetails();
             currentItem.GlassType2 = new InsulationDetails();
-            FrameworkElement frameworkElement;
 
-            frameworkElement = new FrameworkElement();
-            //textBoxNormalStyle = (Style)frameworkElement.TryFindResource("textBoxNormalStyle");
-            textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxErrorStyle");
+           
         }
 
         private void FillCutoutData()
@@ -157,25 +154,11 @@ namespace GlassProductManager
             txtTotalSqFt.Text = string.IsNullOrEmpty(txtTotalSqFt.Text) ? "0" : txtTotalSqFt.Text;
         }
 
-        private bool IsNumberOnly(TextBox input)
-        {
-            bool result = false;
-            if (Regex.IsMatch(input.Text, @"^\d+$"))
-            {
-                input.Style = null;
-                result = true;
-            }
-            else
-            {
-                textBoxNormalStyle = input.Style;
-                input.Style = textBoxErrorStyle;
-            }
-            return result;
-        }
+      
 
         private void txtTotalSqFt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtTotalSqFt))
+            if (Helper.IsNumberOnly(txtTotalSqFt))
             {
                 NewItemsChanged(txtTotalSqFt.Text, "TotalSqFT");
             }
@@ -194,7 +177,7 @@ namespace GlassProductManager
 
         private void txtStraightPolishLongSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtStraightPolishLongSide))
+            if (Helper.IsNumberOnly(txtStraightPolishLongSide))
             {
                 NewItemsChanged(txtStraightPolishLongSide.Text, "StraightPolishLongSide");
             }
@@ -202,7 +185,7 @@ namespace GlassProductManager
 
         private void txtStraightPolishShortSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtStraightPolishShortSide))
+            if (Helper.IsNumberOnly(txtStraightPolishShortSide))
             {
                 NewItemsChanged(txtStraightPolishShortSide.Text, "StraightPolishShortSide");
             }
@@ -215,7 +198,7 @@ namespace GlassProductManager
 
         private void txtStraightPolishTotalInches_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtStraightPolishTotalInches))
+            if (Helper.IsNumberOnly(txtStraightPolishTotalInches))
             {
                 NewItemsChanged(txtStraightPolishTotalInches.Text, "StraightPolishTotalInches");
             }
@@ -233,7 +216,7 @@ namespace GlassProductManager
 
         private void txtCustomShapePolishSize_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtCustomShapePolishSize))
+            if (Helper.IsNumberOnly(txtCustomShapePolishSize))
             {
                 NewItemsChanged(txtCustomShapePolishSize.Text, "CustomPolishTotalInches");
             }
@@ -276,7 +259,7 @@ namespace GlassProductManager
 
         private void txtMiterTotalInches_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtMiterTotalInches))
+            if (Helper.IsNumberOnly(txtMiterTotalInches))
             {
                 NewItemsChanged(txtMiterTotalInches.Text, "MiterTotalInches");
             }
@@ -302,7 +285,7 @@ namespace GlassProductManager
 
         private void txtNotchesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtNotchesNumber))
+            if (Helper.IsNumberOnly(txtNotchesNumber))
             {
                 NewItemsChanged(txtNotchesNumber.Text, "Notches");
             }
@@ -333,7 +316,7 @@ namespace GlassProductManager
 
         private void txtHingesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtHingesNumber))
+            if (Helper.IsNumberOnly(txtHingesNumber))
             {
                 NewItemsChanged(txtHingesNumber.Text, "Hinges");
             }
@@ -354,7 +337,7 @@ namespace GlassProductManager
 
         private void txtPatchesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtPatchesNumber))
+            if (Helper.IsNumberOnly(txtPatchesNumber))
             {
                 NewItemsChanged(txtPatchesNumber.Text, "Patches");
             }
@@ -567,7 +550,7 @@ namespace GlassProductManager
 
         private void txtSqFt1_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtSqFt1))
+            if (Helper.IsNumberOnly(txtSqFt1))
             {
                 if (currentItem == null)
                     return;
@@ -611,7 +594,7 @@ namespace GlassProductManager
 
         private void txtHoleNumbers_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtHoleNumbers))
+            if (Helper.IsNumberOnly(txtHoleNumbers))
             {
                 NewItemsChanged(txtHoleNumbers.Text, "Holes");
             }
@@ -635,7 +618,7 @@ namespace GlassProductManager
         private void txtMiterLongSide_LostFocus(object sender, RoutedEventArgs e)
         {
             txtMiterLongSide.Text = string.IsNullOrEmpty(txtMiterLongSide.Text) ? "0" : txtMiterLongSide.Text;
-            if (IsNumberOnly(txtMiterLongSide))
+            if (Helper.IsNumberOnly(txtMiterLongSide))
             {
                 currentItem.MiterLongSide = int.Parse(txtMiterLongSide.Text);
             }
@@ -646,7 +629,7 @@ namespace GlassProductManager
             if (currentItem == null)
                 return;
 
-            if (IsNumberOnly(txtMiterShortSide))
+            if (Helper.IsNumberOnly(txtMiterShortSide))
             {
                 txtMiterShortSide.Text = string.IsNullOrEmpty(txtMiterShortSide.Text) ? "0" : txtMiterShortSide.Text;
                 currentItem.MiterShortSide = int.Parse(txtMiterShortSide.Text);
@@ -701,7 +684,7 @@ namespace GlassProductManager
             if (currentItem == null)
                 return;
 
-            if (IsNumberOnly(txtGlassWidth))
+            if (Helper.IsNumberOnly(txtGlassWidth))
             {
                 txtGlassWidth.Text = string.IsNullOrEmpty(txtGlassWidth.Text) ? "0" : txtGlassWidth.Text;
                 currentItem.GlassWidth = int.Parse(txtGlassWidth.Text);
@@ -713,7 +696,7 @@ namespace GlassProductManager
             if (currentItem == null)
                 return;
 
-            if (IsNumberOnly(txtGlassHeight))
+            if (Helper.IsNumberOnly(txtGlassHeight))
             {
                 txtGlassHeight.Text = string.IsNullOrEmpty(txtGlassHeight.Text) ? "0" : txtGlassHeight.Text;
                 currentItem.GlassHeight = int.Parse(txtGlassHeight.Text);
@@ -928,14 +911,14 @@ namespace GlassProductManager
 
         private void txtShapeHeight_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtShapeHeight))
+            if (Helper.IsNumberOnly(txtShapeHeight))
             {
             }
         }
 
         private void txtShapeWidth_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (IsNumberOnly(txtShapeWidth))
+            if (Helper.IsNumberOnly(txtShapeWidth))
             {
             }
         }
