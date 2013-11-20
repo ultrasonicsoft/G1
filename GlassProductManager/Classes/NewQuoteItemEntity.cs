@@ -14,6 +14,7 @@ namespace GlassProductManager
         private int _glassTypeID;
         private int _thicknessID;
         private int _totalSqFT;
+        private int _quantity;
         private bool _isTempered;
         private bool _isMiter;
         private bool _isStraightPolish;
@@ -86,6 +87,15 @@ namespace GlassProductManager
             }
         }
 
+        internal int Quantity
+        {
+            get { return _quantity; }
+            set
+            {
+                _quantity = value;
+                CalculateTotal();
+            }
+        }
         internal int GlassHeight { get; set; }
         internal string GlassHeightFraction { get; set; }
 
@@ -344,6 +354,7 @@ namespace GlassProductManager
             _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
             _holeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HOLE_RATE].ToString());
 
+            // TODO: _quantity include
             if (false == _isTempered)
             {
                 _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _cutsqftRate;

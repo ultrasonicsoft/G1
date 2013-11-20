@@ -164,6 +164,19 @@ namespace GlassProductManager
             }
         }
 
+        private void txtQuantity_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Helper.IsNumberOnly(txtQuantity))
+            {
+                NewItemsChanged(txtQuantity.Text, "Quantity");
+            }
+        }
+
+        private void txtQuantity_LostFocus(object sender, RoutedEventArgs e)
+        {
+            txtQuantity.Text = string.IsNullOrEmpty(txtQuantity.Text) ? "0" : txtQuantity.Text;
+
+        }
         private void cbIsStraightPolish_Checked(object sender, RoutedEventArgs e)
         {
             currentItem.IsStraightPolish = true;
@@ -387,6 +400,9 @@ namespace GlassProductManager
                     break;
                 case "Holes":
                     currentItem.Holes = tempValue;
+                    break;
+                case "Quantity":
+                    currentItem.Quantity = tempValue;
                     break;
                 default:
                     break;
@@ -922,5 +938,7 @@ namespace GlassProductManager
             {
             }
         }
+
+        
     }
 }
