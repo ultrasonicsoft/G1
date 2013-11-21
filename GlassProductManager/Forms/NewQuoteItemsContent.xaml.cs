@@ -660,11 +660,11 @@ namespace GlassProductManager
                     {
                         QuoteGridEntity newItem = new QuoteGridEntity();
                         newItem.LineID = grid.allQuoteData.Count + 1;
-                        newItem.Quantity = 1;
+                        newItem.Quantity = currentItem.Quantity;
                         newItem.Description = itemDescription;
                         newItem.Dimension = GetDimensionString();
                         newItem.TotalSqFt = currentItem.TotalSqFT.ToString();
-                        newItem.UnitPrice = currentItem.CurrentTotal.ToString();
+                        newItem.UnitPrice = currentItem.PricePerUnit.ToString("0.00");
                         newItem.Total = currentItem.CurrentTotal;
                         grid.allQuoteData.Add(newItem);
                     }

@@ -39,6 +39,7 @@ namespace GlassProductManager
         private int _holes;
         private double _insulateTotalCost;
         private double _cutoutTotal;
+        private double _pricePerUnit;
 
         //Rates
         private double _cutsqftRate = 0;
@@ -65,6 +66,8 @@ namespace GlassProductManager
 
 
         internal string GlassType { get; set; }
+
+        internal double PricePerUnit { get { return _pricePerUnit; } }
 
         internal int ThicknessID
         {
@@ -354,7 +357,6 @@ namespace GlassProductManager
             _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
             _holeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HOLE_RATE].ToString());
 
-            // TODO: _quantity include
             if (false == _isTempered)
             {
                 _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _cutsqftRate;
@@ -404,6 +406,8 @@ namespace GlassProductManager
             {
                 _currentTotal += _cutoutTotal;
             }
+            _pricePerUnit = _currentTotal;
+            _currentTotal = _currentTotal * _quantity;
         }
 
         internal string GetDescriptionString()
