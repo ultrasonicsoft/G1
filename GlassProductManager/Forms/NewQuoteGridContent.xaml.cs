@@ -223,12 +223,14 @@ namespace GlassProductManager
 
         private void txtQuoteNumber_LostFocus(object sender, RoutedEventArgs e)
         {
-            //TODO: add validation control n put logic over there
-            bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
-            if (isQuoteNumberPresent)
+            if (Helper.IsNonEmpty(txtQuoteNumber))
             {
-                txtQuoteNumber.Text = string.Empty;
-                Helper.ShowErrorMessageBox("Quote Number already used! Kindly provide new quote number.");
+                bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
+                if (isQuoteNumberPresent)
+                {
+                    txtQuoteNumber.Text = string.Empty;
+                    Helper.ShowErrorMessageBox("Quote Number already used! Kindly provide new quote number.");
+                }
             }
         }
 
@@ -343,17 +345,23 @@ namespace GlassProductManager
 
         private void txtEnergySurcharge_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
+            if (Helper.IsValidCurrency(txtEnergySurcharge))
             {
-                UpdateQuoteTotal();
+                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
+                {
+                    UpdateQuoteTotal();
+                }
             }
         }
 
         private void txtEnergySurcharge_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (allQuoteData.Count > 0)
+            if (Helper.IsValidCurrency(txtEnergySurcharge))
             {
-                txtEnergySurcharge.Text = string.IsNullOrEmpty(txtEnergySurcharge.Text) ? "0.00" : txtEnergySurcharge.Text;
+                if (allQuoteData.Count > 0)
+                {
+                    txtEnergySurcharge.Text = string.IsNullOrEmpty(txtEnergySurcharge.Text) ? "0.00" : txtEnergySurcharge.Text;
+                }
             }
         }
 
@@ -375,65 +383,89 @@ namespace GlassProductManager
 
         private void txtDiscount_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtDiscount.Text) == false)
+            if (Helper.IsValidCurrency(txtDiscount))
             {
-                UpdateQuoteTotal();
+                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtDiscount.Text) == false)
+                {
+                    UpdateQuoteTotal();
+                }
             }
         }
 
         private void txtDiscount_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (allQuoteData.Count > 0)
+            if (Helper.IsValidCurrency(txtDiscount))
             {
-                txtDiscount.Text = string.IsNullOrEmpty(txtDiscount.Text) ? "0.00" : txtDiscount.Text;
+                if (allQuoteData.Count > 0)
+                {
+                    txtDiscount.Text = string.IsNullOrEmpty(txtDiscount.Text) ? "0.00" : txtDiscount.Text;
+                }
             }
         }
 
         private void txtDelivery_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (allQuoteData.Count > 0)
+            if (Helper.IsValidCurrency(txtDelivery))
             {
-                txtDelivery.Text = string.IsNullOrEmpty(txtDelivery.Text) ? "0.00" : txtDelivery.Text;
+                if (allQuoteData.Count > 0)
+                {
+                    txtDelivery.Text = string.IsNullOrEmpty(txtDelivery.Text) ? "0.00" : txtDelivery.Text;
+                }
             }
         }
 
         private void txtDelivery_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtDelivery.Text) == false)
+            if (Helper.IsValidCurrency(txtDelivery))
             {
-                UpdateQuoteTotal();
+                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtDelivery.Text) == false)
+                {
+                    UpdateQuoteTotal();
+                }
             }
         }
 
         private void txtRushOrder_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (allQuoteData.Count > 0 && cbRush.IsChecked == true && string.IsNullOrEmpty(txtRushOrder.Text) == false)
+            if (Helper.IsValidCurrency(txtRushOrder))
             {
-                UpdateQuoteTotal();
+                if (allQuoteData.Count > 0 && cbRush.IsChecked == true && string.IsNullOrEmpty(txtRushOrder.Text) == false)
+                {
+                    UpdateQuoteTotal();
+                }
             }
         }
 
         private void txtRushOrder_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (allQuoteData.Count > 0 && cbRush.IsChecked == true)
+            if (Helper.IsValidCurrency(txtRushOrder))
             {
-                txtRushOrder.Text = string.IsNullOrEmpty(txtRushOrder.Text) ? "0.00" : txtRushOrder.Text;
+                if (allQuoteData.Count > 0 && cbRush.IsChecked == true)
+                {
+                    txtRushOrder.Text = string.IsNullOrEmpty(txtRushOrder.Text) ? "0.00" : txtRushOrder.Text;
+                }
             }
         }
 
         private void txtTax_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (allQuoteData.Count > 0)
+            if (Helper.IsValidCurrency(txtTax))
             {
-                txtTax.Text = string.IsNullOrEmpty(txtTax.Text) ? "0.00" : txtTax.Text;
+                if (allQuoteData.Count > 0)
+                {
+                    txtTax.Text = string.IsNullOrEmpty(txtTax.Text) ? "0.00" : txtTax.Text;
+                }
             }
         }
 
         private void txtTax_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtTax.Text) == false)
+            if (Helper.IsValidCurrency(txtTax))
             {
-                UpdateQuoteTotal();
+                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtTax.Text) == false)
+                {
+                    UpdateQuoteTotal();
+                }
             }
         }
 
@@ -683,6 +715,96 @@ namespace GlassProductManager
             txtRushOrder.Text  = "0.00";
             txtTax.Text  = "0.00";
             lblGrandTotal.Content = "0.00";
+        }
+
+        private void txtCustomerPO_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void txtSoldToFirstName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty( txtSoldToFirstName.Text))
+            {
+                txtSoldToFirstName.Text = "First Name";
+            }
+        }
+
+        private void txtSoldToFirstName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtSoldToFirstName.Text.Equals("First Name"))
+            {
+                txtSoldToFirstName.Text = string.Empty;
+            }
+        }
+
+        private void txtSoldToLastName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtSoldToLastName.Text))
+            {
+                txtSoldToLastName.Text = "Last Name";
+            }
+        }
+
+        private void txtSoldToLastName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtSoldToLastName.Text.Equals("Last Name"))
+            {
+                txtSoldToLastName.Text = string.Empty;
+            }
+        }
+
+        private void txtShiptoFirstName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtShiptoFirstName.Text.Equals("First Name"))
+            {
+                txtShiptoFirstName.Text = string.Empty;
+            }
+        }
+
+        private void txtShiptoFirstName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtShiptoFirstName.Text))
+            {
+                txtShiptoFirstName.Text = "First Name";
+            }
+        }
+
+        private void txtShiptoLastName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtShiptoLastName.Text.Equals("Last Name"))
+            {
+                txtShiptoLastName.Text = string.Empty;
+            }
+        }
+
+        private void txtShiptoLastName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtShiptoLastName.Text))
+            {
+                txtShiptoLastName.Text = "Last Name";
+            }
+        }
+
+        private void txtSoldToPhone_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Helper.IsValidPhone(txtSoldToPhone);
+        }
+
+        private void txtSoldToEmail_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Helper.IsValidEmail(txtSoldToEmail);
+
+        }
+
+        private void txtShipToEmail_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Helper.IsValidEmail(txtShipToEmail);
+        }
+
+        private void txtAdditionalCostForItem_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Helper.IsValidCurrency(txtAdditionalCostForItem);
         }
     }
 }

@@ -57,7 +57,7 @@
                     <Label Content="Quote No.:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
                     <TextBox  Name="txtQuoteNumber" TextWrapping="Wrap" Width="90"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" LostFocus="txtQuoteNumber_LostFocus" />
                     <Label Content="Customer PO:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
-                    <TextBox  Name="txtCustomerPO" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3"/>
+                    <TextBox  Name="txtCustomerPO" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" LostFocus="txtCustomerPO_LostFocus"/>
                     <Label Content="Quote Created On:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
                     <DatePicker Name="dtQuoteCreatedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" />
                     <Label Content="Requested Ship Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
@@ -117,22 +117,22 @@
 
 
                 <Label Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
-                <TextBox  Name="txtSoldToFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" />
-                <TextBox  Name="txtSoldToLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Margin="80,0,0,0" Grid.ColumnSpan="2"/>
+                <TextBox  Name="txtSoldToFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" LostFocus="txtSoldToFirstName_LostFocus" GotFocus="txtSoldToFirstName_GotFocus" />
+                <TextBox  Name="txtSoldToLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Margin="80,0,0,0" Grid.ColumnSpan="2" LostFocus="txtSoldToLastName_LostFocus" GotFocus="txtSoldToLastName_GotFocus"/>
                 <Label Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" />
                 <TextBox  Name="txtSoldToAddress" TextWrapping="Wrap" Width="150"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
                 <Label Content="Phone:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" />
-                <TextBox  Name="txtSoldToPhone" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" Grid.Column="1"/>
+                <TextBox  Name="txtSoldToPhone" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" Grid.Column="1" LostFocus="txtSoldToPhone_LostFocus"/>
                 <Label Content="Fax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Grid.Column="0" />
                 <TextBox  Name="txtSoldToFax" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="1"/>
                 <Label Content="Email:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="9" Grid.Column="0" />
-                <TextBox  Name="txtSoldToEmail" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="1"/>
+                <TextBox  Name="txtSoldToEmail" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="1" LostFocus="txtSoldToEmail_LostFocus"/>
                 <Label Content="Misc:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="0" />
                 <TextBox  Name="txtSoldToMisc" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="1"/>
 
                 <Label Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="3" />
-                <TextBox  Name="txtShiptoFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" />
-                <TextBox  Name="txtShiptoLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" Margin="80,0,0,0" />
+                <TextBox  Name="txtShiptoFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" GotFocus="txtShiptoFirstName_GotFocus" LostFocus="txtShiptoFirstName_LostFocus" />
+                <TextBox  Name="txtShiptoLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" Margin="80,0,0,0" GotFocus="txtShiptoLastName_GotFocus" LostFocus="txtShiptoLastName_LostFocus" />
                 <Label Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="3" />
                 <TextBox  Name="txtShipToAddress" TextWrapping="Wrap" Width="150"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2"/>
                 <Label Content="Phone:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="3" />
@@ -140,7 +140,7 @@
                 <Label Content="Fax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Grid.Column="3" />
                 <TextBox  Name="txtShipToFax" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="4"/>
                 <Label Content="Email:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="9" Grid.Column="3" />
-                <TextBox  Name="txtShipToEmail" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="4"/>
+                <TextBox  Name="txtShipToEmail" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="4" LostFocus="txtShipToEmail_LostFocus"/>
                 <Label Content="Misc:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="3" />
                 <TextBox  Name="txtShipToMisc" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="4"/>
 
@@ -181,7 +181,7 @@
                 <Label Name="lblSubTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="12" Grid.Column="5" FontWeight="Bold" />
 
                 <Label Content="Additional cost:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="0" />
-                <TextBox  Name="txtAdditionalCostForItem" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="1"/>
+                <TextBox  Name="txtAdditionalCostForItem" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="1" LostFocus="txtAdditionalCostForItem_LostFocus"/>
                 <Button Name="btnUpdateSelectedItem" Content="Update Selected Item"  HorizontalAlignment="Left" Grid.Row="14" VerticalAlignment="Center" Grid.Column="1" Width="120" Click="btnUpdateSelectedItem_Click"/>
 
                 <Button Name="btnUpdateAllItem" Content="Update All Items"  HorizontalAlignment="Left" Grid.Row="16" VerticalAlignment="Center" Grid.Column="1" Width="120" Click="btnUpdateAllItem_Click"/>

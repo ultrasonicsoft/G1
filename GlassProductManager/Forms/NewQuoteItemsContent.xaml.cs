@@ -24,17 +24,12 @@ namespace GlassProductManager
     public partial class NewQuoteItemsContent : UserControl
     {
         NewQuoteItemEntity currentItem = null;
-        public Style textBoxNormalStyle;
-        public Style textBoxErrorStyle;
-
 
         public ObservableCollection<CutoutData> allCutoutData
         {
             get { return currentItem._allCutoutData; }
             set { currentItem._allCutoutData = value; }
         }
-
-
 
         public NewQuoteItemsContent()
         {
@@ -153,8 +148,6 @@ namespace GlassProductManager
         {
             txtTotalSqFt.Text = string.IsNullOrEmpty(txtTotalSqFt.Text) ? "0" : txtTotalSqFt.Text;
         }
-
-      
 
         private void txtTotalSqFt_TextChanged(object sender, TextChangedEventArgs e)
         {

@@ -86,7 +86,7 @@
             </Setter>
         </Style>
 
-        <Style  x:Key="textBoxErrorStyle"
+        <Style  x:Key="textBoxNumericErrorStyle"
             TargetType="{x:Type TextBox}">
             <Setter Property="SnapsToDevicePixels"
             Value="True" />
@@ -122,6 +122,153 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
+        <Style  x:Key="textBoxEmptyErrorStyle"
+            TargetType="{x:Type TextBox}">
+            <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+            Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation"
+            Value="None" />
+            <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+            <Setter Property="MinWidth"
+            Value="10" />
+            <Setter Property="MaxWidth"
+            Value="120" />
+            <Setter Property="Height"
+            Value="22" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="AllowDrop"
+            Value="true" />
+            <Setter Property="ToolTip" Value="This field can not be empty!"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid Name="test">
+                            <Border Background="{StaticResource TextBackColor}" BorderBrush="#FF888888" x:Name="Bd" CornerRadius="1" BorderThickness="1">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                            </Border>
+                            <Image Name="ErrorImage" Width="15" Height="15" Margin="0,0,4,0" Source="Images/validate.png" HorizontalAlignment="Right">
+
+                            </Image>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  x:Key="textBoxPhoneErrorStyle"
+            TargetType="{x:Type TextBox}">
+            <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+            Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation"
+            Value="None" />
+            <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+            <Setter Property="MinWidth"
+            Value="10" />
+            <Setter Property="MaxWidth"
+            Value="120" />
+            <Setter Property="Height"
+            Value="22" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="AllowDrop"
+            Value="true" />
+            <Setter Property="ToolTip" Value="Invalid phone number!"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid Name="test">
+                            <Border Background="{StaticResource TextBackColor}" BorderBrush="#FF888888" x:Name="Bd" CornerRadius="1" BorderThickness="1">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                            </Border>
+                            <Image Name="ErrorImage" Width="15" Height="15" Margin="0,0,4,0" Source="Images/validate.png" HorizontalAlignment="Right">
+
+                            </Image>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  x:Key="textBoxEmailErrorStyle"
+            TargetType="{x:Type TextBox}">
+            <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+            Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation"
+            Value="None" />
+            <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+            <Setter Property="MinWidth"
+            Value="10" />
+            <Setter Property="MaxWidth"
+            Value="120" />
+            <Setter Property="Height"
+            Value="22" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="AllowDrop"
+            Value="true" />
+            <Setter Property="ToolTip" Value="Invalid Email Address!"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid Name="test">
+                            <Border Background="{StaticResource TextBackColor}" BorderBrush="#FF888888" x:Name="Bd" CornerRadius="1" BorderThickness="1">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                            </Border>
+                            <Image Name="ErrorImage" Width="15" Height="15" Margin="0,0,4,0" Source="Images/validate.png" HorizontalAlignment="Right">
+
+                            </Image>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  x:Key="textBoxCurrencyErrorStyle"
+            TargetType="{x:Type TextBox}">
+            <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+            Value="True" />
+            <Setter Property="KeyboardNavigation.TabNavigation"
+            Value="None" />
+            <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+            <Setter Property="MinWidth"
+            Value="10" />
+            <Setter Property="MaxWidth"
+            Value="120" />
+            <Setter Property="Height"
+            Value="22" />
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="AllowDrop"
+            Value="true" />
+            <Setter Property="ToolTip" Value="Invalid currency entered!"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid Name="test">
+                            <Border Background="{StaticResource TextBackColor}" BorderBrush="#FF888888" x:Name="Bd" CornerRadius="1" BorderThickness="1">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                            </Border>
+                            <Image Name="ErrorImage" Width="15" Height="15" Margin="0,0,4,0" Source="Images/validate.png" HorizontalAlignment="Right">
+
+                            </Image>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
