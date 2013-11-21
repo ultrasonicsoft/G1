@@ -23,6 +23,7 @@ namespace GlassProductManager
     {
         enum UserAction
         {
+            None,
             AddNew,
             Edit,
             Cancel
@@ -30,7 +31,7 @@ namespace GlassProductManager
 
         private UserAction _glassTypeAction = UserAction.Cancel;
         private UserAction _thicknessAction = UserAction.Cancel;
-        private UserAction _holeAction = UserAction.Cancel; 
+        private UserAction _holeAction = UserAction.Cancel;
 
         public PriceSettingsContent()
         {
@@ -80,11 +81,11 @@ namespace GlassProductManager
 
         private void SetGlassDetailsControlsStatus(bool status)
         {
-             txtCutoutSqFtRate.IsReadOnly = status;
-             txtTemperedRate.IsReadOnly = status;
-             txtPolishStraightRate.IsReadOnly = status;
-             txtPolishShapeRate.IsReadOnly = status;
-             txtMiterRate.IsReadOnly = status;
+            txtCutoutSqFtRate.IsReadOnly = status;
+            txtTemperedRate.IsReadOnly = status;
+            txtPolishStraightRate.IsReadOnly = status;
+            txtPolishShapeRate.IsReadOnly = status;
+            txtMiterRate.IsReadOnly = status;
         }
 
         private void FillGlassTypes()
@@ -158,6 +159,9 @@ namespace GlassProductManager
         private void btnEditGlassDetails_Click(object sender, RoutedEventArgs e)
         {
             SetGlassDetailsControlsStatus(false);
+            btnSaveGlassDetails.IsEnabled = true;
+            btnCancelEditGlassDetails.IsEnabled = true;
+            btnEditGlassDetails.IsEnabled = false;
         }
 
         private void btnCancelEditGlassDetails_Click(object sender, RoutedEventArgs e)
@@ -165,6 +169,10 @@ namespace GlassProductManager
             cmbGlassType.SelectedIndex = 0;
             cmbThickness.SelectedIndex = 0;
             SetGlassDetailsControlsStatus(true);
+
+            btnSaveGlassDetails.IsEnabled = false;
+            btnCancelEditGlassDetails.IsEnabled = false;
+            btnEditGlassDetails.IsEnabled = true;
         }
 
         private void btnSaveGlassDetails_Click(object sender, RoutedEventArgs e)
@@ -191,6 +199,10 @@ namespace GlassProductManager
             {
                 Helper.ShowErrorMessageBox("Save operation failed. Please contact your vendor!");
             }
+
+            btnSaveGlassDetails.IsEnabled = false ;
+            btnCancelEditGlassDetails.IsEnabled = false;
+            btnEditGlassDetails.IsEnabled = true;
         }
 
         private void cmbGlassTypeManageThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -207,6 +219,8 @@ namespace GlassProductManager
 
         private void lbThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (lbThickness.SelectedItem == null)
+                return;
             txtThicknessManage.Text = (lbThickness.SelectedItem as System.Data.DataRowView)[1].ToString();
         }
 
@@ -214,12 +228,27 @@ namespace GlassProductManager
         {
             _glassTypeAction = UserAction.AddNew;
             btnSaveNewGlassType.IsEnabled = true;
+            txtGlassTypeName.IsReadOnly = false;
+
+            btnAddNewGlassType.IsEnabled = false;
+            btnEditGlassType.IsEnabled = false;
+            btnSaveNewGlassType.IsEnabled = true;
+            btnDeleteGlassType.IsEnabled = false;
+            btnCancelGlassType.IsEnabled = true;
+            txtGlassTypeName.Focus();
         }
 
         private void btnEditGlassType_Click(object sender, RoutedEventArgs e)
         {
-            _glassTypeAction = UserAction.Edit ;
+            _glassTypeAction = UserAction.Edit;
+            txtGlassTypeName.IsReadOnly = false;
+
+            btnAddNewGlassType.IsEnabled = false;
+            btnEditGlassType.IsEnabled = false;
             btnSaveNewGlassType.IsEnabled = true;
+            btnDeleteGlassType.IsEnabled = false;
+            btnCancelGlassType.IsEnabled = true;
+            txtGlassTypeName.Focus();
         }
 
         private void btnDeleteGlassType_Click(object sender, RoutedEventArgs e)
@@ -248,17 +277,18 @@ namespace GlassProductManager
 
         private void cmbGlassTypeManageGlassType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //txtGlassTypeName.Text = (cmbGlassTypeManageGlassType.SelectedItem as  System.Data.DataRowView)[1].ToString().ToLower();
+            txtGlassTypeName.Text = (cmbGlassTypeManageGlassType.SelectedItem as System.Data.DataRowView)[1].ToString().ToLower();
         }
 
         private void btnSaveNewGlassType_Click(object sender, RoutedEventArgs e)
         {
-            if (_glassTypeAction== UserAction.AddNew && false == IsExistingGlassType())
+         if (_glassTypeAction == UserAction.AddNew && false == IsExistingGlassType())
             {
                 if (BusinessLogic.CreateNewGlassType(txtGlassTypeName.Text))
                 {
                     Helper.ShowInformationMessageBox("New Glass Type saved successfully!");
                     FillGlassTypes();
+                    cmbGlassTypeManageGlassType.SelectedIndex = -1;
                     txtGlassTypeName.Text = string.Empty;
                 }
                 else
@@ -266,10 +296,38 @@ namespace GlassProductManager
                     Helper.ShowErrorMessageBox("Error occured during saving glass type. Please contact your vendor");
                 }
             }
-            else
+            else if(_glassTypeAction == UserAction.Edit)
             {
-                Helper.ShowErrorMessageBox("This Glass type already present in the system.");
+                int glassTypeID = int.Parse((cmbGlassTypeManageGlassType.SelectedItem as System.Data.DataRowView)[0].ToString().ToLower());
+                if (BusinessLogic.UpdateGlassType(txtGlassTypeName.Text, glassTypeID))
+                {
+                    Helper.ShowInformationMessageBox("Glass Type updated successfully!");
+                    FillGlassTypes();
+                    cmbGlassTypeManageGlassType.SelectedIndex = -1;
+                    txtGlassTypeName.Text = string.Empty;
+                }
+                else
+                {
+                    Helper.ShowErrorMessageBox("Error occured during saving glass type. Please contact your vendor");
+                }
             }
+
+            btnAddNewGlassType.IsEnabled = true;
+            btnEditGlassType.IsEnabled = true;
+            btnSaveNewGlassType.IsEnabled = false;
+            btnDeleteGlassType.IsEnabled = true;
+            txtGlassTypeName.IsReadOnly = true;
+            btnCancelGlassType.IsEnabled = false;
+        }
+        private void btnCancelGlassType_Click(object sender, RoutedEventArgs e)
+        {
+            _glassTypeAction = UserAction.None;
+            btnAddNewGlassType.IsEnabled = true;
+            btnEditGlassType.IsEnabled = true;
+            btnSaveNewGlassType.IsEnabled = false;
+            btnDeleteGlassType.IsEnabled = true;
+            btnCancelGlassType.IsEnabled = false;
+
         }
 
         private bool IsExistingGlassType()
@@ -289,43 +347,86 @@ namespace GlassProductManager
         private void btnAddNewThickness_Click(object sender, RoutedEventArgs e)
         {
             _thicknessAction = UserAction.AddNew;
+
+            btnAddNewThickness.IsEnabled = false;
             btnSaveThickness.IsEnabled = true;
+            btnEditThickness.IsEnabled = false;
+            btnCancelEditThickness.IsEnabled = true;
+            txtThicknessManage.IsReadOnly = false;
+            txtThicknessManage.Focus();
         }
 
         private void btnEditThickness_Click(object sender, RoutedEventArgs e)
         {
             _thicknessAction = UserAction.Edit;
             btnSaveThickness.IsEnabled = true;
+
+            btnAddNewThickness.IsEnabled = false;
+            btnSaveThickness.IsEnabled = true;
+            btnEditThickness.IsEnabled = false;
+            btnCancelEditThickness.IsEnabled = true;
+            txtThicknessManage.IsReadOnly = false;
+            txtThicknessManage.Focus();
         }
 
         private void btnCancelEditThickness_Click(object sender, RoutedEventArgs e)
         {
             _thicknessAction = UserAction.Cancel;
+
+            btnAddNewThickness.IsEnabled = true;
             btnSaveThickness.IsEnabled = false;
+            btnEditThickness.IsEnabled = true;
+            btnCancelEditThickness.IsEnabled = false;
+            txtThicknessManage.IsReadOnly = true;
+            txtThicknessManage.Text = string.Empty;
         }
 
         private void btnSaveThickness_Click(object sender, RoutedEventArgs e)
         {
-            if (_thicknessAction == UserAction.AddNew && false == IsExistingThickness())
+            if (_thicknessAction == UserAction.AddNew  )
             {
-
-                int glassID = int.Parse(cmbGlassTypeManageThickness.SelectedValue.ToString());
-                string newThickness = txtThicknessManage.Text;
-                if (BusinessLogic.CreateNewThickness(glassID, newThickness))
+                if (false == IsExistingThickness())
                 {
-                    Helper.ShowInformationMessageBox("New thickness saved successfully!");
+                    Helper.ShowErrorMessageBox("This Glass type already present in the system.");
+                }
+                else
+                {
+                    int glassID = int.Parse(cmbGlassTypeManageThickness.SelectedValue.ToString());
+                    string newThickness = txtThicknessManage.Text;
+                    if (BusinessLogic.CreateNewThickness(glassID, newThickness))
+                    {
+                        Helper.ShowInformationMessageBox("New thickness saved successfully!");
+                        cmbGlassTypeManageThickness_SelectionChanged(null, null);
+                        txtThicknessManage.Text = string.Empty;
+                    }
+                    else
+                    {
+                        Helper.ShowErrorMessageBox("Error occured during saving new thickness. Please contact your vendor");
+                    }
+                }
+            }
+            else if (_thicknessAction == UserAction.Edit)
+            {
+                int thicknessID = int.Parse(lbThickness.SelectedValue.ToString());
+                string newThickness = txtThicknessManage.Text;
+                if (BusinessLogic.UpdateThickness(thicknessID, newThickness))
+                {
+                    Helper.ShowInformationMessageBox("Upaated Thickness saved successfully!");
                     cmbGlassTypeManageThickness_SelectionChanged(null, null);
                     txtThicknessManage.Text = string.Empty;
                 }
                 else
                 {
-                    Helper.ShowErrorMessageBox("Error occured during saving new thickness. Please contact your vendor");
+                    Helper.ShowErrorMessageBox("Error occured during saving thickness. Please contact your vendor");
                 }
             }
-            else
-            {
-                Helper.ShowErrorMessageBox("This Glass type already present in the system.");
-            }
+
+            btnAddNewThickness.IsEnabled = true;
+            btnSaveThickness.IsEnabled = false;
+            btnEditThickness.IsEnabled = true;
+            btnCancelEditThickness.IsEnabled = false;
+            txtThicknessManage.IsReadOnly = true;
+            txtThicknessManage.Text = string.Empty;
         }
 
         private bool IsExistingThickness()
@@ -346,7 +447,7 @@ namespace GlassProductManager
         {
             InsulationCostEntity insualtionRate = new InsulationCostEntity();
             insualtionRate.TierSqFt1 = int.Parse(txtTier1.Text);
-            insualtionRate.TierCost1 = double.Parse(txtTierCost1.Text );
+            insualtionRate.TierCost1 = double.Parse(txtTierCost1.Text);
             insualtionRate.TierSqFt2 = int.Parse(txtTier2.Text);
             insualtionRate.TierCost2 = double.Parse(txtTierCost2.Text);
             insualtionRate.TierCost3 = double.Parse(txtTierCostMax.Text);
@@ -359,13 +460,22 @@ namespace GlassProductManager
             {
                 Helper.ShowErrorMessageBox("Error while saving insulation cost. Kindly contact your vendor.");
             }
+            txtTier1.IsReadOnly = true;
+            txtTierCost1.IsReadOnly = true;
+            txtTier2.IsReadOnly = true;
+            txtTierCost2.IsReadOnly = true;
+            txtTierCostMax.IsReadOnly = true;
+
+            btnEditInsulation.IsEnabled = true;
+            btnSaveInsulation.IsEnabled = false;
+            btnCancelInsulation.IsEnabled = false;
         }
 
         private void btnSaveMiscRate_Click(object sender, RoutedEventArgs e)
         {
             MiscRateEntity miscRate = new MiscRateEntity();
             miscRate.NotchRate = double.Parse(txtNotchRate.Text);
-            miscRate.HingeRate= double.Parse(txtHingeRate.Text);
+            miscRate.HingeRate = double.Parse(txtHingeRate.Text);
             miscRate.PatchRate = double.Parse(txtPatchRate.Text);
 
             if (BusinessLogic.UpdateMiscRate(miscRate))
@@ -376,6 +486,13 @@ namespace GlassProductManager
             {
                 Helper.ShowErrorMessageBox("Error while saving Misc Rates. Kindly contact your vendor.");
             }
+            txtNotchRate.IsReadOnly = true;
+            txtHingeRate.IsReadOnly = true;
+            txtPatchRate.IsReadOnly = true;
+
+            btnEditMiscRate.IsEnabled = true;
+            btnSaveMiscRate.IsEnabled = false;
+            btnCancelMiscRate.IsEnabled = false;
         }
 
         private void cmbThicknessHoleRates_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -389,12 +506,20 @@ namespace GlassProductManager
 
         private void btnEditHoleRate_Click(object sender, RoutedEventArgs e)
         {
+            txtHoleRate.IsReadOnly = false;
+
+            btnEditHoleRate.IsEnabled = false;
             btnSaveHoleRate.IsEnabled = true;
+            btnCancelHoleRate.IsEnabled = true;
         }
 
         private void btnCancelHoleRate_Click(object sender, RoutedEventArgs e)
         {
+            txtHoleRate.IsReadOnly = true;
+
+            btnEditHoleRate.IsEnabled = true;
             btnSaveHoleRate.IsEnabled = false;
+            btnCancelHoleRate.IsEnabled = false;
 
         }
 
@@ -405,7 +530,7 @@ namespace GlassProductManager
                 return;
             int thicknessID = int.Parse(temp);
 
-            if(string.IsNullOrEmpty(txtHoleRate.Text))
+            if (string.IsNullOrEmpty(txtHoleRate.Text))
             {
                 Helper.ShowErrorMessageBox("Please enter Hole rates");
                 return;
@@ -419,6 +544,161 @@ namespace GlassProductManager
             {
                 Helper.ShowErrorMessageBox("Error occured during updating Hole rate. Kindly contact your vendor");
             }
+            txtHoleRate.IsReadOnly = true;
+
+            btnEditHoleRate.IsEnabled = true;
+            btnSaveHoleRate.IsEnabled = false;
+            btnCancelHoleRate.IsEnabled = false;
         }
+
+        private void txtCutoutSqFtRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnSaveGlassDetails.IsEnabled = Helper.IsValidCurrency(txtCutoutSqFtRate);
+        }
+
+        private void txtTemperedRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnSaveGlassDetails.IsEnabled = Helper.IsValidCurrency(txtTemperedRate);
+        }
+
+        private void txtPolishStraightRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnSaveGlassDetails.IsEnabled = Helper.IsValidCurrency(txtPolishStraightRate);
+        }
+
+        private void txtPolishShapeRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnSaveGlassDetails.IsEnabled = Helper.IsValidCurrency(txtPolishShapeRate);
+        }
+
+        private void txtMiterRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnSaveGlassDetails.IsEnabled = Helper.IsValidCurrency(txtMiterRate);
+        }
+
+        private void txtTier1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditInsulation.IsEnabled == false)
+            {
+                btnSaveInsulation.IsEnabled = Helper.IsNumberOnly(txtTier1);
+            }
+        }
+
+        private void txtTier2_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditInsulation.IsEnabled == false)
+            {
+                btnSaveInsulation.IsEnabled = Helper.IsNumberOnly(txtTier2);
+            }
+        }
+
+        private void txtTierCostMax_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditInsulation.IsEnabled == false)
+            {
+                btnSaveInsulation.IsEnabled = Helper.IsValidCurrency(txtTierCostMax);
+            }
+        }
+
+        private void txtTierCost1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditInsulation.IsEnabled == false)
+            {
+                btnSaveInsulation.IsEnabled = Helper.IsValidCurrency(txtTierCost1);
+            }
+        }
+
+        private void txtTierCost2_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditInsulation.IsEnabled == false)
+            {
+                btnSaveInsulation.IsEnabled = Helper.IsValidCurrency(txtTierCost2);
+            }
+        }
+
+        private void txtNotchRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditMiscRate.IsEnabled == false)
+            {
+                btnSaveMiscRate.IsEnabled = Helper.IsValidCurrency(txtNotchRate);
+            }
+        }
+
+        private void txtHingeRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditMiscRate.IsEnabled == false)
+            {
+                btnSaveMiscRate.IsEnabled = Helper.IsValidCurrency(txtHingeRate);
+            }
+        }
+
+        private void txtPatchRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditMiscRate.IsEnabled == false)
+            {
+                btnSaveMiscRate.IsEnabled = Helper.IsValidCurrency(txtPatchRate);
+            }
+        }
+
+        private void txtHoleRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditMiscRate.IsEnabled == false)
+            {
+                btnSaveHoleRate.IsEnabled = Helper.IsValidCurrency(txtHoleRate);
+            }
+        }
+
+        private void btnEditInsulation_Click(object sender, RoutedEventArgs e)
+        {
+            txtTier1.IsReadOnly = false;
+            txtTierCost1.IsReadOnly = false;
+            txtTier2.IsReadOnly = false;
+            txtTierCost2.IsReadOnly = false;
+            txtTierCostMax.IsReadOnly = false;
+
+            btnEditInsulation.IsEnabled = false;
+            btnSaveInsulation.IsEnabled = true;
+            btnCancelInsulation.IsEnabled = true;
+        }
+
+      
+
+        private void btnCancelInsulation_Click(object sender, RoutedEventArgs e)
+        {
+            txtTier1.IsReadOnly = true;
+            txtTierCost1.IsReadOnly = true;
+            txtTier2.IsReadOnly = true;
+            txtTierCost2.IsReadOnly = true;
+            txtTierCostMax.IsReadOnly = true;
+
+            btnEditInsulation.IsEnabled = true;
+            btnSaveInsulation.IsEnabled = false;
+            btnCancelInsulation.IsEnabled = false;
+        }
+
+        private void btnEditMiscRate_Click(object sender, RoutedEventArgs e)
+        {
+            txtNotchRate.IsReadOnly = false;
+            txtHingeRate.IsReadOnly = false;
+            txtPatchRate.IsReadOnly = false;
+
+            btnEditMiscRate.IsEnabled = false;
+            btnSaveMiscRate.IsEnabled = true;
+            btnCancelMiscRate.IsEnabled = true;
+        }
+
+        private void btnCancelMiscRate_Click(object sender, RoutedEventArgs e)
+        {
+            txtNotchRate.IsReadOnly = true;
+            txtHingeRate.IsReadOnly = true;
+            txtPatchRate.IsReadOnly = true;
+
+            btnEditMiscRate.IsEnabled = true;
+            btnSaveMiscRate.IsEnabled = false;
+            btnCancelMiscRate.IsEnabled = false;
+
+            FillMiscRates();
+        }
+        
     }
 }

@@ -46,5 +46,7 @@ namespace GlassProductManager
         internal const string GetThicknesses = "[GetThicknesses]";
         internal const string GetHoleRateByThicknessID = "[GetHoleRateByThicknessID]";
         internal const string UpdateHoleRate = "[UpdateHoleRate]";
+        internal const string UpdateGlassType = "[UpdateGlassType]";
+        internal const string UpdateThickness = "[UpdateThickness]";
     }
 }

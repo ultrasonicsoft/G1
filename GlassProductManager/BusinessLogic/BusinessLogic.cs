@@ -888,6 +888,29 @@ namespace GlassProductManager
             return result;
         }
 
+        internal static bool UpdateGlassType(string updatedGlassType, int glassTypeID)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pUpdatedGlassType = new SqlParameter();
+                pUpdatedGlassType.ParameterName = "updatedGlassType";
+                pUpdatedGlassType.Value = updatedGlassType;
+
+                SqlParameter pGlasstypeID = new SqlParameter();
+                pGlasstypeID.ParameterName = "glasstypeID";
+                pGlasstypeID.Value = glassTypeID;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateGlassType, pUpdatedGlassType, pGlasstypeID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
+
         internal static bool DeleteGlassType(int glassID)
         {
             bool result = true;
@@ -921,6 +944,29 @@ namespace GlassProductManager
                 pThickness.Value = thickness;
 
                 SQLHelper.ExecuteStoredProcedure(StoredProcedures.CreateNewThickness, pGlassID, pThickness);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        internal static bool UpdateThickness(int glassID, string thickness)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pGlassID = new SqlParameter();
+                pGlassID.ParameterName = "glassID";
+                pGlassID.Value = glassID;
+
+                SqlParameter pThickness = new SqlParameter();
+                pThickness.ParameterName = "thickness";
+                pThickness.Value = thickness;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateThickness, pGlassID, pThickness);
             }
             catch (Exception ex)
             {
