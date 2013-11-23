@@ -48,5 +48,7 @@ namespace GlassProductManager
         internal const string UpdateHoleRate = "[UpdateHoleRate]";
         internal const string UpdateGlassType = "[UpdateGlassType]";
         internal const string UpdateThickness = "[UpdateThickness]";
+        internal const string GetAllPaymentTypes = "[GetAllPaymentTypes]";
+        internal const string GetAllQuoteStatus = "[GetAllQuoteStatus]";
     }
 }

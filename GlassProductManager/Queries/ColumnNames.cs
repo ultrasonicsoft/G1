@@ -95,5 +95,7 @@ namespace GlassProductManager
         internal const string PONumber = "PONumber";
         internal const string InvoiceNumber = "InvoiceNumber";
 
+        internal const string Type = "Type";
+
     }
 }

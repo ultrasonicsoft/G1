@@ -1095,7 +1095,6 @@ namespace GlassProductManager
             DataSet result = null;
             try
             {
-
                 result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetThicknesses, null);
             }
             catch (Exception ex)
@@ -1144,6 +1143,34 @@ namespace GlassProductManager
                 result = false;
             }
             return result;
+        }
+
+        internal static DataTable GetAllPaymentTypes()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllPaymentTypes, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static DataTable GetAllQuoteStatus()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllQuoteStatus, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
     }
 }

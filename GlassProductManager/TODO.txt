@@ -30,6 +30,8 @@
 
 
 http://www.jeff.wilcox.name/2008/11/autocompletebox-missing-guide/
+http://www.pdfsharp.net/wiki/Graphics-sample.ashx
+http://www.pdfsharp.net/wiki/TextLayout-sample.ashx
 
 Mileston 2
 1. Print quote to pdf 

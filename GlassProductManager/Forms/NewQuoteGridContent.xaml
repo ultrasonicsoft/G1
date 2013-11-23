@@ -43,8 +43,9 @@
                 <Image Name="imgLogo" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.RowSpan="2" VerticalAlignment="Top" Height="50"  Width="auto" Grid.Row="0" Grid.Column="0" Source="/GlassProductManager;component/Logo.jpg" />
 
 
-                <Grid Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="2">
+                <Grid Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="3">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
                         <RowDefinition Height="25"/>
                         <RowDefinition Height="25"/>
                     </Grid.RowDefinitions>
@@ -62,6 +63,10 @@
                     <DatePicker Name="dtQuoteCreatedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" />
                     <Label Name="lblRequestedShipDate" Content="Requested Ship Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
                     <DatePicker Name="dtQuoteRequestedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" />
+                    <Label Name="lblPaymentType" Content="Payment Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
+                    <ComboBox Name="cmbPaymentType"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="2" Grid.Column="1"/>
+                    <Label Name="lblQuoteStatus" Content="Quote Status:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" />
+                    <ComboBox Name="cmbQuoteStatus"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="2" Grid.Column="3"/>
                 </Grid>
 
 
@@ -102,7 +107,7 @@
                 </Grid>
 
 
-                <Label Content="Operator:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="5" />
+                <Label Name="lblOperator" Content="Operator:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="5" />
                 <ComboBox Name="cmbOperator"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="5" Grid.Column="5"/>
                 <TextBox  Name="txtOperatorName" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="5"/>
 
@@ -144,10 +149,10 @@
                 <Label Name="lblShipToMisc" Content="Misc:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="3" />
                 <TextBox  Name="txtShipToMisc" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="4"/>
 
-                <Label Content="Shipping Method:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="5" />
+                <Label Name="lblShippingMethod" Content="Shipping Method:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="5" />
                 <ComboBox Name="cmbShippingMethod" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="7" Grid.Column="5" />
 
-                <Label Content="Lead Time:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="5" />
+                <Label Name="lblLeadTime" Content="Lead Time:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="5" />
                 <ComboBox Name="cmbLeadTimeType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="80" Grid.Row="9" Grid.Column="7" IsTextSearchEnabled="True" IsEditable="True"/>
                 <ComboBox Name="cmbLeadTime" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Grid.Row="9" Grid.Column="5"  Margin="55,0,0,0" IsTextSearchEnabled="True" IsEditable="True"/>
                 <CheckBox Name="cbUseAsDefault" Content="Use as default" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="5" Checked="cbUseAsDefault_Checked" Unchecked="cbUseAsDefault_Unchecked" />
@@ -177,7 +182,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <Label Content="SubTotal:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="12" Grid.Column="4" />
+                <Label Name="lblSubTotalCaption" Content="SubTotal:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="12" Grid.Column="4" />
                 <Label Name="lblSubTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="12" Grid.Column="5" FontWeight="Bold" />
 
                 <Label Content="Additional cost:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="0" />
@@ -188,24 +193,24 @@
 
                 <CheckBox Name="cbDollar" Content="Dollar" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="3" Checked="cbDollar_Checked" Unchecked="cbDollar_Unchecked" />
 
-                <Label Content="Energy Surcharge:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
+                <Label  Content="Energy Surcharge:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
                 <TextBox  Name="txtEnergySurcharge" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="5" TextChanged="txtEnergySurcharge_TextChanged" LostFocus="txtEnergySurcharge_LostFocus"/>
 
-                <Label Content="Discount (%):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="4" />
+                <Label Name="lblDiscount" Content="Discount (%):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="4" />
                 <TextBox  Name="txtDiscount" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="14" Grid.Column="5" TextChanged="txtDiscount_TextChanged" LostFocus="txtDiscount_LostFocus"/>
 
-                <Label Content="Delivery:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="15" Grid.Column="4" />
+                <Label Name="lblDelivery" Content="Delivery:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="15" Grid.Column="4" />
                 <TextBox  Name="txtDelivery" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="15" Grid.Column="5" LostFocus="txtDelivery_LostFocus" TextChanged="txtDelivery_TextChanged"/>
 
                 <CheckBox Name="cbRush" Content="Rush" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="3" Unchecked="cbRush_Unchecked" Checked="cbRush_Checked" />
 
-                <Label Content="Rush Order:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
+                <Label Name="lblRushOrder" Content="Rush Order:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
                 <TextBox  Name="txtRushOrder" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="16" Grid.Column="5" TextChanged="txtRushOrder_TextChanged" LostFocus="txtRushOrder_LostFocus"/>
 
-                <Label Content="Tax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" />
+                <Label Name="lblTax" Content="Tax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" />
                 <TextBox  Name="txtTax" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" LostFocus="txtTax_LostFocus" TextChanged="txtTax_TextChanged"/>
 
-                <Label Content="Grand Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="18" Grid.Column="4" />
+                <Label Name="lblGrandTotalCaption" Content="Grand Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="18" Grid.Column="4" />
                 <Label Name="lblGrandTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="18" Grid.Column="5" FontWeight="ExtraBold" FontSize="14" />
 
                 <Grid Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="6">
@@ -225,7 +230,7 @@
                     <Button Name="btnClone" Content="_Clone"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="3" Width="75"/>
                     <Button Name="btnPrint" Content="_Print"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" Width="75" Click="btnPrint_Click"/>
                     <Button Name="btnEmail" Content="E_mail"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" Width="75"/>
-                    <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="6" Width="75"/>
+                    <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="6" Width="75" Click="btnExportPdf_Click"/>
                     <Button Name="btnSendToWS" Content="Send to WS"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="7" Width="75"/>
                 </Grid>
 
