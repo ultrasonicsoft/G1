@@ -30,3 +30,9 @@
 
 
 http://www.jeff.wilcox.name/2008/11/autocompletebox-missing-guide/
+
+Mileston 2
+1. Print quote to pdf 
+2. Put Quote Status dropdown in Quote. "Pending, Confirmed,Rejected". Default Pending.
+3. Add new module - Worksheet
+4. Add new module - Sale Orders

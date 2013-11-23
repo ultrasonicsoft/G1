@@ -305,6 +305,7 @@
 
                 <Button Name="btnNewItem" Content="New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="2" Click="btnNewItem_Click"/>
                 <Button Name="btnResetItem" Content="Reset" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="3" Click="btnResetItem_Click"/>
+                <Button Name="btnPrintTest" Content="Print Test" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="4" Click="btnPrintTest_Click" />
                 <Button Name="btnAddToQuote" Grid.ColumnSpan="6" Content="Add to Quote" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="25" Grid.Column="0" Click="btnAddToQuote_Click"/>
 
             </Grid>
