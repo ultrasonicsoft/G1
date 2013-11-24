@@ -684,8 +684,8 @@ namespace GlassProductManager
                     lineItem.Description = currentRow[ColumnNames.Description].ToString();
                     lineItem.Dimension = currentRow[ColumnNames.Dimension].ToString();
                     lineItem.TotalSqFt = currentRow[ColumnNames.SqFt].ToString();
-                    lineItem.UnitPrice = currentRow[ColumnNames.PricePerUnit].ToString();
-                    lineItem.Total = double.Parse(currentRow[ColumnNames.PricePerUnit].ToString());
+                    lineItem.UnitPrice = double.Parse(currentRow[ColumnNames.PricePerUnit].ToString()).ToString("0.00");
+                    lineItem.Total = double.Parse(currentRow[ColumnNames.Total].ToString()).ToString("0.00");
 
                     quoteDetails.LineItems.Add(lineItem);
                 }

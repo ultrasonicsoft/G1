@@ -146,7 +146,7 @@ namespace GlassProductManager
 
             foreach (var item in allQuoteData)
             {
-                subTotal += item.Total;
+                subTotal += double.Parse(item.Total);
             }
             lblSubTotal.Content = "$ " + subTotal.ToString("0.00");
 
@@ -561,7 +561,7 @@ namespace GlassProductManager
             QuoteGridEntity selectedLineItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
             if (selectedLineItem == null)
                 return;
-            selectedLineItem.Total = (double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity;
+            selectedLineItem.Total = ((double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity).ToString("0.00");
             UpdateQuoteTotal();
 
         }
@@ -575,7 +575,7 @@ namespace GlassProductManager
                     if (selectedLineItem == null || string.IsNullOrEmpty(txtAdditionalCostForItem.Text) || string.IsNullOrEmpty(selectedLineItem.UnitPrice))
                         continue;
 
-                    selectedLineItem.Total = (double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity;
+                    selectedLineItem.Total = ((double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity).ToString("0.00");
                 }
                 UpdateQuoteTotal();
             }
@@ -1299,7 +1299,7 @@ namespace GlassProductManager
                 gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
-                gfx.DrawString(selectedLineItem.Total.ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
+                gfx.DrawString(double.Parse( selectedLineItem.Total).ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
 
                 yQuoteItemOffset += 50;
             }

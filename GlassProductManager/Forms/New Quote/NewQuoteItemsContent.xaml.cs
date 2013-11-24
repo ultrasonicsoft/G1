@@ -668,7 +668,7 @@ namespace GlassProductManager
                         newItem.Dimension = GetDimensionString();
                         newItem.TotalSqFt = currentItem.TotalSqFT.ToString();
                         newItem.UnitPrice = currentItem.PricePerUnit.ToString("0.00");
-                        newItem.Total = currentItem.CurrentTotal;
+                        newItem.Total = currentItem.CurrentTotal.ToString("0.00");
                         grid.allQuoteData.Add(newItem);
                     }
                 }

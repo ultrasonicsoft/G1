@@ -80,8 +80,8 @@ namespace GlassProductManager
             }
         }
 
-        private double _total;
-        public double Total
+        private string _total;
+        public string Total
         {
             get { return _total; }
             set
