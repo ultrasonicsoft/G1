@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -869,6 +870,17 @@ namespace GlassProductManager
                 PrintQuoteDetails(gfx, font);
                 PrintQuoteFooter(gfx, font);
 
+                //PrinterSettings settings = new PrinterSettings();
+                //PrintDialog oDiaLog = new PrintDialog();
+                //if (oDiaLog.ShowDialog().Value )
+                //{
+
+                //    PDFPrintSettings pdfPrintSettings = new PDFPrintSettings(oDiaLog.PrinterSettings);
+                //    this.PdfDocument.Print(pdfPrintSettings); // Here PDFDocument is document of PDF sharp objects.
+
+                //}
+
+                
                 // Save the document...
                 string filename = string.Format("Quote {0}.pdf", txtQuoteNumber.Text);
                 document.Save(filename);
@@ -1164,8 +1176,8 @@ namespace GlassProductManager
 
             int xLineColumn = 150;
             int xQuantityColumn = 200;
-            int xDescriptionColumn = 730;
-            int xDimensionColumn = 880;
+            int xDescriptionColumn = 790;
+            int xDimensionColumn = 920;
             int xSqFtColumn = 980;
             int xUnitPriceColumn = 1080;
             int xTotalColumn = 1180;
@@ -1190,26 +1202,39 @@ namespace GlassProductManager
             gfx.DrawString("Line No.", font, brush, new XRect(xStartDetailRect + 15, yStartDetailRect + 15, xLineColumn, heightHeaderRect), format);
             gfx.DrawString("Qty", font, brush, new XRect(xLineColumn + 15, yStartDetailRect + 15, xQuantityColumn, heightHeaderRect), format);
             gfx.DrawString("Description", font, brush, new XRect(xQuantityColumn + 65, yStartDetailRect + 15, xDescriptionColumn, heightHeaderRect), format);
-            gfx.DrawString("Dimension", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
+            gfx.DrawString("Dimension (in)", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
             gfx.DrawString("Sq.Ft.", font, brush, new XRect(xDimensionColumn + 15, yStartDetailRect + 15, xSqFtColumn, heightHeaderRect), format);
-            gfx.DrawString("Price/Pc", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
-            gfx.DrawString("Total", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
+            gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
+            gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
 
-            int yQuoteItemOffset = yStartDetailRect + 25;
-            int yOffset = 15;
+            int yQuoteItemOffset = yStartDetailRect + 45;
+            int yOffset = 20;
             brush = XBrushes.Black;
+
+            XTextFormatter tf = new XTextFormatter(gfx);
+            //gfx.DrawRectangle(XBrushes.SeaShell, rect);
+            //tf.Alignment = ParagraphAlignment.Left;
+            XRect rect;
             foreach (QuoteGridEntity selectedLineItem in allQuoteData)
             {
-                if (selectedLineItem == null)
+                if (selectedLineItem == null || selectedLineItem.Description == null ||  selectedLineItem.Dimension == null )
                     continue;
-                yQuoteItemOffset += 25;
+
+                XSize size = gfx.MeasureString(selectedLineItem.Description, font);
+                
                 gfx.DrawString(selectedLineItem.LineID.ToString(), font, brush, new XRect(xStartDetailRect + 40, yQuoteItemOffset + yOffset, xLineColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.Quantity.ToString(), font, brush, new XRect(xLineColumn + 25, yQuoteItemOffset + yOffset, xQuantityColumn, heightHeaderRect), format);
-                gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect), format);
+
+                rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + 100);
+                tf.DrawString(selectedLineItem.Description, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                //gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + size.Height), format);
+                
                 gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.Total.ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
+              
+                yQuoteItemOffset += 50;
             }
         }
 
@@ -1293,9 +1318,6 @@ namespace GlassProductManager
 
         private void btnExportPdf_Click(object sender, RoutedEventArgs e)
         {
-            // Create an empty page
-
-
             // Create a font
             const string text =
             "Facin exeraessisit la consenim iureet dignibh eu facilluptat vercil dunt autpat. " +
@@ -1311,24 +1333,37 @@ namespace GlassProductManager
             "Ut ulputate volore min ut nulpute dolobor sequism olorperilit autatie modit wisl illuptat dolore " +
             "min ut in ute doloboreet ip ex et am dunt at.";
 
-            PdfDocument document = new PdfDocument();
 
+            PdfDocument document = new PdfDocument();
             PdfPage page = document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
             XFont font = new XFont("Times New Roman", 10, XFontStyle.Bold);
             XTextFormatter tf = new XTextFormatter(gfx);
-
             XRect rect = new XRect(40, 100, 250, 220);
-            gfx.DrawRectangle(XBrushes.SeaShell, rect);
+            //gfx.DrawRectangle(XBrushes.SeaShell, rect);
             //tf.Alignment = ParagraphAlignment.Left;
             tf.DrawString(text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-          
+
+            XSize size = gfx.MeasureString(text, font);
+            const XFontStyle style = XFontStyle.Regular;
+
+            double lineSpace = font.GetHeight(gfx);
+            int cellSpace = font.FontFamily.GetLineSpacing(style);
+            int cellAscent = font.FontFamily.GetCellAscent(style);
+            int cellDescent = font.FontFamily.GetCellDescent(style);
+            int cellLeading = cellSpace - cellAscent - cellDescent;
+
 
             // Save the document...
             string filename = string.Format("test.pdf", txtQuoteNumber.Text);
             document.Save(filename);
             // ...and start a viewer.
             Process.Start(filename);
+        }
+
+        private void txtShipToPhone_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Helper.IsValidPhone(txtShipToPhone);
         }
     }
 }
