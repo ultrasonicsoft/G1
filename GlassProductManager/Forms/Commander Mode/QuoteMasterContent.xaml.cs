@@ -177,5 +177,40 @@ namespace GlassProductManager
             m_QuoteListForSearch = new ListCollectionView(result);
         }
 
+        private void btnOpenQuote_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSelectedQuote();
+        }
+
+        private void dgQuoteDetails_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            OpenSelectedQuote();
+        }
+
+        private void OpenSelectedQuote()
+        {
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+
+            QuoteMasterEntity entity = dgQuoteDetails.SelectedItem as QuoteMasterEntity;
+
+            if (entity == null)
+            {
+                return;
+            }
+
+            DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+            if (sideMenu != null)
+            {
+                sideMenu.IsIndirectCall = true;
+                sideMenu.btnCreateNewQuote.IsChecked = true;
+                sideMenu.IsIndirectCall = false;
+            }
+
+            NewQuoteContent newQuote = new NewQuoteContent(true, entity.QuoteNumber);
+            parent.ucMainContent.ShowPage(newQuote);
+        }
+
+       
+
     }
 }

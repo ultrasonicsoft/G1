@@ -29,6 +29,9 @@ namespace GlassProductManager
 
     public partial class DashboardMenu : UserControl
     {
+        private bool _isIndirectCall = false;
+        public bool IsIndirectCall { get; set; }
+
         public DashboardMenu()
         {
             InitializeComponent();
@@ -52,10 +55,12 @@ namespace GlassProductManager
         {
             UpdateToggleButtonStatus(UserSelection.NewQuote);
 
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            NewQuoteContent newQuote = new NewQuoteContent();
-            parent.ucMainContent.ShowPage(newQuote);
-
+            if (IsIndirectCall == false)
+            {
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                NewQuoteContent newQuote = new NewQuoteContent();
+                parent.ucMainContent.ShowPage(newQuote);
+            }
         }
 
         private void btnCustomerSettings_Checked(object sender, RoutedEventArgs e)
@@ -89,38 +94,63 @@ namespace GlassProductManager
             switch (selection)
             {
                 case UserSelection.Home:
-                    btnCreateNewQuote.IsChecked = false;
-                    btnPriceSettings.IsChecked = false;
-                    btnCustomerSettings.IsChecked = false;
-                    btnCommanderSection.IsChecked = false;
+                    SetHomeAsCurrentPage();
                     break;
                 case UserSelection.NewQuote:
-                    btnHome.IsChecked = false;
-                    btnPriceSettings.IsChecked = false;
-                    btnCustomerSettings.IsChecked = false;
-                    btnCommanderSection.IsChecked = false;
+                    SetNewQuoteAsCurrentPage();
                     break;
                 case UserSelection.RateSettings:
-                    btnHome.IsChecked = false;
-                    btnCreateNewQuote.IsChecked = false;
-                    btnCustomerSettings.IsChecked = false;
-                    btnCommanderSection.IsChecked = false;
+                    SetPriceSettingAsCurrentPage();
                     break;
                 case UserSelection.CustomerSettings:
-                    btnHome.IsChecked = false;
-                    btnCreateNewQuote.IsChecked = false;
-                    btnPriceSettings.IsChecked = false;
-                    btnCommanderSection.IsChecked = false;
+                    SetCustomerSettingsAsCurrentPage();
                     break;
                 case UserSelection.CommanderSection:
-                    btnHome.IsChecked = false;
-                    btnCreateNewQuote.IsChecked = false;
-                    btnPriceSettings.IsChecked = false;
-                    btnCustomerSettings.IsChecked = false;
+                    SetCommanderSectionAsCurrentPage();
                     break;
                 default:
                     break;
             }
+        }
+
+        internal void SetCommanderSectionAsCurrentPage()
+        {
+            btnHome.IsChecked = false;
+            btnCreateNewQuote.IsChecked = false;
+            btnPriceSettings.IsChecked = false;
+            btnCustomerSettings.IsChecked = false;
+        }
+
+        internal void SetCustomerSettingsAsCurrentPage()
+        {
+            btnHome.IsChecked = false;
+            btnCreateNewQuote.IsChecked = false;
+            btnPriceSettings.IsChecked = false;
+            btnCommanderSection.IsChecked = false;
+        }
+
+        internal void SetPriceSettingAsCurrentPage()
+        {
+            btnHome.IsChecked = false;
+            btnCreateNewQuote.IsChecked = false;
+            btnCustomerSettings.IsChecked = false;
+            btnCommanderSection.IsChecked = false;
+        }
+
+        internal void SetNewQuoteAsCurrentPage()
+        {
+            btnHome.IsChecked = false;
+            btnPriceSettings.IsChecked = false;
+            btnCustomerSettings.IsChecked = false;
+            btnCommanderSection.IsChecked = false;
+        }
+
+        internal void SetHomeAsCurrentPage()
+        {
+            btnCreateNewQuote.IsChecked = false;
+            btnPriceSettings.IsChecked = false;
+            btnCustomerSettings.IsChecked = false;
+            btnCommanderSection.IsChecked = false;
         }
 
        

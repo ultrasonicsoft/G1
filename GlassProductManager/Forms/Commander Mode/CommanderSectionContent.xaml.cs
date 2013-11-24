@@ -32,6 +32,7 @@ namespace GlassProductManager
             try
             {
                 FillWorkItemTypes();
+                LoadSelectedWorkItem();
             }
             catch (Exception ex)
             {
@@ -51,6 +52,11 @@ namespace GlassProductManager
         }
 
         private void btnOpenWorkItem_Click(object sender, RoutedEventArgs e)
+        {
+            LoadSelectedWorkItem();
+        }
+
+        private void LoadSelectedWorkItem()
         {
             switch (cmbWorkItemTypes.SelectedIndex)
             {

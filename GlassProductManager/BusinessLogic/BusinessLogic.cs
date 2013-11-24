@@ -364,6 +364,7 @@ namespace GlassProductManager
                     {
                         InsertShippingDetails(customerID, header.QuoteNumber, header.ShipTo);
                     }
+                    pCustomerID.Value = int.Parse(customerID);
                 }
 
                 SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddQuoteHeader, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID,

@@ -99,46 +99,46 @@
     <Compile Include="Classes\CutoutData.cs" />
     <Compile Include="Classes\Insulation.cs" />
     <Compile Include="Classes\QuoteHeader.cs" />
-    <Compile Include="Forms\CommanderSectionContent.xaml.cs">
+    <Compile Include="Forms\Commander Mode\CommanderSectionContent.xaml.cs">
       <DependentUpon>CommanderSectionContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\InvoiceMasterContent.xaml.cs">
+    <Compile Include="Forms\Commander Mode\InvoiceMasterContent.xaml.cs">
       <DependentUpon>InvoiceMasterContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\WorksheetMasterContent.xaml.cs">
+    <Compile Include="Forms\Commander Mode\WorksheetMasterContent.xaml.cs">
       <DependentUpon>WorksheetMasterContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SaleOrderMasterContent.xaml.cs">
+    <Compile Include="Forms\Commander Mode\SaleOrderMasterContent.xaml.cs">
       <DependentUpon>SaleOrderMasterContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\QuoteMasterContent.xaml.cs">
+    <Compile Include="Forms\Commander Mode\QuoteMasterContent.xaml.cs">
       <DependentUpon>QuoteMasterContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CustomerSettingsContent.xaml.cs">
+    <Compile Include="Forms\Customer Settings\CustomerSettingsContent.xaml.cs">
       <DependentUpon>CustomerSettingsContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DashboardMenu.xaml.cs">
+    <Compile Include="Forms\Dashboard\DashboardMenu.xaml.cs">
       <DependentUpon>DashboardMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Dashboard.xaml.cs">
+    <Compile Include="Forms\Dashboard\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GlassRate.cs" />
+    <Compile Include="Classes\GlassRate.cs" />
     <Compile Include="Forms\HomeContent.xaml.cs">
       <DependentUpon>HomeContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NewQuoteContent.xaml.cs">
+    <Compile Include="Forms\New Quote\NewQuoteContent.xaml.cs">
       <DependentUpon>NewQuoteContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NewQuoteGridContent.xaml.cs">
+    <Compile Include="Forms\New Quote\NewQuoteGridContent.xaml.cs">
       <DependentUpon>NewQuoteGridContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlassShape.cs" />
     <Compile Include="Classes\NewQuoteItemEntity.cs" />
-    <Compile Include="Forms\NewQuoteItemsContent.xaml.cs">
+    <Compile Include="Forms\New Quote\NewQuoteItemsContent.xaml.cs">
       <DependentUpon>NewQuoteItemsContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PriceSettingsContent.xaml.cs">
+    <Compile Include="Forms\Price Settings\PriceSettingsContent.xaml.cs">
       <DependentUpon>PriceSettingsContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\SettingsContent.xaml.cs">
@@ -150,35 +150,35 @@
     <Compile Include="Queries\ColumnNames.cs" />
     <Compile Include="Queries\SelectQueries.cs" />
     <Compile Include="Queries\StoredProcedures.cs" />
-    <Page Include="Forms\CommanderSectionContent.xaml">
+    <Page Include="Forms\Commander Mode\CommanderSectionContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\InvoiceMasterContent.xaml">
+    <Page Include="Forms\Commander Mode\InvoiceMasterContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\WorksheetMasterContent.xaml">
+    <Page Include="Forms\Commander Mode\WorksheetMasterContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\SaleOrderMasterContent.xaml">
+    <Page Include="Forms\Commander Mode\SaleOrderMasterContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\QuoteMasterContent.xaml">
+    <Page Include="Forms\Commander Mode\QuoteMasterContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\CustomerSettingsContent.xaml">
+    <Page Include="Forms\Customer Settings\CustomerSettingsContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\DashboardMenu.xaml">
+    <Page Include="Forms\Dashboard\DashboardMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\Dashboard.xaml">
+    <Page Include="Forms\Dashboard\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -186,19 +186,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\NewQuoteContent.xaml">
+    <Page Include="Forms\New Quote\NewQuoteContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\NewQuoteGridContent.xaml">
+    <Page Include="Forms\New Quote\NewQuoteGridContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\NewQuoteItemsContent.xaml">
+    <Page Include="Forms\New Quote\NewQuoteItemsContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\PriceSettingsContent.xaml">
+    <Page Include="Forms\Price Settings\PriceSettingsContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

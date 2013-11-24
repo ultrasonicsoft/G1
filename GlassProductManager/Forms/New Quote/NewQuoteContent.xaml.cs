@@ -36,5 +36,30 @@ namespace GlassProductManager
                 ucNewQuoteGrid.ShowPage(grid);
             }
         }
+
+        public NewQuoteContent(bool _isOpenQuoteRequested, string _quoteNumber)
+        {
+            InitializeComponent();
+
+            if (ucNewQuoteItems.CurrentPage == null)
+            {
+                NewQuoteItemsContent items = new NewQuoteItemsContent();
+                ucNewQuoteItems.ShowPage(items);
+            }
+
+            if (ucNewQuoteGrid.CurrentPage == null)
+            {
+                NewQuoteGridContent grid = null;
+                if (_isOpenQuoteRequested == true)
+                {
+                    grid = new NewQuoteGridContent(_isOpenQuoteRequested, _quoteNumber);
+                }
+                else
+                {
+                    grid = new NewQuoteGridContent();
+                }
+                ucNewQuoteGrid.ShowPage(grid);
+            }
+        }
     }
 }

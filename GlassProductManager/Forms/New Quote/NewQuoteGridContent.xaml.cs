@@ -39,6 +39,23 @@ namespace GlassProductManager
         {
             InitializeComponent();
 
+            ConfigureInitialSetup();
+        }
+
+        public NewQuoteGridContent(bool _isOpenQuoteRequested, string _quoteNumber)
+        {
+            InitializeComponent();
+
+            ConfigureInitialSetup();
+
+            if (_isOpenQuoteRequested == true)
+            {
+                OpenSelectedQuote(_quoteNumber);
+            }
+        }
+
+        private void ConfigureInitialSetup()
+        {
             FillShippingMethods();
             FillLeadTimeTypes();
             FillLeadTime();
@@ -61,8 +78,6 @@ namespace GlassProductManager
             FillPaymentTypes();
             FillQuoteStatus();
         }
-
-
 
         private void FillCustomerNames()
         {
