@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="GlassProductManager.InvoiceMasterContent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="1100" Loaded="UserControl_Loaded">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Search Invoice:" HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Grid.Row="0" Grid.Column="1" Text="Search" Margin="0,8,0,8" Name="txtSearch" TextChanged="txtSearch_TextChanged" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus"></TextBox>
+            <Button Name="btnOpenInvoice" Content="Open Invoice" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" />
+        </Grid>
+       
+        <DataGrid Name="dgInvoiceDetails" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Invoice No." Binding="{Binding InvoiceNumber}" Width="90"></DataGridTextColumn>
+                <DataGridTextColumn Header="Quote No." Binding="{Binding QuoteNumber}"  Width="90" SortDirection="Descending"></DataGridTextColumn>
+                <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="150"></DataGridTextColumn>
+                <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="90"></DataGridTextColumn>
+                <DataGridTextColumn Header="Completed Date" Binding="{Binding CompletedDate}" Width="110"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+       
+    </Grid>
+</UserControl>

@@ -1183,5 +1183,120 @@ namespace GlassProductManager
             }
             return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
+
+        internal static ObservableCollection<QuoteMasterEntity> GetQuoteMasterData()
+        {
+            ObservableCollection<QuoteMasterEntity> quoteMasterData = null;
+            try
+            {
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetQuoteMasterData, null);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                { return quoteMasterData; }
+
+                quoteMasterData = new ObservableCollection<QuoteMasterEntity>();
+                QuoteMasterEntity temp = null;
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    temp = new QuoteMasterEntity();
+                    temp.QuoteStatus = result.Tables[0].Rows[rowIndex][ColumnNames.Status] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Status].ToString();
+                    temp.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber].ToString();
+                    temp.FullName = result.Tables[0].Rows[rowIndex][ColumnNames.FullName] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.FullName].ToString();
+                    temp.CreatedOn = result.Tables[0].Rows[rowIndex][ColumnNames.CreatedOn] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.CreatedOn].ToString();
+                    temp.Total = result.Tables[0].Rows[rowIndex][ColumnNames.Total] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Total].ToString();
+                    temp.EstimatedShipDate = result.Tables[0].Rows[rowIndex][ColumnNames.EstimatedShipDate] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.EstimatedShipDate].ToString();
+                    temp.PaymentType = result.Tables[0].Rows[rowIndex][ColumnNames.PaymentType] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.PaymentType].ToString();
+                    temp.CustomerPONumber = result.Tables[0].Rows[rowIndex][ColumnNames.CustomerPONumber] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.CustomerPONumber].ToString();
+
+                    quoteMasterData.Add(temp);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return  quoteMasterData;
+        }
+
+        internal static ObservableCollection<SaleOrderEntity> GetSaleOrderMasterData()
+        {
+            ObservableCollection<SaleOrderEntity> quoteMasterData = null;
+            try
+            {
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetSaleOrderMasterData, null);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                { return quoteMasterData; }
+
+                quoteMasterData = new ObservableCollection<SaleOrderEntity>();
+                SaleOrderEntity temp = null;
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    temp = new SaleOrderEntity();
+                    //temp.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.Status] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Status].ToString();
+
+                    quoteMasterData.Add(temp);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return quoteMasterData;
+        }
+
+        internal static ObservableCollection<WorksheetEntity> GetWorksheetMasterData()
+        {
+            ObservableCollection<WorksheetEntity> quoteMasterData = null;
+            try
+            {
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetWorksheetMasterData, null);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                { return quoteMasterData; }
+
+                quoteMasterData = new ObservableCollection<WorksheetEntity>();
+                WorksheetEntity temp = null;
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    temp = new WorksheetEntity();
+                    //temp.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.Status] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Status].ToString();
+
+                    quoteMasterData.Add(temp);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return quoteMasterData;
+        }
+
+        internal static ObservableCollection<InvoiceEntity> GetInvoiceMasterData()
+        {
+            ObservableCollection<InvoiceEntity> quoteMasterData = null;
+            try
+            {
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetWorksheetMasterData, null);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                { return quoteMasterData; }
+
+                quoteMasterData = new ObservableCollection<InvoiceEntity>();
+                InvoiceEntity temp = null;
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    temp = new InvoiceEntity();
+                    //temp.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.Status] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Status].ToString();
+
+                    quoteMasterData.Add(temp);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return quoteMasterData;
+        }
     }
 }

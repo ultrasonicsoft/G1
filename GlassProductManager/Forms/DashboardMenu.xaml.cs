@@ -23,7 +23,8 @@ namespace GlassProductManager
         Home,
         NewQuote,
         RateSettings,
-        CustomerSettings
+        CustomerSettings,
+        CommanderSection
     }
 
     public partial class DashboardMenu : UserControl
@@ -74,6 +75,15 @@ namespace GlassProductManager
             parent.ucMainContent.ShowPage(priceSettings);
         }
 
+        private void btnCommanderSection_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateToggleButtonStatus(UserSelection.CommanderSection);
+
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+            CommanderSectionContent commanderSection = new CommanderSectionContent();
+            parent.ucMainContent.ShowPage(commanderSection);
+        }
+
         private void UpdateToggleButtonStatus(UserSelection selection)
         {
             switch (selection)
@@ -82,21 +92,31 @@ namespace GlassProductManager
                     btnCreateNewQuote.IsChecked = false;
                     btnPriceSettings.IsChecked = false;
                     btnCustomerSettings.IsChecked = false;
+                    btnCommanderSection.IsChecked = false;
                     break;
                 case UserSelection.NewQuote:
                     btnHome.IsChecked = false;
                     btnPriceSettings.IsChecked = false;
                     btnCustomerSettings.IsChecked = false;
+                    btnCommanderSection.IsChecked = false;
                     break;
                 case UserSelection.RateSettings:
                     btnHome.IsChecked = false;
                     btnCreateNewQuote.IsChecked = false;
                     btnCustomerSettings.IsChecked = false;
+                    btnCommanderSection.IsChecked = false;
                     break;
                 case UserSelection.CustomerSettings:
                     btnHome.IsChecked = false;
                     btnCreateNewQuote.IsChecked = false;
                     btnPriceSettings.IsChecked = false;
+                    btnCommanderSection.IsChecked = false;
+                    break;
+                case UserSelection.CommanderSection:
+                    btnHome.IsChecked = false;
+                    btnCreateNewQuote.IsChecked = false;
+                    btnPriceSettings.IsChecked = false;
+                    btnCustomerSettings.IsChecked = false;
                     break;
                 default:
                     break;

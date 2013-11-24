@@ -50,5 +50,8 @@ namespace GlassProductManager
         internal const string UpdateThickness = "[UpdateThickness]";
         internal const string GetAllPaymentTypes = "[GetAllPaymentTypes]";
         internal const string GetAllQuoteStatus = "[GetAllQuoteStatus]";
+        internal const string GetQuoteMasterData = "[GetQuoteMasterData]";
+        internal const string GetSaleOrderMasterData = "[GetSaleOrderMasterData]";
+        internal const string GetWorksheetMasterData = "[GetWorksheetMasterData]";
     }
 }

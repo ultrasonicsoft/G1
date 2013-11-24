@@ -83,6 +83,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\InvoiceEntity.cs" />
+    <Compile Include="Classes\WorksheetEntity.cs" />
+    <Compile Include="Classes\SaleOrderEntity.cs" />
+    <Compile Include="Classes\QuoteMasterEntity.cs" />
     <Compile Include="Classes\CustomerSmartDataEntity.cs" />
     <Compile Include="Classes\DataGridHelper.cs" />
     <Compile Include="Classes\FirmSettings.cs" />
@@ -95,6 +99,21 @@
     <Compile Include="Classes\CutoutData.cs" />
     <Compile Include="Classes\Insulation.cs" />
     <Compile Include="Classes\QuoteHeader.cs" />
+    <Compile Include="Forms\CommanderSectionContent.xaml.cs">
+      <DependentUpon>CommanderSectionContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InvoiceMasterContent.xaml.cs">
+      <DependentUpon>InvoiceMasterContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WorksheetMasterContent.xaml.cs">
+      <DependentUpon>WorksheetMasterContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SaleOrderMasterContent.xaml.cs">
+      <DependentUpon>SaleOrderMasterContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\QuoteMasterContent.xaml.cs">
+      <DependentUpon>QuoteMasterContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CustomerSettingsContent.xaml.cs">
       <DependentUpon>CustomerSettingsContent.xaml</DependentUpon>
     </Compile>
@@ -131,6 +150,26 @@
     <Compile Include="Queries\ColumnNames.cs" />
     <Compile Include="Queries\SelectQueries.cs" />
     <Compile Include="Queries\StoredProcedures.cs" />
+    <Page Include="Forms\CommanderSectionContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\InvoiceMasterContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\WorksheetMasterContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\SaleOrderMasterContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\QuoteMasterContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Forms\CustomerSettingsContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

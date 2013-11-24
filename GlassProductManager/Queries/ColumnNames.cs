@@ -99,5 +99,11 @@ namespace GlassProductManager
 
         internal const string Type = "Type";
 
+        internal const string Status = "Status";
+        internal const string FullName = "FullName";
+        internal const string EstimatedShipDate = "EstimatedShipDate";
+        internal const string PaymentType = "PaymentType";
+        internal const string CustomerPONumber = "CustomerPONumber";
+
     }
 }
