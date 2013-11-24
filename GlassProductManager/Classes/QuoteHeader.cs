@@ -21,6 +21,8 @@ namespace GlassProductManager
         public int LeadTimeTypeID { get; set; }
         public int CustomerID { get; set; }
         public string OperatorName { get; set; }
+        public int PaymentModeID { get; set; }
+        public int QuoteStatusID { get; set; }
     }
 
     public class CustomerDetails

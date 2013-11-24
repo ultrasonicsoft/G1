@@ -52,6 +52,8 @@ namespace GlassProductManager
         internal const string Phone = "Phone";
         internal const string Misc = "Misc";
         internal const string ShippingMethodID = "ShippingMethodID";
+        internal const string PaymentModeID = "PaymentModeID";
+        internal const string QuoteStatusID = "QuoteStatusID";
 
         internal const string SoldTo_FirstName = "SoldTo_FirstName";
         internal const string SoldTo_LastName = "SoldTo_LastName";

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,8 @@ namespace GlassProductManager
             FillShippingMethods();
             FillLeadTimeTypes();
             FillLeadTime();
+
+            cbIsNewClient.IsChecked = true;
 
             dtQuoteCreatedOn.SelectedDate = DateTime.Now;
             dtQuoteRequestedOn.SelectedDate = DateTime.Now;
@@ -288,6 +291,9 @@ namespace GlassProductManager
             header.ShippingMethodID = cmbShippingMethod.SelectedIndex;
             header.LeadTimeID = cmbLeadTime.SelectedIndex;
             header.LeadTimeTypeID = cmbLeadTimeType.SelectedIndex;
+
+            header.PaymentModeID = int.Parse(cmbPaymentType.SelectedValue.ToString());
+            header.QuoteStatusID = int.Parse(cmbQuoteStatus.SelectedValue.ToString());
 
             if (FirmSettings.IsAdmin)
             {
@@ -577,8 +583,11 @@ namespace GlassProductManager
             txtCustomerPO.Text = result.Header.CustomerPO;
             dtQuoteCreatedOn.SelectedDate = DateTime.Parse(result.Header.QuoteCreatedOn);
             dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
+            cmbPaymentType.SelectedValue = result.Header.PaymentModeID;
+            cmbQuoteStatus.SelectedValue = result.Header.QuoteStatusID;
 
-            SetSoldToDetails(result.Header.SoldTo);
+            if (result.Header.SoldTo != null)
+                SetSoldToDetails(result.Header.SoldTo);
 
             if (FirmSettings.IsAdmin)
             {
@@ -845,6 +854,25 @@ namespace GlassProductManager
         {
             try
             {
+                string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string clientName = string.Format("{0} {1}", txtSoldToFirstName.Text, txtSoldToLastName.Text);
+                string relativePath = folderPath + "\\Glass Control Clients\\" + clientName + "\\Quotes\\";
+                string filename = string.Format("Quote {0}.pdf", txtQuoteNumber.Text);
+                string completeFilePath = relativePath + "\\" + filename;
+
+                if (Directory.Exists(relativePath) == false)
+                {
+                    Directory.CreateDirectory(relativePath);
+                }
+                if (File.Exists(completeFilePath) == true)
+                {
+                    var result1 = Helper.ShowQuestionMessageBox("Quote with same number already exists. Do you want to overwrite it?");
+                    if (result1 != MessageBoxResult.Yes)
+                    {
+                        return;
+                    }
+                }
+
                 // Create a new PDF document
                 PdfDocument document = new PdfDocument();
 
@@ -880,12 +908,15 @@ namespace GlassProductManager
 
                 //}
 
-                
+
                 // Save the document...
-                string filename = string.Format("Quote {0}.pdf", txtQuoteNumber.Text);
-                document.Save(filename);
+                document.Save(completeFilePath);
                 // ...and start a viewer.
-                Process.Start(filename);
+                var result = Helper.ShowQuestionMessageBox("File Saved. Do you want to open it now?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    Process.Start(completeFilePath);
+                }
             }
             catch (Exception ex)
             {
@@ -1217,23 +1248,23 @@ namespace GlassProductManager
             XRect rect;
             foreach (QuoteGridEntity selectedLineItem in allQuoteData)
             {
-                if (selectedLineItem == null || selectedLineItem.Description == null ||  selectedLineItem.Dimension == null )
+                if (selectedLineItem == null || selectedLineItem.Description == null || selectedLineItem.Dimension == null)
                     continue;
 
                 XSize size = gfx.MeasureString(selectedLineItem.Description, font);
-                
+
                 gfx.DrawString(selectedLineItem.LineID.ToString(), font, brush, new XRect(xStartDetailRect + 40, yQuoteItemOffset + yOffset, xLineColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.Quantity.ToString(), font, brush, new XRect(xLineColumn + 25, yQuoteItemOffset + yOffset, xQuantityColumn, heightHeaderRect), format);
 
                 rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + 100);
                 tf.DrawString(selectedLineItem.Description, font, XBrushes.Black, rect, XStringFormats.TopLeft);
                 //gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + size.Height), format);
-                
+
                 gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.Total.ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
-              
+
                 yQuoteItemOffset += 50;
             }
         }

@@ -348,6 +348,14 @@ namespace GlassProductManager
                 pOperatorName.ParameterName = "OperatorName";
                 pOperatorName.Value = header.OperatorName;
 
+                SqlParameter pPaymentModeID = new SqlParameter();
+                pPaymentModeID.ParameterName = "PaymentModeID";
+                pPaymentModeID.Value = header.PaymentModeID;
+
+                SqlParameter pQuoteStatusID = new SqlParameter();
+                pQuoteStatusID.ParameterName = "QuoteStatusID";
+                pQuoteStatusID.Value = header.QuoteStatusID;
+
                 if (header.IsNewCustomer)
                 {
                     string customerID = CreateNewCustomer(header.SoldTo);
@@ -358,7 +366,8 @@ namespace GlassProductManager
                     }
                 }
 
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddQuoteHeader, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID, pShipToOtherAddress, pQuoteNumber, pCustomerID, pShippingMethodID, pOperatorName);
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddQuoteHeader, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID,
+                        pShipToOtherAddress, pQuoteNumber, pCustomerID, pShippingMethodID, pOperatorName, pPaymentModeID, pQuoteStatusID);
             }
             catch (Exception ex)
             {
@@ -635,6 +644,8 @@ namespace GlassProductManager
                 quoteDetails.Header.QuoteRequestedOn = result.Tables[0].Rows[0][ColumnNames.RequestedShipDate].ToString();
                 quoteDetails.Header.ShippingMethodID = int.Parse(result.Tables[0].Rows[0][ColumnNames.ShippingMethodID].ToString());
                 quoteDetails.Header.OperatorName = result.Tables[0].Rows[0][ColumnNames.OperatorName].ToString();
+                quoteDetails.Header.PaymentModeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.PaymentModeID].ToString());
+                quoteDetails.Header.QuoteStatusID = int.Parse(result.Tables[0].Rows[0][ColumnNames.QuoteStatusID].ToString());
 
                 quoteDetails.Header.SoldTo= new CustomerDetails();
                 quoteDetails.Header.SoldTo.FirstName = result.Tables[0].Rows[0][ColumnNames.SoldTo_FirstName].ToString();

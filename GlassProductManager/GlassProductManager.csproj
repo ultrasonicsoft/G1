@@ -238,8 +238,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\GlassManagerDB.sql" />
+    <Resource Include="logo.jpg" />
     <Resource Include="Images\validate.png" />
-    <Resource Include="Logo.jpg" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

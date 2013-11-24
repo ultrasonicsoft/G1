@@ -39,3 +39,10 @@ Mileston 2
 2. Put Quote Status dropdown in Quote. "Pending, Confirmed,Rejected". Default Pending.
 3. Add new module - Worksheet
 4. Add new module - Sale Orders
+5. Add scrollviewer in content. So that on small screen it will work
+6. Add Commander button on left
+7. Put dropdown - Quotes, Sales Orders, Worksheets, Invoices
+8. Separate grid for each one.
+9. New Quote number is not saved
+10. In SaveQuoteHeader, change logic for saving combobox selection. currently index is used.
+11. Change quote image
