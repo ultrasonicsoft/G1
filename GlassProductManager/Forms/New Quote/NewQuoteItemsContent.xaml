@@ -7,309 +7,312 @@
 		    xmlns:pageTransitions="clr-namespace:WpfPageTransitions;assembly=WpfPageTransitions"
              
              d:DesignHeight="800" d:DesignWidth="700">
-    <Grid HorizontalAlignment="Left">
-        <Border  HorizontalAlignment="Left" VerticalAlignment="Center"  BorderBrush="Black" BorderThickness="2">
-            <Grid Width="700">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Label  Content="Select Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                <ComboBox Name="cmbGlassType" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="1" SelectionChanged="cmbGlassType_SelectionChanged" />
-                <Label Content="Select Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
-                <ComboBox Name="cmbThickness" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="3" SelectionChanged="cmbThickness_SelectionChanged" />
-                <CheckBox Name="cbLogo" Content="Is Logo Required?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" Unchecked="cbLogo_Unchecked" Checked="cbLogo_Checked"/>
-                <CheckBox Name="cbIsTempered" Content="Is Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5" Checked="cbIsTempered_Checked" Unchecked="cbIsTempered_Unchecked"/>
-                <GroupBox Header="Dimension of Glass" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
-                    <Grid>
+    <ScrollViewer Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
+        <DockPanel>
+            <Grid HorizontalAlignment="Left">
+                <Border  HorizontalAlignment="Left" VerticalAlignment="Center"  BorderBrush="Black" BorderThickness="2">
+                    <Grid Width="700">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="70"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Total Sq.Ft:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                        <TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="50"  LostFocus="txtTotalSqFt_LostFocus" TextChanged="txtTotalSqFt_TextChanged"   />
-                        <!--<TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="50"  LostFocus="txtTotalSqFt_LostFocus" TextChanged="txtTotalSqFt_TextChanged" />-->
-                        <Label Content="Quantity:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
-                        <TextBox Name="txtQuantity" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" Height="23" Width="50" TextChanged="txtQuantity_TextChanged" LostFocus="txtQuantity_LostFocus"   />
-
-                        <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                        <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="5" TextChanged="txtGlassHeight_TextChanged" />
-                        <TextBox Name="txtGlassHeightFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" GotFocus="txtGlassHeightFraction_GotFocus" LostFocus="txtGlassHeightFraction_LostFocus" />
-                        <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" />
-                        <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="8" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" />
-                        <TextBox Name="txtGlassWidthFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="9" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" LostFocus="txtGlassWidthFraction_LostFocus" GotFocus="txtGlassWidthFraction_GotFocus" />
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Header="Shape Details" HorizontalAlignment="Center" Grid.Row="4" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Select Shape" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                        <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="0" Grid.Column="1" />
-                        <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
-                        <TextBox Name="txtShapeHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" TextChanged="txtShapeHeight_TextChanged"/>
-                        <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                        <TextBox Name="txtShapeWidth" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" TextChanged="txtShapeWidth_TextChanged"  />
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Header="Straight Polish" HorizontalAlignment="Center" Grid.Row="6" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
-                    <Grid>
-                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <CheckBox Name="cbIsStraightPolish" Content="Straight Polish?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Checked="cbIsStraightPolish_Checked" Unchecked="cbIsStraightPolish_Unchecked" />
-
-                        <Label Content="Total Inches:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
-                        <TextBox Name="txtStraightPolishTotalInches" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" TextChanged="txtStraightPolishTotalInches_TextChanged" LostFocus="txtStraightPolishTotalInches_LostFocus" />
-
-                        <Label Content="Long Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
-                        <TextBox Name="txtStraightPolishLongSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" LostFocus="txtStraightPolishLongSide_LostFocus" TextChanged="txtStraightPolishLongSide_TextChanged"/>
-                        <Label Content="Short Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
-                        <TextBox Name="txtStraightPolishShortSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" TextChanged="txtStraightPolishShortSide_TextChanged" LostFocus="txtStraightPolishShortSide_LostFocus"/>
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Header="Custom Polish" HorizontalAlignment="Center" Grid.Row="8" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <CheckBox Name="cbCustomShapePolish" Content="Custom Shape Polish?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Unchecked="cbCustomShapePolish_Unchecked" Checked="cbCustomShapePolish_Checked"/>
-                        <Label Content="Custom Inches #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
-                        <TextBox Name="txtCustomShapePolishSize" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" LostFocus="txtCustomShapePolishSize_LostFocus" TextChanged="txtCustomShapePolishSize_TextChanged"/>
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Header="Miter Details" HorizontalAlignment="Center" Grid.Row="10" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Total Inches:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
-                        <TextBox Name="txtMiterTotalInches" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" TextChanged="txtMiterTotalInches_TextChanged" LostFocus="txtMiterTotalInches_LostFocus"/>
-                        <CheckBox Name="cbIsMiter" Content="Miter?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Unchecked="cbIsMiter_Unchecked" Checked="cbIsMiter_Checked" />
-                        <Label Content="Long Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
-                        <TextBox Name="txtMiterLongSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" LostFocus="txtMiterLongSide_LostFocus" />
-                        <Label Content="Short Sides #:"  HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
-                        <TextBox Name="txtMiterShortSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6" TextChanged="txtMiterShortSide_TextChanged"/>
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Header="Misc" HorizontalAlignment="Center" Grid.Row="12" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="80" Grid.RowSpan="3">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <CheckBox Name="cbHoles" Content="Holes?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" Checked="cbHoles_Checked" Unchecked="cbHoles_Unchecked" />
-                        <TextBox Name="txtHoleNumbers" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" TextChanged="txtHoleNumbers_TextChanged" LostFocus="txtHoleNumbers_LostFocus"/>
-
-                        <CheckBox Name="cbNotches" Content="Notches?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Unchecked="cbNotches_Unchecked" Checked="cbNotches_Checked"/>
-                        <TextBox Name="txtNotchesNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" TextChanged="txtNotchesNumber_TextChanged" LostFocus="txtNotchesNumber_LostFocus"/>
-
-                        <CheckBox Name="cbHinges" Content="Hinges?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" Unchecked="cbHinges_Unchecked" Checked="cbHinges_Checked"/>
-                        <TextBox  Name="txtHingesNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" LostFocus="txtHingesNumber_LostFocus" TextChanged="txtHingesNumber_TextChanged"/>
-
-                        <CheckBox Name="cbPatches" Content="Patches?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Unchecked="cbPatches_Unchecked" Checked="cbPatches_Checked"/>
-                        <TextBox Name="txtPatchesNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" TextChanged="txtPatchesNumber_TextChanged" LostFocus="txtPatchesNumber_LostFocus"/>
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="0,0,20,0">
-                    <GroupBox.Header>
-                        <CheckBox Content="Cutout" Name="cbCutout" Unchecked="cbCutout_Unchecked" Checked="cbCutout_Checked" />
-                    </GroupBox.Header>
-                    <Grid >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="60"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition  />
-                        </Grid.ColumnDefinitions>
-                        <DataGrid  AutoGenerateColumns="False" CanUserAddRows="True"  CanUserDeleteRows="True"  SelectionUnit="FullRow" DataGridCell.Selected="DataGrid_GotFocus"  Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding allCutoutData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgCutoutDetails_LostFocus" RowEditEnding="dgCutoutDetails_RowEditEnding">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Quantity"  Binding="{Binding Quantity}" Width="80" />
-                                <DataGridTextColumn Header="Width (in)" Binding="{Binding Width}" Width="80"/>
-                                <DataGridTextColumn Header="Height (in)" Binding="{Binding Height}" Width="80"/>
-                                <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="70"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                        <Grid Grid.Row="1" VerticalAlignment="Center">
-                            <Grid.RowDefinitions>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Button Name="btnAddNewCutout" Content="Add New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0" Click="btnAddNewCutout_Click"/>
-                            <Button Name="btnDeleteCutout" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Width="75" Grid.Row="0" Grid.Column="1" Margin="42,0" Click="btnDeleteCutout_Click"/>
-                            <Label Content="Cutout Total:" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
-                            <Label Name="lblCutoutTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
-                        </Grid>
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox  Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="-15,0,10,0" >
-                    <GroupBox.Header>
-                        <CheckBox Content="Insulation" Name="cbInsulation" Checked="cbInsulation_Checked" Unchecked="cbInsulation_Unchecked"/>
-                    </GroupBox.Header>
-                    <Grid >
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+                        <Label  Content="Select Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                        <ComboBox Name="cmbGlassType" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="1" SelectionChanged="cmbGlassType_SelectionChanged" />
+                        <Label Content="Select Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
+                        <ComboBox Name="cmbThickness" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="3" SelectionChanged="cmbThickness_SelectionChanged" />
+                        <CheckBox Name="cbLogo" Content="Is Logo Required?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" Unchecked="cbLogo_Unchecked" Checked="cbLogo_Checked"/>
+                        <CheckBox Name="cbIsTempered" Content="Is Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5" Checked="cbIsTempered_Checked" Unchecked="cbIsTempered_Unchecked"/>
+                        <GroupBox Header="Dimension of Glass" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Total Sq.Ft:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                                <TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="50"  LostFocus="txtTotalSqFt_LostFocus" TextChanged="txtTotalSqFt_TextChanged"   />
+                                <!--<TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="50"  LostFocus="txtTotalSqFt_LostFocus" TextChanged="txtTotalSqFt_TextChanged" />-->
+                                <Label Content="Quantity:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
+                                <TextBox Name="txtQuantity" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" Height="23" Width="50" TextChanged="txtQuantity_TextChanged" LostFocus="txtQuantity_LostFocus"   />
 
-                        <Label Content="Glass Type 1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                        <ComboBox Name="cmbGlassType1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="0" SelectionChanged="cmbGlassType1_SelectionChanged" />
-                        <Label Content="Thickness" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
-                        <ComboBox Name="cmbThickness1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="1" Grid.Column="1" SelectionChanged="cmbThickness1_SelectionChanged" />
-                        <Label Content="Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
-                        <ComboBox Name="cmbTemp1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="1" Grid.Column="2" SelectionChanged="cmbTemp1_SelectionChanged" SelectedIndex="0"/>
-                        <Label Content="Sq. Ft." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
-                        <TextBox  Name="txtSqFt1" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" TextChanged="txtSqFt1_TextChanged" LostFocus="txtSqFt1_LostFocus" />
-                        <Label Content="Total" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                        <TextBox  Name="txtGlassType1Total" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" IsReadOnly="True"/>
+                                <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
+                                <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="5" TextChanged="txtGlassHeight_TextChanged" />
+                                <TextBox Name="txtGlassHeightFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" GotFocus="txtGlassHeightFraction_GotFocus" LostFocus="txtGlassHeightFraction_LostFocus" />
+                                <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" />
+                                <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="8" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" />
+                                <TextBox Name="txtGlassWidthFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="9" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" LostFocus="txtGlassWidthFraction_LostFocus" GotFocus="txtGlassWidthFraction_GotFocus" />
+                            </Grid>
+                        </GroupBox>
 
-                        <Label Content="Glass Type 1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                        <ComboBox Name="cmbGlassType2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="3" Grid.Column="0" SelectionChanged="cmbGlassType2_SelectionChanged" />
-                        <Label Content="Thickness" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" />
-                        <ComboBox Name="cmbThickness2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="3" Grid.Column="1" SelectionChanged="cmbThickness2_SelectionChanged" />
-                        <Label Content="Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" />
-                        <ComboBox Name="cmbTemp2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="3" Grid.Column="2" SelectedIndex="0" SelectionChanged="cmbTemp2_SelectionChanged"/>
-                        <Label Content="Sq. Ft." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" />
-                        <TextBox  Name="txtSqFt2" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" IsReadOnly="True" />
-                        <Label Content="Total" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="4" />
-                        <TextBox  Name="txtGlassType2Total" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="4" IsReadOnly="True" />
+                        <GroupBox Header="Shape Details" HorizontalAlignment="Center" Grid.Row="4" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Select Shape" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                                <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="0" Grid.Column="1" />
+                                <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
+                                <TextBox Name="txtShapeHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" TextChanged="txtShapeHeight_TextChanged"/>
+                                <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
+                                <TextBox Name="txtShapeWidth" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" TextChanged="txtShapeWidth_TextChanged"  />
+                            </Grid>
+                        </GroupBox>
 
-                        <Label Content="Material Cost:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" FontWeight="Bold"/>
-                        <Label Name="lblMaterialCost" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" FontWeight="Bold"/>
+                        <GroupBox Header="Straight Polish" HorizontalAlignment="Center" Grid.Row="6" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
 
-                        <Label Content="Insulation Tier:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" FontWeight="Bold" Grid.ColumnSpan="2"/>
-                        <Label Name="lblInsulationTier" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" FontWeight="Bold"/>
+                                <CheckBox Name="cbIsStraightPolish" Content="Straight Polish?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Checked="cbIsStraightPolish_Checked" Unchecked="cbIsStraightPolish_Unchecked" />
 
-                        <Label Content="Insulation Tier Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" FontWeight="Bold" Grid.ColumnSpan="2"/>
-                        <Label Name="lblInsulationTierTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="2" FontWeight="Bold"/>
+                                <Label Content="Total Inches:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
+                                <TextBox Name="txtStraightPolishTotalInches" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" TextChanged="txtStraightPolishTotalInches_TextChanged" LostFocus="txtStraightPolishTotalInches_LostFocus" />
 
-                        <Label Content="Insulation Total:" VerticalAlignment="Top" Grid.Row="6" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
-                        <Label Name="lblInsulationTotal" Content="$ 0.00" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
-                    </Grid>
-                </GroupBox>
+                                <Label Content="Long Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
+                                <TextBox Name="txtStraightPolishLongSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" LostFocus="txtStraightPolishLongSide_LostFocus" TextChanged="txtStraightPolishLongSide_TextChanged"/>
+                                <Label Content="Short Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
+                                <TextBox Name="txtStraightPolishShortSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" TextChanged="txtStraightPolishShortSide_TextChanged" LostFocus="txtStraightPolishShortSide_LostFocus"/>
+                            </Grid>
+                        </GroupBox>
 
-                <!--<CheckBox Name="cbCutout" Content="Cutout?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="16" Grid.Column="0"/>
+                        <GroupBox Header="Custom Polish" HorizontalAlignment="Center" Grid.Row="8" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Name="cbCustomShapePolish" Content="Custom Shape Polish?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Unchecked="cbCustomShapePolish_Unchecked" Checked="cbCustomShapePolish_Checked"/>
+                                <Label Content="Custom Inches #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
+                                <TextBox Name="txtCustomShapePolishSize" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" LostFocus="txtCustomShapePolishSize_LostFocus" TextChanged="txtCustomShapePolishSize_TextChanged"/>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="Miter Details" HorizontalAlignment="Center" Grid.Row="10" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Total Inches:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
+                                <TextBox Name="txtMiterTotalInches" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" TextChanged="txtMiterTotalInches_TextChanged" LostFocus="txtMiterTotalInches_LostFocus"/>
+                                <CheckBox Name="cbIsMiter" Content="Miter?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Unchecked="cbIsMiter_Unchecked" Checked="cbIsMiter_Checked" />
+                                <Label Content="Long Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
+                                <TextBox Name="txtMiterLongSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" LostFocus="txtMiterLongSide_LostFocus" />
+                                <Label Content="Short Sides #:"  HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
+                                <TextBox Name="txtMiterShortSide" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6" TextChanged="txtMiterShortSide_TextChanged"/>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="Misc" HorizontalAlignment="Center" Grid.Row="12" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="80" Grid.RowSpan="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Name="cbHoles" Content="Holes?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" Checked="cbHoles_Checked" Unchecked="cbHoles_Unchecked" />
+                                <TextBox Name="txtHoleNumbers" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" TextChanged="txtHoleNumbers_TextChanged" LostFocus="txtHoleNumbers_LostFocus"/>
+
+                                <CheckBox Name="cbNotches" Content="Notches?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Unchecked="cbNotches_Unchecked" Checked="cbNotches_Checked"/>
+                                <TextBox Name="txtNotchesNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" TextChanged="txtNotchesNumber_TextChanged" LostFocus="txtNotchesNumber_LostFocus"/>
+
+                                <CheckBox Name="cbHinges" Content="Hinges?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" Unchecked="cbHinges_Unchecked" Checked="cbHinges_Checked"/>
+                                <TextBox  Name="txtHingesNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" LostFocus="txtHingesNumber_LostFocus" TextChanged="txtHingesNumber_TextChanged"/>
+
+                                <CheckBox Name="cbPatches" Content="Patches?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Unchecked="cbPatches_Unchecked" Checked="cbPatches_Checked"/>
+                                <TextBox Name="txtPatchesNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" TextChanged="txtPatchesNumber_TextChanged" LostFocus="txtPatchesNumber_LostFocus"/>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="0,0,20,0">
+                            <GroupBox.Header>
+                                <CheckBox Content="Cutout" Name="cbCutout" Unchecked="cbCutout_Unchecked" Checked="cbCutout_Checked" />
+                            </GroupBox.Header>
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="60"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  />
+                                </Grid.ColumnDefinitions>
+                                <DataGrid  AutoGenerateColumns="False" CanUserAddRows="True"  CanUserDeleteRows="True"  SelectionUnit="FullRow" DataGridCell.Selected="DataGrid_GotFocus"  Name="dgCutoutDetails" Margin="0,5,0,0" Grid.Row="0" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding allCutoutData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgCutoutDetails_LostFocus" RowEditEnding="dgCutoutDetails_RowEditEnding">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Quantity"  Binding="{Binding Quantity}" Width="80" />
+                                        <DataGridTextColumn Header="Width (in)" Binding="{Binding Width}" Width="80"/>
+                                        <DataGridTextColumn Header="Height (in)" Binding="{Binding Height}" Width="80"/>
+                                        <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="70"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <Grid Grid.Row="1" VerticalAlignment="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Name="btnAddNewCutout" Content="Add New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="0" Click="btnAddNewCutout_Click"/>
+                                    <Button Name="btnDeleteCutout" Content="Delete" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Width="75" Grid.Row="0" Grid.Column="1" Margin="42,0" Click="btnDeleteCutout_Click"/>
+                                    <Label Content="Cutout Total:" VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right"/>
+                                    <Label Name="lblCutoutTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox  Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="15" VerticalAlignment="Top" Height="250" Grid.RowSpan="9" Margin="-15,0,10,0" >
+                            <GroupBox.Header>
+                                <CheckBox Content="Insulation" Name="cbInsulation" Checked="cbInsulation_Checked" Unchecked="cbInsulation_Unchecked"/>
+                            </GroupBox.Header>
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Content="Glass Type 1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                                <ComboBox Name="cmbGlassType1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="0" SelectionChanged="cmbGlassType1_SelectionChanged" />
+                                <Label Content="Thickness" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
+                                <ComboBox Name="cmbThickness1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="1" Grid.Column="1" SelectionChanged="cmbThickness1_SelectionChanged" />
+                                <Label Content="Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
+                                <ComboBox Name="cmbTemp1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="1" Grid.Column="2" SelectionChanged="cmbTemp1_SelectionChanged" SelectedIndex="0"/>
+                                <Label Content="Sq. Ft." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
+                                <TextBox  Name="txtSqFt1" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" TextChanged="txtSqFt1_TextChanged" LostFocus="txtSqFt1_LostFocus" />
+                                <Label Content="Total" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
+                                <TextBox  Name="txtGlassType1Total" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" IsReadOnly="True"/>
+
+                                <Label Content="Glass Type 1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
+                                <ComboBox Name="cmbGlassType2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="3" Grid.Column="0" SelectionChanged="cmbGlassType2_SelectionChanged" />
+                                <Label Content="Thickness" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" />
+                                <ComboBox Name="cmbThickness2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="3" Grid.Column="1" SelectionChanged="cmbThickness2_SelectionChanged" />
+                                <Label Content="Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" />
+                                <ComboBox Name="cmbTemp2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="3" Grid.Column="2" SelectedIndex="0" SelectionChanged="cmbTemp2_SelectionChanged"/>
+                                <Label Content="Sq. Ft." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="3" />
+                                <TextBox  Name="txtSqFt2" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="3" IsReadOnly="True" />
+                                <Label Content="Total" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="4" />
+                                <TextBox  Name="txtGlassType2Total" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="4" IsReadOnly="True" />
+
+                                <Label Content="Material Cost:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" FontWeight="Bold"/>
+                                <Label Name="lblMaterialCost" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" FontWeight="Bold"/>
+
+                                <Label Content="Insulation Tier:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                                <Label Name="lblInsulationTier" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" FontWeight="Bold"/>
+
+                                <Label Content="Insulation Tier Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                                <Label Name="lblInsulationTierTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="2" FontWeight="Bold"/>
+
+                                <Label Content="Insulation Total:" VerticalAlignment="Top" Grid.Row="6" Grid.Column="0" FontSize="13" FontWeight="Bold"  HorizontalAlignment="Right" Grid.ColumnSpan="2"/>
+                                <Label Name="lblInsulationTotal" Content="$ 0.00" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold"/>
+                            </Grid>
+                        </GroupBox>
+
+                        <!--<CheckBox Name="cbCutout" Content="Cutout?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="16" Grid.Column="0"/>
                 <TextBox Name="txtCutoutNumber" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="16" Grid.Column="1"/>-->
 
 
-                <Label Content="Running Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold" />
-                <Label Name="lblTotalTillNow" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="3" FontSize="13" FontWeight="Bold"/>
+                        <Label Content="Running Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="24" Grid.Column="2" FontSize="13" FontWeight="Bold" />
+                        <Label Name="lblTotalTillNow" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="24" Grid.Column="3" FontSize="13" FontWeight="Bold"/>
 
-                <Button Name="btnNewItem" Content="New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="2" Click="btnNewItem_Click"/>
-                <Button Name="btnResetItem" Content="Reset" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="3" Click="btnResetItem_Click"/>
-                <Button Name="btnPrintTest" Content="Print Test" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="4" Click="btnPrintTest_Click" />
-                <Button Name="btnAddToQuote" Grid.ColumnSpan="6" Content="Add to Quote" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="25" Grid.Column="0" Click="btnAddToQuote_Click"/>
+                        <Button Name="btnNewItem" Content="New" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="2" Click="btnNewItem_Click"/>
+                        <Button Name="btnResetItem" Content="Reset" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="3" Click="btnResetItem_Click"/>
+                        <Button Name="btnPrintTest" Content="Print Test" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="4" Click="btnPrintTest_Click" />
+                        <Button Name="btnAddToQuote" Grid.ColumnSpan="6" Content="Add to Quote" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="75" Grid.Row="25" Grid.Column="0" Click="btnAddToQuote_Click"/>
 
+                    </Grid>
+                </Border>
             </Grid>
-        </Border>
-
-    </Grid>
+        </DockPanel>
+    </ScrollViewer>
 </UserControl>
