@@ -7,8 +7,8 @@
 		    xmlns:pageTransitions="clr-namespace:WpfPageTransitions;assembly=WpfPageTransitions"
              
              d:DesignHeight="800" d:DesignWidth="700">
-    <Grid>
-        <Border  HorizontalAlignment="Center" VerticalAlignment="Center"  BorderBrush="Black" BorderThickness="2">
+    <Grid HorizontalAlignment="Left">
+        <Border  HorizontalAlignment="Left" VerticalAlignment="Center"  BorderBrush="Black" BorderThickness="2">
             <Grid Width="700">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>

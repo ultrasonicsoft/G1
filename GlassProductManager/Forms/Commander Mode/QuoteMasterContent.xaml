@@ -16,15 +16,17 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+        <Grid HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Search Quote:" HorizontalAlignment="Right" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.Column="1" Text="Search" Margin="0,8,0,8" Name="txtSearch" TextChanged="txtSearch_TextChanged" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus"></TextBox>
-            <Button Name="btnOpenQuote" Content="OpenQuote" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="btnOpenQuote_Click" />
+            <Button Name="btnOpenQuote" Content="Open Quote" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="btnOpenQuote_Click" />
+            <Button Name="btnDeleteQuote" Content="Delete Quote" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Click="btnDeleteQuote_Click"  />
         </Grid>
        
         <DataGrid Name="dgQuoteDetails" CanUserAddRows="False" IsReadOnly="True"  CanUserDeleteRows="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="dgQuoteDetails_MouseDoubleClick">

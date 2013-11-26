@@ -110,7 +110,6 @@ namespace GlassProductManager
             cmbQuoteStatus.SelectedIndex = 0;
         }
 
-
         private void SetOperatorAccess()
         {
             if (FirmSettings.IsAdmin)
@@ -146,6 +145,8 @@ namespace GlassProductManager
 
             foreach (var item in allQuoteData)
             {
+                if (item == null || item.Total == null)
+                    continue;
                 subTotal += double.Parse(item.Total);
             }
             lblSubTotal.Content = "$ " + subTotal.ToString("0.00");
@@ -283,21 +284,63 @@ namespace GlassProductManager
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (false == Helper.IsNonEmpty(txtQuoteNumber))
+            {
+                Helper.ShowErrorMessageBox("Quote Number can not be empty. Please provide Quote Number.");
+                txtQuoteNumber.Focus();
+                return;
+            }
+
             if (allQuoteData.Count == 0)
             {
                 Helper.ShowErrorMessageBox("There is no item in the quote. Please add atleast one.");
                 return;
             }
-            SaveQuoteHeader();
-            SaveQuoteItems();
-            SaveQuoteFooter();
+
+            bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
+            if (isQuoteNumberPresent)
+            {
+                var result = Helper.ShowQuestionMessageBox("Quote already present. Press Yes to update existing. Press No to Clone existing quote.");
+                if (result == MessageBoxResult.Yes)
+                {
+                    QuoteHeader header = BuildQuoteHeader(txtQuoteNumber.Text);
+                    BusinessLogic.UpdateQuoteHeader(header);
+
+                    BusinessLogic.DeleteQuoteItems(txtQuoteNumber.Text);
+                    BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData);
+
+                    QuoteFooter footer = BuildQuoteFooter();
+                    BusinessLogic.UpdateQuoteFooter(txtQuoteNumber.Text, footer);
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    CloneQuote();
+                }
+            }
+            else
+            {
+                SaveNewQuote(txtQuoteNumber.Text);
+            }
+
+        }
+
+        private void SaveNewQuote(string quoteNumber)
+        {
+            QuoteHeader header = BuildQuoteHeader(quoteNumber);
+            BusinessLogic.SaveQuoteHeader(header);
+
+            BusinessLogic.SaveQuoteItems(quoteNumber, allQuoteData);
+
+            QuoteFooter footer = BuildQuoteFooter();
+            BusinessLogic.SaveQuoteFooter(quoteNumber, footer);
+
             Helper.ShowInformationMessageBox("Quote saved successfully!");
         }
 
-        private void SaveQuoteHeader()
+        private QuoteHeader BuildQuoteHeader(string quoteNumber)
         {
             QuoteHeader header = new QuoteHeader();
-            header.QuoteNumber = txtQuoteNumber.Text;
+            header.QuoteNumber = quoteNumber;
             header.QuoteCreatedOn = dtQuoteCreatedOn.SelectedDate.Value.ToShortDateString();
             header.QuoteRequestedOn = dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString();
             header.CustomerPO = txtCustomerPO.Text;
@@ -342,16 +385,10 @@ namespace GlassProductManager
                 header.ShipTo.Fax = txtShipToFax.Text;
                 header.ShipTo.Misc = txtShipToMisc.Text;
             }
-
-            BusinessLogic.SaveQuoteHeader(header);
+            return header;
         }
 
-        private void SaveQuoteItems()
-        {
-            BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData);
-        }
-
-        private void SaveQuoteFooter()
+        private QuoteFooter BuildQuoteFooter()
         {
             QuoteFooter footer = new QuoteFooter();
             footer.SubTotal = double.Parse(lblSubTotal.Content.ToString().Replace("$ ", string.Empty));
@@ -363,8 +400,7 @@ namespace GlassProductManager
             footer.RushOrder = double.Parse(txtRushOrder.Text);
             footer.Tax = double.Parse(txtTax.Text);
             footer.GrandTotal = double.Parse(lblGrandTotal.Content.ToString().Replace("$ ", string.Empty));
-
-            BusinessLogic.SaveQuoteFooter(txtQuoteNumber.Text, footer);
+            return footer;
         }
 
         private void cbIsNewClient_Checked(object sender, RoutedEventArgs e)
@@ -1299,7 +1335,7 @@ namespace GlassProductManager
                 gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
-                gfx.DrawString(double.Parse( selectedLineItem.Total).ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
+                gfx.DrawString(double.Parse(selectedLineItem.Total).ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
 
                 yQuoteItemOffset += 50;
             }
@@ -1391,6 +1427,17 @@ namespace GlassProductManager
         private void txtShipToPhone_LostFocus(object sender, RoutedEventArgs e)
         {
             Helper.IsValidPhone(txtShipToPhone);
+        }
+
+        private void btnClone_Click(object sender, RoutedEventArgs e)
+        {
+            CloneQuote();
+        }
+
+        private void CloneQuote()
+        {
+            string quoteNumber = BusinessLogic.GetNewQuoteID();
+            SaveNewQuote(quoteNumber);
         }
     }
 }

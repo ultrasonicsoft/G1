@@ -9,11 +9,16 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
+            <!--<ColumnDefinition Width="5"/>-->
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <pageTransitions:PageTransition Grid.Row="0" Grid.Column="0" Name="ucNewQuoteItems" TransitionType="Grow" />
-        <pageTransitions:PageTransition Grid.Row="0" Grid.Column="1" Name="ucNewQuoteGrid" TransitionType="Grow" />
+        <pageTransitions:PageTransition HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Name="ucNewQuoteItems" TransitionType="Grow" />
+        <!--<GridSplitter HorizontalAlignment="Right" 
+                  VerticalAlignment="Stretch" 
+                  Grid.Column="1" ResizeBehavior="PreviousAndNext"
+                  Width="5" Background="#FFBCBCBC" />-->
+        <pageTransitions:PageTransition HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1" Name="ucNewQuoteGrid" TransitionType="Grow" />
 
         
     </Grid>

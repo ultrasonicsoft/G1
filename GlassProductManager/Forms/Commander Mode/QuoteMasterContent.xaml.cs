@@ -210,6 +210,25 @@ namespace GlassProductManager
             parent.ucMainContent.ShowPage(newQuote);
         }
 
+        private void btnDeleteQuote_Click(object sender, RoutedEventArgs e)
+        {
+            var result = Helper.ShowQuestionMessageBox("Are you sure to delete this quote?");
+
+            if (result == MessageBoxResult.Yes)
+            {
+                QuoteMasterEntity entity = dgQuoteDetails.SelectedItem as QuoteMasterEntity;
+
+                if (entity == null)
+                {
+                    return;
+                }
+                BusinessLogic.DeleteQuote(entity.QuoteNumber);
+                Helper.ShowInformationMessageBox("Quote deleted successfully.");
+                FillQuoteDetails();
+
+            }
+        }
+
        
 
     }

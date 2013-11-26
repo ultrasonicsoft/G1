@@ -6,8 +6,8 @@
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
-    <Grid>
-        <Border  HorizontalAlignment="Center" VerticalAlignment="Center"  BorderBrush="Black" BorderThickness="2">
+    <Grid HorizontalAlignment="Right">
+        <Border  HorizontalAlignment="Right" VerticalAlignment="Center"  BorderBrush="Black" BorderThickness="2">
 
             <Grid Width="800">
                 <Grid.RowDefinitions>
@@ -234,11 +234,11 @@
                     <Button Name="btnRegenerate" Content="Regenerate"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="0" Width="75" Click="btnRegenerate_Click"/>
                     <Button Name="btnSave" Content="_Save"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnSave_Click"/>
                     <Button Name="btnDelete" Content="_Delete"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="75" Click="btnDelete_Click"/>
-                    <Button Name="btnClone" Content="_Clone"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="3" Width="75"/>
+                    <Button Name="btnClone" Content="_Clone"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="3" Width="75" Click="btnClone_Click"/>
                     <!--<Button Name="btnPrint" Content="_Print"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" Width="75" Click="btnPrint_Click"/>-->
                     <Button Name="btnEmail" Content="E_mail"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" Width="75"/>
-                    <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="6" Width="75" Click="btnExportPdf_Click"/>
-                    <Button Name="btnSendToWS" Content="Send to WS"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="7" Width="75"/>
+                    <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" Width="75" Click="btnExportPdf_Click"/>
+                    <Button Name="btnSendToWS" Content="Send to WS"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="6" Width="75"/>
                 </Grid>
 
 

@@ -308,72 +308,77 @@ namespace GlassProductManager
         {
             try
             {
-                SqlParameter pQuoteCreatedOn = new SqlParameter();
-                pQuoteCreatedOn.ParameterName = "CreatedOn";
-                pQuoteCreatedOn.Value = header.QuoteCreatedOn;
-
-                SqlParameter pRequestedShipDate = new SqlParameter();
-                pRequestedShipDate.ParameterName = "RequestedShipDate";
-                pRequestedShipDate.Value = header.QuoteRequestedOn;
-
-                SqlParameter pCustomerPO = new SqlParameter();
-                pCustomerPO.ParameterName = "CustomerPO";
-                pCustomerPO.Value = header.CustomerPO;
-
-                SqlParameter pLeadTimeID = new SqlParameter();
-                pLeadTimeID.ParameterName = "LeadTimeID";
-                pLeadTimeID.Value = header.LeadTimeID;
-
-                SqlParameter pLeadTimeTypeID = new SqlParameter();
-                pLeadTimeTypeID.ParameterName = "LeadTimeTypeID";
-                pLeadTimeTypeID.Value = header.LeadTimeTypeID;
-
-                SqlParameter pShipToOtherAddress = new SqlParameter();
-                pShipToOtherAddress.ParameterName = "ShipToOtherAddress";
-                pShipToOtherAddress.Value = header.IsShipToOtherAddress;
-
-                SqlParameter pQuoteNumber = new SqlParameter();
-                pQuoteNumber.ParameterName = "QuoteNumber";
-                pQuoteNumber.Value = header.QuoteNumber;
-
-                SqlParameter pShippingMethodID = new SqlParameter();
-                pShippingMethodID.ParameterName = "ShippingMethodID";
-                pShippingMethodID.Value = header.ShippingMethodID;
-
-                SqlParameter pCustomerID = new SqlParameter();
-                pCustomerID.ParameterName = "CustomerID";
-                pCustomerID.Value = header.CustomerID;
-
-                SqlParameter pOperatorName = new SqlParameter();
-                pOperatorName.ParameterName = "OperatorName";
-                pOperatorName.Value = header.OperatorName;
-
-                SqlParameter pPaymentModeID = new SqlParameter();
-                pPaymentModeID.ParameterName = "PaymentModeID";
-                pPaymentModeID.Value = header.PaymentModeID;
-
-                SqlParameter pQuoteStatusID = new SqlParameter();
-                pQuoteStatusID.ParameterName = "QuoteStatusID";
-                pQuoteStatusID.Value = header.QuoteStatusID;
-
-                if (header.IsNewCustomer)
-                {
-                    string customerID = CreateNewCustomer(header.SoldTo);
-
-                    if (header.IsShipToOtherAddress == true && string.IsNullOrEmpty(customerID) == false)
-                    {
-                        InsertShippingDetails(customerID, header.QuoteNumber, header.ShipTo);
-                    }
-                    pCustomerID.Value = int.Parse(customerID);
-                }
-
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddQuoteHeader, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID,
-                        pShipToOtherAddress, pQuoteNumber, pCustomerID, pShippingMethodID, pOperatorName, pPaymentModeID, pQuoteStatusID);
+                ProcessQuoteHeader(header, StoredProcedures.AddQuoteHeader);
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
             }
+        }
+
+        private static void ProcessQuoteHeader(QuoteHeader header, string spName)
+        {
+            SqlParameter pQuoteCreatedOn = new SqlParameter();
+            pQuoteCreatedOn.ParameterName = "CreatedOn";
+            pQuoteCreatedOn.Value = header.QuoteCreatedOn;
+
+            SqlParameter pRequestedShipDate = new SqlParameter();
+            pRequestedShipDate.ParameterName = "RequestedShipDate";
+            pRequestedShipDate.Value = header.QuoteRequestedOn;
+
+            SqlParameter pCustomerPO = new SqlParameter();
+            pCustomerPO.ParameterName = "CustomerPO";
+            pCustomerPO.Value = header.CustomerPO;
+
+            SqlParameter pLeadTimeID = new SqlParameter();
+            pLeadTimeID.ParameterName = "LeadTimeID";
+            pLeadTimeID.Value = header.LeadTimeID;
+
+            SqlParameter pLeadTimeTypeID = new SqlParameter();
+            pLeadTimeTypeID.ParameterName = "LeadTimeTypeID";
+            pLeadTimeTypeID.Value = header.LeadTimeTypeID;
+
+            SqlParameter pShipToOtherAddress = new SqlParameter();
+            pShipToOtherAddress.ParameterName = "ShipToOtherAddress";
+            pShipToOtherAddress.Value = header.IsShipToOtherAddress;
+
+            SqlParameter pQuoteNumber = new SqlParameter();
+            pQuoteNumber.ParameterName = "QuoteNumber";
+            pQuoteNumber.Value = header.QuoteNumber;
+
+            SqlParameter pShippingMethodID = new SqlParameter();
+            pShippingMethodID.ParameterName = "ShippingMethodID";
+            pShippingMethodID.Value = header.ShippingMethodID;
+
+            SqlParameter pCustomerID = new SqlParameter();
+            pCustomerID.ParameterName = "CustomerID";
+            pCustomerID.Value = header.CustomerID;
+
+            SqlParameter pOperatorName = new SqlParameter();
+            pOperatorName.ParameterName = "OperatorName";
+            pOperatorName.Value = header.OperatorName;
+
+            SqlParameter pPaymentModeID = new SqlParameter();
+            pPaymentModeID.ParameterName = "PaymentModeID";
+            pPaymentModeID.Value = header.PaymentModeID;
+
+            SqlParameter pQuoteStatusID = new SqlParameter();
+            pQuoteStatusID.ParameterName = "QuoteStatusID";
+            pQuoteStatusID.Value = header.QuoteStatusID;
+
+            if (header.IsNewCustomer)
+            {
+                string customerID = CreateNewCustomer(header.SoldTo);
+
+                if (header.IsShipToOtherAddress == true && string.IsNullOrEmpty(customerID) == false)
+                {
+                    InsertShippingDetails(customerID, header.QuoteNumber, header.ShipTo);
+                }
+                pCustomerID.Value = int.Parse(customerID);
+            }
+
+            SQLHelper.ExecuteStoredProcedure(spName, pQuoteCreatedOn, pRequestedShipDate, pCustomerPO, pLeadTimeID, pLeadTimeTypeID,
+                    pShipToOtherAddress, pQuoteNumber, pCustomerID, pShippingMethodID, pOperatorName, pPaymentModeID, pQuoteStatusID);
         }
 
         internal static string CreateNewCustomer(CustomerDetails soldTo)
@@ -534,53 +539,58 @@ namespace GlassProductManager
         {
             try
             {
-                SqlParameter pQuoteNumber = new SqlParameter();
-                pQuoteNumber.ParameterName = "QuoteNumber";
-                pQuoteNumber.Value = quoteNumber;
-
-                SqlParameter pSubTotal = new SqlParameter();
-                pSubTotal.ParameterName = "SubTotal";
-                pSubTotal.Value = footer.SubTotal;
-
-                SqlParameter pIsDollar = new SqlParameter();
-                pIsDollar.ParameterName = "IsDollar";
-                pIsDollar.Value = footer.IsDollar;
-
-                SqlParameter pEnergySurcharge = new SqlParameter();
-                pEnergySurcharge.ParameterName = "EnergySurcharge";
-                pEnergySurcharge.Value = footer.EnergySurcharge;
-
-                SqlParameter pDiscount = new SqlParameter();
-                pDiscount.ParameterName = "Discount";
-                pDiscount.Value = footer.Discount;
-
-                SqlParameter pDelivery = new SqlParameter();
-                pDelivery.ParameterName = "Delivery";
-                pDelivery.Value = footer.Delivery;
-
-                SqlParameter pIsRushOrder = new SqlParameter();
-                pIsRushOrder.ParameterName = "IsRush";
-                pIsRushOrder.Value = footer.IsRushOrder;
-
-                SqlParameter pRushOrder = new SqlParameter();
-                pRushOrder.ParameterName = "RushOrder";
-                pRushOrder.Value = footer.RushOrder;
-
-                SqlParameter pTax = new SqlParameter();
-                pTax.ParameterName = "Tax";
-                pTax.Value = footer.Tax;
-
-                SqlParameter pGrandTotal = new SqlParameter();
-                pGrandTotal.ParameterName = "GrandTotal";
-                pGrandTotal.Value = footer.GrandTotal;
-
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteFooter, pQuoteNumber,pSubTotal,pIsDollar,pEnergySurcharge,pDiscount,pDelivery,pIsRushOrder,pRushOrder,pTax,pGrandTotal );
+                ProcessQuoteFooter(quoteNumber, footer, StoredProcedures.InsertQuoteFooter);
 
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
             }
+        }
+
+        private static void ProcessQuoteFooter(string quoteNumber, QuoteFooter footer, string spName)
+        {
+            SqlParameter pQuoteNumber = new SqlParameter();
+            pQuoteNumber.ParameterName = "QuoteNumber";
+            pQuoteNumber.Value = quoteNumber;
+
+            SqlParameter pSubTotal = new SqlParameter();
+            pSubTotal.ParameterName = "SubTotal";
+            pSubTotal.Value = footer.SubTotal;
+
+            SqlParameter pIsDollar = new SqlParameter();
+            pIsDollar.ParameterName = "IsDollar";
+            pIsDollar.Value = footer.IsDollar;
+
+            SqlParameter pEnergySurcharge = new SqlParameter();
+            pEnergySurcharge.ParameterName = "EnergySurcharge";
+            pEnergySurcharge.Value = footer.EnergySurcharge;
+
+            SqlParameter pDiscount = new SqlParameter();
+            pDiscount.ParameterName = "Discount";
+            pDiscount.Value = footer.Discount;
+
+            SqlParameter pDelivery = new SqlParameter();
+            pDelivery.ParameterName = "Delivery";
+            pDelivery.Value = footer.Delivery;
+
+            SqlParameter pIsRushOrder = new SqlParameter();
+            pIsRushOrder.ParameterName = "IsRush";
+            pIsRushOrder.Value = footer.IsRushOrder;
+
+            SqlParameter pRushOrder = new SqlParameter();
+            pRushOrder.ParameterName = "RushOrder";
+            pRushOrder.Value = footer.RushOrder;
+
+            SqlParameter pTax = new SqlParameter();
+            pTax.ParameterName = "Tax";
+            pTax.Value = footer.Tax;
+
+            SqlParameter pGrandTotal = new SqlParameter();
+            pGrandTotal.ParameterName = "GrandTotal";
+            pGrandTotal.Value = footer.GrandTotal;
+
+            SQLHelper.ExecuteStoredProcedure(spName, pQuoteNumber, pSubTotal, pIsDollar, pEnergySurcharge, pDiscount, pDelivery, pIsRushOrder, pRushOrder, pTax, pGrandTotal);
         }
 
         internal static DataTable GetAllOperatorNames()
@@ -1298,6 +1308,33 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
             return quoteMasterData;
+        }
+
+        internal static void UpdateQuoteHeader(QuoteHeader header)
+        {
+            ProcessQuoteHeader(header, StoredProcedures.UpdateQuoteHeader);
+        }
+
+        internal static void UpdateQuoteFooter(string quoteNumber, QuoteFooter footer)
+        {
+            ProcessQuoteFooter(quoteNumber, footer, StoredProcedures.UpdateQuoteFooter);
+        }
+
+        internal static void DeleteQuoteItems(string quoteNumber)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteQuoteItems, pQuoteNumber);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
     }
 }

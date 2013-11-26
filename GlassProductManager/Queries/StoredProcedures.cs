@@ -53,5 +53,8 @@ namespace GlassProductManager
         internal const string GetQuoteMasterData = "[GetQuoteMasterData]";
         internal const string GetSaleOrderMasterData = "[GetSaleOrderMasterData]";
         internal const string GetWorksheetMasterData = "[GetWorksheetMasterData]";
+        internal const string DeleteQuoteItems = "[DeleteQuoteItems]";
+        internal const string UpdateQuoteHeader = "[UpdateQuoteHeader]";
+        internal const string UpdateQuoteFooter = "[UpdateQuoteFooter]";
     }
 }
