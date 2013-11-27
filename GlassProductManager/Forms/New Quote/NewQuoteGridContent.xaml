@@ -68,7 +68,7 @@
                             <Label Name="lblPaymentType" Content="Payment Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
                             <ComboBox Name="cmbPaymentType"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="2" Grid.Column="1"/>
                             <Label Name="lblQuoteStatus" Content="Quote Status:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" />
-                            <ComboBox Name="cmbQuoteStatus"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="2" Grid.Column="3"/>
+                            <ComboBox Name="cmbQuoteStatus"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="2" Grid.Column="3" SelectionChanged="cmbQuoteStatus_SelectionChanged"/>
                         </Grid>
 
 
@@ -240,7 +240,7 @@
                             <!--<Button Name="btnPrint" Content="_Print"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" Width="75" Click="btnPrint_Click"/>-->
                             <Button Name="btnEmail" Content="E_mail"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" Width="75" Click="btnEmail_Click"/>
                             <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" Width="75" Click="btnExportPdf_Click"/>
-                            <Button Name="btnSendToSO" Content="Send to Sales Order"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="6" Width="120" Click="btnSendToSO_Click"/>
+                            <Button IsEnabled="False" Name="btnSendToSO" Content="Send to Sales Order"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="6" Width="120" Click="btnSendToSO_Click"/>
                         </Grid>
                     </Grid>
                 </Border>

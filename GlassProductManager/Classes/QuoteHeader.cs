@@ -23,6 +23,9 @@ namespace GlassProductManager
         public string OperatorName { get; set; }
         public int PaymentModeID { get; set; }
         public int QuoteStatusID { get; set; }
+        public string SalesOrderNumber { get; set; }
+        public string SaleOrderConfirmedOn { get; set; }
+        public string WorksheetNumber { get; set; }
     }
 
     public class CustomerDetails

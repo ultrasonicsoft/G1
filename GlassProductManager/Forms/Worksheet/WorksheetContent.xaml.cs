@@ -46,133 +46,26 @@ namespace GlassProductManager
         {
             InitializeComponent();
 
-            ConfigureInitialSetup();
-
             if (_isOpenQuoteRequested == true)
             {
-                OpenSelectedQuote(_quoteNumber);
+                ConfigureInitialSetup();
+
+                OpenSelectedWorksheet(_quoteNumber);
             }
         }
 
         private void ConfigureInitialSetup()
         {
-        }
-
-        private void FillCustomerNames()
-        {
-          
+            FillShippingMethods();
+            FillLeadTimeTypes();
+            FillLeadTime();
+            FillPaymentTypes();
+            FillSmartSearchData();
         }
 
         private void FillSmartSearchData()
         {
             txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
-        }
-
-        private void FillPaymentTypes()
-        {
-            var result = BusinessLogic.GetAllPaymentTypes();
-            cmbPaymentType.DisplayMemberPath = ColumnNames.Type;
-            cmbPaymentType.SelectedValuePath = ColumnNames.ID;
-            cmbPaymentType.ItemsSource = result.DefaultView;
-            cmbPaymentType.SelectedIndex = 0;
-        }
-
-        private void FillQuoteStatus()
-        {
-           
-        }
-
-        private void SetOperatorAccess()
-        {
-            if (FirmSettings.IsAdmin)
-            {
-                cmbOperator.Visibility = System.Windows.Visibility.Visible;
-                txtOperatorName.Visibility = System.Windows.Visibility.Hidden;
-
-                var result = BusinessLogic.GetAllOperatorNames();
-                cmbOperator.DisplayMemberPath = ColumnNames.UserName;
-                cmbOperator.SelectedValuePath = ColumnNames.ID;
-                cmbOperator.ItemsSource = result.DefaultView;
-
-                cmbOperator.Text = FirmSettings.UserName;
-            }
-            else
-            {
-                cmbOperator.Visibility = System.Windows.Visibility.Hidden;
-                txtOperatorName.Visibility = System.Windows.Visibility.Visible;
-                txtOperatorName.Text = FirmSettings.UserName;
-            }
-
-        }
-
-        void _allQuoteData_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            UpdateQuoteTotal();
-        }
-
-        private void UpdateQuoteTotal()
-        {
-            double subTotal = 0;
-            double grandTotal = 0;
-
-            foreach (var item in allQuoteData)
-            {
-                if (item == null || item.Total == null)
-                    continue;
-                subTotal += double.Parse(item.Total);
-            }
-            lblSubTotal.Content = "$ " + subTotal.ToString("0.00");
-
-            double energySurcharge = double.Parse(txtEnergySurcharge.Text);
-
-            if (energySurcharge > 0 && cbDollar.IsChecked == true)
-            {
-                grandTotal = subTotal + energySurcharge;
-            }
-            else if (energySurcharge > 0)
-            {
-                grandTotal = subTotal + (energySurcharge / 100) * subTotal;
-            }
-            else
-            {
-                grandTotal = subTotal;
-            }
-            double discount = double.Parse(txtDiscount.Text);
-            if (discount > 0)
-            {
-                grandTotal = grandTotal - (discount / 100) * subTotal;
-            }
-            double deliveryCharges = double.Parse(txtDelivery.Text);
-
-            if (deliveryCharges > 0)
-            {
-                grandTotal = grandTotal + deliveryCharges;
-            }
-
-            double rushOrder = double.Parse(txtRushOrder.Text);
-
-            if (rushOrder > 0 && cbRush.IsChecked == true)
-            {
-                grandTotal = grandTotal + rushOrder;
-            }
-            double tax = double.Parse(txtTax.Text);
-            if (tax > 0)
-            {
-                grandTotal = grandTotal + tax;
-            }
-
-            lblGrandTotal.Content = "$ " + grandTotal.ToString("0.00");
-        }
-
-        private void GetNewQuoteID()
-        {
-            string quoteID = BusinessLogic.GetNewQuoteID();
-            txtQuoteNumber.Text = quoteID;
-        }
-
-        private void UpdateDefaultLeadTimeSettings()
-        {
-            
         }
 
         private void FillShippingMethods()
@@ -200,329 +93,67 @@ namespace GlassProductManager
             cmbLeadTime.ItemsSource = result.DefaultView;
         }
 
-        private void btnRegenerate_Click(object sender, RoutedEventArgs e)
+        private void FillPaymentTypes()
         {
-            allQuoteData.Clear();
-
-            ClearSubTotalSection();
+            var result = BusinessLogic.GetAllPaymentTypes();
+            cmbPaymentType.DisplayMemberPath = ColumnNames.Type;
+            cmbPaymentType.SelectedValuePath = ColumnNames.ID;
+            cmbPaymentType.ItemsSource = result.DefaultView;
+            cmbPaymentType.SelectedIndex = 0;
         }
 
-        private void ClearSubTotalSection()
+        private void OpenSelectedWorksheet(string quoteNumber)
         {
-            lblSubTotal.Content = "0.00";
-            txtDiscount.Text = "0.00";
-            txtDelivery.Text = "0.00";
-            txtRushOrder.Text = "0.00";
-            txtTax.Text = "0.00";
-            lblGrandTotal.Content = "0.00";
-        }
-
-        private void cbUseAsDefault_Checked(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
-        private void cbUseAsDefault_Unchecked(object sender, RoutedEventArgs e)
-        {
-            BusinessLogic.ResetDefaultLeadTime();
-            cmbLeadTime.SelectedIndex = -1;
-            cmbLeadTimeType.SelectedIndex = -1;
-        }
-
-        private void txtQuoteNumber_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Helper.IsNonEmpty(txtQuoteNumber))
+            QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
+            if (result == null)
             {
-                bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
-                if (isQuoteNumberPresent)
-                {
-                    txtQuoteNumber.Text = string.Empty;
-                    Helper.ShowErrorMessageBox("Quote Number already used! Kindly provide new quote number.");
-                }
-            }
-        }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            if (false == Helper.IsNonEmpty(txtQuoteNumber))
-            {
-                Helper.ShowErrorMessageBox("Quote Number can not be empty. Please provide Quote Number.");
-                txtQuoteNumber.Focus();
+                Helper.ShowInformationMessageBox("No data found for selected quote!");
                 return;
             }
 
-            if (allQuoteData.Count == 0)
+            txtWSNumber.Text = result.Header.WorksheetNumber;
+
+            #region Fill Header Information
+
+            txtQuoteNumber.Text = result.Header.QuoteNumber;
+            txtCustomerPO.Text = result.Header.CustomerPO;
+            dtWSCreatedOn.SelectedDate = DateTime.Parse(result.Header.SaleOrderConfirmedOn);
+            dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
+            cmbPaymentType.SelectedValue = result.Header.PaymentModeID;
+
+            if (result.Header.SoldTo != null)
+                SetSoldToDetails(result.Header.SoldTo);
+
+            if (FirmSettings.IsAdmin)
             {
-                Helper.ShowErrorMessageBox("There is no item in the quote. Please add atleast one.");
+                cmbOperator.Text = result.Header.OperatorName;
+            }
+            {
+                txtOperatorName.Text = result.Header.OperatorName;
+            }
+            if (result.Header.IsShipToOtherAddress)
+            {
+                SetShipToDetails(result.Header.ShipTo);
+            }
+            cmbShippingMethod.SelectedIndex = result.Header.ShippingMethodID;
+            cmbLeadTime.SelectedIndex = result.Header.LeadTimeID;
+            cmbLeadTimeType.SelectedIndex = result.Header.LeadTimeTypeID;
+
+            #endregion
+
+            #region Fill Line Items
+
+            allQuoteData = result.LineItems;
+            dgQuoteItems.ItemsSource = allQuoteData;
+
+            #endregion
+
+            #region Fill Footer Information
+
+            if (result.Footer == null)
                 return;
-            }
 
-            bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
-            if (isQuoteNumberPresent)
-            {
-                var result = Helper.ShowQuestionMessageBox("Quote already present. Press Yes to update existing. Press No to Clone existing quote.");
-                if (result == MessageBoxResult.Yes)
-                {
-                    QuoteHeader header = BuildQuoteHeader(txtQuoteNumber.Text);
-                    BusinessLogic.UpdateQuoteHeader(header);
-
-                    BusinessLogic.DeleteQuoteItems(txtQuoteNumber.Text);
-                    BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData);
-
-                    QuoteFooter footer = BuildQuoteFooter();
-                    BusinessLogic.UpdateQuoteFooter(txtQuoteNumber.Text, footer);
-                }
-                else if (result == MessageBoxResult.No)
-                {
-                    CloneQuote();
-                }
-            }
-            else
-            {
-                SaveNewQuote(txtQuoteNumber.Text);
-            }
-
-        }
-
-        private void SaveNewQuote(string quoteNumber)
-        {
-            QuoteHeader header = BuildQuoteHeader(quoteNumber);
-            BusinessLogic.SaveQuoteHeader(header);
-
-            BusinessLogic.SaveQuoteItems(quoteNumber, allQuoteData);
-
-            QuoteFooter footer = BuildQuoteFooter();
-            BusinessLogic.SaveQuoteFooter(quoteNumber, footer);
-
-            Helper.ShowInformationMessageBox("Quote saved successfully!");
-        }
-
-        private QuoteHeader BuildQuoteHeader(string quoteNumber)
-        {
-            return new QuoteHeader();
-        }
-
-        private QuoteFooter BuildQuoteFooter()
-        {
-            QuoteFooter footer = new QuoteFooter();
-            footer.SubTotal = double.Parse(lblSubTotal.Content.ToString().Replace("$ ", string.Empty));
-            footer.IsDollar = cbDollar.IsChecked.Value == true;
-            footer.EnergySurcharge = double.Parse(txtEnergySurcharge.Text);
-            footer.Discount = double.Parse(txtDiscount.Text);
-            footer.Delivery = double.Parse(txtDelivery.Text);
-            footer.IsRushOrder = cbRush.IsChecked.Value == true;
-            footer.RushOrder = double.Parse(txtRushOrder.Text);
-            footer.Tax = double.Parse(txtTax.Text);
-            footer.GrandTotal = double.Parse(lblGrandTotal.Content.ToString().Replace("$ ", string.Empty));
-            return footer;
-        }
-
-        private void cbIsNewClient_Checked(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void ChangeCustomerDetailsStatus(bool status)
-        {
-            txtSoldToFirstName.IsReadOnly = status;
-            txtSoldToLastName.IsReadOnly = status;
-            txtSoldToAddress.IsReadOnly = status;
-            txtSoldToPhone.IsReadOnly = status;
-            txtSoldToEmail.IsReadOnly = status;
-            txtSoldToFax.IsReadOnly = status;
-            txtSoldToMisc.IsReadOnly = status;
-
-            txtShiptoFirstName.IsReadOnly = status;
-            txtShiptoLastName.IsReadOnly = status;
-            txtShipToAddress.IsReadOnly = status;
-            txtShipToPhone.IsReadOnly = status;
-            txtShipToEmail.IsReadOnly = status;
-            txtShipToFax.IsReadOnly = status;
-            txtShipToMisc.IsReadOnly = status;
-        }
-
-        private void cbIsNewClient_Unchecked(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
-        private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
-        {
-            // Lookup for the source to be DataGridCell
-            if (e.OriginalSource.GetType() == typeof(DataGridCell))
-            {
-                // Starts the Edit on the row;
-                DataGrid grd = (DataGrid)sender;
-                grd.BeginEdit(e);
-            }
-        }
-
-        private void dgQuoteItems_LostFocus(object sender, RoutedEventArgs e)
-        {
-            UpdateQuoteTotal();
-        }
-
-        private void txtEnergySurcharge_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtEnergySurcharge))
-            {
-                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
-                {
-                    UpdateQuoteTotal();
-                }
-            }
-        }
-
-        private void txtEnergySurcharge_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtEnergySurcharge))
-            {
-                if (allQuoteData.Count > 0)
-                {
-                    txtEnergySurcharge.Text = string.IsNullOrEmpty(txtEnergySurcharge.Text) ? "0.00" : txtEnergySurcharge.Text;
-                }
-            }
-        }
-
-        private void cbDollar_Checked(object sender, RoutedEventArgs e)
-        {
-            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
-            {
-                UpdateQuoteTotal();
-            }
-        }
-
-        private void cbDollar_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
-            {
-                UpdateQuoteTotal();
-            }
-        }
-
-        private void txtDiscount_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtDiscount))
-            {
-                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtDiscount.Text) == false)
-                {
-                    UpdateQuoteTotal();
-                }
-            }
-        }
-
-        private void txtDiscount_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtDiscount))
-            {
-                if (allQuoteData.Count > 0)
-                {
-                    txtDiscount.Text = string.IsNullOrEmpty(txtDiscount.Text) ? "0.00" : txtDiscount.Text;
-                }
-            }
-        }
-
-        private void txtDelivery_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtDelivery))
-            {
-                if (allQuoteData.Count > 0)
-                {
-                    txtDelivery.Text = string.IsNullOrEmpty(txtDelivery.Text) ? "0.00" : txtDelivery.Text;
-                }
-            }
-        }
-
-        private void txtDelivery_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtDelivery))
-            {
-                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtDelivery.Text) == false)
-                {
-                    UpdateQuoteTotal();
-                }
-            }
-        }
-
-        private void txtRushOrder_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtRushOrder))
-            {
-                if (allQuoteData.Count > 0 && cbRush.IsChecked == true && string.IsNullOrEmpty(txtRushOrder.Text) == false)
-                {
-                    UpdateQuoteTotal();
-                }
-            }
-        }
-
-        private void txtRushOrder_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtRushOrder))
-            {
-                if (allQuoteData.Count > 0 && cbRush.IsChecked == true)
-                {
-                    txtRushOrder.Text = string.IsNullOrEmpty(txtRushOrder.Text) ? "0.00" : txtRushOrder.Text;
-                }
-            }
-        }
-
-        private void txtTax_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtTax))
-            {
-                if (allQuoteData.Count > 0)
-                {
-                    txtTax.Text = string.IsNullOrEmpty(txtTax.Text) ? "0.00" : txtTax.Text;
-                }
-            }
-        }
-
-        private void txtTax_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (Helper.IsValidCurrency(txtTax))
-            {
-                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtTax.Text) == false)
-                {
-                    UpdateQuoteTotal();
-                }
-            }
-        }
-
-        private void cbRush_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtRushOrder.Text) == false)
-            {
-                UpdateQuoteTotal();
-            }
-        }
-
-        private void cbRush_Checked(object sender, RoutedEventArgs e)
-        {
-            if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtRushOrder.Text) == false)
-            {
-                UpdateQuoteTotal();
-            }
-        }
-
-        private void btnUpdateSelectedItem_Click(object sender, RoutedEventArgs e)
-        {
-            
-
-        }
-
-        private void btnUpdateAllItem_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void btnOpenQuote_Click(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
-        private void OpenSelectedQuote(string quoteNumber)
-        {
-           
+            #endregion
         }
 
         private void SetShipToDetails(CustomerDetails shipTo)
@@ -547,178 +178,7 @@ namespace GlassProductManager
             txtSoldToMisc.Text = soldTo.Misc;
         }
 
-        private void cmbCustomers_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
-
-        private void btnNewQuote_Click(object sender, RoutedEventArgs e)
-        {
-            var result = Helper.ShowQuestionMessageBox("Are you sure to create new quote?");
-            if (result == MessageBoxResult.Yes)
-            {
-                ResetQuote();
-                GetNewQuoteID();
-            }
-        }
-
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            var result = Helper.ShowQuestionMessageBox("Are you sure to delete this quote?");
-            if (result == MessageBoxResult.Yes)
-            {
-                BusinessLogic.DeleteQuote(txtQuoteNumber.Text);
-                Helper.ShowInformationMessageBox("Quote deleted successfully.");
-                ResetQuote();
-            }
-        }
-
-        private void ResetQuote()
-        {
-            ResetQuoteHeader();
-            ResetShipTo();
-            ResetSoldTo();
-            ResetQuoteItems();
-            ResetQuoteFooter();
-        }
-
-        private void ResetQuoteHeader()
-        {
-            
-        }
-
-        private void ResetQuoteItems()
-        {
-            allQuoteData.Clear();
-            dgQuoteItems.ItemsSource = allQuoteData;
-        }
-
-        private void ResetShipTo()
-        {
-            txtShiptoFirstName.Text = string.Empty;
-            txtShiptoLastName.Text = string.Empty;
-            txtShipToAddress.Text = string.Empty;
-            txtShipToPhone.Text = string.Empty;
-            txtShipToFax.Text = string.Empty;
-            txtShipToEmail.Text = string.Empty;
-            txtShipToMisc.Text = string.Empty;
-        }
-
-        private void ResetSoldTo()
-        {
-            txtSoldToFirstName.Text = string.Empty;
-            txtSoldToLastName.Text = string.Empty;
-            txtSoldToAddress.Text = string.Empty;
-            txtSoldToPhone.Text = string.Empty;
-            txtSoldToFax.Text = string.Empty;
-            txtSoldToEmail.Text = string.Empty;
-            txtSoldToMisc.Text = string.Empty;
-        }
-
-        private void ResetQuoteFooter()
-        {
-            lblSubTotal.Content = "0.00";
-            cbDollar.IsChecked = false;
-            txtEnergySurcharge.Text = "0.00";
-            txtDiscount.Text = "0.00";
-            txtDelivery.Text = "0.00";
-            cbRush.IsChecked = false;
-            txtRushOrder.Text = "0.00";
-            txtTax.Text = "0.00";
-            lblGrandTotal.Content = "0.00";
-        }
-
-        private void txtCustomerPO_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void txtSoldToFirstName_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtSoldToFirstName.Text))
-            {
-                txtSoldToFirstName.Text = "First Name";
-            }
-        }
-
-        private void txtSoldToFirstName_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtSoldToFirstName.Text.Equals("First Name"))
-            {
-                txtSoldToFirstName.Text = string.Empty;
-            }
-        }
-
-        private void txtSoldToLastName_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtSoldToLastName.Text))
-            {
-                txtSoldToLastName.Text = "Last Name";
-            }
-        }
-
-        private void txtSoldToLastName_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtSoldToLastName.Text.Equals("Last Name"))
-            {
-                txtSoldToLastName.Text = string.Empty;
-            }
-        }
-
-        private void txtShiptoFirstName_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtShiptoFirstName.Text.Equals("First Name"))
-            {
-                txtShiptoFirstName.Text = string.Empty;
-            }
-        }
-
-        private void txtShiptoFirstName_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtShiptoFirstName.Text))
-            {
-                txtShiptoFirstName.Text = "First Name";
-            }
-        }
-
-        private void txtShiptoLastName_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtShiptoLastName.Text.Equals("Last Name"))
-            {
-                txtShiptoLastName.Text = string.Empty;
-            }
-        }
-
-        private void txtShiptoLastName_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtShiptoLastName.Text))
-            {
-                txtShiptoLastName.Text = "Last Name";
-            }
-        }
-
-        private void txtSoldToPhone_LostFocus(object sender, RoutedEventArgs e)
-        {
-            Helper.IsValidPhone(txtSoldToPhone);
-        }
-
-        private void txtSoldToEmail_LostFocus(object sender, RoutedEventArgs e)
-        {
-            Helper.IsValidEmail(txtSoldToEmail);
-
-        }
-
-        private void txtShipToEmail_LostFocus(object sender, RoutedEventArgs e)
-        {
-            Helper.IsValidEmail(txtShipToEmail);
-        }
-
-        private void txtAdditionalCostForItem_LostFocus(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
-        private void btnPrint_Click(object sender, RoutedEventArgs e)
+        private void btnExportPdf_Click(object sender, RoutedEventArgs e)
         {
             PrintQuote();
         }
@@ -729,8 +189,8 @@ namespace GlassProductManager
             {
                 string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 string clientName = string.Format("{0} {1}", txtSoldToFirstName.Text, txtSoldToLastName.Text);
-                string relativePath = folderPath + "\\Glass Control Clients\\" + clientName + "\\Quotes\\";
-                string filename = string.Format("Quote {0}.pdf", txtQuoteNumber.Text);
+                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Worksheet + Constants.FolderSeparator;
+                string filename = string.Format(Constants.WorksheetFileName, txtWSNumber.Text);
                 string completeFilePath = relativePath + "\\" + filename;
 
                 if (Directory.Exists(relativePath) == false)
@@ -739,7 +199,7 @@ namespace GlassProductManager
                 }
                 if (File.Exists(completeFilePath) == true)
                 {
-                    var result1 = Helper.ShowQuestionMessageBox("Quote with same number already exists. Do you want to overwrite it?");
+                    var result1 = Helper.ShowQuestionMessageBox("Worksheet with same number already exists. Do you want to overwrite it?");
                     if (result1 != MessageBoxResult.Yes)
                     {
                         return;
@@ -811,7 +271,70 @@ namespace GlassProductManager
 
         private void PrintQuoteHeader(XGraphics gfx, XFont font)
         {
-            
+            int xBaseOffset = 800;
+            int xIncrementalOffset = 940;
+            int yHeaderOffset = 15;
+            int yBaseOffset = 55;
+            int yIncrementalOffset = 25;
+            int labelWidth = 100;
+            int labelHeight = 100;
+
+            XFont headerFont = new XFont("Verdana", 22, XFontStyle.Bold);
+            gfx.DrawString("Worksheet", headerFont, XBrushes.Black,
+         new XRect(xBaseOffset, yHeaderOffset, labelWidth, labelHeight),
+         XStringFormat.TopLeft);
+
+            // Print Quote Number
+            gfx.DrawString(lblWSNumber.Content.ToString(), font, XBrushes.Black,
+              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+              XStringFormat.TopLeft);
+            gfx.DrawString(txtWSNumber.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            yBaseOffset += yIncrementalOffset;
+
+            // Print Customer PO
+            gfx.DrawString(lblCustomerPO.Content.ToString(), font, XBrushes.Black,
+            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            gfx.DrawString(txtCustomerPO.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            yBaseOffset += yIncrementalOffset;
+
+            // Print Quote Created On
+            gfx.DrawString(lblWSCreatedOn.Content.ToString(), font, XBrushes.Black,
+            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            gfx.DrawString(dtWSCreatedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            yBaseOffset += yIncrementalOffset;
+
+            // Print Quote Requested On
+            gfx.DrawString(lblRequestedShipDate.Content.ToString(), font, XBrushes.Black,
+            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            gfx.DrawString(dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            yBaseOffset += yIncrementalOffset;
+
+            // Print Payment Mode
+            gfx.DrawString(lblPaymentType.Content.ToString(), font, XBrushes.Black,
+            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            gfx.DrawString(cmbPaymentType.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
         }
 
         private void PrintShipToAddress(XGraphics gfx, XFont font)
@@ -1024,8 +547,13 @@ namespace GlassProductManager
             int xLineColumn = 150;
             int xQuantityColumn = 200;
             int xDescriptionColumn = 790;
-            int xDimensionColumn = 920;
-            int xSqFtColumn = 980;
+            //int xDimensionColumn = 920;
+            //int xDimensionColumn = 920;
+            //int xSqFtColumn = 980;
+            //int xUnitPriceColumn = 1080;
+            //int xTotalColumn = 1180;
+            int xDimensionColumn = 980;
+            int xSqFtColumn = 1180;
             int xUnitPriceColumn = 1080;
             int xTotalColumn = 1180;
 
@@ -1042,8 +570,8 @@ namespace GlassProductManager
             gfx.DrawLine(XPens.Black, xDescriptionColumn, yStartDetailRect, xDescriptionColumn, yStartDetailRect + detailsRect.Height);
             gfx.DrawLine(XPens.Black, xDimensionColumn, yStartDetailRect, xDimensionColumn, yStartDetailRect + detailsRect.Height);
             gfx.DrawLine(XPens.Black, xSqFtColumn, yStartDetailRect, xSqFtColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xUnitPriceColumn, yStartDetailRect, xUnitPriceColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xTotalColumn, yStartDetailRect, xTotalColumn, yStartDetailRect + detailsRect.Height);
+            //gfx.DrawLine(XPens.Black, xUnitPriceColumn, yStartDetailRect, xUnitPriceColumn, yStartDetailRect + detailsRect.Height);
+            //gfx.DrawLine(XPens.Black, xTotalColumn, yStartDetailRect, xTotalColumn, yStartDetailRect + detailsRect.Height);
 
             XBrush brush = XBrushes.White;
             gfx.DrawString("Line No.", font, brush, new XRect(xStartDetailRect + 15, yStartDetailRect + 15, xLineColumn, heightHeaderRect), format);
@@ -1051,8 +579,8 @@ namespace GlassProductManager
             gfx.DrawString("Description", font, brush, new XRect(xQuantityColumn + 65, yStartDetailRect + 15, xDescriptionColumn, heightHeaderRect), format);
             gfx.DrawString("Dimension (in)", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
             gfx.DrawString("Sq.Ft.", font, brush, new XRect(xDimensionColumn + 15, yStartDetailRect + 15, xSqFtColumn, heightHeaderRect), format);
-            gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
-            gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
+            //gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
+            //gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
 
             int yQuoteItemOffset = yStartDetailRect + 45;
             int yOffset = 20;
@@ -1078,8 +606,6 @@ namespace GlassProductManager
 
                 gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
-                gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
-                gfx.DrawString(double.Parse(selectedLineItem.Total).ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
 
                 yQuoteItemOffset += 50;
             }
@@ -1087,117 +613,52 @@ namespace GlassProductManager
 
         private void PrintQuoteFooter(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 900;
-            int xIncrementalOffset = 1060;
+            int xBaseOffset = 100;
+            int xIncrementalOffset = 160;
             int yBaseOffset = 1150;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
+            int yIncrement = 1170;
+            int yIncrementalOffset = 125;
+            int labelWidth = 750;
             int labelHeight = 100;
+
+            XRect headerRect = new XRect(xBaseOffset - 10, yBaseOffset - 10, 1000, 250);
+            XPen pen = new XPen(XColors.Black, 1);
+            gfx.DrawRectangle(pen, headerRect);
 
             XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
 
-            // Print Quote Number
-            gfx.DrawString(lblSubTotalCaption.Content.ToString(), boldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-
-            gfx.DrawString(lblSubTotal.Content.ToString(), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Quote Number
-            yBaseOffset += yIncrementalOffset;
-            string energy = cbDollar.IsChecked.Value ? "Energy Surcharge ($):" : "Energy Surcharge (%):";
-            gfx.DrawString(energy, boldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtEnergySurcharge.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Quote Number
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblDiscount.Content.ToString(), boldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtDiscount.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Quote Number
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblDelivery.Content.ToString(), boldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtDelivery.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Quote Number
-            if (cbRush.IsChecked.Value)
-            {
-                yBaseOffset += yIncrementalOffset;
-                gfx.DrawString(lblRushOrder.Content.ToString(), boldFont, XBrushes.Black,
-                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-                  XStringFormat.TopLeft);
-                gfx.DrawString(txtRushOrder.Text, font, XBrushes.Black,
-                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-                XStringFormat.TopLeft);
-            }
-
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblTax.Content.ToString(), boldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtTax.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblGrandTotalCaption.Content.ToString(), boldFont, XBrushes.Black,
+            gfx.DrawString(lblAdditionalInstruction.Content.ToString(), boldFont, XBrushes.Black,
             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
-            gfx.DrawString(lblGrandTotal.Content.ToString(), boldFont, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+
+            XTextFormatter tf = new XTextFormatter(gfx);
+            XRect rect = new XRect(xBaseOffset, yIncrement, labelWidth, labelHeight);
+            tf.DrawString(txtAdditionalInstruction.Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+          
         }
 
-        private void btnExportPdf_Click(object sender, RoutedEventArgs e)
+        private void btnOpenSO_Click(object sender, RoutedEventArgs e)
         {
-            PrintQuote();
-        }
-
-        private void txtShipToPhone_LostFocus(object sender, RoutedEventArgs e)
-        {
-            Helper.IsValidPhone(txtShipToPhone);
-        }
-
-        private void btnClone_Click(object sender, RoutedEventArgs e)
-        {
-            CloneQuote();
-        }
-
-        private void CloneQuote()
-        {
-            string quoteNumber = BusinessLogic.GetNewQuoteID();
-            SaveNewQuote(quoteNumber);
-        }
-
-        private void btnEmail_Click(object sender, RoutedEventArgs e)
-        {
-            string mailToURL = @"mailto:balramchavan@gmail.com?Subject=SubjTxt&Body=Bod_Txt&Attachment=c:\\file.txt";
-            try
+            if (string.IsNullOrEmpty(txtSmartSearch.Text))
             {
-                Process.Start(mailToURL);
-
+                Helper.ShowErrorMessageBox("Please select Customer/Quote No./SO No.");
+                return;
             }
-            catch (Exception)
+            string quoteNumber = string.Empty;
+            foreach (string item in txtSmartSearch.Text.Split('-'))
             {
-                mailToURL = @"mailto:balramchavan@gmail.com?Subject=SubjTxt&Body=Bod_Txt&Attach=c:\\file.txt";
-                Process.Start(mailToURL);
-                
+                if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
+                {
+                    quoteNumber = item.Trim();
+                    break;
+                }
             }
+            if (string.IsNullOrEmpty(quoteNumber))
+            {
+                Helper.ShowErrorMessageBox("Invalid Quote Number");
+                return;
+            }
+            OpenSelectedWorksheet(quoteNumber);
         }
     }
 }

@@ -153,6 +153,7 @@
     <Compile Include="Forms\WelcomeUser.xaml.cs">
       <DependentUpon>WelcomeUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Queries\ColumnNames.cs" />
     <Compile Include="Queries\SelectQueries.cs" />
     <Compile Include="Queries\StoredProcedures.cs" />

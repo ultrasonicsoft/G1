@@ -928,9 +928,9 @@ namespace GlassProductManager
             {
                 string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 string clientName = string.Format("{0} {1}", txtSoldToFirstName.Text, txtSoldToLastName.Text);
-                string relativePath = folderPath + "\\Glass Control Clients\\" + clientName + "\\Quotes\\";
-                string filename = string.Format("Quote {0}.pdf", txtQuoteNumber.Text);
-                string completeFilePath = relativePath + "\\" + filename;
+                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator+  clientName + Constants.FolderSeparator + Constants.Quote + Constants.FolderSeparator;
+                string filename = string.Format(Constants.QuoteFileName, txtQuoteNumber.Text);
+                string completeFilePath = relativePath + Constants.FolderSeparator + filename;
 
                 if (Directory.Exists(relativePath) == false)
                 {
@@ -1458,11 +1458,38 @@ namespace GlassProductManager
 
         private void btnSendToSO_Click(object sender, RoutedEventArgs e)
         {
+            if (Helper.IsNonEmpty(txtQuoteNumber))
+            {
+                bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
+                if (isQuoteNumberPresent == false)
+                {
+                    Helper.ShowErrorMessageBox("Given quote number not found in system.");
+                    return;
+                }
+                else
+                {
+                    BusinessLogic.GenerateSaleOrder(txtQuoteNumber.Text, DateTime.Now);
+                    BusinessLogic.GenerateWorksheet(txtQuoteNumber.Text, DateTime.Now);
+                    ShowSaleOrderForm();
+                }
+            }
+        }
+
+        private void ShowSaleOrderForm()
+        {
             Dashboard parent = Window.GetWindow(this) as Dashboard;
             if (parent != null)
             {
-                SalesOrderContent soContent = new SalesOrderContent();
+                SalesOrderContent soContent = new SalesOrderContent(true,txtQuoteNumber.Text);
                 parent.ucMainContent.ShowPage(soContent);
+            }
+        }
+
+        private void cmbQuoteStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbQuoteStatus.SelectedItem != null)
+            {
+                btnSendToSO.IsEnabled = (cmbQuoteStatus.SelectedItem as System.Data.DataRowView)[1].Equals(ColumnNames.Confirmed);
             }
         }
     }

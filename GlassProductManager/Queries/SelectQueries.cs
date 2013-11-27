@@ -12,5 +12,7 @@ namespace GlassProductManager
         internal const string IS_ADMIN_QUERY = "SELECT IsAdmin FROM Users WHERE UserName='{0}' AND Password = '{1}'";
         internal const string GET_ALL_GLASS_TYPES = "SELECT [ID],[GlassType] FROM [LuGlass]";
         internal const string GET_GLASS_RATES_BY_ID = "SELECT * FROM GlassRates WHERE ID='{0}'";
+        internal const string GetSaleOrderNumber = " SELECT SONumber FROM SaleOrder WHERE QuoteNumber = '{0}'";
+       
     }
 }

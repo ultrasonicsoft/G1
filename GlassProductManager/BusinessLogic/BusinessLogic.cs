@@ -657,6 +657,9 @@ namespace GlassProductManager
                 quoteDetails.Header.OperatorName = result.Tables[0].Rows[0][ColumnNames.OperatorName].ToString();
                 quoteDetails.Header.PaymentModeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.PaymentModeID].ToString());
                 quoteDetails.Header.QuoteStatusID = int.Parse(result.Tables[0].Rows[0][ColumnNames.QuoteStatusID].ToString());
+                quoteDetails.Header.SalesOrderNumber = result.Tables[0].Rows[0][ColumnNames.SONumber].ToString();
+                quoteDetails.Header.SaleOrderConfirmedOn = result.Tables[0].Rows[0][ColumnNames.ConfirmedDate].ToString();
+                quoteDetails.Header.WorksheetNumber = result.Tables[0].Rows[0][ColumnNames.WSNumber].ToString();
 
                 quoteDetails.Header.SoldTo= new CustomerDetails();
                 quoteDetails.Header.SoldTo.FirstName = result.Tables[0].Rows[0][ColumnNames.SoldTo_FirstName].ToString();
@@ -1241,10 +1244,33 @@ namespace GlassProductManager
 
                 quoteMasterData = new ObservableCollection<SaleOrderEntity>();
                 SaleOrderEntity temp = null;
+                object dbValue = null;
                 for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
                 {
                     temp = new SaleOrderEntity();
-                    //temp.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.Status] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Status].ToString();
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.SONumber];
+                    temp.SaleOrderNumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber];
+                    temp.QuoteNumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.FullName];
+                    temp.FullName = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.ConfirmedDate];
+                    temp.RecordedDate = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.GrandTotal];
+                    temp.Total = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.PaymentType];
+                    temp.PaymentType = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.WSNumber];
+                    temp.WorksheetNumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.CustomerPO];
+                    temp.CustomerPONumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
 
                     quoteMasterData.Add(temp);
                 }
@@ -1335,6 +1361,66 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
+        }
+
+        internal static void GenerateSaleOrder(string quoteNumber, DateTime confirmedDate)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pConfirmedDate = new SqlParameter();
+                pConfirmedDate.ParameterName = "ConfirmedDate";
+                pConfirmedDate.Value = confirmedDate;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.GenerateSaleOrder, pQuoteNumber, pConfirmedDate);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void GenerateWorksheet(string quoteNumber, DateTime confirmedDate)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pConfirmedDate = new SqlParameter();
+                pConfirmedDate.ParameterName = "ConfirmedDate";
+                pConfirmedDate.Value = confirmedDate;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.GenerateWorksheet, pQuoteNumber, pConfirmedDate);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static string GetSaleOrderNumber(string quoteNumber)
+        {
+            string saleOrderNumber = string.Empty;
+            try
+            {
+                var result = SQLHelper.GetScalarValue(string.Format(SelectQueries.GetSaleOrderNumber, quoteNumber));
+                if (result == null)
+                    return saleOrderNumber;
+                saleOrderNumber = result.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return saleOrderNumber;
         }
     }
 }

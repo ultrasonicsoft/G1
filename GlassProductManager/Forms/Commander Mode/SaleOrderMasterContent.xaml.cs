@@ -81,7 +81,7 @@ namespace GlassProductManager
         {
             try
             {
-                QuoteMasterEntity currentRow = value as QuoteMasterEntity;
+                SaleOrderEntity currentRow = value as SaleOrderEntity;
 
                 if (dgSaleOrderDetails.Columns.Count > 1)
                 {
@@ -102,9 +102,9 @@ namespace GlassProductManager
             return false;
         }
 
-        private bool IsSearchCriteriaMatched(QuoteMasterEntity currentRow)
+        private bool IsSearchCriteriaMatched(SaleOrderEntity currentRow)
         {
-            return currentRow.QuoteStatus.ToString()
+            return currentRow.SaleOrderNumber.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
@@ -117,7 +117,7 @@ namespace GlassProductManager
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
 
-                                    currentRow.CreatedOn.ToString()
+                                    currentRow.RecordedDate.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
@@ -125,11 +125,11 @@ namespace GlassProductManager
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                    currentRow.EstimatedShipDate.ToString()
+                                    currentRow.PaymentType.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                    currentRow.PaymentType.ToString()
+                                    currentRow.WorksheetNumber.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
@@ -144,9 +144,9 @@ namespace GlassProductManager
             try
             {
                 dgSaleOrderDetails.ItemsSource = null;
-                ObservableCollection<QuoteMasterEntity> fileList = new ObservableCollection<QuoteMasterEntity>();
+                ObservableCollection<SaleOrderEntity> fileList = new ObservableCollection<SaleOrderEntity>();
 
-                foreach (QuoteMasterEntity row in m_SaleListForSearch)
+                foreach (SaleOrderEntity row in m_SaleListForSearch)
                 {
                     fileList.Add(row);
                 }
@@ -176,6 +176,41 @@ namespace GlassProductManager
             dgSaleOrderDetails.ItemsSource = result;
             m_SaleListForSearch = new ListCollectionView(result);
         }
+
+        private void btnOpenSaleOrder_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSalesOrder();
+        }
+
+        private void dgSaleOrderDetails_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            OpenSalesOrder();
+        }
+
+        private void OpenSalesOrder()
+        {
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+
+            SaleOrderEntity entity = dgSaleOrderDetails.SelectedItem as SaleOrderEntity;
+
+            if (entity == null)
+            {
+                return;
+            }
+
+            DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+            if (sideMenu != null)
+            {
+                sideMenu.IsIndirectCall = true;
+                sideMenu.btnSaleOrder.IsChecked = true;
+                sideMenu.IsIndirectCall = false;
+            }
+
+            SalesOrderContent newQuote = new SalesOrderContent(true, entity.QuoteNumber);
+            parent.ucMainContent.ShowPage(newQuote);
+        }
+
+      
 
     }
 }

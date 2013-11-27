@@ -24,19 +24,19 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Search Sale Order:" HorizontalAlignment="Right" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.Column="1" Text="Search" Margin="0,8,0,8" Name="txtSearch" TextChanged="txtSearch_TextChanged" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus"></TextBox>
-            <Button Name="btnOpenSaleOrder" Content="Open Sale Order" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" />
+            <Button Name="btnOpenSaleOrder" Content="Open Sale Order" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnOpenSaleOrder_Click" />
         </Grid>
        
-        <DataGrid Name="dgSaleOrderDetails" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <DataGrid Name="dgSaleOrderDetails" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="dgSaleOrderDetails_MouseDoubleClick" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Sale Order No." Binding="{Binding SaleOrderNo}" Width="90"></DataGridTextColumn>
+                <DataGridTextColumn Header="Sale Order No." Binding="{Binding SaleOrderNumber}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Quote No." Binding="{Binding QuoteNumber}"  Width="90" SortDirection="Descending"></DataGridTextColumn>
                 <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="150"></DataGridTextColumn>
                 <DataGridTextColumn Header="Recorded Date" Binding="{Binding RecordedDate}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Payment Type" Binding="{Binding PaymentType}" Width="90"></DataGridTextColumn>
-                <DataGridTextColumn Header="Worksheet No." Binding="{Binding WorkSheetNo}" Width="120" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="Customer PO" Binding="{Binding CustomerPO}" Width="120" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Worksheet No." Binding="{Binding WorksheetNumber}" Width="120" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Customer PO" Binding="{Binding CustomerPONumber}" Width="120" IsReadOnly="True"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
        

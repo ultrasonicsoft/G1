@@ -92,7 +92,6 @@ namespace GlassProductManager
 
         internal const string Item = "Item";
         internal const string Address = "Address";
-        internal const string SONumber = "SONumber";
         internal const string WorksheetNumber = "WorksheetNumber";
         internal const string PONumber = "PONumber";
         internal const string InvoiceNumber = "InvoiceNumber";
@@ -104,6 +103,12 @@ namespace GlassProductManager
         internal const string EstimatedShipDate = "EstimatedShipDate";
         internal const string PaymentType = "PaymentType";
         internal const string CustomerPONumber = "CustomerPONumber";
+
+        internal const string Confirmed = "Confirmed";
+
+        internal const string SONumber = "SONumber";
+        internal const string ConfirmedDate = "ConfirmedDate";
+        internal const string WSNumber = "WSNumber";
 
     }
 }
