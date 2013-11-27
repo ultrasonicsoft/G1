@@ -25,7 +25,7 @@ namespace GlassProductManager
     /// <summary>
     /// Interaction logic for NewQuoteGridContent.xaml
     /// </summary>
-    public partial class NewQuoteGridContent : UserControl
+    public partial class WorksheetContent : UserControl
     {
         private ObservableCollection<QuoteGridEntity> _allQuoteData = new ObservableCollection<QuoteGridEntity>();
 
@@ -35,14 +35,14 @@ namespace GlassProductManager
             set { _allQuoteData = value; }
         }
 
-        public NewQuoteGridContent()
+        public WorksheetContent()
         {
             InitializeComponent();
 
             ConfigureInitialSetup();
         }
 
-        public NewQuoteGridContent(bool _isOpenQuoteRequested, string _quoteNumber)
+        public WorksheetContent(bool _isOpenQuoteRequested, string _quoteNumber)
         {
             InitializeComponent();
 
@@ -56,35 +56,11 @@ namespace GlassProductManager
 
         private void ConfigureInitialSetup()
         {
-            FillShippingMethods();
-            FillLeadTimeTypes();
-            FillLeadTime();
-
-            cbIsNewClient.IsChecked = true;
-
-            dtQuoteCreatedOn.SelectedDate = DateTime.Now;
-            dtQuoteRequestedOn.SelectedDate = DateTime.Now;
-
-            UpdateDefaultLeadTimeSettings();
-
-            _allQuoteData.CollectionChanged += _allQuoteData_CollectionChanged;
-            GetNewQuoteID();
-
-            SetOperatorAccess();
-            FillSmartSearchData();
-
-            FillCustomerNames();
-
-            FillPaymentTypes();
-            FillQuoteStatus();
         }
 
         private void FillCustomerNames()
         {
-            var result = BusinessLogic.GetAllCustomerNames();
-            cmbCustomers.DisplayMemberPath = ColumnNames.Item;
-            cmbCustomers.SelectedValuePath = ColumnNames.ID;
-            cmbCustomers.ItemsSource = result.DefaultView;
+          
         }
 
         private void FillSmartSearchData()
@@ -103,11 +79,7 @@ namespace GlassProductManager
 
         private void FillQuoteStatus()
         {
-            var result = BusinessLogic.GetAllQuoteStatus();
-            cmbQuoteStatus.DisplayMemberPath = ColumnNames.Type;
-            cmbQuoteStatus.SelectedValuePath = ColumnNames.ID;
-            cmbQuoteStatus.ItemsSource = result.DefaultView;
-            cmbQuoteStatus.SelectedIndex = 0;
+           
         }
 
         private void SetOperatorAccess()
@@ -200,12 +172,7 @@ namespace GlassProductManager
 
         private void UpdateDefaultLeadTimeSettings()
         {
-            var result = BusinessLogic.GetLeadTimeSettings();
-            if (result == null)
-                return;
-            cmbLeadTime.SelectedIndex = int.Parse(result.Rows[0][ColumnNames.LeadTimeID].ToString());
-            cmbLeadTimeType.SelectedIndex = int.Parse(result.Rows[0][ColumnNames.LeadTimeTypeID].ToString());
-            cbUseAsDefault.IsChecked = bool.Parse(result.Rows[0][ColumnNames.IsDefaultLeadTime].ToString());
+            
         }
 
         private void FillShippingMethods()
@@ -252,14 +219,7 @@ namespace GlassProductManager
 
         private void cbUseAsDefault_Checked(object sender, RoutedEventArgs e)
         {
-            if (cmbLeadTime.SelectedIndex == -1 || cmbLeadTimeType.SelectedIndex == -1)
-            {
-                Helper.ShowErrorMessageBox("Please select Lead Time first");
-                cbUseAsDefault.IsChecked = false;
-                return;
-            }
-
-            BusinessLogic.SetDefaultLeadTime(cmbLeadTime.SelectedIndex, cmbLeadTimeType.SelectedIndex);
+           
         }
 
         private void cbUseAsDefault_Unchecked(object sender, RoutedEventArgs e)
@@ -339,53 +299,7 @@ namespace GlassProductManager
 
         private QuoteHeader BuildQuoteHeader(string quoteNumber)
         {
-            QuoteHeader header = new QuoteHeader();
-            header.QuoteNumber = quoteNumber;
-            header.QuoteCreatedOn = dtQuoteCreatedOn.SelectedDate.Value.ToShortDateString();
-            header.QuoteRequestedOn = dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString();
-            header.CustomerPO = txtCustomerPO.Text;
-            header.IsNewCustomer = cbIsNewClient.IsChecked == true;
-            header.IsShipToOtherAddress = cbIsShipToSameAddress.IsChecked == true;
-            header.ShippingMethodID = cmbShippingMethod.SelectedIndex;
-            header.LeadTimeID = cmbLeadTime.SelectedIndex;
-            header.LeadTimeTypeID = cmbLeadTimeType.SelectedIndex;
-
-            header.PaymentModeID = int.Parse(cmbPaymentType.SelectedValue.ToString());
-            header.QuoteStatusID = int.Parse(cmbQuoteStatus.SelectedValue.ToString());
-
-            if (FirmSettings.IsAdmin)
-            {
-                header.OperatorName = cmbOperator.Text;
-            }
-            else
-            {
-                header.OperatorName = txtOperatorName.Text;
-            }
-            if (cbIsNewClient.IsChecked.Value == false)
-            {
-                header.CustomerID = int.Parse(cmbCustomers.SelectedValue.ToString());
-            }
-            header.SoldTo = new CustomerDetails();
-            header.SoldTo.FirstName = txtSoldToFirstName.Text;
-            header.SoldTo.LastName = txtSoldToLastName.Text;
-            header.SoldTo.Address = txtSoldToAddress.Text;
-            header.SoldTo.Phone = txtSoldToPhone.Text;
-            header.SoldTo.Email = txtSoldToEmail.Text;
-            header.SoldTo.Fax = txtSoldToFax.Text;
-            header.SoldTo.Misc = txtSoldToMisc.Text;
-
-            if (cbIsShipToSameAddress.IsChecked == true)
-            {
-                header.ShipTo = new CustomerDetails();
-                header.ShipTo.FirstName = txtShiptoFirstName.Text;
-                header.ShipTo.LastName = txtShiptoLastName.Text;
-                header.ShipTo.Address = txtShipToAddress.Text;
-                header.ShipTo.Phone = txtShipToPhone.Text;
-                header.ShipTo.Email = txtShipToEmail.Text;
-                header.ShipTo.Fax = txtShipToFax.Text;
-                header.ShipTo.Misc = txtShipToMisc.Text;
-            }
-            return header;
+            return new QuoteHeader();
         }
 
         private QuoteFooter BuildQuoteFooter()
@@ -405,8 +319,7 @@ namespace GlassProductManager
 
         private void cbIsNewClient_Checked(object sender, RoutedEventArgs e)
         {
-            cmbCustomers.IsEnabled = false;
-            ChangeCustomerDetailsStatus(false);
+            
         }
 
         private void ChangeCustomerDetailsStatus(bool status)
@@ -430,8 +343,7 @@ namespace GlassProductManager
 
         private void cbIsNewClient_Unchecked(object sender, RoutedEventArgs e)
         {
-            cmbCustomers.IsEnabled = true;
-            ChangeCustomerDetailsStatus(true);
+           
         }
 
         private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
@@ -594,113 +506,23 @@ namespace GlassProductManager
 
         private void btnUpdateSelectedItem_Click(object sender, RoutedEventArgs e)
         {
-            QuoteGridEntity selectedLineItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
-            if (selectedLineItem == null)
-                return;
-            selectedLineItem.Total = ((double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity).ToString("0.00");
-            UpdateQuoteTotal();
+            
 
         }
 
         private void btnUpdateAllItem_Click(object sender, RoutedEventArgs e)
         {
-            if (allQuoteData.Count > 0)
-            {
-                foreach (QuoteGridEntity selectedLineItem in allQuoteData)
-                {
-                    if (selectedLineItem == null || string.IsNullOrEmpty(txtAdditionalCostForItem.Text) || string.IsNullOrEmpty(selectedLineItem.UnitPrice))
-                        continue;
-
-                    selectedLineItem.Total = ((double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity).ToString("0.00");
-                }
-                UpdateQuoteTotal();
-            }
+            
         }
 
         private void btnOpenQuote_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtSmartSearch.Text))
-            {
-                Helper.ShowErrorMessageBox("Please select Customer/Quote No. first");
-                return;
-            }
-            string quoteNumber = string.Empty;
-            foreach (string item in txtSmartSearch.Text.Split('-'))
-            {
-                if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
-                {
-                    quoteNumber = item.Trim();
-                    break;
-                }
-            }
-            if (string.IsNullOrEmpty(quoteNumber))
-            {
-                Helper.ShowErrorMessageBox("Invalid Quote Number");
-                return;
-            }
-            OpenSelectedQuote(quoteNumber);
+           
         }
 
         private void OpenSelectedQuote(string quoteNumber)
         {
-            QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
-            if (result == null)
-            {
-                Helper.ShowInformationMessageBox("No data found for selected quote!");
-                return;
-            }
-            #region Fill Header Information
-
-            txtQuoteNumber.Text = result.Header.QuoteNumber;
-            txtCustomerPO.Text = result.Header.CustomerPO;
-            dtQuoteCreatedOn.SelectedDate = DateTime.Parse(result.Header.QuoteCreatedOn);
-            dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
-            cmbPaymentType.SelectedValue = result.Header.PaymentModeID;
-            cmbQuoteStatus.SelectedValue = result.Header.QuoteStatusID;
-
-            if (result.Header.SoldTo != null)
-                SetSoldToDetails(result.Header.SoldTo);
-
-            if (FirmSettings.IsAdmin)
-            {
-                cmbOperator.Text = result.Header.OperatorName;
-            }
-            {
-                txtOperatorName.Text = result.Header.OperatorName;
-            }
-            if (result.Header.IsShipToOtherAddress)
-            {
-                SetShipToDetails(result.Header.ShipTo);
-            }
-            cmbShippingMethod.SelectedIndex = result.Header.ShippingMethodID;
-            cmbLeadTime.SelectedIndex = result.Header.LeadTimeID;
-            cmbLeadTimeType.SelectedIndex = result.Header.LeadTimeTypeID;
-
-            #endregion
-
-            #region Fill Line Items
-
-            allQuoteData = result.LineItems;
-            dgQuoteItems.ItemsSource = allQuoteData;
-
-            #endregion
-
-            #region Fill Footer Information
-
-            if (result.Footer == null)
-                return;
-
-            lblSubTotal.Content = result.Footer.SubTotal.ToString("0.00");
-            cbDollar.IsChecked = result.Footer.IsDollar;
-            txtEnergySurcharge.Text = result.Footer.EnergySurcharge.ToString("0.00");
-            txtDiscount.Text = result.Footer.Discount.ToString("0.00");
-            txtDelivery.Text = result.Footer.Delivery.ToString("0.00");
-            cbRush.IsChecked = result.Footer.IsRushOrder;
-            txtRushOrder.Text = result.Footer.RushOrder.ToString("0.00");
-            txtTax.Text = result.Footer.Tax.ToString("0.00");
-            lblGrandTotal.Content = result.Footer.GrandTotal.ToString("0.00");
-
-            #endregion
+           
         }
 
         private void SetShipToDetails(CustomerDetails shipTo)
@@ -727,22 +549,7 @@ namespace GlassProductManager
 
         private void cmbCustomers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbCustomers.SelectedValue == null)
-                return;
-
-            CustomerDetails soldTo = null;
-            CustomerDetails shipTo = null;
-
-            BusinessLogic.GetCustomerDetails(out soldTo, out shipTo, cmbCustomers.SelectedValue.ToString());
-
-            if (soldTo != null)
-            {
-                SetSoldToDetails(soldTo);
-            }
-            if (shipTo != null)
-            {
-                SetShipToDetails(shipTo);
-            }
+            
         }
 
         private void btnNewQuote_Click(object sender, RoutedEventArgs e)
@@ -777,13 +584,7 @@ namespace GlassProductManager
 
         private void ResetQuoteHeader()
         {
-            txtQuoteNumber.Text = string.Empty;
-            txtCustomerPO.Text = string.Empty;
-            dtQuoteCreatedOn.SelectedDate = DateTime.Now;
-            dtQuoteRequestedOn.SelectedDate = DateTime.Now;
-            cbIsNewClient.IsChecked = true;
-            cmbCustomers.SelectedIndex = -1;
-            cbIsShipToSameAddress.IsChecked = false;
+            
         }
 
         private void ResetQuoteItems()
@@ -914,7 +715,7 @@ namespace GlassProductManager
 
         private void txtAdditionalCostForItem_LostFocus(object sender, RoutedEventArgs e)
         {
-            Helper.IsValidCurrency(txtAdditionalCostForItem);
+           
         }
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
@@ -1010,64 +811,7 @@ namespace GlassProductManager
 
         private void PrintQuoteHeader(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 800;
-            int xIncrementalOffset = 940;
-            int yBaseOffset = 15;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
-
-            // Print Quote Number
-            gfx.DrawString(lblQuoteNo.Content.ToString(), font, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtQuoteNumber.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            yBaseOffset += yIncrementalOffset;
-
-            // Print Customer PO
-            gfx.DrawString(lblCustomerPO.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            gfx.DrawString(txtCustomerPO.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            yBaseOffset += yIncrementalOffset;
-
-            // Print Quote Created On
-            gfx.DrawString(lblQuoteCreatedOn.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            gfx.DrawString(dtQuoteCreatedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            yBaseOffset += yIncrementalOffset;
-
-            // Print Quote Requested On
-            gfx.DrawString(lblRequestedShipDate.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            gfx.DrawString(dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            yBaseOffset += yIncrementalOffset;
-
-            // Print Payment Mode
-            gfx.DrawString(lblPaymentType.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            gfx.DrawString(cmbPaymentType.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+            
         }
 
         private void PrintShipToAddress(XGraphics gfx, XFont font)
@@ -1453,16 +1197,6 @@ namespace GlassProductManager
                 mailToURL = @"mailto:balramchavan@gmail.com?Subject=SubjTxt&Body=Bod_Txt&Attach=c:\\file.txt";
                 Process.Start(mailToURL);
                 
-            }
-        }
-
-        private void btnSendToSO_Click(object sender, RoutedEventArgs e)
-        {
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            if (parent != null)
-            {
-                SalesOrderContent soContent = new SalesOrderContent();
-                parent.ucMainContent.ShowPage(soContent);
             }
         }
     }

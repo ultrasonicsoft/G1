@@ -35,7 +35,6 @@
                 <DataGridTextColumn Header="Recorded Date" Binding="{Binding RecordedDate}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Payment Type" Binding="{Binding PaymentType}" Width="90"></DataGridTextColumn>
-                <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Worksheet No." Binding="{Binding WorkSheetNo}" Width="120" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="Customer PO" Binding="{Binding CustomerPO}" Width="120" IsReadOnly="True"></DataGridTextColumn>
             </DataGrid.Columns>

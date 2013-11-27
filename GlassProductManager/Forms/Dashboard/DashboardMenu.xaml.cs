@@ -24,7 +24,9 @@ namespace GlassProductManager
         NewQuote,
         RateSettings,
         CustomerSettings,
-        CommanderSection
+        CommanderSection,
+        SaleOrder,
+        Worksheet
     }
 
     public partial class DashboardMenu : UserControl
@@ -89,6 +91,24 @@ namespace GlassProductManager
             parent.ucMainContent.ShowPage(commanderSection);
         }
 
+        private void btnSaleOrder_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateToggleButtonStatus(UserSelection.SaleOrder);
+
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+            SalesOrderContent soSection = new SalesOrderContent();
+            parent.ucMainContent.ShowPage(soSection);
+        }
+
+        private void btnWorksheet_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateToggleButtonStatus(UserSelection.Worksheet);
+
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+            WorksheetContent worksheetSection = new WorksheetContent();
+            parent.ucMainContent.ShowPage(worksheetSection);
+        }
+
         private void UpdateToggleButtonStatus(UserSelection selection)
         {
             switch (selection)
@@ -108,9 +128,35 @@ namespace GlassProductManager
                 case UserSelection.CommanderSection:
                     SetCommanderSectionAsCurrentPage();
                     break;
+                case UserSelection.SaleOrder:
+                    SetSaleOrdersSectionAsCurrentPage();
+                    break;
+                case UserSelection.Worksheet:
+                    SetWorksheetSectionAsCurrentPage();
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void SetWorksheetSectionAsCurrentPage()
+        {
+            btnHome.IsChecked = false;
+            btnPriceSettings.IsChecked = false;
+            btnCustomerSettings.IsChecked = false;
+            btnCommanderSection.IsChecked = false;
+            btnCreateNewQuote.IsChecked = false;
+            btnSaleOrder.IsChecked = false;
+        }
+
+        private void SetSaleOrdersSectionAsCurrentPage()
+        {
+            btnHome.IsChecked = false;
+            btnPriceSettings.IsChecked = false;
+            btnCustomerSettings.IsChecked = false;
+            btnCommanderSection.IsChecked = false;
+            btnCreateNewQuote.IsChecked = false;
+            btnWorksheet.IsChecked = false;
         }
 
         internal void SetCommanderSectionAsCurrentPage()

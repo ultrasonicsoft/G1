@@ -127,6 +127,12 @@
     <Compile Include="Forms\HomeContent.xaml.cs">
       <DependentUpon>HomeContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Worksheet\WorksheetContent.xaml.cs">
+      <DependentUpon>WorksheetContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SaleOrder\SalesOrderContent.xaml.cs">
+      <DependentUpon>SalesOrderContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\New Quote\NewQuoteContent.xaml.cs">
       <DependentUpon>NewQuoteContent.xaml</DependentUpon>
     </Compile>
@@ -185,6 +191,14 @@
     <Page Include="Forms\HomeContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Worksheet\WorksheetContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\SaleOrder\SalesOrderContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Forms\New Quote\NewQuoteContent.xaml">
       <SubType>Designer</SubType>
