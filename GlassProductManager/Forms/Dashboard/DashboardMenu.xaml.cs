@@ -34,192 +34,96 @@ namespace GlassProductManager
         private bool _isIndirectCall = false;
         public bool IsIndirectCall { get; set; }
 
+
+        Dictionary<System.Windows.Controls.Primitives.ToggleButton, UserControl> availableOptions = null;
+        HomeContent home;
+        NewQuoteContent newQuote;
+        CustomerSettingsContent customer;
+        PriceSettingsContent priceSettings;
+        SalesOrderContent soSection;
+        WorksheetContent worksheetSection;
+        CommanderSectionContent commanderSection;
+
         public DashboardMenu()
         {
             InitializeComponent();
 
+            availableOptions = new Dictionary<System.Windows.Controls.Primitives.ToggleButton, UserControl>();
+
+            home = new HomeContent();
+            newQuote = new NewQuoteContent();
+            customer = new CustomerSettingsContent();
+            priceSettings = new PriceSettingsContent();
+            soSection = new SalesOrderContent();
+            worksheetSection = new WorksheetContent();
+            commanderSection = new CommanderSectionContent();
+
+            availableOptions.Add(btnHome, home);
+            availableOptions.Add(btnCreateNewQuote, newQuote);
+            availableOptions.Add(btnPriceSettings, priceSettings);
+            availableOptions.Add(btnCustomerSettings, customer);
+            availableOptions.Add(btnSaleOrder, soSection);
+            availableOptions.Add(btnWorksheet, worksheetSection);
+            availableOptions.Add(btnCommanderSection, commanderSection);
+
             btnHome.IsChecked = true;
+        }
+
+        private void ShowCurrentPage(System.Windows.Controls.Primitives.ToggleButton selectedOption)
+        {
+            foreach (KeyValuePair<System.Windows.Controls.Primitives.ToggleButton, UserControl> item in availableOptions)
+            {
+                if (item.Key == selectedOption)
+                {
+                    item.Key.IsChecked = true;
+                    if (IsIndirectCall == false)
+                    {
+                        Dashboard parent = Window.GetWindow(this) as Dashboard;
+                        if (parent != null)
+                        {
+                            parent.ucMainContent.ShowPage(item.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    item.Key.IsChecked = false;
+                }
+            }
         }
 
         private void btnHome_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateToggleButtonStatus(UserSelection.Home);
-
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            if (parent != null)
-            {
-                HomeContent homeContent = new HomeContent();
-                parent.ucMainContent.ShowPage(homeContent);
-            }
+            ShowCurrentPage(btnHome);
         }
 
         private void btnCreateNewQuote_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateToggleButtonStatus(UserSelection.NewQuote);
-
-            if (IsIndirectCall == false)
-            {
-                Dashboard parent = Window.GetWindow(this) as Dashboard;
-                NewQuoteContent newQuote = new NewQuoteContent();
-                parent.ucMainContent.ShowPage(newQuote);
-            }
+            ShowCurrentPage(btnCreateNewQuote);
         }
 
         private void btnCustomerSettings_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateToggleButtonStatus(UserSelection.CustomerSettings);
-
-
-            if (IsIndirectCall == false)
-            {
-                Dashboard parent = Window.GetWindow(this) as Dashboard;
-                CustomerSettingsContent newQuote = new CustomerSettingsContent();
-                parent.ucMainContent.ShowPage(newQuote);
-            }
+            ShowCurrentPage(btnCustomerSettings);
         }
 
         private void btnPriceSettings_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateToggleButtonStatus(UserSelection.RateSettings);
-
-
-            if (IsIndirectCall == false)
-            {
-                Dashboard parent = Window.GetWindow(this) as Dashboard;
-                PriceSettingsContent priceSettings = new PriceSettingsContent();
-                parent.ucMainContent.ShowPage(priceSettings);
-            }
-        }
-
-        private void btnCommanderSection_Checked(object sender, RoutedEventArgs e)
-        {
-            UpdateToggleButtonStatus(UserSelection.CommanderSection);
-
-
-            if (IsIndirectCall == false)
-            {
-                Dashboard parent = Window.GetWindow(this) as Dashboard;
-                CommanderSectionContent commanderSection = new CommanderSectionContent();
-                parent.ucMainContent.ShowPage(commanderSection);
-            }
+            ShowCurrentPage(btnPriceSettings);
         }
 
         private void btnSaleOrder_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateToggleButtonStatus(UserSelection.SaleOrder);
-
-
-            if (IsIndirectCall == false)
-            {
-                Dashboard parent = Window.GetWindow(this) as Dashboard;
-                SalesOrderContent soSection = new SalesOrderContent();
-                parent.ucMainContent.ShowPage(soSection);
-            }
+            ShowCurrentPage(btnSaleOrder);
         }
 
         private void btnWorksheet_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateToggleButtonStatus(UserSelection.Worksheet);
-
-
-            if (IsIndirectCall == false)
-            {
-                Dashboard parent = Window.GetWindow(this) as Dashboard;
-                WorksheetContent worksheetSection = new WorksheetContent();
-                parent.ucMainContent.ShowPage(worksheetSection);
-            }
+            ShowCurrentPage(btnWorksheet);
         }
-
-        private void UpdateToggleButtonStatus(UserSelection selection)
+        private void btnCommanderSection_Checked(object sender, RoutedEventArgs e)
         {
-            switch (selection)
-            {
-                case UserSelection.Home:
-                    SetHomeAsCurrentPage();
-                    break;
-                case UserSelection.NewQuote:
-                    SetNewQuoteAsCurrentPage();
-                    break;
-                case UserSelection.RateSettings:
-                    SetPriceSettingAsCurrentPage();
-                    break;
-                case UserSelection.CustomerSettings:
-                    SetCustomerSettingsAsCurrentPage();
-                    break;
-                case UserSelection.CommanderSection:
-                    SetCommanderSectionAsCurrentPage();
-                    break;
-                case UserSelection.SaleOrder:
-                    SetSaleOrdersSectionAsCurrentPage();
-                    break;
-                case UserSelection.Worksheet:
-                    SetWorksheetSectionAsCurrentPage();
-                    break;
-                default:
-                    break;
-            }
+            ShowCurrentPage(btnCommanderSection);
         }
-
-        private void SetWorksheetSectionAsCurrentPage()
-        {
-            btnHome.IsChecked = false;
-            btnPriceSettings.IsChecked = false;
-            btnCustomerSettings.IsChecked = false;
-            btnCommanderSection.IsChecked = false;
-            btnCreateNewQuote.IsChecked = false;
-            btnSaleOrder.IsChecked = false;
-        }
-
-        private void SetSaleOrdersSectionAsCurrentPage()
-        {
-            btnHome.IsChecked = false;
-            btnPriceSettings.IsChecked = false;
-            btnCustomerSettings.IsChecked = false;
-            btnCommanderSection.IsChecked = false;
-            btnCreateNewQuote.IsChecked = false;
-            btnWorksheet.IsChecked = false;
-        }
-
-        internal void SetCommanderSectionAsCurrentPage()
-        {
-            btnHome.IsChecked = false;
-            btnCreateNewQuote.IsChecked = false;
-            btnPriceSettings.IsChecked = false;
-            btnCustomerSettings.IsChecked = false;
-        }
-
-        internal void SetCustomerSettingsAsCurrentPage()
-        {
-            btnHome.IsChecked = false;
-            btnCreateNewQuote.IsChecked = false;
-            btnPriceSettings.IsChecked = false;
-            btnCommanderSection.IsChecked = false;
-        }
-
-        internal void SetPriceSettingAsCurrentPage()
-        {
-            btnHome.IsChecked = false;
-            btnCreateNewQuote.IsChecked = false;
-            btnCustomerSettings.IsChecked = false;
-            btnCommanderSection.IsChecked = false;
-        }
-
-        internal void SetNewQuoteAsCurrentPage()
-        {
-            btnHome.IsChecked = false;
-            btnPriceSettings.IsChecked = false;
-            btnCustomerSettings.IsChecked = false;
-            btnCommanderSection.IsChecked = false;
-        }
-
-        internal void SetHomeAsCurrentPage()
-        {
-            btnCreateNewQuote.IsChecked = false;
-            btnPriceSettings.IsChecked = false;
-            btnCustomerSettings.IsChecked = false;
-            btnCommanderSection.IsChecked = false;
-        }
-
-       
     }
 }
