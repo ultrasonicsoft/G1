@@ -220,7 +220,7 @@
                                 <ColumnDefinition Width="110"/>
                                 <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="btnDelete" Content="_Delete"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="0" Width="75" />
+                            <Button Name="btnDelete" Content="_Delete"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="0" Width="75" Margin="0,0,0,3" Click="btnDelete_Click" />
                             <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnExportPdf_Click" />
                             <Button Name="btnOpenWorksheet" Content="Open Worksheet"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="120" Click="btnOpenWorksheet_Click"/>
                         </Grid>

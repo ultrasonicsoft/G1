@@ -1466,6 +1466,11 @@ namespace GlassProductManager
                     Helper.ShowErrorMessageBox("Given quote number not found in system.");
                     return;
                 }
+                else if (BusinessLogic.IsSalesOrderPresent(txtQuoteNumber.Text))
+                {
+                    Helper.ShowErrorMessageBox("Sales Order already present for given quote.");
+                    return;
+                }
                 else
                 {
                     BusinessLogic.GenerateSaleOrder(txtQuoteNumber.Text, DateTime.Now);

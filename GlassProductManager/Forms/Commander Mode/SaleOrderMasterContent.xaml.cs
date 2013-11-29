@@ -210,7 +210,28 @@ namespace GlassProductManager
             parent.ucMainContent.ShowPage(newQuote);
         }
 
-      
+        private void btnDeleteSalesOrder_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteSalesOrder();
+        }
+
+        private void DeleteSalesOrder()
+        {
+            SaleOrderEntity entity = dgSaleOrderDetails.SelectedItem as SaleOrderEntity;
+            if (entity == null)
+            {
+                return;
+            }
+
+            bool isSalesOrderPresent = BusinessLogic.IsSalesOrderPresent(entity.QuoteNumber);
+            if (isSalesOrderPresent)
+            {
+                BusinessLogic.DeleteSalesOrder(entity.QuoteNumber);
+                Helper.ShowInformationMessageBox("Sales Order is delete successfully!");
+                FillSaleOrderDetails();
+            }
+        }
+
 
     }
 }

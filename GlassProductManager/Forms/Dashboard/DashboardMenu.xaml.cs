@@ -68,45 +68,66 @@ namespace GlassProductManager
         private void btnCustomerSettings_Checked(object sender, RoutedEventArgs e)
         {
             UpdateToggleButtonStatus(UserSelection.CustomerSettings);
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            CustomerSettingsContent newQuote = new CustomerSettingsContent();
-            parent.ucMainContent.ShowPage(newQuote);
+
+
+            if (IsIndirectCall == false)
+            {
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                CustomerSettingsContent newQuote = new CustomerSettingsContent();
+                parent.ucMainContent.ShowPage(newQuote);
+            }
         }
 
         private void btnPriceSettings_Checked(object sender, RoutedEventArgs e)
         {
             UpdateToggleButtonStatus(UserSelection.RateSettings);
 
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            PriceSettingsContent priceSettings = new PriceSettingsContent();
-            parent.ucMainContent.ShowPage(priceSettings);
+
+            if (IsIndirectCall == false)
+            {
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                PriceSettingsContent priceSettings = new PriceSettingsContent();
+                parent.ucMainContent.ShowPage(priceSettings);
+            }
         }
 
         private void btnCommanderSection_Checked(object sender, RoutedEventArgs e)
         {
             UpdateToggleButtonStatus(UserSelection.CommanderSection);
 
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            CommanderSectionContent commanderSection = new CommanderSectionContent();
-            parent.ucMainContent.ShowPage(commanderSection);
+
+            if (IsIndirectCall == false)
+            {
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                CommanderSectionContent commanderSection = new CommanderSectionContent();
+                parent.ucMainContent.ShowPage(commanderSection);
+            }
         }
 
         private void btnSaleOrder_Checked(object sender, RoutedEventArgs e)
         {
             UpdateToggleButtonStatus(UserSelection.SaleOrder);
 
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            SalesOrderContent soSection = new SalesOrderContent();
-            parent.ucMainContent.ShowPage(soSection);
+
+            if (IsIndirectCall == false)
+            {
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                SalesOrderContent soSection = new SalesOrderContent();
+                parent.ucMainContent.ShowPage(soSection);
+            }
         }
 
         private void btnWorksheet_Checked(object sender, RoutedEventArgs e)
         {
             UpdateToggleButtonStatus(UserSelection.Worksheet);
 
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            WorksheetContent worksheetSection = new WorksheetContent();
-            parent.ucMainContent.ShowPage(worksheetSection);
+
+            if (IsIndirectCall == false)
+            {
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                WorksheetContent worksheetSection = new WorksheetContent();
+                parent.ucMainContent.ShowPage(worksheetSection);
+            }
         }
 
         private void UpdateToggleButtonStatus(UserSelection selection)

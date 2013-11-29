@@ -59,5 +59,9 @@ namespace GlassProductManager
         internal const string GenerateSaleOrder = "[GenerateSaleOrder]";
         internal const string GenerateWorksheet = "[GenerateWorksheet]";
         internal const string GetSaleOrderNumber = "[GetSaleOrderNumber]";
+        internal const string IsSalesOrderPresent = "[IsSalesOrderPresent]";
+        internal const string IsWorksheetPresent = "[IsWorksheetPresent]";
+        internal const string DeleteSalesOrder = "[DeleteSalesOrder]";
+        internal const string DeleteWorksheet = "[DeleteWorksheet]";
     }
 }

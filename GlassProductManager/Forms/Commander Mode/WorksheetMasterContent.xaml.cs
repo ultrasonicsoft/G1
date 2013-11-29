@@ -81,7 +81,7 @@ namespace GlassProductManager
         {
             try
             {
-                QuoteMasterEntity currentRow = value as QuoteMasterEntity;
+                WorksheetEntity currentRow = value as WorksheetEntity;
 
                 if (dgWorksheetDetails.Columns.Count > 1)
                 {
@@ -102,13 +102,13 @@ namespace GlassProductManager
             return false;
         }
 
-        private bool IsSearchCriteriaMatched(QuoteMasterEntity currentRow)
+        private bool IsSearchCriteriaMatched(WorksheetEntity currentRow)
         {
-            return currentRow.QuoteStatus.ToString()
+            return currentRow.WorksheetNumber.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                        currentRow.QuoteNumber.ToString()
+                                        currentRow.CreatedOn.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
@@ -117,23 +117,19 @@ namespace GlassProductManager
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
 
-                                    currentRow.CreatedOn.ToString()
+                                    currentRow.DeliveryDate.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                    currentRow.Total.ToString()
+                                    currentRow.TotalQuantity.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                    currentRow.EstimatedShipDate.ToString()
+                                    currentRow.QuoteNumber.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                    currentRow.PaymentType.ToString()
-                                              .ToLower()
-                                              .Contains(txtSearch.Text
-                                                                .ToLower()) ||
-                                    currentRow.CustomerPONumber.ToString()
+                                    currentRow.Progress.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower());
@@ -144,9 +140,9 @@ namespace GlassProductManager
             try
             {
                 dgWorksheetDetails.ItemsSource = null;
-                ObservableCollection<QuoteMasterEntity> fileList = new ObservableCollection<QuoteMasterEntity>();
+                ObservableCollection<WorksheetEntity> fileList = new ObservableCollection<WorksheetEntity>();
 
-                foreach (QuoteMasterEntity row in m_WorksheetListForSearch)
+                foreach (WorksheetEntity row in m_WorksheetListForSearch)
                 {
                     fileList.Add(row);
                 }
@@ -175,6 +171,61 @@ namespace GlassProductManager
             var result = BusinessLogic.GetWorksheetMasterData();
             dgWorksheetDetails.ItemsSource = result;
             m_WorksheetListForSearch = new ListCollectionView(result);
+        }
+
+        private void dgWorksheetDetails_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            OpenWorksheet();
+        }
+
+        private void OpenWorksheet()
+        {
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+
+            WorksheetEntity entity = dgWorksheetDetails.SelectedItem as WorksheetEntity;
+
+            if (entity == null)
+            {
+                return;
+            }
+
+            DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+            if (sideMenu != null)
+            {
+                sideMenu.IsIndirectCall = true;
+                sideMenu.btnWorksheet.IsChecked = true;
+                sideMenu.IsIndirectCall = false;
+            }
+
+            WorksheetContent newQuote = new WorksheetContent(true, entity.QuoteNumber);
+            parent.ucMainContent.ShowPage(newQuote);
+        }
+
+        private void btnOpenWorksheet_Click(object sender, RoutedEventArgs e)
+        {
+            OpenWorksheet();
+        }
+
+        private void btnDeleteWorksheet_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteWorksheet();
+        }
+
+        private void DeleteWorksheet()
+        {
+            WorksheetEntity entity = dgWorksheetDetails.SelectedItem as WorksheetEntity;
+            if (entity == null)
+            {
+                return;
+            }
+
+            bool isWorksheetPresent = BusinessLogic.IsWorksheetPresent(entity.QuoteNumber);
+            if (isWorksheetPresent)
+            {
+                BusinessLogic.DeleteWorksheet(entity.QuoteNumber);
+                Helper.ShowInformationMessageBox("Worksheet is delete successfully!");
+                FillWorksheetDetails();
+            }
         }
 
     }

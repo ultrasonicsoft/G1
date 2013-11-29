@@ -660,5 +660,28 @@ namespace GlassProductManager
             }
             OpenSelectedWorksheet(quoteNumber);
         }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteWorksheet();
+          
+        }
+
+        private void DeleteWorksheet()
+        {
+            if (Helper.IsNonEmpty(txtQuoteNumber) && Helper.IsNonEmpty(txtWSNumber))
+            {
+                bool isWorksheetPresent = BusinessLogic.IsWorksheetPresent(txtQuoteNumber.Text);
+                if (isWorksheetPresent)
+                {
+                    BusinessLogic.DeleteWorksheet(txtQuoteNumber.Text);
+                    Helper.ShowInformationMessageBox("Worksheet is delete successfully!");
+                }
+            }
+            else
+            {
+                Helper.ShowErrorMessageBox("Please provide required details.");
+            }
+        }
     }
 }

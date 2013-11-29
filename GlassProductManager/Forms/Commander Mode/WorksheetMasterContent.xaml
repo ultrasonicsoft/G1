@@ -20,16 +20,18 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Search Worksheet:" HorizontalAlignment="Right" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.Column="1" Text="Search" Margin="0,8,0,8" Name="txtSearch" TextChanged="txtSearch_TextChanged" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus"></TextBox>
-            <Button Name="btnOpenWorksheet" Content="Open Worksheet" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" />
+            <Button Name="btnOpenWorksheet" Content="Open Worksheet" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnOpenWorksheet_Click" />
+            <Button Name="btnDeleteWorksheet" Content="Delete Worksheet" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnDeleteWorksheet_Click" />
         </Grid>
        
-        <DataGrid Name="dgWorksheetDetails" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <DataGrid Name="dgWorksheetDetails" IsReadOnly="True" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="dgWorksheetDetails_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Worksheet No." Binding="{Binding WorksheetNo}" Width="90"></DataGridTextColumn>
+                <DataGridTextColumn Header="Worksheet No." Binding="{Binding WorksheetNumber}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Quote No." Binding="{Binding QuoteNumber}"  Width="90" SortDirection="Descending"></DataGridTextColumn>
                 <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="150"></DataGridTextColumn>
                 <DataGridTextColumn Header="Created On" Binding="{Binding CreatedOn}" Width="90"></DataGridTextColumn>

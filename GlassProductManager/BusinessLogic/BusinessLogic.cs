@@ -304,6 +304,42 @@ namespace GlassProductManager
             return result == null || result.Tables == null || result.Tables.Count == 0 ? false : result.Tables[0].Rows[0][0].ToString() == "1";
         }
 
+        internal static bool IsSalesOrderPresent(string quoteNumber)
+        {
+            DataSet result = null;
+            try
+            {
+                SqlParameter paramQuoteNumber = new SqlParameter();
+                paramQuoteNumber.ParameterName = "quoteNumber";
+                paramQuoteNumber.Value = quoteNumber;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.IsSalesOrderPresent, paramQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? false : result.Tables[0].Rows[0][0].ToString() == "1";
+        }
+
+        internal static bool IsWorksheetPresent(string quoteNumber)
+        {
+            DataSet result = null;
+            try
+            {
+                SqlParameter paramQuoteNumber = new SqlParameter();
+                paramQuoteNumber.ParameterName = "quoteNumber";
+                paramQuoteNumber.Value = quoteNumber;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.IsWorksheetPresent, paramQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? false : result.Tables[0].Rows[0][0].ToString() == "1";
+        }
+
         internal static void SaveQuoteHeader(QuoteHeader header)
         {
             try
@@ -1294,10 +1330,31 @@ namespace GlassProductManager
 
                 quoteMasterData = new ObservableCollection<WorksheetEntity>();
                 WorksheetEntity temp = null;
+                object dbValue = null;
                 for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
                 {
                     temp = new WorksheetEntity();
-                    //temp.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.Status] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Status].ToString();
+                   
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.WSNumber];
+                    temp.WorksheetNumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.ConfirmedDate];
+                    temp.CreatedOn = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber];
+                    temp.QuoteNumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.RequestedShipDate];
+                    temp.DeliveryDate = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.FullName];
+                    temp.FullName = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.Progress];
+                    temp.Progress = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.TotalQuantity];
+                    temp.TotalQuantity = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
 
                     quoteMasterData.Add(temp);
                 }
@@ -1421,6 +1478,38 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
             return saleOrderNumber;
+        }
+
+        internal static void DeleteSalesOrder(string quoteNumber)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteSalesOrder, pQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void DeleteWorksheet(string quoteNumber)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteWorksheet, pQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
     }
 }

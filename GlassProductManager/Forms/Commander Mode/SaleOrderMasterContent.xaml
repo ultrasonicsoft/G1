@@ -20,14 +20,16 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Search Sale Order:" HorizontalAlignment="Right" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.Column="1" Text="Search" Margin="0,8,0,8" Name="txtSearch" TextChanged="txtSearch_TextChanged" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus"></TextBox>
             <Button Name="btnOpenSaleOrder" Content="Open Sale Order" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnOpenSaleOrder_Click" />
+            <Button Name="btnDeleteSalesOrder" Content="Delete Sale Order" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnDeleteSalesOrder_Click"  />
         </Grid>
        
-        <DataGrid Name="dgSaleOrderDetails" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="dgSaleOrderDetails_MouseDoubleClick" >
+        <DataGrid Name="dgSaleOrderDetails" IsReadOnly="True" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="dgSaleOrderDetails_MouseDoubleClick" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Sale Order No." Binding="{Binding SaleOrderNumber}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Quote No." Binding="{Binding QuoteNumber}"  Width="90" SortDirection="Descending"></DataGridTextColumn>

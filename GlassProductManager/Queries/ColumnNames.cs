@@ -110,5 +110,8 @@ namespace GlassProductManager
         internal const string ConfirmedDate = "ConfirmedDate";
         internal const string WSNumber = "WSNumber";
 
+        internal const string Progress = "Progress";
+        internal const string TotalQuantity = "TotalQuantity";
+
     }
 }
