@@ -1485,6 +1485,8 @@ namespace GlassProductManager
             Dashboard parent = Window.GetWindow(this) as Dashboard;
             if (parent != null)
             {
+                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnSaleOrder);
                 SalesOrderContent soContent = new SalesOrderContent(true,txtQuoteNumber.Text);
                 parent.ucMainContent.ShowPage(soContent);
             }

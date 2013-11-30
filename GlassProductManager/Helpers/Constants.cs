@@ -15,6 +15,8 @@ namespace GlassProductManager
         internal const string SaleOrderFileName = "Sale Order {0}.pdf";
         internal const string Worksheet = "Worksheet";
         internal const string WorksheetFileName = "Worksheet {0}.pdf";
-         internal const string SaleOrder = "Sale Orders";
+        internal const string SaleOrder = "Sale Orders";
+        internal const string Invoices = "Invoice";
+        internal const string InvoiceFileName = "Invoice {0}.pdf";
     }
 }

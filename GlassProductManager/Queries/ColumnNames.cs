@@ -113,5 +113,12 @@ namespace GlassProductManager
         internal const string Progress = "Progress";
         internal const string TotalQuantity = "TotalQuantity";
 
+        internal const string PaymentDate = "PaymentDate";
+        internal const string Amount = "Amount";
+
+        internal const string BalanceDue = "BalanceDue";
+        internal const string CompletedDate = "CompletedDate";
+        internal const string InvoiceStatus = "InvoiceStatus";
+
     }
 }

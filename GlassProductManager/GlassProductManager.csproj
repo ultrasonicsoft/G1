@@ -84,6 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\InvoiceEntity.cs" />
+    <Compile Include="Classes\InvoicePaymentEntity.cs" />
     <Compile Include="Classes\WorksheetEntity.cs" />
     <Compile Include="Classes\SaleOrderEntity.cs" />
     <Compile Include="Classes\QuoteMasterEntity.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Forms\Customer Settings\CustomerSettingsContent.xaml.cs">
       <DependentUpon>CustomerSettingsContent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Dashboard\DashboardHelper.cs" />
     <Compile Include="Forms\Dashboard\DashboardMenu.xaml.cs">
       <DependentUpon>DashboardMenu.xaml</DependentUpon>
     </Compile>
@@ -126,6 +128,12 @@
     <Compile Include="Classes\GlassRate.cs" />
     <Compile Include="Forms\HomeContent.xaml.cs">
       <DependentUpon>HomeContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Invoice\MakeInvoicePayment.xaml.cs">
+      <DependentUpon>MakeInvoicePayment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Invoice\InvoiceContent.xaml.cs">
+      <DependentUpon>InvoiceContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Worksheet\WorksheetContent.xaml.cs">
       <DependentUpon>WorksheetContent.xaml</DependentUpon>
@@ -192,6 +200,14 @@
     <Page Include="Forms\HomeContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Invoice\MakeInvoicePayment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Invoice\InvoiceContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Forms\Worksheet\WorksheetContent.xaml">
       <Generator>MSBuild:Compile</Generator>

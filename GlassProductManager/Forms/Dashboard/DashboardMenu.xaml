@@ -13,7 +13,9 @@
             <ToggleButton Content="Customer Settings" Focusable="True" Height="40" Name="btnCustomerSettings" Checked="btnCustomerSettings_Checked" />
             <ToggleButton Content="Sale Orders" Focusable="True" Height="40" Name="btnSaleOrder" Checked="btnSaleOrder_Checked" />
             <ToggleButton Content="Worksheet" Focusable="True" Height="40" Name="btnWorksheet" Checked="btnWorksheet_Checked" />
-            <ToggleButton Content="Commander Section" Focusable="True" Height="40" Name="btnCommanderSection" Checked="btnCommanderSection_Checked" />
+            <ToggleButton Content="Invoice" Focusable="True" Height="40" x:Name="btnInvoice" Checked="btnInvoice_Checked" />
+            <ToggleButton Content="Payment" Focusable="True" Height="40" x:Name="btnMakePayment" Checked="btnMakePayment_Checked" />
+            <ToggleButton Content="Commander View" Focusable="True" Height="40" Name="btnCommanderSection" Checked="btnCommanderSection_Checked" />
 
         </StackPanel>
     </Grid>

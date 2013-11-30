@@ -188,17 +188,13 @@ namespace GlassProductManager
             {
                 return;
             }
-
-            DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-            if (sideMenu != null)
+            if (parent != null)
             {
-                sideMenu.IsIndirectCall = true;
-                sideMenu.btnWorksheet.IsChecked = true;
-                sideMenu.IsIndirectCall = false;
+                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnWorksheet);
+                WorksheetContent newQuote = new WorksheetContent(true, entity.QuoteNumber);
+                parent.ucMainContent.ShowPage(newQuote);
             }
-
-            WorksheetContent newQuote = new WorksheetContent(true, entity.QuoteNumber);
-            parent.ucMainContent.ShowPage(newQuote);
         }
 
         private void btnOpenWorksheet_Click(object sender, RoutedEventArgs e)

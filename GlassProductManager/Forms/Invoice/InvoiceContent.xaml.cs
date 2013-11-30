@@ -22,10 +22,24 @@ using System.Windows.Shapes;
 
 namespace GlassProductManager
 {
+    enum PaymentType
+    {
+        COD =0,
+        Net15,
+        Net30
+    }
+
+    enum InvoiceStatus
+    {
+        PaidInFull = 0,
+        PaymentInProgress,
+        Outstanding
+    }
+
     /// <summary>
     /// Interaction logic for NewQuoteGridContent.xaml
     /// </summary>
-    public partial class WorksheetContent : UserControl
+    public partial class InvoiceContent : UserControl
     {
         private ObservableCollection<QuoteGridEntity> _allQuoteData = new ObservableCollection<QuoteGridEntity>();
 
@@ -35,14 +49,22 @@ namespace GlassProductManager
             set { _allQuoteData = value; }
         }
 
-        public WorksheetContent()
+        private ObservableCollection<InvoicePaymentEntity> _allPaymentData = new ObservableCollection<InvoicePaymentEntity>();
+
+        public ObservableCollection<InvoicePaymentEntity> allPaymentData
+        {
+            get { return _allPaymentData; }
+            set { _allPaymentData = value; }
+        }
+
+        public InvoiceContent()
         {
             InitializeComponent();
 
             ConfigureInitialSetup();
         }
 
-        public WorksheetContent(bool _isOpenQuoteRequested, string _quoteNumber)
+        public InvoiceContent(bool _isOpenQuoteRequested, string _quoteNumber)
         {
             InitializeComponent();
 
@@ -50,9 +72,10 @@ namespace GlassProductManager
             {
                 ConfigureInitialSetup();
 
-                OpenSelectedWorksheet(_quoteNumber);
+                OpenSelectedInvoice(_quoteNumber);
             }
         }
+
 
         private void ConfigureInitialSetup()
         {
@@ -61,6 +84,16 @@ namespace GlassProductManager
             FillLeadTime();
             FillPaymentTypes();
             FillSmartSearchData();
+            FillInvoiceTypes();
+        }
+
+        private void FillInvoiceTypes()
+        {
+            var result = BusinessLogic.GetAllInvoiceTypes();
+            cmbInvoiceStatus.DisplayMemberPath = ColumnNames.Type;
+            cmbInvoiceStatus.SelectedValuePath = ColumnNames.ID;
+            cmbInvoiceStatus.ItemsSource = result.DefaultView;
+            cmbInvoiceStatus.SelectedIndex = 0;
         }
 
         private void FillSmartSearchData()
@@ -102,7 +135,7 @@ namespace GlassProductManager
             cmbPaymentType.SelectedIndex = 0;
         }
 
-        private void OpenSelectedWorksheet(string quoteNumber)
+        private void OpenSelectedInvoice(string quoteNumber)
         {
             QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
             if (result == null)
@@ -111,15 +144,29 @@ namespace GlassProductManager
                 return;
             }
 
-            txtWSNumber.Text = result.Header.WorksheetNumber;
-
             #region Fill Header Information
 
             txtQuoteNumber.Text = result.Header.QuoteNumber;
             txtCustomerPO.Text = result.Header.CustomerPO;
-            dtWSCreatedOn.SelectedDate = DateTime.Parse(result.Header.SaleOrderConfirmedOn);
-            dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
+            if (string.IsNullOrEmpty(result.Header.SaleOrderConfirmedOn))
+            {
+                dtInvoiceCreatedOn.SelectedDate = null;
+            }
+            else
+            {
+                dtInvoiceCreatedOn.SelectedDate = DateTime.Parse(result.Header.InvoiceCompletedOn);
+            }
+            if (string.IsNullOrEmpty(result.Header.QuoteRequestedOn))
+            {
+                dtQuoteRequestedOn.SelectedDate = null;
+            }
+            else
+            {
+                dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
+            }
             cmbPaymentType.SelectedValue = result.Header.PaymentModeID;
+            txtInvoiceNumber.Text = result.Header.InvoiceNumber;
+            lblBalanceDue.Content = result.Header.BalanceDue.ToString("0.00");
 
             if (result.Header.SoldTo != null)
                 SetSoldToDetails(result.Header.SoldTo);
@@ -153,7 +200,71 @@ namespace GlassProductManager
             if (result.Footer == null)
                 return;
 
+            lblSubTotal.Content = result.Footer.SubTotal.ToString("0.00");
+            cbDollar.IsChecked = result.Footer.IsDollar;
+            txtEnergySurcharge.Text = result.Footer.EnergySurcharge.ToString("0.00");
+            txtDiscount.Text = result.Footer.Discount.ToString("0.00");
+            txtDelivery.Text = result.Footer.Delivery.ToString("0.00");
+            cbRush.IsChecked = result.Footer.IsRushOrder;
+            txtRushOrder.Text = result.Footer.RushOrder.ToString("0.00");
+            txtTax.Text = result.Footer.Tax.ToString("0.00");
+            lblGrandTotal.Content = result.Footer.GrandTotal.ToString("0.00");
+
             #endregion
+
+            FillInvoicePaymentDetails();
+
+            UpdateInvoiceStatus();
+        }
+
+        private void FillInvoicePaymentDetails()
+        {
+            var result = BusinessLogic.GetInvoicePaymentDetails(txtQuoteNumber.Text);
+            if (result == null)
+            {
+                return;
+            }
+            allPaymentData = result;
+            dgPaymentDetails.ItemsSource = allPaymentData;
+        }
+
+
+        private void UpdateInvoiceStatus()
+        {
+            if (false == string.IsNullOrEmpty(lblBalanceDue.Content.ToString()))
+            {
+                double balanceDue = double.Parse(lblBalanceDue.Content.ToString());
+                double grandTotal = double.Parse(lblGrandTotal.Content.ToString());
+
+                if (balanceDue == 0)
+                {
+                    cmbInvoiceStatus.SelectedIndex = InvoiceStatus.PaidInFull.GetHashCode();
+                }
+                else if (balanceDue > 0 && balanceDue < grandTotal)
+                {
+                    cmbInvoiceStatus.SelectedIndex = InvoiceStatus.PaymentInProgress.GetHashCode();
+                }
+                else if(cmbPaymentType.SelectedValue != null && cmbPaymentType.SelectedIndex== PaymentType.COD.GetHashCode() && balanceDue >0)
+                {
+                    cmbInvoiceStatus.SelectedIndex = InvoiceStatus.Outstanding.GetHashCode();
+                }
+                else if (cmbPaymentType.SelectedValue != null && cmbPaymentType.SelectedIndex!= PaymentType.COD.GetHashCode())
+                {
+                    if (cmbPaymentType.SelectedIndex == PaymentType.Net15.GetHashCode() &&  dtInvoiceCreatedOn.SelectedDate.Value.AddDays(15) < DateTime.Now)
+                    {
+                        cmbInvoiceStatus.SelectedIndex = InvoiceStatus.Outstanding.GetHashCode();
+                    }
+                    else if (cmbPaymentType.SelectedIndex == PaymentType.Net30.GetHashCode() && dtInvoiceCreatedOn.SelectedDate.Value.AddDays(30) < DateTime.Now)
+                    {
+                        cmbInvoiceStatus.SelectedIndex = InvoiceStatus.Outstanding.GetHashCode();
+                    }
+                    else
+                    {
+                        cmbInvoiceStatus.SelectedIndex = InvoiceStatus.PaymentInProgress.GetHashCode();
+                    }
+                }
+                BusinessLogic.UpdateInvoiceStatusID(txtQuoteNumber.Text, cmbInvoiceStatus.SelectedIndex + 1);
+            }
         }
 
         private void SetShipToDetails(CustomerDetails shipTo)
@@ -189,8 +300,8 @@ namespace GlassProductManager
             {
                 string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 string clientName = string.Format("{0} {1}", txtSoldToFirstName.Text, txtSoldToLastName.Text);
-                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Worksheet + Constants.FolderSeparator;
-                string filename = string.Format(Constants.WorksheetFileName, txtWSNumber.Text);
+                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Invoices  + Constants.FolderSeparator;
+                string filename = string.Format(Constants.InvoiceFileName, txtInvoiceNumber.Text);
                 string completeFilePath = relativePath + "\\" + filename;
 
                 if (Directory.Exists(relativePath) == false)
@@ -199,7 +310,7 @@ namespace GlassProductManager
                 }
                 if (File.Exists(completeFilePath) == true)
                 {
-                    var result1 = Helper.ShowQuestionMessageBox("Worksheet with same number already exists. Do you want to overwrite it?");
+                    var result1 = Helper.ShowQuestionMessageBox("Sale Order with same number already exists. Do you want to overwrite it?");
                     if (result1 != MessageBoxResult.Yes)
                     {
                         return;
@@ -280,15 +391,15 @@ namespace GlassProductManager
             int labelHeight = 100;
 
             XFont headerFont = new XFont("Verdana", 22, XFontStyle.Bold);
-            gfx.DrawString("Worksheet", headerFont, XBrushes.Black,
+            gfx.DrawString("Invoice", headerFont, XBrushes.Black,
          new XRect(xBaseOffset, yHeaderOffset, labelWidth, labelHeight),
          XStringFormat.TopLeft);
 
             // Print Quote Number
-            gfx.DrawString(lblWSNumber.Content.ToString(), font, XBrushes.Black,
+            gfx.DrawString(lblInvoiceNumber.Content.ToString(), font, XBrushes.Black,
               new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
               XStringFormat.TopLeft);
-            gfx.DrawString(txtWSNumber.Text, font, XBrushes.Black,
+            gfx.DrawString(txtInvoiceNumber.Text, font, XBrushes.Black,
             new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
 
@@ -306,11 +417,11 @@ namespace GlassProductManager
             yBaseOffset += yIncrementalOffset;
 
             // Print Quote Created On
-            gfx.DrawString(lblWSCreatedOn.Content.ToString(), font, XBrushes.Black,
+            gfx.DrawString(lblInvoiceCreatedOn.Content.ToString(), font, XBrushes.Black,
             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
 
-            gfx.DrawString(dtWSCreatedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
+            gfx.DrawString(dtInvoiceCreatedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
             new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
 
@@ -547,13 +658,8 @@ namespace GlassProductManager
             int xLineColumn = 150;
             int xQuantityColumn = 200;
             int xDescriptionColumn = 790;
-            //int xDimensionColumn = 920;
-            //int xDimensionColumn = 920;
-            //int xSqFtColumn = 980;
-            //int xUnitPriceColumn = 1080;
-            //int xTotalColumn = 1180;
-            int xDimensionColumn = 980;
-            int xSqFtColumn = 1180;
+            int xDimensionColumn = 920;
+            int xSqFtColumn = 980;
             int xUnitPriceColumn = 1080;
             int xTotalColumn = 1180;
 
@@ -570,8 +676,8 @@ namespace GlassProductManager
             gfx.DrawLine(XPens.Black, xDescriptionColumn, yStartDetailRect, xDescriptionColumn, yStartDetailRect + detailsRect.Height);
             gfx.DrawLine(XPens.Black, xDimensionColumn, yStartDetailRect, xDimensionColumn, yStartDetailRect + detailsRect.Height);
             gfx.DrawLine(XPens.Black, xSqFtColumn, yStartDetailRect, xSqFtColumn, yStartDetailRect + detailsRect.Height);
-            //gfx.DrawLine(XPens.Black, xUnitPriceColumn, yStartDetailRect, xUnitPriceColumn, yStartDetailRect + detailsRect.Height);
-            //gfx.DrawLine(XPens.Black, xTotalColumn, yStartDetailRect, xTotalColumn, yStartDetailRect + detailsRect.Height);
+            gfx.DrawLine(XPens.Black, xUnitPriceColumn, yStartDetailRect, xUnitPriceColumn, yStartDetailRect + detailsRect.Height);
+            gfx.DrawLine(XPens.Black, xTotalColumn, yStartDetailRect, xTotalColumn, yStartDetailRect + detailsRect.Height);
 
             XBrush brush = XBrushes.White;
             gfx.DrawString("Line No.", font, brush, new XRect(xStartDetailRect + 15, yStartDetailRect + 15, xLineColumn, heightHeaderRect), format);
@@ -579,8 +685,8 @@ namespace GlassProductManager
             gfx.DrawString("Description", font, brush, new XRect(xQuantityColumn + 65, yStartDetailRect + 15, xDescriptionColumn, heightHeaderRect), format);
             gfx.DrawString("Dimension (in)", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
             gfx.DrawString("Sq.Ft.", font, brush, new XRect(xDimensionColumn + 15, yStartDetailRect + 15, xSqFtColumn, heightHeaderRect), format);
-            //gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
-            //gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
+            gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
+            gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
 
             int yQuoteItemOffset = yStartDetailRect + 45;
             int yOffset = 20;
@@ -606,6 +712,8 @@ namespace GlassProductManager
 
                 gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
                 gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
+                gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
+                gfx.DrawString(double.Parse(selectedLineItem.Total).ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
 
                 yQuoteItemOffset += 50;
             }
@@ -613,28 +721,80 @@ namespace GlassProductManager
 
         private void PrintQuoteFooter(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 100;
-            int xIncrementalOffset = 160;
+            int xBaseOffset = 900;
+            int xIncrementalOffset = 1060;
             int yBaseOffset = 1150;
-            int yIncrement = 1170;
-            int yIncrementalOffset = 125;
-            int labelWidth = 750;
+            int yIncrementalOffset = 25;
+            int labelWidth = 100;
             int labelHeight = 100;
-
-            XRect headerRect = new XRect(xBaseOffset - 10, yBaseOffset - 10, 1000, 250);
-            XPen pen = new XPen(XColors.Black, 1);
-            gfx.DrawRectangle(pen, headerRect);
 
             XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
 
-            gfx.DrawString(lblAdditionalInstruction.Content.ToString(), boldFont, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+            // Print Quote Number
+            gfx.DrawString(lblSubTotalCaption.Content.ToString(), boldFont, XBrushes.Black,
+              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+              XStringFormat.TopLeft);
+
+            gfx.DrawString(lblSubTotal.Content.ToString(), font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
 
-            XTextFormatter tf = new XTextFormatter(gfx);
-            XRect rect = new XRect(xBaseOffset, yIncrement, labelWidth, labelHeight);
-            tf.DrawString(txtAdditionalInstruction.Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-          
+            // Print Quote Number
+            yBaseOffset += yIncrementalOffset;
+            string energy = cbDollar.IsChecked.Value ? "Energy Surcharge ($):" : "Energy Surcharge (%):";
+            gfx.DrawString(energy, boldFont, XBrushes.Black,
+              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+              XStringFormat.TopLeft);
+            gfx.DrawString(txtEnergySurcharge.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            // Print Quote Number
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblDiscount.Content.ToString(), boldFont, XBrushes.Black,
+              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+              XStringFormat.TopLeft);
+            gfx.DrawString(txtDiscount.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            // Print Quote Number
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblDelivery.Content.ToString(), boldFont, XBrushes.Black,
+              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+              XStringFormat.TopLeft);
+            gfx.DrawString(txtDelivery.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            // Print Quote Number
+            if (cbRush.IsChecked.Value)
+            {
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblRushOrder.Content.ToString(), boldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
+                gfx.DrawString(txtRushOrder.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+            }
+
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblTax.Content.ToString(), boldFont, XBrushes.Black,
+              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+              XStringFormat.TopLeft);
+            gfx.DrawString(txtTax.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblGrandTotalCaption.Content.ToString(), boldFont, XBrushes.Black,
+            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+            gfx.DrawString(lblGrandTotal.Content.ToString(), boldFont, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
         }
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
@@ -658,24 +818,33 @@ namespace GlassProductManager
                 Helper.ShowErrorMessageBox("Invalid Quote Number");
                 return;
             }
-            OpenSelectedWorksheet(quoteNumber);
+            OpenSelectedInvoice(quoteNumber);
+        }
+
+        private void btnOpenWorksheet_Click(object sender, RoutedEventArgs e)
+        {
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+            if (parent != null)
+            {
+                WorksheetContent wsContent = new WorksheetContent(true, txtQuoteNumber.Text);
+                parent.ucMainContent.ShowPage(wsContent);
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            DeleteWorksheet();
-          
+            DeleteSalesOrder();
         }
 
-        private void DeleteWorksheet()
+        private void DeleteSalesOrder()
         {
-            if (Helper.IsNonEmpty(txtQuoteNumber) && Helper.IsNonEmpty(txtWSNumber))
+            if (Helper.IsNonEmpty(txtQuoteNumber) && Helper.IsNonEmpty(txtInvoiceNumber))
             {
-                bool isWorksheetPresent = BusinessLogic.IsWorksheetPresent(txtQuoteNumber.Text);
-                if (isWorksheetPresent)
+                bool isSalesOrderPresent = BusinessLogic.IsSalesOrderPresent(txtQuoteNumber.Text);
+                if (isSalesOrderPresent)
                 {
-                    BusinessLogic.DeleteWorksheet(txtQuoteNumber.Text);
-                    Helper.ShowInformationMessageBox("Worksheet is delete successfully!");
+                    BusinessLogic.DeleteSalesOrder (txtQuoteNumber.Text);
+                    Helper.ShowInformationMessageBox("Sales Order is delete successfully!");
                 }
             }
             else
@@ -684,16 +853,14 @@ namespace GlassProductManager
             }
         }
 
-        private void btnSendToInvoice_Click(object sender, RoutedEventArgs e)
+        private void btnOpenMakePayment_Click(object sender, RoutedEventArgs e)
         {
-            BusinessLogic.GenerateInvoice(txtQuoteNumber.Text, DateTime.Now);
-            
             Dashboard parent = Window.GetWindow(this) as Dashboard;
             if (parent != null)
             {
                 DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnInvoice);
-                InvoiceContent invoice = new InvoiceContent(true, txtQuoteNumber.Text);
+                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnMakePayment);
+                MakeInvoicePayment invoice = new MakeInvoicePayment(true, txtQuoteNumber.Text);
                 parent.ucMainContent.ShowPage(invoice);
             }
         }

@@ -13,6 +13,10 @@ namespace GlassProductManager
         public string FullName { get; set; }
         public string Total { get; set; }
         public string CompletedDate { get; set; }
+        public string BalanceDue { get; set; }
+        public string PaymentMode { get; set; }
+        public string CustomerPO { get; set; }
+        public string InvoiceStatus { get; set; }
     }
 
 }

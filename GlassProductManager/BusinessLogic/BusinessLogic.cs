@@ -22,12 +22,12 @@ namespace GlassProductManager
                 if (result == null)
                     return false;
                 isValid = result.ToString() == "1";
-                
+
                 if (isValid)
                 {
                     result = SQLHelper.GetScalarValue(string.Format(SelectQueries.IS_ADMIN_QUERY, userName, password));
                     if (result == null)
-                        FirmSettings.IsAdmin=  false;
+                        FirmSettings.IsAdmin = false;
                     FirmSettings.IsAdmin = bool.Parse(result.ToString());
                     FirmSettings.UserName = userName;
                 }
@@ -561,7 +561,7 @@ namespace GlassProductManager
                     pTotal.ParameterName = "Total";
                     pTotal.Value = item.Total;
 
-                    SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteLineItem,pLineID, pQuoteNumber, pQuantity,pDescription,pDimension,pSqFt,pPricePerUnit,pTotal);
+                    SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteLineItem, pLineID, pQuoteNumber, pQuantity, pDescription, pDimension, pSqFt, pPricePerUnit, pTotal);
 
                 }
             }
@@ -676,14 +676,14 @@ namespace GlassProductManager
                 pQuoteNumber.Value = quoteNumber;
 
                 result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetQuoteDetails, pQuoteNumber);
-                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count==0)
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
                 {
                     return quoteDetails;
                 }
                 quoteDetails = new QuoteEntity();
                 quoteDetails.Header = new QuoteHeader();
                 quoteDetails.Header.CustomerPO = result.Tables[0].Rows[0][ColumnNames.CustomerPO].ToString();
-                quoteDetails.Header.IsShipToOtherAddress = bool.Parse( result.Tables[0].Rows[0][ColumnNames.ShipToOtherAddress].ToString());
+                quoteDetails.Header.IsShipToOtherAddress = bool.Parse(result.Tables[0].Rows[0][ColumnNames.ShipToOtherAddress].ToString());
                 quoteDetails.Header.LeadTimeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.LeadTimeID].ToString());
                 quoteDetails.Header.LeadTimeTypeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.LeadTimeTypeID].ToString());
                 quoteDetails.Header.QuoteCreatedOn = result.Tables[0].Rows[0][ColumnNames.CreatedOn].ToString();
@@ -696,8 +696,11 @@ namespace GlassProductManager
                 quoteDetails.Header.SalesOrderNumber = result.Tables[0].Rows[0][ColumnNames.SONumber].ToString();
                 quoteDetails.Header.SaleOrderConfirmedOn = result.Tables[0].Rows[0][ColumnNames.ConfirmedDate].ToString();
                 quoteDetails.Header.WorksheetNumber = result.Tables[0].Rows[0][ColumnNames.WSNumber].ToString();
+                quoteDetails.Header.InvoiceCompletedOn = result.Tables[0].Rows[0][ColumnNames.CompletedDate].ToString();
 
-                quoteDetails.Header.SoldTo= new CustomerDetails();
+                quoteDetails.Header.BalanceDue = double.Parse(double.Parse(result.Tables[0].Rows[0][ColumnNames.BalanceDue].ToString()).ToString("0.00"));
+
+                quoteDetails.Header.SoldTo = new CustomerDetails();
                 quoteDetails.Header.SoldTo.FirstName = result.Tables[0].Rows[0][ColumnNames.SoldTo_FirstName].ToString();
                 quoteDetails.Header.SoldTo.LastName = result.Tables[0].Rows[0][ColumnNames.SoldTo_LastName].ToString();
                 quoteDetails.Header.SoldTo.Address = result.Tables[0].Rows[0][ColumnNames.SoldTo_Address].ToString();
@@ -761,6 +764,38 @@ namespace GlassProductManager
             return quoteDetails;
         }
 
+        internal static ObservableCollection<InvoicePaymentEntity> GetInvoicePaymentDetails(string quoteNumber)
+        {
+            ObservableCollection<InvoicePaymentEntity> paymentDetails = new ObservableCollection<InvoicePaymentEntity>();
+            DataSet result = null;
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetInvoicePaymentDetails, pQuoteNumber);
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                    return paymentDetails;
+
+                InvoicePaymentEntity payment = null;
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    payment = new InvoicePaymentEntity();
+                    payment.ID = int.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.ID].ToString());
+                    payment.PaymentDate = result.Tables[0].Rows[rowIndex][ColumnNames.PaymentDate].ToString();
+                    payment.Amount = double.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.Amount].ToString()).ToString("0.00");
+                    payment.Description = result.Tables[0].Rows[rowIndex][ColumnNames.Description].ToString();
+
+                    paymentDetails.Add(payment);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return paymentDetails;
+        }
         internal static DataTable GetAllCustomerNames()
         {
             DataSet result = null;
@@ -820,7 +855,7 @@ namespace GlassProductManager
         {
             try
             {
-                 SqlParameter pQuoteNumber = new SqlParameter();
+                SqlParameter pQuoteNumber = new SqlParameter();
                 pQuoteNumber.ParameterName = "QuoteNumber";
                 pQuoteNumber.Value = quoteNumber;
 
@@ -839,7 +874,7 @@ namespace GlassProductManager
             try
             {
                 result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllCustomerDetails, null);
-                if(result == null || result.Tables == null || result.Tables.Count == 0)
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
                     return customerList;
 
                 CustomerSmartDataEntity newCustomer = null;
@@ -848,8 +883,8 @@ namespace GlassProductManager
                     newCustomer = new CustomerSmartDataEntity();
                     newCustomer.ID = result.Tables[0].Rows[rowIndex][ColumnNames.ID].ToString();
                     newCustomer.FirstName = result.Tables[0].Rows[rowIndex][ColumnNames.FirstName].ToString();
-                    newCustomer.LastName=  result.Tables[0].Rows[rowIndex][ColumnNames.LastName].ToString();
-                    newCustomer.Address=  result.Tables[0].Rows[rowIndex][ColumnNames.Address].ToString();
+                    newCustomer.LastName = result.Tables[0].Rows[rowIndex][ColumnNames.LastName].ToString();
+                    newCustomer.Address = result.Tables[0].Rows[rowIndex][ColumnNames.Address].ToString();
                     newCustomer.Phone = result.Tables[0].Rows[rowIndex][ColumnNames.Phone].ToString();
                     newCustomer.Fax = result.Tables[0].Rows[rowIndex][ColumnNames.Fax].ToString();
                     newCustomer.Email = result.Tables[0].Rows[rowIndex][ColumnNames.Email].ToString();
@@ -920,7 +955,7 @@ namespace GlassProductManager
                 pMiterRate.ParameterName = "miterRate";
                 pMiterRate.Value = updatedRate.MiterRate;
 
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateGlassRates, pGlassID,pThicknessID,pCutoutSqFtRate,pTemperedRate,pPolishShapeRate,pPolishStraightRate,pMiterRate);
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateGlassRates, pGlassID, pThicknessID, pCutoutSqFtRate, pTemperedRate, pPolishShapeRate, pPolishStraightRate, pMiterRate);
             }
             catch (Exception ex)
             {
@@ -1099,7 +1134,7 @@ namespace GlassProductManager
             return result;
         }
 
-        internal static  MiscRateEntity GetMiscRates()
+        internal static MiscRateEntity GetMiscRates()
         {
             MiscRateEntity rates = null;
             DataSet result = null;
@@ -1141,7 +1176,7 @@ namespace GlassProductManager
                 pPatchRate.ParameterName = "PatchRate";
                 pPatchRate.Value = miscRate.PatchRate;
 
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateMiscRate, pNotchRate,pHingeRate,pPatchRate);
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateMiscRate, pNotchRate, pHingeRate, pPatchRate);
             }
             catch (Exception ex)
             {
@@ -1180,7 +1215,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            return result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count== 0 ? string.Empty : result.Tables[0].Rows[0][0].ToString();
+            return result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0 ? string.Empty : result.Tables[0].Rows[0][0].ToString();
         }
 
         internal static bool UpdateHoleRate(int thicknessID, double holeRate)
@@ -1253,7 +1288,7 @@ namespace GlassProductManager
                     temp.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber].ToString();
                     temp.FullName = result.Tables[0].Rows[rowIndex][ColumnNames.FullName] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.FullName].ToString();
                     temp.CreatedOn = result.Tables[0].Rows[rowIndex][ColumnNames.CreatedOn] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.CreatedOn].ToString();
-                    temp.Total = result.Tables[0].Rows[rowIndex][ColumnNames.Total] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Total].ToString();
+                    temp.Total = result.Tables[0].Rows[rowIndex][ColumnNames.Total] == DBNull.Value ? string.Empty : double.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.Total].ToString()).ToString("0.00");
                     temp.EstimatedShipDate = result.Tables[0].Rows[rowIndex][ColumnNames.EstimatedShipDate] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.EstimatedShipDate].ToString();
                     temp.PaymentType = result.Tables[0].Rows[rowIndex][ColumnNames.PaymentType] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.PaymentType].ToString();
                     temp.CustomerPONumber = result.Tables[0].Rows[rowIndex][ColumnNames.CustomerPONumber] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.CustomerPONumber].ToString();
@@ -1265,7 +1300,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            return  quoteMasterData;
+            return quoteMasterData;
         }
 
         internal static ObservableCollection<SaleOrderEntity> GetSaleOrderMasterData()
@@ -1297,7 +1332,7 @@ namespace GlassProductManager
                     temp.RecordedDate = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
 
                     dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.GrandTotal];
-                    temp.Total = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+                    temp.Total = dbValue == DBNull.Value ? string.Empty : double.Parse(dbValue.ToString()).ToString("0.00");
 
                     dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.PaymentType];
                     temp.PaymentType = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
@@ -1334,7 +1369,7 @@ namespace GlassProductManager
                 for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
                 {
                     temp = new WorksheetEntity();
-                   
+
                     dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.WSNumber];
                     temp.WorksheetNumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
 
@@ -1368,29 +1403,57 @@ namespace GlassProductManager
 
         internal static ObservableCollection<InvoiceEntity> GetInvoiceMasterData()
         {
-            ObservableCollection<InvoiceEntity> quoteMasterData = null;
+            ObservableCollection<InvoiceEntity> invoiceMasterData = null;
             try
             {
-                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetWorksheetMasterData, null);
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetInvoiceMasterData, null);
 
                 if (result == null || result.Tables == null || result.Tables.Count == 0)
-                { return quoteMasterData; }
+                { return invoiceMasterData; }
 
-                quoteMasterData = new ObservableCollection<InvoiceEntity>();
-                InvoiceEntity temp = null;
+                invoiceMasterData = new ObservableCollection<InvoiceEntity>();
+                InvoiceEntity invoice = null;
+                object dbValue = null;
+
                 for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
                 {
-                    temp = new InvoiceEntity();
-                    //temp.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.Status] == DBNull.Value ? string.Empty : result.Tables[0].Rows[rowIndex][ColumnNames.Status].ToString();
+                    invoice = new InvoiceEntity();
 
-                    quoteMasterData.Add(temp);
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.InvoiceNumber];
+                    invoice.InvoiceNumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber];
+                    invoice.QuoteNumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.FullName];
+                    invoice.FullName = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.Total];
+                    invoice.Total = dbValue == DBNull.Value ? string.Empty : double.Parse(dbValue.ToString()).ToString("0.00");
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.CompletedDate];
+                    invoice.CompletedDate = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.BalanceDue];
+                    invoice.BalanceDue = dbValue == DBNull.Value ? string.Empty : double.Parse(dbValue.ToString()).ToString("0.00");
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.PaymentType];
+                    invoice.PaymentMode = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.CustomerPO];
+                    invoice.CustomerPO = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.InvoiceStatus];
+                    invoice.InvoiceStatus = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    invoiceMasterData.Add(invoice);
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
             }
-            return quoteMasterData;
+            return invoiceMasterData;
         }
 
         internal static void UpdateQuoteHeader(QuoteHeader header)
@@ -1462,6 +1525,27 @@ namespace GlassProductManager
             }
         }
 
+        internal static void GenerateInvoice(string quoteNumber, DateTime completedDate)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pCompletedDate = new SqlParameter();
+                pCompletedDate.ParameterName = "CompletedDate";
+                pCompletedDate.Value = completedDate;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.GenerateInvoice, pQuoteNumber, pCompletedDate);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
         internal static string GetSaleOrderNumber(string quoteNumber)
         {
             string saleOrderNumber = string.Empty;
@@ -1505,6 +1589,121 @@ namespace GlassProductManager
                 pQuoteNumber.Value = quoteNumber;
 
                 SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteWorksheet, pQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void MakeNewPayment(InvoicePaymentEntity payment, string quoteNumber)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pPaymentDate = new SqlParameter();
+                pPaymentDate.ParameterName = "PaymentDate";
+                pPaymentDate.Value = payment.PaymentDate;
+
+                SqlParameter pAmount = new SqlParameter();
+                pAmount.ParameterName = "Amount";
+                pAmount.Value = payment.Amount;
+
+                SqlParameter pDescription = new SqlParameter();
+                pDescription.ParameterName = "Description";
+                pDescription.Value = payment.Description;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.MakePayment, pQuoteNumber, pPaymentDate, pAmount, pDescription);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void UpdateInvoicePayment(InvoicePaymentEntity payment, string quoteNumber)
+        {
+            try
+            {
+                SqlParameter pID = new SqlParameter();
+                pID.ParameterName = "ID";
+                pID.Value = payment.ID;
+
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pPaymentDate = new SqlParameter();
+                pPaymentDate.ParameterName = "PaymentDate";
+                pPaymentDate.Value = payment.PaymentDate;
+
+                SqlParameter pAmount = new SqlParameter();
+                pAmount.ParameterName = "Amount";
+                pAmount.Value = payment.Amount;
+
+                SqlParameter pDescription = new SqlParameter();
+                pDescription.ParameterName = "Description";
+                pDescription.Value = payment.Description;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateInvoicePayment, pID, pQuoteNumber, pPaymentDate, pAmount, pDescription);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        internal static void DeleteInvoicePayment(int paymentID, string quoteNumber)
+        {
+            try
+            {
+                SqlParameter pID = new SqlParameter();
+                pID.ParameterName = "ID";
+                pID.Value = paymentID;
+
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteInvoicePayment, pID, pQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+
+        internal static DataTable GetAllInvoiceTypes()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllInvoiceTypes, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static void UpdateInvoiceStatusID(string quoteNumber, int invoiceStatusID)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SqlParameter pInvoiceStatusID = new SqlParameter();
+                pInvoiceStatusID.ParameterName = "InvoiceStatusID";
+                pInvoiceStatusID.Value = invoiceStatusID;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateInvoiceStatusID, pInvoiceStatusID, pQuoteNumber);
             }
             catch (Exception ex)
             {

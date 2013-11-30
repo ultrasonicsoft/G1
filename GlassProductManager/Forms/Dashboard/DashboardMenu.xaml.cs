@@ -26,14 +26,14 @@ namespace GlassProductManager
         CustomerSettings,
         CommanderSection,
         SaleOrder,
-        Worksheet
+        Worksheet,
+        Invoice,
+        MakePayment
     }
 
     public partial class DashboardMenu : UserControl
     {
-        private bool _isIndirectCall = false;
         public bool IsIndirectCall { get; set; }
-
 
         Dictionary<System.Windows.Controls.Primitives.ToggleButton, UserControl> availableOptions = null;
         HomeContent home;
@@ -43,6 +43,8 @@ namespace GlassProductManager
         SalesOrderContent soSection;
         WorksheetContent worksheetSection;
         CommanderSectionContent commanderSection;
+        InvoiceContent invoice;
+        MakeInvoicePayment makePayment;
 
         public DashboardMenu()
         {
@@ -56,6 +58,8 @@ namespace GlassProductManager
             priceSettings = new PriceSettingsContent();
             soSection = new SalesOrderContent();
             worksheetSection = new WorksheetContent();
+            invoice = new InvoiceContent();
+            makePayment = new MakeInvoicePayment();
             commanderSection = new CommanderSectionContent();
 
             availableOptions.Add(btnHome, home);
@@ -64,12 +68,14 @@ namespace GlassProductManager
             availableOptions.Add(btnCustomerSettings, customer);
             availableOptions.Add(btnSaleOrder, soSection);
             availableOptions.Add(btnWorksheet, worksheetSection);
+            availableOptions.Add(btnInvoice, invoice);
+            availableOptions.Add(btnMakePayment, makePayment);
             availableOptions.Add(btnCommanderSection, commanderSection);
 
             btnHome.IsChecked = true;
         }
 
-        private void ShowCurrentPage(System.Windows.Controls.Primitives.ToggleButton selectedOption)
+        internal void ShowCurrentPage(System.Windows.Controls.Primitives.ToggleButton selectedOption)
         {
             foreach (KeyValuePair<System.Windows.Controls.Primitives.ToggleButton, UserControl> item in availableOptions)
             {
@@ -121,6 +127,17 @@ namespace GlassProductManager
         {
             ShowCurrentPage(btnWorksheet);
         }
+
+        private void btnInvoice_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowCurrentPage(btnInvoice);
+        }
+
+        private void btnMakePayment_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowCurrentPage(btnMakePayment);
+        }
+        
         private void btnCommanderSection_Checked(object sender, RoutedEventArgs e)
         {
             ShowCurrentPage(btnCommanderSection);

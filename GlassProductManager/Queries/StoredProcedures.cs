@@ -63,5 +63,13 @@ namespace GlassProductManager
         internal const string IsWorksheetPresent = "[IsWorksheetPresent]";
         internal const string DeleteSalesOrder = "[DeleteSalesOrder]";
         internal const string DeleteWorksheet = "[DeleteWorksheet]";
+        internal const string GenerateInvoice = "[GenerateInvoice]";
+        internal const string GetInvoicePaymentDetails = "[GetInvoicePaymentDetails]";
+        internal const string GetInvoiceMasterData = "[GetInvoiceMasterData]";
+        internal const string MakePayment = "[MakePayment]";
+        internal const string UpdateInvoicePayment = "[UpdateInvoicePayment]";
+        internal const string DeleteInvoicePayment = "[DeleteInvoicePayment]";
+        internal const string GetAllInvoiceTypes = "[GetAllInvoiceTypes]";
+        internal const string UpdateInvoiceStatusID = "[UpdateInvoiceStatusID]";
     }
 }

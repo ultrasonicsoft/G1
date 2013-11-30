@@ -81,7 +81,7 @@ namespace GlassProductManager
         {
             try
             {
-                QuoteMasterEntity currentRow = value as QuoteMasterEntity;
+                InvoiceEntity currentRow = value as InvoiceEntity;
 
                 if (dgInvoiceDetails.Columns.Count > 1)
                 {
@@ -102,9 +102,9 @@ namespace GlassProductManager
             return false;
         }
 
-        private bool IsSearchCriteriaMatched(QuoteMasterEntity currentRow)
+        private bool IsSearchCriteriaMatched(InvoiceEntity currentRow)
         {
-            return currentRow.QuoteStatus.ToString()
+            return currentRow.InvoiceNumber.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
@@ -117,23 +117,19 @@ namespace GlassProductManager
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
 
-                                    currentRow.CreatedOn.ToString()
-                                              .ToLower()
-                                              .Contains(txtSearch.Text
-                                                                .ToLower()) ||
                                     currentRow.Total.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                    currentRow.EstimatedShipDate.ToString()
+                                    currentRow.CompletedDate.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                    currentRow.PaymentType.ToString()
+                                    currentRow.BalanceDue.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
-                                    currentRow.CustomerPONumber.ToString()
+                                    currentRow.PaymentMode.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower());
@@ -144,9 +140,9 @@ namespace GlassProductManager
             try
             {
                 dgInvoiceDetails.ItemsSource = null;
-                ObservableCollection<QuoteMasterEntity> fileList = new ObservableCollection<QuoteMasterEntity>();
+                ObservableCollection<InvoiceEntity> fileList = new ObservableCollection<InvoiceEntity>();
 
-                foreach (QuoteMasterEntity row in m_InvoiceListForSearch)
+                foreach (InvoiceEntity row in m_InvoiceListForSearch)
                 {
                     fileList.Add(row);
                 }
@@ -162,7 +158,7 @@ namespace GlassProductManager
         {
             try
             {
-                FillWorksheetDetails();
+                FillInvoiceDetails();
             }
             catch (Exception ex)
             {
@@ -170,12 +166,43 @@ namespace GlassProductManager
             }
         }
 
-        private void FillWorksheetDetails()
+        private void FillInvoiceDetails()
         {
             var result = BusinessLogic.GetInvoiceMasterData();
             dgInvoiceDetails.ItemsSource = result;
             m_InvoiceListForSearch = new ListCollectionView(result);
         }
+
+        private void btnOpenInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            OpenInvoice();
+        }
+
+        private void dgInvoiceDetails_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            OpenInvoice();
+        }
+
+        private void OpenInvoice()
+        {
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+
+            InvoiceEntity entity = dgInvoiceDetails.SelectedItem as InvoiceEntity;
+
+            if (entity == null)
+            {
+                return;
+            }
+            if (parent != null)
+            {
+                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnInvoice);
+                InvoiceContent invoice = new InvoiceContent(true, entity.QuoteNumber);
+                parent.ucMainContent.ShowPage(invoice);
+            }
+        }
+
+      
 
     }
 }

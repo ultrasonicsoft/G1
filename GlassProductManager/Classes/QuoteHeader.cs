@@ -26,6 +26,10 @@ namespace GlassProductManager
         public string SalesOrderNumber { get; set; }
         public string SaleOrderConfirmedOn { get; set; }
         public string WorksheetNumber { get; set; }
+        public string InvoiceNumber { get; set; }
+        public double BalanceDue { get; set; }
+        public string InvoiceCompletedOn { get; set; }
+
     }
 
     public class CustomerDetails
