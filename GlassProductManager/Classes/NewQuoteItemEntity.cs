@@ -40,6 +40,7 @@ namespace GlassProductManager
         private double _insulateTotalCost;
         private double _cutoutTotal;
         private double _pricePerUnit;
+        private string _shape;
 
         //Rates
         private double _cutsqftRate = 0;
@@ -105,7 +106,11 @@ namespace GlassProductManager
         internal int GlassWidth { get; set; }
         internal string GlassWidthFraction { get; set; }
 
-        internal GlassShape Shape { get; set; }
+        internal string Shape
+        {
+            get { return _shape; }
+            set { _shape = value; }
+        }
 
         internal bool IsTempered
         {
@@ -416,6 +421,11 @@ namespace GlassProductManager
 
             description.Append(GlassType);
 
+            if (false == string.IsNullOrEmpty(_shape))
+            {
+                description.AppendFormat(" [{0}]", _shape);
+            }
+
             if (_isTempered)
             {
                 description.Append(" [Temp]");
@@ -477,8 +487,8 @@ namespace GlassProductManager
             }
             if (_isInsulation)
             {
-                string isTemp1 = GlassType1.IsTempered? "Temp" : "Not Temp";
-                string isTemp2 = GlassType2.IsTempered? "Temp" : "Not Temp";
+                string isTemp1 = GlassType1.IsTempered ? "Temp" : "Not Temp";
+                string isTemp2 = GlassType2.IsTempered ? "Temp" : "Not Temp";
                 description.AppendFormat(" [Insulation: ({0}-{1}-{2}) ({3}-{4}-{5}) {6} SqFt]", GlassType1.GlassType, GlassType1.Thickness, isTemp1, GlassType2.GlassType, GlassType2.Thickness, isTemp2, GlassType1.SqFt);
             }
             return description.ToString();

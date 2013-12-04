@@ -34,10 +34,12 @@ namespace GlassProductManager
             set { currentItem._allCutoutData = value; }
         }
 
+        private bool isInitialized = false;
+
         public NewQuoteItemsContent()
         {
             InitializeComponent();
-
+            isInitialized = true;
             currentItem = new NewQuoteItemEntity();
 
             FillGlassTypes();
@@ -48,7 +50,7 @@ namespace GlassProductManager
             currentItem.GlassType1 = new InsulationDetails();
             currentItem.GlassType2 = new InsulationDetails();
 
-           
+
         }
 
         private void FillCutoutData()
@@ -154,81 +156,49 @@ namespace GlassProductManager
 
         private void txtTotalSqFt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtTotalSqFt))
+            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT");
+        }
+
+        private void SetQuoteValidationError(TextBox input, string propertyName)
+        {
+            if (isInitialized == false)
+                return;
+
+            if (Helper.IsNumberOnly(input))
             {
-                NewItemsChanged(txtTotalSqFt.Text, "TotalSqFT");
+                NewItemsChanged(input.Text, propertyName);
             }
         }
 
         private void txtQuantity_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtQuantity))
-            {
-                NewItemsChanged(txtQuantity.Text, "Quantity");
-            }
+            SetQuoteValidationError(txtQuantity, "Quantity");
         }
 
-        private void txtQuantity_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtQuantity.Text = string.IsNullOrEmpty(txtQuantity.Text) ? "0" : txtQuantity.Text;
-
-        }
         private void cbIsStraightPolish_Checked(object sender, RoutedEventArgs e)
         {
             currentItem.IsStraightPolish = true;
             UpdateCurrentTotal();
         }
 
-        private void txtStraightPolishLongSide_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtStraightPolishLongSide.Text = string.IsNullOrEmpty(txtStraightPolishLongSide.Text) ? "0" : txtStraightPolishLongSide.Text;
-        }
-
         private void txtStraightPolishLongSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtStraightPolishLongSide))
-            {
-                NewItemsChanged(txtStraightPolishLongSide.Text, "StraightPolishLongSide");
-            }
+            SetQuoteValidationError(txtStraightPolishLongSide, "StraightPolishLongSide");
         }
 
         private void txtStraightPolishShortSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtStraightPolishShortSide))
-            {
-                NewItemsChanged(txtStraightPolishShortSide.Text, "StraightPolishShortSide");
-            }
-        }
-
-        private void txtStraightPolishShortSide_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtStraightPolishShortSide.Text = string.IsNullOrEmpty(txtStraightPolishShortSide.Text) ? "0" : txtStraightPolishShortSide.Text;
+            SetQuoteValidationError(txtStraightPolishShortSide, "StraightPolishShortSide");
         }
 
         private void txtStraightPolishTotalInches_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtStraightPolishTotalInches))
-            {
-                NewItemsChanged(txtStraightPolishTotalInches.Text, "StraightPolishTotalInches");
-            }
-        }
-
-        private void txtStraightPolishTotalInches_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtStraightPolishTotalInches.Text = string.IsNullOrEmpty(txtStraightPolishTotalInches.Text) ? "0" : txtStraightPolishTotalInches.Text;
-        }
-
-        private void txtCustomShapePolishSize_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtCustomShapePolishSize.Text = string.IsNullOrEmpty(txtCustomShapePolishSize.Text) ? "0" : txtCustomShapePolishSize.Text;
+            SetQuoteValidationError(txtStraightPolishTotalInches, "StraightPolishTotalInches");
         }
 
         private void txtCustomShapePolishSize_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtCustomShapePolishSize))
-            {
-                NewItemsChanged(txtCustomShapePolishSize.Text, "CustomPolishTotalInches");
-            }
+            SetQuoteValidationError(txtCustomShapePolishSize, "CustomPolishTotalInches");
         }
 
         private void cbIsStraightPolish_Unchecked(object sender, RoutedEventArgs e)
@@ -268,15 +238,7 @@ namespace GlassProductManager
 
         private void txtMiterTotalInches_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtMiterTotalInches))
-            {
-                NewItemsChanged(txtMiterTotalInches.Text, "MiterTotalInches");
-            }
-        }
-
-        private void txtMiterTotalInches_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtMiterTotalInches.Text = string.IsNullOrEmpty(txtMiterTotalInches.Text) ? "0" : txtMiterTotalInches.Text;
+            SetQuoteValidationError(txtMiterTotalInches, "MiterTotalInches");
         }
 
         private void cbNotches_Unchecked(object sender, RoutedEventArgs e)
@@ -294,15 +256,7 @@ namespace GlassProductManager
 
         private void txtNotchesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtNotchesNumber))
-            {
-                NewItemsChanged(txtNotchesNumber.Text, "Notches");
-            }
-        }
-
-        private void txtNotchesNumber_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtNotchesNumber.Text = string.IsNullOrEmpty(txtNotchesNumber.Text) ? "0" : txtNotchesNumber.Text;
+            SetQuoteValidationError(txtNotchesNumber, "Notches");
         }
 
         private void cbHinges_Unchecked(object sender, RoutedEventArgs e)
@@ -318,17 +272,9 @@ namespace GlassProductManager
             UpdateCurrentTotal();
         }
 
-        private void txtHingesNumber_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtHingesNumber.Text = string.IsNullOrEmpty(txtHingesNumber.Text) ? "0" : txtHingesNumber.Text;
-        }
-
         private void txtHingesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtHingesNumber))
-            {
-                NewItemsChanged(txtHingesNumber.Text, "Hinges");
-            }
+            SetQuoteValidationError(txtHingesNumber, "Hinges");
         }
 
         private void cbPatches_Unchecked(object sender, RoutedEventArgs e)
@@ -346,15 +292,7 @@ namespace GlassProductManager
 
         private void txtPatchesNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtPatchesNumber))
-            {
-                NewItemsChanged(txtPatchesNumber.Text, "Patches");
-            }
-        }
-
-        private void txtPatchesNumber_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtPatchesNumber.Text = string.IsNullOrEmpty(txtPatchesNumber.Text) ? "0" : txtPatchesNumber.Text;
+            SetQuoteValidationError(txtPatchesNumber, "Patches");
         }
 
         private void NewItemsChanged(string newValue, string propertyChanged)
@@ -420,8 +358,6 @@ namespace GlassProductManager
             }
         }
         #endregion
-
-
 
         void dgCutout_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -583,14 +519,6 @@ namespace GlassProductManager
             UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, currentItem.GlassType2, txtSqFt2, txtGlassType2Total);
         }
 
-        private void txtSqFt1_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtSqFt1.Text))
-            {
-                txtSqFt1.Text = "0";
-            }
-        }
-
         private void cbHoles_Checked(object sender, RoutedEventArgs e)
         {
             currentItem.IsHoles = true;
@@ -606,15 +534,7 @@ namespace GlassProductManager
 
         private void txtHoleNumbers_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtHoleNumbers))
-            {
-                NewItemsChanged(txtHoleNumbers.Text, "Holes");
-            }
-        }
-
-        private void txtHoleNumbers_LostFocus(object sender, RoutedEventArgs e)
-        {
-            txtHoleNumbers.Text = string.IsNullOrEmpty(txtHoleNumbers.Text) ? "0" : txtHoleNumbers.Text;
+            SetQuoteValidationError(txtHoleNumbers, "Holes");
         }
 
         private void cbLogo_Unchecked(object sender, RoutedEventArgs e)
@@ -627,15 +547,17 @@ namespace GlassProductManager
             currentItem.IsLogoRequired = true;
         }
 
-        private void txtMiterLongSide_LostFocus(object sender, RoutedEventArgs e)
+        private void txtMiterLongSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            txtMiterLongSide.Text = string.IsNullOrEmpty(txtMiterLongSide.Text) ? "0" : txtMiterLongSide.Text;
+            if (currentItem == null)
+                return;
+
             if (Helper.IsNumberOnly(txtMiterLongSide))
             {
+                txtMiterLongSide.Text = string.IsNullOrEmpty(txtMiterLongSide.Text) ? "0" : txtMiterLongSide.Text;
                 currentItem.MiterLongSide = int.Parse(txtMiterLongSide.Text);
             }
         }
-
         private void txtMiterShortSide_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (currentItem == null)
@@ -961,6 +883,33 @@ namespace GlassProductManager
             Process.Start(filename);
         }
 
-        
+        private void cmbShape_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            currentItem.Shape = (cmbShape.SelectedItem as System.Data.DataRowView)[1].ToString();
+        }
+
+        internal void ClearTextBox(object sender, RoutedEventArgs e)
+        {
+            TextBox input = sender as TextBox;
+            if (input.Text.Trim() == "0" || input.Text.Trim() == "x/y")
+            {
+                input.Text = string.Empty;
+            }
+
+        }
+        internal void ResetTextBox(object sender, RoutedEventArgs e)
+        {
+            TextBox input = sender as TextBox;
+            if (false == Helper.IsNumberOnly(input))
+            {
+                input.Text = "0";
+            }
+            else
+            {
+                input.Text = string.IsNullOrEmpty(input.Text) ? "0" : input.Text;
+            }
+        }
+
+
     }
 }
