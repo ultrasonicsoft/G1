@@ -470,6 +470,10 @@ namespace GlassProductManager
                     txtEnergySurcharge.Text = string.IsNullOrEmpty(txtEnergySurcharge.Text) ? "0.00" : txtEnergySurcharge.Text;
                 }
             }
+            else
+            {
+                txtEnergySurcharge.Text = "0.00";
+            }
         }
 
         private void cbDollar_Checked(object sender, RoutedEventArgs e)
@@ -508,6 +512,10 @@ namespace GlassProductManager
                     txtDiscount.Text = string.IsNullOrEmpty(txtDiscount.Text) ? "0.00" : txtDiscount.Text;
                 }
             }
+            else
+            {
+                txtDiscount.Text = "0.00";
+            }
         }
 
         private void txtDelivery_LostFocus(object sender, RoutedEventArgs e)
@@ -518,6 +526,10 @@ namespace GlassProductManager
                 {
                     txtDelivery.Text = string.IsNullOrEmpty(txtDelivery.Text) ? "0.00" : txtDelivery.Text;
                 }
+            }
+            else
+            {
+                txtDelivery.Text = "0.00";
             }
         }
 
@@ -530,6 +542,7 @@ namespace GlassProductManager
                     UpdateQuoteTotal();
                 }
             }
+
         }
 
         private void txtRushOrder_TextChanged(object sender, TextChangedEventArgs e)
@@ -552,6 +565,10 @@ namespace GlassProductManager
                     txtRushOrder.Text = string.IsNullOrEmpty(txtRushOrder.Text) ? "0.00" : txtRushOrder.Text;
                 }
             }
+            else
+            {
+                txtRushOrder.Text = "0.00";
+            }
         }
 
         private void txtTax_LostFocus(object sender, RoutedEventArgs e)
@@ -562,6 +579,10 @@ namespace GlassProductManager
                 {
                     txtTax.Text = string.IsNullOrEmpty(txtTax.Text) ? "0.00" : txtTax.Text;
                 }
+            }
+            else
+            {
+                txtTax.Text = "0.00";
             }
         }
 
@@ -898,23 +919,34 @@ namespace GlassProductManager
 
         private void txtSoldToPhone_LostFocus(object sender, RoutedEventArgs e)
         {
-            Helper.IsValidPhone(txtSoldToPhone);
+            if (false == Helper.IsValidPhone(txtSoldToPhone))
+            {
+                txtSoldToPhone.Text = string.Empty;
+            }
         }
 
         private void txtSoldToEmail_LostFocus(object sender, RoutedEventArgs e)
         {
-            Helper.IsValidEmail(txtSoldToEmail);
-
+            if (false == Helper.IsValidEmail(txtSoldToEmail))
+            {
+                txtSoldToEmail.Text = string.Empty;
+            }
         }
 
         private void txtShipToEmail_LostFocus(object sender, RoutedEventArgs e)
         {
-            Helper.IsValidEmail(txtShipToEmail);
+            if (false == Helper.IsValidEmail(txtShipToEmail))
+            {
+                txtShipToEmail.Text = string.Empty;
+            }
         }
 
         private void txtAdditionalCostForItem_LostFocus(object sender, RoutedEventArgs e)
         {
-            Helper.IsValidCurrency(txtAdditionalCostForItem);
+            if (false == Helper.IsValidCurrency(txtAdditionalCostForItem))
+            {
+                txtAdditionalCostForItem.Text = "0.00";
+            }
         }
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
@@ -1426,7 +1458,10 @@ namespace GlassProductManager
 
         private void txtShipToPhone_LostFocus(object sender, RoutedEventArgs e)
         {
-            Helper.IsValidPhone(txtShipToPhone);
+            if (false == Helper.IsValidPhone(txtShipToPhone))
+            {
+                txtShipToPhone.Text = string.Empty;
+            } 
         }
 
         private void btnClone_Click(object sender, RoutedEventArgs e)
@@ -1498,6 +1533,41 @@ namespace GlassProductManager
             {
                 btnSendToSO.IsEnabled = (cmbQuoteStatus.SelectedItem as System.Data.DataRowView)[1].Equals(ColumnNames.Confirmed);
             }
+        }
+
+        private void txtSoldToPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Helper.IsValidPhone(txtSoldToPhone);
+        }
+
+        private void txtShipToPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Helper.IsValidPhone(txtShipToPhone);
+        }
+
+        private void txtSoldToEmail_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Helper.IsValidEmail(txtSoldToEmail);
+        }
+
+        private void txtShipToEmail_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Helper.IsValidEmail(txtShipToEmail);
+        }
+
+        internal void ClearTextBox(object sender, RoutedEventArgs e)
+        {
+            TextBox input = sender as TextBox;
+            if (input.Text.Trim() == "0.00" || input.Text.Trim() == "0")
+            {
+                input.Text = string.Empty;
+            }
+
+        }
+
+        private void txtAdditionalCostForItem_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Helper.IsValidCurrency(txtAdditionalCostForItem);
         }
     }
 }

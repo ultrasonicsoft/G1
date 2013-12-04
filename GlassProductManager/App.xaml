@@ -210,7 +210,7 @@
             <Setter Property="MinWidth"
             Value="10" />
             <Setter Property="MaxWidth"
-            Value="120" />
+            Value="230" />
             <Setter Property="Height"
             Value="22" />
             <Setter Property="HorizontalAlignment" Value="Stretch"/>

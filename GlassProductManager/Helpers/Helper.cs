@@ -72,6 +72,12 @@ namespace GlassProductManager
         internal static bool IsValidPhone(TextBox input)
         {
             bool result = false;
+
+            if (input.Text == string.Empty)
+            {
+                input.Style = null;
+                return true;
+            }
             if (Regex.IsMatch(input.Text, @"^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$"))
                 //if (Regex.IsMatch(input.Text, @"/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/"))
             {
@@ -92,6 +98,12 @@ namespace GlassProductManager
         internal static bool IsValidEmail(TextBox input)
         {
             bool result = false;
+            if (input.Text == string.Empty)
+            {
+                input.Style = null;
+                return true;
+            }
+
             if (Regex.IsMatch(input.Text, @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))
             {
                 input.Style = null;
@@ -111,7 +123,14 @@ namespace GlassProductManager
         internal static bool IsValidCurrency(TextBox input)
         {
             bool result = false;
-            if (Regex.IsMatch(input.Text, @"^[0-9]*(?:\.[0-9]*)?$"))
+
+            if (input.Text == "0.00")
+            {
+                input.Style = null;
+                return true;
+            }
+
+            if (false == string.IsNullOrEmpty(input.Text) && Regex.IsMatch(input.Text, @"^[0-9]*(?:\.[0-9]*)?$"))
             {
                 input.Style = null;
                 result = true;

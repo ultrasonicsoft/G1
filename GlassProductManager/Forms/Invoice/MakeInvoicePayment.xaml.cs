@@ -818,5 +818,27 @@ namespace GlassProductManager
 
             ClearPaymentControls();
         }
+
+        private void txtAmount_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Helper.IsValidCurrency(txtAmount))
+            {
+                txtAmount.Text = string.IsNullOrEmpty(txtAmount.Text) ? "0.00" : txtAmount.Text;
+            }
+            else
+            {
+                txtAmount.Text = "0.00";
+            }
+        }
+
+        private void txtAmount_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtAmount.Text = string.Empty;
+        }
+
+        private void txtAmount_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Helper.IsValidCurrency(txtAmount);
+        }
     }
 }
