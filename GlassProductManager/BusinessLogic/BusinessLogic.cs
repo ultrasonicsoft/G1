@@ -424,7 +424,7 @@ namespace GlassProductManager
             {
                 SqlParameter pAddress = new SqlParameter();
                 pAddress.ParameterName = "Address";
-                pAddress.Value = soldTo.Address;
+                pAddress.Value = soldTo.Address??string.Empty;
 
                 SqlParameter pFirstName = new SqlParameter();
                 pFirstName.ParameterName = "FirstName";
@@ -436,19 +436,19 @@ namespace GlassProductManager
 
                 SqlParameter pPhone = new SqlParameter();
                 pPhone.ParameterName = "Phone";
-                pPhone.Value = soldTo.Phone;
+                pPhone.Value = soldTo.Phone ?? string.Empty;
 
                 SqlParameter pFax = new SqlParameter();
                 pFax.ParameterName = "Fax";
-                pFax.Value = soldTo.Fax;
+                pFax.Value = soldTo.Fax ?? string.Empty;
 
                 SqlParameter pEmail = new SqlParameter();
                 pEmail.ParameterName = "Email";
-                pEmail.Value = soldTo.Email;
+                pEmail.Value = soldTo.Email ?? string.Empty;
 
                 SqlParameter pMisc = new SqlParameter();
                 pMisc.ParameterName = "Misc";
-                pMisc.Value = soldTo.Misc;
+                pMisc.Value = soldTo.Misc ?? string.Empty;
 
                 var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.CreateNewCustomer, pAddress, pFirstName, pLastName, pPhone, pFax, pEmail, pMisc);
                 if (result == null || result.Tables == null || result.Tables.Count == 0)

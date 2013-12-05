@@ -75,7 +75,7 @@ namespace GlassProductManager
             btnHome.IsChecked = true;
         }
 
-        internal void ShowCurrentPage(System.Windows.Controls.Primitives.ToggleButton selectedOption)
+        internal void ShowCurrentPage(System.Windows.Controls.Primitives.ToggleButton selectedOption, UserControl currentPage = null)
         {
             foreach (KeyValuePair<System.Windows.Controls.Primitives.ToggleButton, UserControl> item in availableOptions)
             {
@@ -87,7 +87,8 @@ namespace GlassProductManager
                         Dashboard parent = Window.GetWindow(this) as Dashboard;
                         if (parent != null)
                         {
-                            parent.ucMainContent.ShowPage(item.Value);
+                            parent.ucMainContent.ShowPage(currentPage);
+                            //parent.ucMainContent.ShowPage(item.Value);
                         }
                     }
                 }
@@ -100,47 +101,47 @@ namespace GlassProductManager
 
         private void btnHome_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnHome);
+            ShowCurrentPage(btnHome, new HomeContent());
         }
 
         private void btnCreateNewQuote_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnCreateNewQuote);
+            ShowCurrentPage(btnCreateNewQuote, new NewQuoteContent());
         }
 
         private void btnCustomerSettings_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnCustomerSettings);
+            ShowCurrentPage(btnCustomerSettings, new CustomerSettingsContent());
         }
 
         private void btnPriceSettings_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnPriceSettings);
+            ShowCurrentPage(btnPriceSettings, new PriceSettingsContent());
         }
 
         private void btnSaleOrder_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnSaleOrder);
+            ShowCurrentPage(btnSaleOrder, new SalesOrderContent());
         }
 
         private void btnWorksheet_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnWorksheet);
+            ShowCurrentPage(btnWorksheet, new WorksheetContent());
         }
 
         private void btnInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnInvoice);
+            ShowCurrentPage(btnInvoice, new InvoiceContent());
         }
 
         private void btnMakePayment_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnMakePayment);
+            ShowCurrentPage(btnMakePayment, new MakeInvoicePayment());
         }
         
         private void btnCommanderSection_Checked(object sender, RoutedEventArgs e)
         {
-            ShowCurrentPage(btnCommanderSection);
+            ShowCurrentPage(btnCommanderSection, new CommanderSectionContent());
         }
     }
 }

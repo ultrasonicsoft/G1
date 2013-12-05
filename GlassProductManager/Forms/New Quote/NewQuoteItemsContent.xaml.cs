@@ -177,6 +177,11 @@ namespace GlassProductManager
 
         private void cbIsStraightPolish_Checked(object sender, RoutedEventArgs e)
         {
+            txtStraightPolishTotalInches.IsEnabled = true;
+            txtStraightPolishLongSide.IsEnabled = true;
+            txtStraightPolishShortSide.IsEnabled = true;
+            txtStraightPolishTotalInches.Focus();
+
             currentItem.IsStraightPolish = true;
             UpdateCurrentTotal();
         }
@@ -205,8 +210,13 @@ namespace GlassProductManager
         {
             currentItem.IsStraightPolish = false;
             txtStraightPolishLongSide.Text = "0";
-            txtStraightPolishLongSide.Text = "0";
+            txtStraightPolishShortSide.Text = "0";
             txtStraightPolishTotalInches.Text = "0";
+
+            txtStraightPolishTotalInches.IsEnabled = false;
+            txtStraightPolishLongSide.IsEnabled = false;
+            txtStraightPolishShortSide.IsEnabled = false;
+
             UpdateCurrentTotal();
         }
 
@@ -214,24 +224,45 @@ namespace GlassProductManager
         {
             currentItem.IsCustomShapePolish = false;
             txtCustomShapePolishSize.Text = "0";
+
+            txtCustomShapePolishSize.IsEnabled = false;
+
             UpdateCurrentTotal();
         }
 
         private void cbCustomShapePolish_Checked(object sender, RoutedEventArgs e)
         {
+            txtCustomShapePolishSize.Text = "0";
+            txtCustomShapePolishSize.IsEnabled = true;
+            txtCustomShapePolishSize.Focus();
+
             currentItem.IsCustomShapePolish = true;
             UpdateCurrentTotal();
         }
 
         private void cbIsMiter_Unchecked(object sender, RoutedEventArgs e)
         {
-            currentItem.IsMiter = false;
+            txtMiterTotalInches.IsEnabled = false;
+            txtMiterLongSide.IsEnabled = false;
+            txtMiterShortSide.IsEnabled = false;
+
             txtMiterTotalInches.Text = "0";
+            txtMiterLongSide.Text = "0";
+            txtMiterShortSide.Text = "0";
+
+            currentItem.IsMiter = false;
+
             UpdateCurrentTotal();
         }
 
         private void cbIsMiter_Checked(object sender, RoutedEventArgs e)
         {
+            txtMiterTotalInches.IsEnabled = true;
+            txtMiterLongSide.IsEnabled = true;
+            txtMiterShortSide.IsEnabled = true;
+            
+            txtMiterTotalInches.Focus();
+
             currentItem.IsMiter = true;
             UpdateCurrentTotal();
         }
@@ -243,13 +274,18 @@ namespace GlassProductManager
 
         private void cbNotches_Unchecked(object sender, RoutedEventArgs e)
         {
-            currentItem.IsNotch = false;
             txtNotchesNumber.Text = "0";
+            txtNotchesNumber.IsEnabled= false;
+
+            currentItem.IsNotch = false;
             UpdateCurrentTotal();
         }
 
         private void cbNotches_Checked(object sender, RoutedEventArgs e)
         {
+            txtNotchesNumber.IsEnabled = true;
+            txtNotchesNumber.Focus();
+
             currentItem.IsNotch = true;
             UpdateCurrentTotal();
         }
@@ -261,13 +297,19 @@ namespace GlassProductManager
 
         private void cbHinges_Unchecked(object sender, RoutedEventArgs e)
         {
-            currentItem.IsHinges = false;
             txtHingesNumber.Text = "0";
+            txtHingesNumber.IsEnabled = false;
+
+            currentItem.IsHinges = false;
             UpdateCurrentTotal();
         }
 
         private void cbHinges_Checked(object sender, RoutedEventArgs e)
         {
+            txtHingesNumber.Text = "0";
+            txtHingesNumber.IsEnabled = true;
+            txtHingesNumber.Focus();
+
             currentItem.IsHinges = true;
             UpdateCurrentTotal();
         }
@@ -279,13 +321,19 @@ namespace GlassProductManager
 
         private void cbPatches_Unchecked(object sender, RoutedEventArgs e)
         {
-            currentItem.IsPatches = false;
             txtPatchesNumber.Text = "0";
+            txtPatchesNumber.IsEnabled = false;
+
+            currentItem.IsPatches = false;
             UpdateCurrentTotal();
         }
 
         private void cbPatches_Checked(object sender, RoutedEventArgs e)
         {
+            txtPatchesNumber.Text = "0";
+            txtPatchesNumber.IsEnabled = true;
+            txtPatchesNumber.Focus();
+
             currentItem.IsPatches = true;
             UpdateCurrentTotal();
         }
@@ -452,7 +500,10 @@ namespace GlassProductManager
             double _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
             double _temperedSQFT = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
 
-            currentGlassType.IsTempered = isTempered.SelectedValue.ToString() == "Yes";
+            if (isTempered.SelectedValue != null)
+            {
+                currentGlassType.IsTempered = isTempered.SelectedValue.ToString() == "Yes";
+            }
             currentGlassType.SqFt = int.Parse(currentSQFT.Text);
 
             if (currentGlassType.IsTempered)
@@ -521,14 +572,20 @@ namespace GlassProductManager
 
         private void cbHoles_Checked(object sender, RoutedEventArgs e)
         {
+            txtHoleNumbers.Text = "0";
+            txtHoleNumbers.IsEnabled = true;
+            txtHoleNumbers.Focus();
+
             currentItem.IsHoles = true;
             UpdateCurrentTotal();
         }
 
         private void cbHoles_Unchecked(object sender, RoutedEventArgs e)
         {
-            currentItem.IsHoles = false;
             txtHoleNumbers.Text = "0";
+            txtHoleNumbers.IsEnabled = false;
+
+            currentItem.IsHoles = false;
             UpdateCurrentTotal();
         }
 
@@ -680,6 +737,8 @@ namespace GlassProductManager
             txtGlassHeight.Text = "0";
             txtGlassWidth.Text = "0";
             txtGlassWidth.Text = "0";
+            txtGlassHeightFraction.Text = "x/y";
+            txtGlassWidthFraction.Text = "x/y";
 
             // Custom Shape
             cmbShape.SelectedIndex = -1;
@@ -708,8 +767,18 @@ namespace GlassProductManager
             cbHoles.IsChecked = false;
             cbHinges.IsChecked = false;
 
+            txtNotchesNumber.Text = "0";
+            txtHingesNumber.Text = "0";
+            txtPatchesNumber.Text = "0";
+            txtHoleNumbers.Text = "0";
+
             //Insulation
             ResetInsulation();
+
+            //Reset Cutout
+            cbCutout.IsChecked = false;
+            allCutoutData = new ObservableCollection<CutoutData>();
+            dgCutoutDetails.ItemsSource = allCutoutData;
 
             // Total labels
             lblCutoutTotal.Content = "$ 0.00";
@@ -718,6 +787,8 @@ namespace GlassProductManager
 
         private void ResetInsulation()
         {
+            cbInsulation.IsChecked = false;
+
             cmbGlassType1.SelectedIndex = -1;
             cmbThickness1.SelectedIndex = -1;
             cmbTemp1.SelectedIndex = -1;
@@ -781,12 +852,48 @@ namespace GlassProductManager
 
         private void cbInsulation_Checked(object sender, RoutedEventArgs e)
         {
+            SetInsulationControlStatus(true);
+
             currentItem.IsInsulation = true;
             UpdateCurrentTotal();
         }
 
+        private void SetInsulationControlStatus(bool status)
+        {
+            cmbGlassType1.SelectedIndex = -1;
+            cmbThickness1.SelectedIndex = -1;
+            cmbTemp1.SelectedIndex = -1;
+            txtSqFt1.Text = "0";
+            txtGlassType1Total.Text = "0";
+
+            cmbGlassType1.IsEnabled = status;
+            cmbThickness1.IsEnabled = status;
+            cmbTemp1.IsEnabled = status;
+            txtSqFt1.IsEnabled = status;
+            txtGlassType1Total.IsEnabled = status;
+
+            cmbGlassType2.SelectedIndex = -1;
+            cmbThickness2.SelectedIndex = -1;
+            cmbTemp2.SelectedIndex = -1;
+            txtSqFt2.Text = "0";
+            txtGlassType2Total.Text = "0";
+
+            cmbGlassType2.IsEnabled = status;
+            cmbThickness2.IsEnabled = status;
+            cmbTemp2.IsEnabled = status;
+            txtSqFt2.IsEnabled = status;
+            txtGlassType2Total.IsEnabled = status;
+
+            if (status == true)
+            {
+                cmbGlassType1.Focus();
+            }
+        }
+
         private void cbInsulation_Unchecked(object sender, RoutedEventArgs e)
         {
+            SetInsulationControlStatus(false);
+
             currentItem.IsInsulation = false;
             ResetInsulation();
             UpdateCurrentTotal();
@@ -794,6 +901,10 @@ namespace GlassProductManager
 
         private void cbCutout_Unchecked(object sender, RoutedEventArgs e)
         {
+            dgCutoutDetails.IsEnabled = false;
+            btnAddNewCutout.IsEnabled = false;
+            btnDeleteCutout.IsEnabled = false;
+
             currentItem.IsCutout = false;
             allCutoutData.Clear();
             lblCutoutTotal.Content = "$ 0.00";
@@ -802,6 +913,11 @@ namespace GlassProductManager
 
         private void cbCutout_Checked(object sender, RoutedEventArgs e)
         {
+            dgCutoutDetails.IsEnabled = true;
+            btnAddNewCutout.IsEnabled = true;
+            btnDeleteCutout.IsEnabled = true;
+            dgCutoutDetails.Focus();
+
             currentItem.IsCutout = true;
             UpdateCurrentTotal();
         }
@@ -885,7 +1001,10 @@ namespace GlassProductManager
 
         private void cmbShape_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            currentItem.Shape = (cmbShape.SelectedItem as System.Data.DataRowView)[1].ToString();
+            if (cmbShape.SelectedItem != null)
+            {
+                currentItem.Shape = (cmbShape.SelectedItem as System.Data.DataRowView)[1].ToString();
+            }
         }
 
         internal void ClearTextBox(object sender, RoutedEventArgs e)

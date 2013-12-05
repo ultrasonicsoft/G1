@@ -322,6 +322,9 @@ namespace GlassProductManager
                 SaveNewQuote(txtQuoteNumber.Text);
             }
 
+            FillSmartSearchData();
+
+            FillCustomerNames();
         }
 
         private void SaveNewQuote(string quoteNumber)
@@ -1302,15 +1305,15 @@ namespace GlassProductManager
 
         private void PrintQuoteDetails(XGraphics gfx, XFont font)
         {
-            int xStartDetailRect = 80;
+            int xStartDetailRect = 30;
             int yStartDetailRect = 400;
-            int widthDetailRect = 1100;
+            int widthDetailRect = 1150;
             int heightDetailRect = 700;
 
             int heightHeaderRect = 50;
 
-            int xLineColumn = 150;
-            int xQuantityColumn = 200;
+            int xLineColumn = 100;
+            int xQuantityColumn = 150;
             int xDescriptionColumn = 790;
             int xDimensionColumn = 920;
             int xSqFtColumn = 980;
