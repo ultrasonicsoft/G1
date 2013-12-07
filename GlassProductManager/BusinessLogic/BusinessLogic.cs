@@ -551,7 +551,7 @@ namespace GlassProductManager
 
                     pSqFt = new SqlParameter();
                     pSqFt.ParameterName = "SqFt";
-                    pSqFt.Value = int.Parse(item.TotalSqFt);
+                    pSqFt.Value = double.Parse(item.TotalSqFt);
 
                     pPricePerUnit = new SqlParameter();
                     pPricePerUnit.ParameterName = "PricePerUnit";
