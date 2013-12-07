@@ -122,12 +122,18 @@ namespace GlassProductManager
         private void cmbThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmbThickness.SelectedValue == null)
+            {
+                gbGlassDetails.IsEnabled = false;
                 return;
-
+            }
             string thicknessID = cmbThickness.SelectedValue.ToString();
             if (string.IsNullOrEmpty(thicknessID))
+            {
+                gbGlassDetails.IsEnabled = false;
                 return;
+            }
 
+            gbGlassDetails.IsEnabled = true;
             currentItem.ThicknessID = int.Parse(thicknessID);
             UpdateCurrentTotal();
         }
@@ -151,22 +157,32 @@ namespace GlassProductManager
 
         private void txtTotalSqFt_LostFocus(object sender, RoutedEventArgs e)
         {
-            txtTotalSqFt.Text = string.IsNullOrEmpty(txtTotalSqFt.Text) ? "0" : txtTotalSqFt.Text;
+            //txtTotalSqFt.Text = string.IsNullOrEmpty(txtTotalSqFt.Text) ? "0" : txtTotalSqFt.Text;
+        }
+
+        private void txtTotalSqFtCharged_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged");
         }
 
         private void txtTotalSqFt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT");
+            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT",true);
         }
 
-        private void SetQuoteValidationError(TextBox input, string propertyName)
+        private void SetQuoteValidationError(TextBox input, string propertyName, bool isDecimalCheck = false)
         {
             if (isInitialized == false)
                 return;
 
-            if (Helper.IsNumberOnly(input))
+            if (isDecimalCheck == false && Helper.IsNumberOnly(input))
             {
                 NewItemsChanged(input.Text, propertyName);
+            }
+            else if(isDecimalCheck == true && Helper.IsValidCurrency(input))
+            {
+                currentItem.TotalSqFT = double.Parse(input.Text);
+                //NewItemsChanged(input.Text, propertyName);
             }
         }
 
@@ -385,6 +401,9 @@ namespace GlassProductManager
                     break;
                 case "Quantity":
                     currentItem.Quantity = tempValue;
+                    break;
+                case "TotalSqFTCharged":
+                    currentItem.TotalSqFTCharged = tempValue;
                     break;
                 default:
                     break;
@@ -679,6 +698,24 @@ namespace GlassProductManager
             {
                 txtGlassWidth.Text = string.IsNullOrEmpty(txtGlassWidth.Text) ? "0" : txtGlassWidth.Text;
                 currentItem.GlassWidth = int.Parse(txtGlassWidth.Text);
+
+                UpdateTotalSqft();
+
+            }
+        }
+
+        private void txtGlassWidthCharged_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (currentItem == null)
+                return;
+
+            if (Helper.IsNumberOnly(txtGlassWidthCharged))
+            {
+                txtGlassWidthCharged.Text = string.IsNullOrEmpty(txtGlassWidthCharged.Text) ? "0" : txtGlassWidthCharged.Text;
+                currentItem.GlassWidthCharged = int.Parse(txtGlassWidthCharged.Text);
+
+                UpdateTotalSqft();
+
             }
         }
 
@@ -691,7 +728,40 @@ namespace GlassProductManager
             {
                 txtGlassHeight.Text = string.IsNullOrEmpty(txtGlassHeight.Text) ? "0" : txtGlassHeight.Text;
                 currentItem.GlassHeight = int.Parse(txtGlassHeight.Text);
+                UpdateTotalSqft();
             }
+        }
+
+        private void txtGlassHeightCharged_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (currentItem == null)
+                return;
+
+            if (Helper.IsNumberOnly(txtGlassHeightCharged))
+            {
+                txtGlassHeightCharged.Text = string.IsNullOrEmpty(txtGlassHeightCharged.Text) ? "0" : txtGlassHeightCharged.Text;
+                currentItem.GlassHeightCharged = int.Parse(txtGlassHeightCharged.Text);
+                UpdateTotalSqft();
+            }
+        }
+
+        private void UpdateTotalSqft()
+        {
+            double width = double.Parse(txtGlassWidth.Text);
+            double height = double.Parse(txtGlassHeight.Text);
+            if (txtGlassWidthFraction.Text.Equals("x/y") == false)
+            {
+                width++;
+            }
+            txtGlassWidthCharged.Text = width.ToString();
+            if (txtGlassHeightFraction.Text.Equals("x/y") == false)
+            {
+                height++;
+            }
+            txtGlassHeightCharged.Text = height.ToString();
+            double totalSqft = (width * height) / 144.0;
+            txtTotalSqFt.Text = totalSqft.ToString("0.00");
+            txtTotalSqFtCharged.Text = Math.Ceiling(totalSqft).ToString("0");
         }
 
         private void btnNewItem_Click(object sender, RoutedEventArgs e)
@@ -742,8 +812,8 @@ namespace GlassProductManager
 
             // Custom Shape
             cmbShape.SelectedIndex = -1;
-            txtShapeHeight.Text = "0";
-            txtShapeWidth.Text = "0";
+            //txtShapeHeight.Text = "0";
+            //txtShapeWidth.Text = "0";
 
             // Straight Polish
             cbIsStraightPolish.IsChecked = false;
@@ -961,16 +1031,16 @@ namespace GlassProductManager
 
         private void txtShapeHeight_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtShapeHeight))
-            {
-            }
+            //if (Helper.IsNumberOnly(txtShapeHeight))
+            //{
+            //}
         }
 
         private void txtShapeWidth_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtShapeWidth))
-            {
-            }
+            //if (Helper.IsNumberOnly(txtShapeWidth))
+            //{
+            //}
         }
 
         private void btnPrintTest_Click(object sender, RoutedEventArgs e)

@@ -53,58 +53,66 @@
                         <Label Content="Select Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
                         <ComboBox Name="cmbThickness" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Grid.Row="1" Grid.Column="3" SelectionChanged="cmbThickness_SelectionChanged" />
                         <CheckBox Name="cbLogo" Content="Is Logo Required?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" Unchecked="cbLogo_Unchecked" Checked="cbLogo_Checked"/>
-                        <CheckBox Name="cbIsTempered" Content="Is Tempered?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5" Checked="cbIsTempered_Checked" Unchecked="cbIsTempered_Unchecked"/>
-                        <GroupBox Header="Dimension of Glass" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
+                        <CheckBox Name="cbIsTempered" Content="Is Tempered?" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5" Checked="cbIsTempered_Checked" Unchecked="cbIsTempered_Unchecked"/>
+                        
+                        <GroupBox Header="Glass Details" Name="gbGlassDetails" IsEnabled="False" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="115" Grid.RowSpan="5">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70"/>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="70"/>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="70"/>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="70"/>
-                                    <ColumnDefinition Width="50"/>
-                                    <ColumnDefinition Width="70"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Content="Total Sq.Ft:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                                <TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="50"  LostFocus="ResetTextBox" TextChanged="txtTotalSqFt_TextChanged" GotFocus="ClearTextBox"   />
-                                <!--<TextBox Name="txtTotalSqFt" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Height="23" Width="50"  LostFocus="txtTotalSqFt_LostFocus" TextChanged="txtTotalSqFt_TextChanged" />-->
-                                <Label Content="Quantity:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
-                                <TextBox Name="txtQuantity" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" Height="23" Width="50" TextChanged="txtQuantity_TextChanged" LostFocus="ResetTextBox" GotFocus="ClearTextBox"   />
-
-                                <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                                <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="5" TextChanged="txtGlassHeight_TextChanged" GotFocus="ClearTextBox" LostFocus="ResetTextBox" />
-                                <TextBox Name="txtGlassHeightFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="6" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" GotFocus="ClearTextBox" LostFocus="txtGlassHeightFraction_LostFocus" />
-                                <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" />
-                                <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="8" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" GotFocus="ClearTextBox" LostFocus="ResetTextBox" />
-                                <TextBox Name="txtGlassWidthFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="9" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" LostFocus="txtGlassWidthFraction_LostFocus" GotFocus="ClearTextBox" />
-                            </Grid>
-                        </GroupBox>
-
-                        <GroupBox Header="Shape Details" HorizontalAlignment="Center" Grid.Row="4" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="680" Height="50" Grid.RowSpan="3">
-                            <Grid>
-                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
                                     <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="55"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="70"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Content="Select Shape" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                                <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="0" Grid.Column="1" SelectionChanged="cmbShape_SelectionChanged" />
-                                <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
-                                <TextBox Name="txtShapeHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" TextChanged="txtShapeHeight_TextChanged" GotFocus="ClearTextBox" LostFocus="ResetTextBox"/>
-                                <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                                <TextBox Name="txtShapeWidth" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" TextChanged="txtShapeWidth_TextChanged" GotFocus="ClearTextBox" LostFocus="ResetTextBox"  />
+                                <Label Content="Shape:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                                <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" SelectionChanged="cmbShape_SelectionChanged" />
+
+                                <!-- ACTUAL SECTION -->
+                                <Label Content="Actual :" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+
+                                <!-- Width -->
+                                <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" />
+                                <TextBox Name="txtGlassWidth" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" GotFocus="ClearTextBox" LostFocus="ResetTextBox" />
+                                <TextBox Name="txtGlassWidthFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" LostFocus="txtGlassWidthFraction_LostFocus" GotFocus="ClearTextBox" />
+
+                                <!-- Height -->
+                                <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" />
+                                <TextBox Name="txtGlassHeight" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1"  Grid.Column="5" TextChanged="txtGlassHeight_TextChanged" GotFocus="ClearTextBox" LostFocus="ResetTextBox" />
+                                <TextBox Name="txtGlassHeightFraction" Text="x/y" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="6" Height="23" Width="50" TextChanged="txtGlassWidth_TextChanged" GotFocus="ClearTextBox" LostFocus="txtGlassHeightFraction_LostFocus" />
+
+                                <!-- Quantity -->
+                                <Label Content="Quantity:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="7" />
+                                <TextBox Name="txtQuantity" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="8" Height="23" Width="50" TextChanged="txtQuantity_TextChanged" LostFocus="ResetTextBox" GotFocus="ClearTextBox"   />
+                            
+                                <!-- Total Sqft -->
+                                <Label Content="Total Sq.Ft:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="9" />
+                                <TextBox Name="txtTotalSqFt" IsEnabled="False" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="10" Height="23" Width="50"  LostFocus="ResetTextBox" TextChanged="txtTotalSqFt_TextChanged" GotFocus="ClearTextBox"   />
+
+                                <!-- CHARGED SECTION -->
+                                <Label Content="Charged:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
+                                <!-- Width -->
+                                <Label Content="Width (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" />
+                                <TextBox Name="txtGlassWidthCharged" Text="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" Height="23" Width="50" TextChanged="txtGlassWidthCharged_TextChanged" GotFocus="ClearTextBox" LostFocus="ResetTextBox" />
+                                
+                                <!-- Height -->
+                                <Label Content="Height (in):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="4" />
+                                <TextBox Name="txtGlassHeightCharged" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="2"  Grid.Column="5" TextChanged="txtGlassHeightCharged_TextChanged" GotFocus="ClearTextBox" LostFocus="ResetTextBox" />
+
+                                <!-- Total Sqft -->
+                                <Label Content="Total Sq.Ft:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="9" />
+                                <TextBox Name="txtTotalSqFtCharged" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="10" Height="23" Width="50"  LostFocus="ResetTextBox" TextChanged="txtTotalSqFtCharged_TextChanged" GotFocus="ClearTextBox"   />
+
                             </Grid>
                         </GroupBox>
 

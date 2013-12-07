@@ -13,7 +13,8 @@ namespace GlassProductManager
 
         private int _glassTypeID;
         private int _thicknessID;
-        private int _totalSqFT;
+        private double _totalSqFT;
+        private int _totalSqFTCharged;
         private int _quantity;
         private bool _isTempered;
         private bool _isMiter;
@@ -81,12 +82,22 @@ namespace GlassProductManager
         }
         internal string Thickness { get; set; }
 
-        internal int TotalSqFT
+        internal double TotalSqFT
         {
             get { return _totalSqFT; }
             set
             {
                 _totalSqFT = value;
+                CalculateTotal();
+            }
+        }
+
+        internal int TotalSqFTCharged
+        {
+            get { return _totalSqFTCharged; }
+            set
+            {
+                _totalSqFTCharged = value;
                 CalculateTotal();
             }
         }
@@ -104,6 +115,10 @@ namespace GlassProductManager
         internal string GlassHeightFraction { get; set; }
 
         internal int GlassWidth { get; set; }
+      
+        internal int GlassWidthCharged { get; set; }
+        internal int GlassHeightCharged { get; set; }
+        
         internal string GlassWidthFraction { get; set; }
 
         internal string Shape
@@ -364,11 +379,12 @@ namespace GlassProductManager
 
             if (false == _isTempered)
             {
-                _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _cutsqftRate;
+                _currentTotal = _totalSqFTCharged == 0 ? 0 : _totalSqFTCharged * _cutsqftRate;
+                //_currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _cutsqftRate;
             }
             else if (_temperedRate != 0)
             {
-                _currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _temperedRate;
+                _currentTotal = _totalSqFTCharged == 0 ? 0 : _totalSqFTCharged * _temperedRate;
             }
 
 
@@ -385,29 +401,29 @@ namespace GlassProductManager
             {
                 _currentTotal += _miterTotalInches * _miterRate;
             }
-            if (true == _isNotch && _totalSqFT != 0)
+            if (true == _isNotch && _totalSqFTCharged != 0)
             {
                 _currentTotal += _notches * _notchRate;
             }
-            if (true == _isHinges && _totalSqFT != 0)
+            if (true == _isHinges && _totalSqFTCharged != 0)
             {
                 _currentTotal += _hinges * _hingeRate;
             }
-            if (true == _isPatches && _totalSqFT != 0)
+            if (true == _isPatches && _totalSqFTCharged != 0)
             {
                 _currentTotal += _patches * _patchRate;
             }
 
-            if (true == _isHoles && _totalSqFT != 0)
+            if (true == _isHoles && _totalSqFTCharged != 0)
             {
                 _currentTotal += _holes * _holeRate;
             }
 
-            if (true == _isInsulation && _totalSqFT != 0)
+            if (true == _isInsulation && _totalSqFTCharged != 0)
             {
                 _currentTotal += _insulateTotalCost;
             }
-            if (true == _isCutout && _totalSqFT != 0)
+            if (true == _isCutout && _totalSqFTCharged != 0)
             {
                 _currentTotal += _cutoutTotal;
             }
