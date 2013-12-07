@@ -5,7 +5,13 @@
         
         WindowStartupLocation="CenterScreen"  WindowState="Maximized"
         Title="Glass Manager" Height="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}" Width="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}">
-    <Grid>
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundKey" Color="LightGray" />
+
+    </Window.Resources>
+    <!--<Grid >-->
+        <Grid Background="{StaticResource BackgroundKey}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
