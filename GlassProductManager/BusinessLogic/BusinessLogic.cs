@@ -352,7 +352,7 @@ namespace GlassProductManager
             }
         }
 
-        private static void ProcessQuoteHeader(QuoteHeader header, string spName)
+        private static void ProcessQuoteHeader(QuoteHeader header, string spName, bool isUpdate=false)
         {
             SqlParameter pQuoteCreatedOn = new SqlParameter();
             pQuoteCreatedOn.ParameterName = "CreatedOn";
@@ -402,7 +402,7 @@ namespace GlassProductManager
             pQuoteStatusID.ParameterName = "QuoteStatusID";
             pQuoteStatusID.Value = header.QuoteStatusID;
 
-            if (header.IsNewCustomer)
+            if (header.IsNewCustomer && isUpdate == false)
             {
                 string customerID = CreateNewCustomer(header.SoldTo);
 
@@ -696,6 +696,7 @@ namespace GlassProductManager
                 quoteDetails.Header.SalesOrderNumber = result.Tables[0].Rows[0][ColumnNames.SONumber].ToString();
                 quoteDetails.Header.SaleOrderConfirmedOn = result.Tables[0].Rows[0][ColumnNames.ConfirmedDate].ToString();
                 quoteDetails.Header.WorksheetNumber = result.Tables[0].Rows[0][ColumnNames.WSNumber].ToString();
+                quoteDetails.Header.InvoiceNumber = result.Tables[0].Rows[0][ColumnNames.InvoiceNumber].ToString();
                 quoteDetails.Header.InvoiceCompletedOn = result.Tables[0].Rows[0][ColumnNames.CompletedDate].ToString();
 
                 quoteDetails.Header.BalanceDue = double.Parse(double.Parse(result.Tables[0].Rows[0][ColumnNames.BalanceDue].ToString()).ToString("0.00"));
@@ -796,6 +797,31 @@ namespace GlassProductManager
             }
             return paymentDetails;
         }
+
+
+        internal static int GetCustomerID(string quoteNumber)
+        {
+            int customerID =-1;
+            DataSet result = null;
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetCustomerID, pQuoteNumber);
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                    return customerID;
+
+                customerID = int.Parse(result.Tables[0].Rows[0][ColumnNames.ID].ToString());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return customerID;
+        }
+
         internal static DataTable GetAllCustomerNames()
         {
             DataSet result = null;
@@ -809,6 +835,7 @@ namespace GlassProductManager
             }
             return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
+
 
         internal static void GetCustomerDetails(out CustomerDetails soldTo, out CustomerDetails shipTo, string customerID)
         {
@@ -1446,6 +1473,9 @@ namespace GlassProductManager
                     dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.InvoiceStatus];
                     invoice.InvoiceStatus = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
 
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.SONumber];
+                    invoice.SONumber = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
                     invoiceMasterData.Add(invoice);
                 }
             }
@@ -1456,9 +1486,9 @@ namespace GlassProductManager
             return invoiceMasterData;
         }
 
-        internal static void UpdateQuoteHeader(QuoteHeader header)
+        internal static void UpdateQuoteHeader(QuoteHeader header, bool isUpdate)
         {
-            ProcessQuoteHeader(header, StoredProcedures.UpdateQuoteHeader);
+            ProcessQuoteHeader(header, StoredProcedures.UpdateQuoteHeader, isUpdate);
         }
 
         internal static void UpdateQuoteFooter(string quoteNumber, QuoteFooter footer)
@@ -1596,6 +1626,22 @@ namespace GlassProductManager
             }
         }
 
+        internal static void DeleteInvoice(string quoteNumber)
+        {
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeleteInvoice, pQuoteNumber);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
         internal static void MakeNewPayment(InvoicePaymentEntity payment, string quoteNumber)
         {
             try
@@ -1709,6 +1755,33 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
+        }
+
+        internal static bool IsInvoicePresent(string quoteNumber)
+        {
+            DataSet result = null;
+            bool isInvoicePresent =false;
+            try
+            {
+                SqlParameter paramQuoteNumber = new SqlParameter();
+                paramQuoteNumber.ParameterName = "quoteNumber";
+                paramQuoteNumber.Value = quoteNumber;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.IsInvoicePresent, paramQuoteNumber);
+
+                if(result == null || result.Tables == null || result.Tables.Count == 0 )
+                {
+                    return isInvoicePresent;
+                }
+                int count =0;
+                int.TryParse(result.Tables[0].Rows[0][0].ToString(),out count);
+                isInvoicePresent = count > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return isInvoicePresent;
         }
     }
 }

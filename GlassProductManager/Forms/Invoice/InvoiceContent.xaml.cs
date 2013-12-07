@@ -146,6 +146,7 @@ namespace GlassProductManager
 
             #region Fill Header Information
 
+            txtInvoiceNumber.Text = result.Header.InvoiceNumber;
             txtQuoteNumber.Text = result.Header.QuoteNumber;
             txtCustomerPO.Text = result.Header.CustomerPO;
             if (string.IsNullOrEmpty(result.Header.SaleOrderConfirmedOn))
@@ -833,18 +834,18 @@ namespace GlassProductManager
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            DeleteSalesOrder();
+            DeleteInvoice();
         }
 
-        private void DeleteSalesOrder()
+        private void DeleteInvoice()
         {
             if (Helper.IsNonEmpty(txtQuoteNumber) && Helper.IsNonEmpty(txtInvoiceNumber))
             {
-                bool isSalesOrderPresent = BusinessLogic.IsSalesOrderPresent(txtQuoteNumber.Text);
-                if (isSalesOrderPresent)
+                bool isInvoicePresent = BusinessLogic.IsInvoicePresent(txtQuoteNumber.Text);
+                if (isInvoicePresent)
                 {
-                    BusinessLogic.DeleteSalesOrder (txtQuoteNumber.Text);
-                    Helper.ShowInformationMessageBox("Sales Order is delete successfully!");
+                    BusinessLogic.DeleteInvoice(txtQuoteNumber.Text);
+                    Helper.ShowInformationMessageBox("Invoice is delete successfully!");
                 }
             }
             else

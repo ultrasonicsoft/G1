@@ -10,6 +10,7 @@ namespace GlassProductManager
     {
         public string InvoiceNumber { get; set; }
         public string QuoteNumber { get; set; }
+        public string SONumber { get; set; }
         public string FullName { get; set; }
         public string Total { get; set; }
         public string CompletedDate { get; set; }

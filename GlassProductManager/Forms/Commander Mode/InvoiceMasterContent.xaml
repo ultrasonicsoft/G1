@@ -16,21 +16,24 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+        <Grid HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Search Invoice:" HorizontalAlignment="Right" VerticalAlignment="Center" />
             <TextBox Grid.Row="0" Grid.Column="1" Text="Search" Margin="0,8,0,8" Name="txtSearch" TextChanged="txtSearch_TextChanged" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus"></TextBox>
-            <Button Name="btnOpenInvoice" Content="Open Invoice" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnOpenInvoice_Click" />
+            <Button Name="btnOpenInvoice" Content="Open Invoice" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Click="btnOpenInvoice_Click" />
+            <Button Name="btnDeleteInvoice" Content="Delete Invoice" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="btnDeleteInvoice_Click"   />
         </Grid>
        
         <DataGrid Name="dgInvoiceDetails" IsReadOnly="True" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"  VerticalAlignment="Top" Height="400" Width="1100" ItemsSource="{Binding}" AutoGenerateColumns="False" MouseDoubleClick="dgInvoiceDetails_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Invoice No." Binding="{Binding InvoiceNumber}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Quote No." Binding="{Binding QuoteNumber}"  Width="90" SortDirection="Descending"></DataGridTextColumn>
+                <DataGridTextColumn Header="SalesOrder No." Binding="{Binding SONumber}"  Width="90" ></DataGridTextColumn>
                 <DataGridTextColumn Header="Full Name" Binding="{Binding FullName}" Width="150"></DataGridTextColumn>
                 <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Balance Due" Binding="{Binding BalanceDue}" Width="90"></DataGridTextColumn>

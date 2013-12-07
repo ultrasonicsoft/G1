@@ -212,6 +212,7 @@ namespace GlassProductManager
             WorksheetEntity entity = dgWorksheetDetails.SelectedItem as WorksheetEntity;
             if (entity == null)
             {
+                Helper.ShowErrorMessageBox("Select Worksheet for deletion");
                 return;
             }
 

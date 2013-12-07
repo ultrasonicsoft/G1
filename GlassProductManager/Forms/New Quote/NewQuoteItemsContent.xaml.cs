@@ -660,6 +660,11 @@ namespace GlassProductManager
                     if (grid != null)
                     {
                         QuoteGridEntity newItem = new QuoteGridEntity();
+                        
+                        if (grid.allQuoteData == null)
+                        {
+                            grid.allQuoteData = new ObservableCollection<QuoteGridEntity>();
+                        }
                         newItem.LineID = grid.allQuoteData.Count + 1;
                         newItem.Quantity = currentItem.Quantity;
                         newItem.Description = itemDescription;

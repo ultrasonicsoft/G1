@@ -202,6 +202,29 @@ namespace GlassProductManager
             }
         }
 
+        private void btnDeleteInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            InvoiceEntity entity = dgInvoiceDetails.SelectedItem as InvoiceEntity;
+
+            if (entity == null)
+            {
+                Helper.ShowErrorMessageBox("Select invoice for deletion");
+
+                return;
+            }
+
+            var result = Helper.ShowQuestionMessageBox("Are you sure to delete this invoice?");
+
+            if (result == MessageBoxResult.Yes)
+            {
+                
+                BusinessLogic.DeleteInvoice(entity.QuoteNumber);
+                Helper.ShowInformationMessageBox("Invoice deleted successfully.");
+                FillInvoiceDetails();
+
+            }
+        }
+
       
 
     }

@@ -284,6 +284,8 @@ namespace GlassProductManager
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            int customerID = 0;
+
             if (false == Helper.IsNonEmpty(txtQuoteNumber))
             {
                 Helper.ShowErrorMessageBox("Quote Number can not be empty. Please provide Quote Number.");
@@ -303,8 +305,11 @@ namespace GlassProductManager
                 var result = Helper.ShowQuestionMessageBox("Quote already present. Press Yes to update existing. Press No to Clone existing quote.");
                 if (result == MessageBoxResult.Yes)
                 {
+
                     QuoteHeader header = BuildQuoteHeader(txtQuoteNumber.Text);
-                    BusinessLogic.UpdateQuoteHeader(header);
+                     customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+                    header.CustomerID = customerID;
+                    BusinessLogic.UpdateQuoteHeader(header, true);
 
                     BusinessLogic.DeleteQuoteItems(txtQuoteNumber.Text);
                     BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData);
@@ -325,6 +330,11 @@ namespace GlassProductManager
             FillSmartSearchData();
 
             FillCustomerNames();
+
+            cbIsNewClient.IsChecked = false;
+             customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+            cmbCustomers.SelectedValue = customerID;
+            
         }
 
         private void SaveNewQuote(string quoteNumber)
@@ -673,6 +683,11 @@ namespace GlassProductManager
                 Helper.ShowInformationMessageBox("No data found for selected quote!");
                 return;
             }
+            
+            cbIsNewClient.IsChecked = false;
+            int customerID = BusinessLogic.GetCustomerID(result.Header.QuoteNumber);
+            cmbCustomers.SelectedValue = customerID;
+
             #region Fill Header Information
 
             txtQuoteNumber.Text = result.Header.QuoteNumber;
@@ -812,6 +827,9 @@ namespace GlassProductManager
 
         private void ResetQuoteItems()
         {
+            if (allQuoteData == null)
+                allQuoteData = new ObservableCollection<QuoteGridEntity>();
+
             allQuoteData.Clear();
             dgQuoteItems.ItemsSource = allQuoteData;
         }

@@ -212,16 +212,18 @@ namespace GlassProductManager
 
         private void btnDeleteQuote_Click(object sender, RoutedEventArgs e)
         {
-            var result = Helper.ShowQuestionMessageBox("Are you sure to delete this quote?");
+            QuoteMasterEntity entity = dgQuoteDetails.SelectedItem as QuoteMasterEntity;
+
+            if (entity == null)
+            {
+                Helper.ShowErrorMessageBox("Select quote for deletion");
+                return;
+            }
+            var result = Helper.ShowQuestionMessageBox("Deleting quote will delete SalesOrder, Worksheet and Invoice associated with this quote. Are you sure to delete this quote?");
 
             if (result == MessageBoxResult.Yes)
             {
-                QuoteMasterEntity entity = dgQuoteDetails.SelectedItem as QuoteMasterEntity;
-
-                if (entity == null)
-                {
-                    return;
-                }
+                
                 BusinessLogic.DeleteQuote(entity.QuoteNumber);
                 Helper.ShowInformationMessageBox("Quote deleted successfully.");
                 FillQuoteDetails();

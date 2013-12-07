@@ -686,6 +686,20 @@ namespace GlassProductManager
 
         private void btnSendToInvoice_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(txtQuoteNumber.Text) || string.IsNullOrEmpty(txtWSNumber.Text))
+            {
+                Helper.ShowErrorMessageBox("No Worksheet selected for generating invoice.");
+                return;
+            }
+
+            bool isInvoiceExists = BusinessLogic.IsInvoicePresent(txtQuoteNumber.Text);
+
+            if (isInvoiceExists == true)
+            {
+                Helper.ShowErrorMessageBox("Invoice already exists for current worksheet. Please delete current invoice.");
+                return;
+            }
+
             BusinessLogic.GenerateInvoice(txtQuoteNumber.Text, DateTime.Now);
             
             Dashboard parent = Window.GetWindow(this) as Dashboard;

@@ -220,6 +220,7 @@ namespace GlassProductManager
             SaleOrderEntity entity = dgSaleOrderDetails.SelectedItem as SaleOrderEntity;
             if (entity == null)
             {
+                Helper.ShowErrorMessageBox("Select Sales Order for deletion");
                 return;
             }
 
