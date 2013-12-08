@@ -514,6 +514,146 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
+        <!-- *********************************  ToggleButton Style  ********************************* -->
+
+        <Style  TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="Background" Value="{StaticResource BackgroundNormal}"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Grid Margin="4,0,4,4">
+                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" SnapsToDevicePixels="True"/>
+                                    <ContentPresenter Margin="8,5"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsMouseOver" Value="True" />
+                                            <Condition Property="IsSelected" Value="False"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Background" Value="{StaticResource BackgroundHighlighted}" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource BorderBrushHighlighted}" />
+                                    </MultiTrigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource BackgroundSelected}" />
+                                        <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSelected}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <!-- *********************************  Datagrid Style  ********************************* -->
+
+      <Style TargetType="DataGrid">
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+            <Setter Property="RowBackground" Value="{StaticResource LightBackground}"/>
+            <Style.Resources>
+                <Style x:Key="ColumnHeaderGripperStyle" TargetType="{x:Type Thumb}">
+                    <Setter Property="Width" Value="8"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Cursor" Value="SizeWE"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="MinWidth" Value="120"/>
+                    <Setter Property="MinHeight" Value="28"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                <Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border x:Name="BackgroundBorder" Grid.ColumnSpan="2" Background="{StaticResource BackgroundSelected}"/>
+                                        <TextBlock Foreground="{StaticResource Foreground}" FontSize="12" FontWeight="SemiBold">
+                                        <ContentPresenter Margin="6,3,6,3" VerticalAlignment="Center"/>
+                                        </TextBlock>
+                                        <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill" 
+                                      Grid.Column="1" Width="8" Height="6" Fill="{StaticResource Foreground}" Margin="0,0,8,0" 
+                                      VerticalAlignment="Center" RenderTransformOrigin="0.5,0.4" />
+                                    </Grid>
+                                    <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" Style="{StaticResource ColumnHeaderGripperStyle}"/>
+                                    <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" Style="{StaticResource ColumnHeaderGripperStyle}"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="SortDirection" Value="{x:Null}">
+                                        <Setter TargetName="BackgroundBorder" Property="Background" Value="{StaticResource BackgroundNormal}"/>
+                                    </Trigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsMouseOver" Value="true" />
+                                            <Condition Property="SortDirection" Value="{x:Null}" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="BackgroundBorder" Property="Background" Value="{StaticResource BackgroundHighlighted}"/>
+                                    </MultiTrigger>
+                                    <Trigger Property="SortDirection" Value="Ascending">
+                                        <Setter TargetName="SortArrow" Property="Visibility" Value="Visible"/>
+                                        <Setter TargetName="SortArrow" Property="RenderTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="180"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="SortDirection" Value="Descending">
+                                        <Setter TargetName="SortArrow" Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                    <Trigger Property="DisplayIndex" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed" TargetName="PART_LeftHeaderGripper"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="MinHeight" Value="28" />
+                    <Setter Property="Foreground" Value="{StaticResource Foreground}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                <Border Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                    <ContentPresenter Margin="6,3,6,3" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource BackgroundHighlighted}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource BackgroundSelected}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Style.Resources>
+        </Style>
     </Application.Resources>
 </Application>
