@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="920">
     <ScrollViewer Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
         <DockPanel>
             <Grid HorizontalAlignment="Right">
                 <Border  HorizontalAlignment="Right" VerticalAlignment="Center"  BorderBrush="Black" BorderThickness="2">
 
-                    <Grid Width="800">
+                    <Grid Width="900">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="25" />
                             <RowDefinition Height="25" />
@@ -45,7 +45,7 @@
                         <Image Name="imgLogo" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.RowSpan="3" VerticalAlignment="Top" Height="auto"  Width="auto" Grid.Row="0" Grid.Column="0" Source="/GlassProductManager;component/logo.jpg" />
 
 
-                        <Grid Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="3">
+                        <Grid Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5" Grid.RowSpan="3">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"/>
                                 <RowDefinition Height="25"/>
@@ -56,6 +56,8 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Label Name="lblQuoteNo" Content="Quote No.:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
                             <TextBox  Name="txtQuoteNumber" TextWrapping="Wrap" Width="90"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" LostFocus="txtQuoteNumber_LostFocus" />
@@ -63,44 +65,26 @@
                             <TextBox  Name="txtCustomerPO" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" LostFocus="txtCustomerPO_LostFocus"/>
                             <Label Name="lblQuoteCreatedOn" Content="Quote Created On:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
                             <DatePicker Name="dtQuoteCreatedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" />
-                            <Label Name="lblRequestedShipDate" Content="Requested Ship Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
+                            <Label Name="lblRequestedShipDate" Content="Requested Date:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" />
                             <DatePicker Name="dtQuoteRequestedOn"  HorizontalAlignment="Left"  VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" />
-                            <Label Name="lblPaymentType" Content="Payment Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                            <ComboBox Name="cmbPaymentType"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="2" Grid.Column="1"/>
-                            <Label Name="lblQuoteStatus" Content="Quote Status:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" />
-                            <ComboBox Name="cmbQuoteStatus"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="100" Grid.Row="2" Grid.Column="3" SelectionChanged="cmbQuoteStatus_SelectionChanged"/>
+                            <Label Name="lblPaymentType" Content="Payment Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
+                            <ComboBox Name="cmbPaymentType"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="50" Grid.Row="0" Grid.Column="5"/>
+                            <Label Name="lblQuoteStatus" Content="Quote Status:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" />
+                            <ComboBox Name="cmbQuoteStatus"  HorizontalAlignment="Left"  VerticalAlignment="Center" Width="50" Grid.Row="1" Grid.Column="5" SelectionChanged="cmbQuoteStatus_SelectionChanged"/>
                         </Grid>
 
 
                         <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="90"/>
-                                <ColumnDefinition Width="90"/>
-                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="290"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="110"/>
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                            <controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="130"/>
-                            <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Text="Name/Quote No." LostFocus="txtSmartSearch_LostFocus">
-                        <controls:AutoCompleteBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Width="600">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50" />
-                                        <ColumnDefinition Width="50" />
-                                        <ColumnDefinition Width="50" />
-                                        <ColumnDefinition Width="50" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock  TextWrapping="Wrap" Width="50"  HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding FirstName}" Grid.Column="0"/>
-                                    <TextBlock  TextWrapping="Wrap" Width="50"  HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding LastName}" Grid.Column="1"/>
-                                    <TextBlock  TextWrapping="Wrap" Width="50"  HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding Phone}" Grid.Column="2"/>
-                                    <TextBlock  TextWrapping="Wrap" Width="50"  HorizontalAlignment="Left" VerticalAlignment="Center"  Text="{Binding QuoteNumber}" Grid.Column="3"/>
-                                </Grid>
-                            </DataTemplate>
-                        </controls:AutoCompleteBox.ItemTemplate>
-                    </controls:AutoCompleteBox>-->
+                            <controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="280"/>
 
                             <Button Name="btnOpenQuote" Content="Open Quote"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Grid.Row="0" Grid.Column="2" Click="btnOpenQuote_Click" Margin="0,2,0,0"/>
                             <Button Name="btnNewQuote" Content="New Quote"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Grid.Row="0" Grid.Column="3" Click="btnNewQuote_Click" />
@@ -161,7 +145,7 @@
 
                         <DataGrid AutoGenerateColumns="False" CanUserAddRows="True"  CanUserDeleteRows="True" DataGridCell.Selected="DataGrid_GotFocus" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="11" Grid.ColumnSpan="6" SelectionMode="Single" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgQuoteItems_LostFocus"  >
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Line Item No." Binding="{Binding LineID}" Width="85" SortDirection="Ascending">
+                                <DataGridTextColumn Header="Line Item No." Binding="{Binding LineID}" Width="90" SortDirection="Ascending">
                                     <DataGridTextColumn.CellStyle>
                                         <Style>
                                             <Setter Property="TextBlock.TextAlignment" Value="Center" />
@@ -178,16 +162,16 @@
                                         </Style>
                                     </DataGridTextColumn.EditingElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="Dimension (in)" Binding="{Binding Dimension}" Width="90"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Sq.Ft." Binding="{Binding TotalSqFt}" Width="50"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Price/Pc" Binding="{Binding UnitPrice}" Width="80">
+                                <DataGridTextColumn Header="Dimension (in)" Binding="{Binding Dimension}" Width="110"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Sq.Ft." Binding="{Binding TotalSqFt}" Width="70"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Price/Pc ($)" Binding="{Binding UnitPrice}" Width="100">
                                     <DataGridTextColumn.CellStyle>
                                         <Style>
                                             <Setter Property="TextBlock.TextAlignment" Value="Right" />
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="90"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Total ($)" Binding="{Binding Total}" Width="100"></DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
 

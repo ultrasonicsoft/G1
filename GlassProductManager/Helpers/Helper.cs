@@ -35,14 +35,7 @@ namespace GlassProductManager
             bool result = false;
             if (Regex.IsMatch(input.Text, @"^\d+$"))
             {
-                Style txtNormalStyle;
-                FrameworkElement frameworkElement;
-                frameworkElement = new FrameworkElement();
-                //textBoxNormalStyle = (Style)frameworkElement.TryFindResource("textBoxNormalStyle");
-                txtNormalStyle = (Style)frameworkElement.TryFindResource("DefaultTextBox");
-                input.Style = txtNormalStyle;
-
-                //input.Style = null;
+                SetToDefaultStyle(input);
                 result = true;
             }
             else
@@ -57,12 +50,22 @@ namespace GlassProductManager
             return result;
         }
 
+        private static void SetToDefaultStyle(TextBox input)
+        {
+            Style txtNormalStyle;
+            FrameworkElement frameworkElement;
+            frameworkElement = new FrameworkElement();
+            txtNormalStyle = (Style)frameworkElement.TryFindResource("DefaultTextBox");
+            input.Style = txtNormalStyle;
+        }
+
         internal static bool IsNonEmpty(TextBox input)
         {
             bool result = false;
             if (false == string.IsNullOrEmpty(input.Text))
             {
-                input.Style = null;
+                SetToDefaultStyle(input);
+
                 result = true;
             }
             else
@@ -82,7 +85,7 @@ namespace GlassProductManager
 
             if (input.Text == string.Empty)
             {
-                input.Style = null;
+                SetToDefaultStyle(input);
                 return true;
             }
             if (Regex.IsMatch(input.Text, @"^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$"))
@@ -107,7 +110,7 @@ namespace GlassProductManager
             bool result = false;
             if (input.Text == string.Empty)
             {
-                input.Style = null;
+                SetToDefaultStyle(input);
                 return true;
             }
 
@@ -133,13 +136,15 @@ namespace GlassProductManager
 
             if (input.Text == "0.00")
             {
-                input.Style = null;
+                SetToDefaultStyle(input);
                 return true;
             }
 
             if (false == string.IsNullOrEmpty(input.Text) && Regex.IsMatch(input.Text, @"^[0-9]*(?:\.[0-9]*)?$"))
             {
-                input.Style = null;
+                SetToDefaultStyle(input);
+                if (input.Text == "0.00")
+                //input.Style = null;
                 result = true;
             }
             else

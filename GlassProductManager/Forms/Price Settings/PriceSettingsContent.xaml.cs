@@ -81,11 +81,11 @@ namespace GlassProductManager
 
         private void SetGlassDetailsControlsStatus(bool status)
         {
-            txtCutoutSqFtRate.IsReadOnly = status;
-            txtTemperedRate.IsReadOnly = status;
-            txtPolishStraightRate.IsReadOnly = status;
-            txtPolishShapeRate.IsReadOnly = status;
-            txtMiterRate.IsReadOnly = status;
+            txtCutoutSqFtRate.IsEnabled = status;
+            txtTemperedRate.IsEnabled = status;
+            txtPolishStraightRate.IsEnabled = status;
+            txtPolishShapeRate.IsEnabled = status;
+            txtMiterRate.IsEnabled = status;
         }
 
         private void FillGlassTypes()
