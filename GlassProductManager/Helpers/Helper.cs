@@ -35,7 +35,14 @@ namespace GlassProductManager
             bool result = false;
             if (Regex.IsMatch(input.Text, @"^\d+$"))
             {
-                input.Style = null;
+                Style txtNormalStyle;
+                FrameworkElement frameworkElement;
+                frameworkElement = new FrameworkElement();
+                //textBoxNormalStyle = (Style)frameworkElement.TryFindResource("textBoxNormalStyle");
+                txtNormalStyle = (Style)frameworkElement.TryFindResource("DefaultTextBox");
+                input.Style = txtNormalStyle;
+
+                //input.Style = null;
                 result = true;
             }
             else

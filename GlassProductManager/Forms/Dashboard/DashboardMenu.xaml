@@ -4,10 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <StackPanel Grid.Row="1" Grid.Column="0" Height="auto" Background="DarkGray">
-            <ToggleButton Content="Home" Focusable="True" Height="40" Name="btnHome" Checked="btnHome_Checked"/>
+             d:DesignHeight="700" d:DesignWidth="300">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="LightBackground" Color="#2D2D30"/>
+        
+    </UserControl.Resources>
+    <Grid >
+        <StackPanel Grid.Row="1" Grid.Column="0" Height="auto" Background="Gray">
+            <ToggleButton Content="Home" Focusable="True" Height="40" Name="btnHome" Checked="btnHome_Checked" />
             <ToggleButton Content="Create New Quote" Focusable="True" Height="40" Name="btnCreateNewQuote" Checked="btnCreateNewQuote_Checked" />
             <ToggleButton Content="Price Settings" Focusable="True" Height="40" Name="btnPriceSettings" Checked="btnPriceSettings_Checked"/>
             <ToggleButton Content="Customer Settings" Focusable="True" Height="40" Name="btnCustomerSettings" Checked="btnCustomerSettings_Checked" />
@@ -16,7 +20,6 @@
             <ToggleButton Content="Invoice" Focusable="True" Height="40" x:Name="btnInvoice" Checked="btnInvoice_Checked" />
             <ToggleButton Content="Payment" Focusable="True" Height="40" x:Name="btnMakePayment" Checked="btnMakePayment_Checked" />
             <ToggleButton Content="Commander View" Focusable="True" Height="40" Name="btnCommanderSection" Checked="btnCommanderSection_Checked" />
-
         </StackPanel>
     </Grid>
 </UserControl>

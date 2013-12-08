@@ -7,11 +7,9 @@
         Title="Glass Manager" Height="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}" Width="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}">
 
     <Window.Resources>
-        <SolidColorBrush x:Key="BackgroundKey" Color="LightGray" />
-
+        <SolidColorBrush x:Key="LightBackground" Color="#2D2D30"/>
     </Window.Resources>
-    <!--<Grid >-->
-        <Grid Background="{StaticResource BackgroundKey}">
+    <Grid Background="{StaticResource LightBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>

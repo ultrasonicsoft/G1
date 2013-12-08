@@ -2,10 +2,17 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:pageTransitions="clr-namespace:WpfPageTransitions;assembly=WpfPageTransitions"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Title="Glass Manager" Height="200" Width="300">
-    <Grid>
-        <Grid.RowDefinitions>
+        WindowStartupLocation="CenterScreen" 
+        xmlns:System="clr-namespace:System;assembly=mscorlib" Title="Glass Manager"
+        
+        Height="200" Width="350"
+         ResizeMode="NoResize" WindowStyle="None" >
+    <Window.Resources>
+        <SolidColorBrush x:Key="LightBackground" Color="#2D2D30"/>
+    </Window.Resources>
+    
+    <Grid Background="{StaticResource LightBackground}" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
