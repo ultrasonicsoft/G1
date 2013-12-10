@@ -157,7 +157,21 @@ namespace GlassProductManager
             return result;
         }
 
+        internal static bool IsValidCurrency(string input)
+        {
+            bool result = false;
 
+            if (input == "0.00")
+            {
+                return true;
+            }
+
+            if (false == string.IsNullOrEmpty(input) && Regex.IsMatch(input, @"^[0-9]*(?:\.[0-9]*)?$"))
+            {
+                result = true;
+            }
+            return result;
+        }
 
     }
 }

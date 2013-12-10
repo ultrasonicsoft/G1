@@ -158,6 +158,11 @@ namespace GlassProductManager
             {
                 if (item == null || item.Total == null)
                     continue;
+
+                if (false == Helper.IsValidCurrency(item.Total))
+                {
+                    continue;
+                }
                 subTotal += double.Parse(item.Total);
             }
             lblSubTotal.Content = "$ " + subTotal.ToString("0.00");
@@ -472,6 +477,7 @@ namespace GlassProductManager
         private void dgQuoteItems_LostFocus(object sender, RoutedEventArgs e)
         {
             UpdateQuoteTotal();
+            dgQuoteItems.SelectedIndex = dgQuoteItems.Items.Count -1;
         }
 
         private void txtEnergySurcharge_TextChanged(object sender, TextChangedEventArgs e)

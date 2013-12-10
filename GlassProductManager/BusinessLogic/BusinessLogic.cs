@@ -784,7 +784,7 @@ namespace GlassProductManager
                 {
                     payment = new InvoicePaymentEntity();
                     payment.ID = int.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.ID].ToString());
-                    payment.PaymentDate = result.Tables[0].Rows[rowIndex][ColumnNames.PaymentDate].ToString();
+                    payment.PaymentDate = DateTime.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.PaymentDate].ToString()).ToShortDateString();
                     payment.Amount = double.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.Amount].ToString()).ToString("0.00");
                     payment.Description = result.Tables[0].Rows[rowIndex][ColumnNames.Description].ToString();
 

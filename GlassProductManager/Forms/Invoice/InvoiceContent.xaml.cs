@@ -868,5 +868,15 @@ namespace GlassProductManager
                 parent.ucMainContent.ShowPage(invoice);
             }
         }
+
+        private void dgPaymentDetails_LostFocus(object sender, RoutedEventArgs e)
+        {
+            dgPaymentDetails.SelectedIndex = -1;
+        }
+
+        private void dgQuoteItems_LostFocus(object sender, RoutedEventArgs e)
+        {
+            dgQuoteItems.SelectedIndex = -1;
+        }
     }
 }
