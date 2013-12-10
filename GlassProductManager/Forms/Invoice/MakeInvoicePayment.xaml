@@ -188,7 +188,7 @@
                                 <ColumnDefinition Width="80"/>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <DataGrid AutoGenerateColumns="False" Width="400" HorizontalAlignment="Left" Name="dgPaymentDetails" Grid.RowSpan="6" Margin="0,0,0,0" Grid.Row="0" Grid.ColumnSpan="5" SelectionMode="Single" ItemsSource="{Binding allPaymentData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" SelectionChanged="dgPaymentDetails_SelectionChanged"  >
+                            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Width="400" HorizontalAlignment="Left" Name="dgPaymentDetails" Grid.RowSpan="6" Margin="0,0,0,0" Grid.Row="0" Grid.ColumnSpan="5" SelectionMode="Single" ItemsSource="{Binding allPaymentData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" SelectionChanged="dgPaymentDetails_SelectionChanged"  >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Payment Date" Binding="{Binding PaymentDate}" Width="90" SortDirection="Descending">
                                         <DataGridTextColumn.CellStyle>
