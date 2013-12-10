@@ -561,7 +561,7 @@
         <!-- *********************************  Datagrid Style  ********************************* -->
       <Style TargetType="DataGrid">
             <Setter Property="SelectionUnit" Value="FullRow"/>
-            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Background" Value="{StaticResource LightBackground}"/>
