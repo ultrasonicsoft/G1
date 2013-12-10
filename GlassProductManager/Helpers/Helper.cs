@@ -143,8 +143,7 @@ namespace GlassProductManager
             if (false == string.IsNullOrEmpty(input.Text) && Regex.IsMatch(input.Text, @"^[0-9]*(?:\.[0-9]*)?$"))
             {
                 SetToDefaultStyle(input);
-                if (input.Text == "0.00")
-                //input.Style = null;
+                
                 result = true;
             }
             else
