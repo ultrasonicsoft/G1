@@ -194,6 +194,7 @@
                                         <DataGridTextColumn.CellStyle>
                                             <Style>
                                                 <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                                <Setter Property="TextBlock.Foreground" Value="White" />
                                             </Style>
                                         </DataGridTextColumn.CellStyle>
                                     </DataGridTextColumn>
@@ -202,6 +203,7 @@
                                         <DataGridTextColumn.CellStyle>
                                             <Style>
                                                 <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                                                <Setter Property="TextBlock.Foreground" Value="White" />
                                             </Style>
                                         </DataGridTextColumn.CellStyle>
                                     </DataGridTextColumn>
@@ -209,6 +211,7 @@
                                         <DataGridTextColumn.EditingElementStyle>
                                             <Style TargetType="TextBox">
                                                 <Setter Property="AcceptsReturn" Value="true"/>
+                                                <Setter Property="TextBlock.Foreground" Value="White" />
                                             </Style>
                                         </DataGridTextColumn.EditingElementStyle>
                                     </DataGridTextColumn>
