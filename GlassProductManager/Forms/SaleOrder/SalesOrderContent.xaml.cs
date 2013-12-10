@@ -61,11 +61,21 @@ namespace GlassProductManager
             FillLeadTime();
             FillPaymentTypes();
             FillSmartSearchData();
+            FillAllSalesOrderNumbers();
+        }
+
+        private void FillAllSalesOrderNumbers()
+        {
+            var result = BusinessLogic.GetAllSalesOrderNumbers();
+            cmbSalesOrderNumbers.DisplayMemberPath = ColumnNames.Type;
+            cmbSalesOrderNumbers.SelectedValuePath = ColumnNames.ID;
+            cmbSalesOrderNumbers.ItemsSource = result.DefaultView;
+            cmbSalesOrderNumbers.SelectedIndex = -1;
         }
 
         private void FillSmartSearchData()
         {
-            txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
+            //txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
         }
 
         private void FillShippingMethods()
@@ -697,23 +707,16 @@ namespace GlassProductManager
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtSmartSearch.Text))
+            if (cmbSalesOrderNumbers.SelectedIndex < 0 && cmbSalesOrderNumbers.SelectedItem == null)
             {
-                Helper.ShowErrorMessageBox("Please select Customer/Quote No./SO No.");
+                Helper.ShowErrorMessageBox("Please select Sales Order Number");
                 return;
             }
-            string quoteNumber = string.Empty;
-            foreach (string item in txtSmartSearch.Text.Split('-'))
-            {
-                if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
-                {
-                    quoteNumber = item.Trim();
-                    break;
-                }
-            }
+            string quoteNumber = (cmbSalesOrderNumbers.SelectedItem as System.Data.DataRowView)[0].ToString();
+            
             if (string.IsNullOrEmpty(quoteNumber))
             {
-                Helper.ShowErrorMessageBox("Invalid Quote Number");
+                Helper.ShowErrorMessageBox("Invalid Quote Number associated with this Sales order. No data found!");
                 return;
             }
             OpenSelectedSaleOrder(quoteNumber);

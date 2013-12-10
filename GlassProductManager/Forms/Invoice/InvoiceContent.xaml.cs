@@ -85,6 +85,8 @@ namespace GlassProductManager
             FillPaymentTypes();
             FillSmartSearchData();
             FillInvoiceTypes();
+
+            FillAllInvoiceNumbers();
         }
 
         private void FillInvoiceTypes()
@@ -98,7 +100,15 @@ namespace GlassProductManager
 
         private void FillSmartSearchData()
         {
-            txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
+            //txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
+        }
+        private void FillAllInvoiceNumbers()
+        {
+            var result = BusinessLogic.GetAllInvoiceNumbers();
+            cmbInvoiceNumbers.DisplayMemberPath = ColumnNames.Type;
+            cmbInvoiceNumbers.SelectedValuePath = ColumnNames.ID;
+            cmbInvoiceNumbers.ItemsSource = result.DefaultView;
+            cmbInvoiceNumbers.SelectedIndex = -1;
         }
 
         private void FillShippingMethods()
@@ -800,23 +810,16 @@ namespace GlassProductManager
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtSmartSearch.Text))
+            if (cmbInvoiceNumbers.SelectedIndex < 0 && cmbInvoiceNumbers.SelectedItem == null)
             {
-                Helper.ShowErrorMessageBox("Please select Customer/Quote No./SO No.");
+                Helper.ShowErrorMessageBox("Please select Invoice!");
                 return;
             }
-            string quoteNumber = string.Empty;
-            foreach (string item in txtSmartSearch.Text.Split('-'))
-            {
-                if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
-                {
-                    quoteNumber = item.Trim();
-                    break;
-                }
-            }
+            string quoteNumber = (cmbInvoiceNumbers.SelectedItem as System.Data.DataRowView)[0].ToString();
+           
             if (string.IsNullOrEmpty(quoteNumber))
             {
-                Helper.ShowErrorMessageBox("Invalid Quote Number");
+                Helper.ShowErrorMessageBox("Invalid Quote Number associated with this Invoice. No data found!");
                 return;
             }
             OpenSelectedInvoice(quoteNumber);

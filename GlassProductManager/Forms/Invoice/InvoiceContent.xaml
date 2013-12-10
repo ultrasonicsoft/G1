@@ -76,14 +76,17 @@
                         <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="175"/>
                                 <ColumnDefinition Width="90"/>
                                 <ColumnDefinition Width="90"/>
                                 <ColumnDefinition Width="90"/>
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                            <controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="220"/>
+                            <ComboBox Name="cmbInvoiceNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="1" IsEditable="True" />
+
+                            <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="220"/>-->
+                         
                             <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Text="Name/Quote No." LostFocus="txtSmartSearch_LostFocus">
                         <controls:AutoCompleteBox.ItemTemplate>
                             <DataTemplate>
@@ -255,8 +258,8 @@
                                 <ColumnDefinition Width="110"/>
                                 <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="btnDelete" Content="_Delete"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="0" Width="75" Margin="0,0,0,3" Click="btnDelete_Click" />
-                            <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnExportPdf_Click" />
+                            <Button Name="btnDelete" Content="Delete"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="0" Width="75" Margin="0,0,0,3" Click="btnDelete_Click" />
+                            <Button Name="btnExportPdf" Content="Export PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnExportPdf_Click" />
                             <Button Name="btnOpenMakePayment" Content="Make Payment"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="120" Click="btnOpenMakePayment_Click" />
                         </Grid>
                     </Grid>

@@ -77,6 +77,8 @@ namespace GlassProductManager
 
             FillPaymentTypes();
             FillQuoteStatus();
+
+            FillAllQuoteNumbers();
         }
 
         private void FillCustomerNames()
@@ -89,7 +91,7 @@ namespace GlassProductManager
 
         private void FillSmartSearchData()
         {
-            txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
+            //txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
         }
 
         private void FillPaymentTypes()
@@ -108,6 +110,15 @@ namespace GlassProductManager
             cmbQuoteStatus.SelectedValuePath = ColumnNames.ID;
             cmbQuoteStatus.ItemsSource = result.DefaultView;
             cmbQuoteStatus.SelectedIndex = 0;
+        }
+
+        private void FillAllQuoteNumbers()
+        {
+            var result = BusinessLogic.GetAllQuoteNumbers();
+            cmbQuoteNumbers.DisplayMemberPath = ColumnNames.Type;
+            cmbQuoteNumbers.SelectedValuePath = ColumnNames.ID;
+            cmbQuoteNumbers.ItemsSource = result.DefaultView;
+            cmbQuoteNumbers.SelectedIndex = -1;
         }
 
         private void SetOperatorAccess()
@@ -653,20 +664,25 @@ namespace GlassProductManager
 
         private void btnOpenQuote_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtSmartSearch.Text))
+            //if (string.IsNullOrEmpty(txtSmartSearch.Text))
+            //{
+            //    Helper.ShowErrorMessageBox("Please select Customer/Quote No. first");
+            //    return;
+            //}
+            if (cmbQuoteNumbers.SelectedIndex <0 &&  cmbQuoteNumbers.SelectedItem == null)
             {
-                Helper.ShowErrorMessageBox("Please select Customer/Quote No. first");
+                Helper.ShowErrorMessageBox("Please select Quote!");
                 return;
             }
-            string quoteNumber = string.Empty;
-            foreach (string item in txtSmartSearch.Text.Split('-'))
-            {
-                if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
-                {
-                    quoteNumber = item.Trim();
-                    break;
-                }
-            }
+            string quoteNumber = (cmbQuoteNumbers.SelectedItem as System.Data.DataRowView)[1].ToString();
+            //foreach (string item in txtSmartSearch.Text.Split('-'))
+            //{
+            //    if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
+            //    {
+            //        quoteNumber = item.Trim();
+            //        break;
+            //    }
+            //}
             if (string.IsNullOrEmpty(quoteNumber))
             {
                 Helper.ShowErrorMessageBox("Invalid Quote Number");

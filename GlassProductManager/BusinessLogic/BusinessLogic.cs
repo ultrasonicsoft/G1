@@ -1296,6 +1296,62 @@ namespace GlassProductManager
             return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
         }
 
+        internal static DataTable GetAllQuoteNumbers()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllQuoteNumbers, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static DataTable GetAllInvoiceNumbers()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllInvoiceNumbers, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static DataTable GetAllSalesOrderNumbers()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllSalesOrderNumbers, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
+        internal static DataTable GetAllWorksheetNumbers()
+        {
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllWorksheetNumbers, null);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result == null || result.Tables == null || result.Tables.Count == 0 ? null : result.Tables[0];
+        }
+
         internal static ObservableCollection<QuoteMasterEntity> GetQuoteMasterData()
         {
             ObservableCollection<QuoteMasterEntity> quoteMasterData = null;

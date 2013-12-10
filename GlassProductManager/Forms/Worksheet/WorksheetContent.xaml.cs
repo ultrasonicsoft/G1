@@ -61,11 +61,22 @@ namespace GlassProductManager
             FillLeadTime();
             FillPaymentTypes();
             FillSmartSearchData();
+
+            FillAllWorksheetNumbers();
+        }
+
+        private void FillAllWorksheetNumbers()
+        {
+            var result = BusinessLogic.GetAllWorksheetNumbers();
+            cmbWorksheetNumbers.DisplayMemberPath = ColumnNames.Type;
+            cmbWorksheetNumbers.SelectedValuePath = ColumnNames.ID;
+            cmbWorksheetNumbers.ItemsSource = result.DefaultView;
+            cmbWorksheetNumbers.SelectedIndex = -1;
         }
 
         private void FillSmartSearchData()
         {
-            txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
+            //txtSmartSearch.ItemsSource = BusinessLogic.GetSmartSearchData();
         }
 
         private void FillShippingMethods()
@@ -639,23 +650,15 @@ namespace GlassProductManager
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtSmartSearch.Text))
+            if (cmbWorksheetNumbers.SelectedIndex < 0 && cmbWorksheetNumbers.SelectedItem == null)
             {
-                Helper.ShowErrorMessageBox("Please select Customer/Quote No./SO No.");
+                Helper.ShowErrorMessageBox("Please select Worksheet number");
                 return;
             }
-            string quoteNumber = string.Empty;
-            foreach (string item in txtSmartSearch.Text.Split('-'))
-            {
-                if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
-                {
-                    quoteNumber = item.Trim();
-                    break;
-                }
-            }
+            string quoteNumber = (cmbWorksheetNumbers.SelectedItem as System.Data.DataRowView)[0].ToString();
             if (string.IsNullOrEmpty(quoteNumber))
             {
-                Helper.ShowErrorMessageBox("Invalid Quote Number");
+                Helper.ShowErrorMessageBox("Invalid Quote Number associated with this Worksheet. No data found!");
                 return;
             }
             OpenSelectedWorksheet(quoteNumber);

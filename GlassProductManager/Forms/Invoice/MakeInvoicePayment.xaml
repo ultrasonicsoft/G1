@@ -84,7 +84,7 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                            <controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="220"/>
+                            <ComboBox Name="cmbInvoiceNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="1" IsEditable="True" />
 
                             <Button Name="btnOpenInvoice" Content="Open Invoice"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Margin="0,2,0,0" Click="btnOpenSO_Click"/>
                         </Grid>

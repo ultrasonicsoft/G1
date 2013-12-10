@@ -74,5 +74,9 @@ namespace GlassProductManager
         internal const string GetCustomerID = "[GetCustomerID]";
         internal const string IsInvoicePresent = "[IsInvoicePresent]";
         internal const string DeleteInvoice = "[DeleteInvoice]";
+        internal const string GetAllQuoteNumbers = "[GetAllQuoteNumbers]";
+        internal const string GetAllInvoiceNumbers = "[GetAllInvoiceNumbers]";
+        internal const string GetAllSalesOrderNumbers = "[GetAllSalesOrderNumbers]";
+        internal const string GetAllWorksheetNumbers = "[GetAllWorksheetNumbers]";
     }
 }
