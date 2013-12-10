@@ -1590,5 +1590,13 @@ namespace GlassProductManager
         {
             Helper.IsValidCurrency(txtAdditionalCostForItem);
         }
+
+        private void btnUpdteLineItemGrid_Click(object sender, RoutedEventArgs e)
+        {
+            dgQuoteItems.CanUserAddRows = false;
+            dgQuoteItems.SelectedIndex = -1;
+            dgQuoteItems.CanUserAddRows = true;
+
+        }
     }
 }
