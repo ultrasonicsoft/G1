@@ -32,8 +32,8 @@
             Value="10" />
             <Setter Property="MaxWidth"
             Value="120" />
-            <Setter Property="Height"
-            Value="22" />
+            <Setter Property="Height"  Value="22" />
+            <Setter Property="FontSize"  Value="12" />
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="AllowDrop"
             Value="true" />
@@ -79,6 +79,7 @@
             <Setter Property="AllowDrop"
             Value="true" />
             <Setter Property="ToolTip" Value="This field can not be empty!"/>
+            <Setter Property="FontSize"  Value="12" />
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -116,6 +117,7 @@
             <Setter Property="AllowDrop"
             Value="true" />
             <Setter Property="ToolTip" Value="Invalid phone number!"/>
+            <Setter Property="FontSize"  Value="12" />
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -153,6 +155,7 @@
             <Setter Property="AllowDrop"
             Value="true" />
             <Setter Property="ToolTip" Value="Invalid Email Address!"/>
+            <Setter Property="FontSize"  Value="12" />
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -190,6 +193,7 @@
             <Setter Property="AllowDrop"
             Value="true" />
             <Setter Property="ToolTip" Value="Invalid currency entered!"/>
+            <Setter Property="FontSize"  Value="12" />
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -198,6 +202,7 @@
                             <Border Background="{StaticResource TextBackColor}" BorderBrush="#FF888888" x:Name="Bd" CornerRadius="1" BorderThickness="1">
                                 <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
                             </Border>
+
                             <Image Name="ErrorImage" Width="15" Height="15" Margin="0,0,4,0" Source="Images/validate.png" HorizontalAlignment="Right">
 
                             </Image>
@@ -284,6 +289,7 @@
         
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="11"/>
         </Style>
 
         <!--Text Box-->
@@ -297,6 +303,7 @@
             <Setter Property="Background" Value="{StaticResource TextBoxBackground}"/>
             <Setter Property="Foreground" Value="{StaticResource Foreground}"/>
             <Setter Property="CaretBrush" Value="{StaticResource Foreground}"/>
+            <Setter Property="FontSize"  Value="12" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBox}">
@@ -314,7 +321,8 @@
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
-            </Setter>
+            </Setter>            
+
         </Style>
 
         <Style TargetType="TextBox" x:Key="DefaultTextBox">
@@ -339,6 +347,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="FontSize"  Value="12" />
         </Style>
         <Style x:Key="{x:Type PasswordBox}" TargetType="{x:Type PasswordBox}">
             <Setter Property="SnapsToDevicePixels"
@@ -647,11 +656,11 @@
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+                                        <Setter Property="Background" Value="{StaticResource BackgroundHighlighted}"/>
                                         <!--<Setter Property="Background" Value="{StaticResource BackgroundHighlighted}"/>-->
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+                                        <Setter Property="Background" Value="{StaticResource BackgroundHighlighted}"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -704,7 +713,7 @@
 
         <Style  TargetType="CheckBox">
             <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-            <Setter Property="FontSize" Value="10.667" />
+            <Setter Property="FontSize" Value="11" />
             <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="VerticalContentAlignment" Value="Center" />

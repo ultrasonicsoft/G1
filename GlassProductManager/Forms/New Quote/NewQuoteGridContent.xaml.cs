@@ -1652,5 +1652,20 @@ namespace GlassProductManager
                 }
             }
         }
+
+        private void btnAddNewLineItem_Click(object sender, RoutedEventArgs e)
+        {
+            QuoteGridEntity entity = new QuoteGridEntity();
+            allQuoteData.Add(entity);
+
+        }
+
+        private void btnDeleteLineItem_Click(object sender, RoutedEventArgs e)
+        {
+            QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
+            if (selectedItem == null)
+                return;
+            allQuoteData.Remove(selectedItem);
+        }
     }
 }

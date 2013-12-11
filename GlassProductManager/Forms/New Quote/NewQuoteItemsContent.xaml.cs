@@ -994,6 +994,9 @@ namespace GlassProductManager
             dgCutoutDetails.Focus();
 
             currentItem.IsCutout = true;
+            
+            btnAddNewCutout_Click(null, null);
+
             UpdateCurrentTotal();
         }
 
