@@ -145,16 +145,16 @@
                         <CheckBox Name="cbUseAsDefault" Content="Use as default" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="5" Checked="cbUseAsDefault_Checked" Unchecked="cbUseAsDefault_Unchecked" />
                         <Button Name="btnUpdteLineItemGrid" Content="Refresh Line Items" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="5" Margin="0,0,5,0" Click="btnUpdteLineItemGrid_Click" />
 
-                        <DataGrid AutoGenerateColumns="False" CanUserAddRows="True"  CanUserDeleteRows="True" DataGridCell.Selected="DataGrid_GotFocus" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="11" Grid.ColumnSpan="6" SelectionMode="Extended" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgQuoteItems_LostFocus"  >
+                        <DataGrid AutoGenerateColumns="False" CanUserAddRows="True"  CanUserDeleteRows="True" DataGridCell.Selected="DataGrid_GotFocus" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="11" Grid.ColumnSpan="6" SelectionMode="Extended" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgQuoteItems_LostFocus" CellEditEnding="dgQuoteItems_CellEditEnding"  >
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Line Item No." Binding="{Binding LineID}" Width="90" SortDirection="Ascending">
-                                    <DataGridTextColumn.CellStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.TextAlignment" Value="Center" />
-                                            <Setter Property="TextBlock.Foreground" Value="White" />
-                                        </Style>
-                                    </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Line Item No." Binding="{Binding LineID}" Width="115" SortDirection="Ascending"/>
+                                <!--<DataGridTextColumn.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                        <Setter Property="TextBlock.Foreground" Value="White" />
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>-->
+
                                 <!--TODO: Make it Combo box-->
                                 <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="45" />
                                 <!--<DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="350" ></DataGridTextColumn>-->
@@ -162,28 +162,28 @@
                                     <DataGridTextColumn.EditingElementStyle>
                                         <Style TargetType="TextBox">
                                             <Setter Property="AcceptsReturn" Value="true"/>
-                                            <Setter Property="TextBlock.Foreground" Value="White" />
+                                            <!--<Setter Property="TextBlock.Foreground" Value="White" />-->
                                         </Style>
                                     </DataGridTextColumn.EditingElementStyle>
                                 </DataGridTextColumn>
                                 <DataGridTextColumn Header="Dimension (in)" Binding="{Binding Dimension}" Width="110"></DataGridTextColumn>
                                 <DataGridTextColumn Header="Sq.Ft." Binding="{Binding TotalSqFt}" Width="70"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Price/Pc ($)" Binding="{Binding UnitPrice}" Width="100">
-                                    <DataGridTextColumn.CellStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.TextAlignment" Value="Right" />
-                                            <Setter Property="TextBlock.Foreground" Value="White" />
-                                        </Style>
-                                    </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn Header="Total ($)" Binding="{Binding Total}" Width="100">
-                                    <DataGridTextColumn.CellStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.TextAlignment" Value="Right" />
-                                            <Setter Property="TextBlock.Foreground" Value="White" />
-                                        </Style>
-                                    </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Price/Pc ($)" Binding="{Binding UnitPrice}" Width="100" />
+                                <!--<DataGridTextColumn.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                                        <Setter Property="TextBlock.Foreground" Value="White" />
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>-->
+
+                                <DataGridTextColumn Header="Total ($)" Binding="{Binding Total}" Width="100" />
+                                <!--<DataGridTextColumn.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextAlignment" Value="Right" />
+                                        <Setter Property="TextBlock.Foreground" Value="White" />
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>-->
+
                                 <!--<DataGridTextColumn Header="Total ($)" Binding="{Binding Total}" Width="100"></DataGridTextColumn>-->
                             </DataGrid.Columns>
                         </DataGrid>

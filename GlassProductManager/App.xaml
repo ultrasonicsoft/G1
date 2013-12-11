@@ -647,10 +647,11 @@
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource BackgroundHighlighted}"/>
+                                        <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+                                        <!--<Setter Property="Background" Value="{StaticResource BackgroundHighlighted}"/>-->
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource BackgroundSelected}"/>
+                                        <Setter Property="Background" Value="{StaticResource LightBackground}"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

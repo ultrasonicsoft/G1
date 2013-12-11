@@ -477,7 +477,6 @@ namespace GlassProductManager
         private void dgQuoteItems_LostFocus(object sender, RoutedEventArgs e)
         {
             UpdateQuoteTotal();
-            dgQuoteItems.SelectedIndex = dgQuoteItems.Items.Count -1;
         }
 
         private void txtEnergySurcharge_TextChanged(object sender, TextChangedEventArgs e)
@@ -1619,6 +1618,39 @@ namespace GlassProductManager
             dgQuoteItems.SelectedIndex = -1;
             dgQuoteItems.CanUserAddRows = true;
 
+        }
+
+        private void dgQuoteItems_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            QuoteGridEntity entity = e.Row.Item as QuoteGridEntity;
+            if (entity == null)
+            {
+                return;
+            }
+            if (e.Column.DisplayIndex == 1 )
+            {
+                TextBox txtQuantity = e.EditingElement as TextBox;
+                if(txtQuantity !=null )
+                {
+                    double quantity = 0;
+                    double.TryParse(txtQuantity.Text, out quantity);
+                    double unitPrice = 0;
+                    double.TryParse(entity.UnitPrice, out unitPrice);
+                    entity.Total = (quantity * unitPrice).ToString("0.00");
+                }
+            }
+            else if ( e.Column.DisplayIndex == 5)
+            {
+                TextBox txtUnitPrice = e.EditingElement as TextBox;
+                if (txtUnitPrice != null)
+                {
+                    double unitPrice = 0;
+                    double.TryParse(txtUnitPrice.Text, out unitPrice);
+                    double quantity = 0;
+                    double.TryParse(entity.Quantity.ToString(), out quantity);
+                    entity.Total = (quantity * unitPrice).ToString("0.00");
+                }
+            }
         }
     }
 }
