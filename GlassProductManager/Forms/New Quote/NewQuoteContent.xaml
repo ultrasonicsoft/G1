@@ -6,7 +6,7 @@
              xmlns:pageTransitions="clr-namespace:WpfPageTransitions;assembly=WpfPageTransitions"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <!--<Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="5"/>
@@ -21,5 +21,24 @@
         <pageTransitions:PageTransition HorizontalAlignment="Right" Grid.Row="0" Grid.Column="2" Name="ucNewQuoteGrid" TransitionType="Grow" />
 
         
+    </Grid>-->
+    <Grid>
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="6*" MinHeight="100"/>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*"  MinHeight="50"/>
+        </Grid.RowDefinitions>-->
+
+        <DockPanel Grid.Row="0">
+            <Expander ExpandDirection="Left" Header="" >
+                <Expander.Content>
+                    <Grid>
+                        <pageTransitions:PageTransition HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Name="ucNewQuoteItems" TransitionType="Grow" />
+                        <!-- this works -->
+                    </Grid>
+                </Expander.Content>
+            </Expander>
+            <pageTransitions:PageTransition HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" Name="ucNewQuoteGrid" TransitionType="Grow" />
+        </DockPanel>
     </Grid>
 </UserControl>

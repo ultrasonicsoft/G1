@@ -11,7 +11,7 @@
     </Window.Resources>
     <Grid Background="{StaticResource LightBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <!--<RowDefinition Height="30"/>-->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -19,7 +19,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         
-        <pageTransitions:PageTransition Grid.Row="0" Grid.ColumnSpan="2" Name="ucWelcomeUser" TransitionType="Grow" />
+        <pageTransitions:PageTransition Grid.Row="0" Grid.ColumnSpan="2" Name="ucWelcomeUser" TransitionType="Grow" Visibility="Hidden"/>
         <pageTransitions:PageTransition Grid.Row="1" Grid.Column="0" Name="ucDashboardMenu" TransitionType="Grow" />
         <pageTransitions:PageTransition Grid.Row="1" Grid.Column="1" Name="ucMainContent" TransitionType="Grow" HorizontalAlignment="Center"/>
         
