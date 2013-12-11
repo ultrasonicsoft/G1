@@ -81,8 +81,8 @@
                                 <ColumnDefinition Width="90"/>
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                            <ComboBox Name="cmbSalesOrderNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="1" IsEditable="True" />
+                            <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
+                            <ComboBox Name="cmbSalesOrderNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" IsEditable="True" SelectionChanged="cmbSalesOrderNumbers_SelectionChanged" />
 
                             <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="220"/>-->
                             <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Text="Name/Quote No." LostFocus="txtSmartSearch_LostFocus">
@@ -104,7 +104,7 @@
                         </controls:AutoCompleteBox.ItemTemplate>
                     </controls:AutoCompleteBox>-->
 
-                            <Button Name="btnOpenSO" Content="Open Sale Order"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Margin="0,2,0,0" Click="btnOpenSO_Click"/>
+                            <Button Name="btnOpenSO" Content="Open Sale Order"  Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Margin="0,2,0,0" Click="btnOpenSO_Click"/>
                         </Grid>
 
 
@@ -222,8 +222,8 @@
                                 <ColumnDefinition Width="110"/>
                                 <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="btnDelete" Content="_Delete"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="0" Width="75" Margin="0,0,0,3" Click="btnDelete_Click" />
-                            <Button Name="btnExportPdf" Content="E_xport PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnExportPdf_Click" />
+                            <Button Name="btnDelete" Content="Delete"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="0" Width="75" Margin="0,0,0,3" Click="btnDelete_Click" />
+                            <Button Name="btnExportPdf" Content="Export PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnExportPdf_Click" />
                             <Button Name="btnOpenWorksheet" Content="Open Worksheet"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="120" Click="btnOpenWorksheet_Click"/>
                         </Grid>
                     </Grid>

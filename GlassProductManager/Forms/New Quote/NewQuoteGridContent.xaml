@@ -88,7 +88,7 @@
                             <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="280"/>-->
                             <ComboBox Name="cmbQuoteNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="1" IsEditable="True" SelectionChanged="cmbQuoteNumbers_SelectionChanged" />
 
-                            <Button Name="btnOpenQuote" Content="Open Quote"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="30" Grid.Row="0" Grid.Column="2" Click="btnOpenQuote_Click" />
+                            <Button Name="btnOpenQuote" Visibility="Hidden" Content="Open Quote"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="30" Grid.Row="0" Grid.Column="2" Click="btnOpenQuote_Click" />
                             <Button Name="btnNewQuote" Content="New Quote"  HorizontalAlignment="Center" VerticalAlignment="Center"  Width="100" Height="30" Grid.Row="0" Grid.Column="3" Click="btnNewQuote_Click" />
                             <CheckBox Name="cbIsNewClient" Content="New Client?" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4"  Checked="cbIsNewClient_Checked" Unchecked="cbIsNewClient_Unchecked" />
                             <ComboBox Name="cmbCustomers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="5" SelectionChanged="cmbCustomers_SelectionChanged" />

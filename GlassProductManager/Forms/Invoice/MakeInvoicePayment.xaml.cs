@@ -703,6 +703,11 @@ namespace GlassProductManager
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
         {
+            OpenInvoice();
+        }
+
+        private void OpenInvoice()
+        {
             if (cmbInvoiceNumbers.SelectedIndex < 0 && cmbInvoiceNumbers.SelectedItem == null)
             {
                 Helper.ShowErrorMessageBox("Please select Invoice!");
@@ -842,6 +847,11 @@ namespace GlassProductManager
         private void txtAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
             Helper.IsValidCurrency(txtAmount);
+        }
+
+        private void cmbInvoiceNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OpenInvoice();
         }
     }
 }

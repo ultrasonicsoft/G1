@@ -19,7 +19,7 @@
             </Grid.ColumnDefinitions>
             <Label Content="Select Work Item:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
             <ComboBox Name="cmbWorkItemTypes" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="130" Grid.Column="1" SelectionChanged="cmbWorkItemTypes_SelectionChanged"/>
-            <Button Name="btnOpenWorkItem" Content="Load"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="30" Grid.Column="2" Click="btnOpenWorkItem_Click"/>
+            <Button Name="btnOpenWorkItem" Content="Load"  Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="30" Grid.Column="2" Click="btnOpenWorkItem_Click"/>
         </Grid>
 
         <pageTransitions:PageTransition Name="ucWorkItem"  Grid.Row="1"  TransitionType="Slide" />

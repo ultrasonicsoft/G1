@@ -39,7 +39,7 @@
                             <ColumnDefinition Width="85"/>
                             <ColumnDefinition Width="120"/>
                             <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="110"/>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
@@ -82,8 +82,8 @@
                                 <ColumnDefinition Width="90"/>
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                            <ComboBox Name="cmbInvoiceNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="1" IsEditable="True" />
+                            <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" />
+                            <ComboBox Name="cmbInvoiceNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" IsEditable="True" SelectionChanged="cmbInvoiceNumbers_SelectionChanged" />
 
                             <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="220"/>-->
                          
@@ -106,7 +106,7 @@
                         </controls:AutoCompleteBox.ItemTemplate>
                     </controls:AutoCompleteBox>-->
 
-                            <Button Name="btnOpenInvoice" Content="Open Invoice"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Margin="0,2,0,0" Click="btnOpenSO_Click"/>
+                            <Button Name="btnOpenInvoice" Visibility="Hidden" Content="Open Invoice"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" Margin="0,2,0,0" Click="btnOpenSO_Click"/>
                         </Grid>
 
 
@@ -230,7 +230,7 @@
 
 
 
-                        <CheckBox IsEnabled="False" Name="cbDollar" Content="Dollar" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
+                        <CheckBox IsEnabled="False" Name="cbDollar" Content="Dollar" HorizontalAlignment="Center" Margin="-60,0,0,0" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
 
                         <Label  Content="Energy Surcharge:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
                         <TextBox IsReadOnly="True" Name="txtEnergySurcharge" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="5" />
@@ -241,7 +241,7 @@
                         <Label Name="lblDelivery" Content="Delivery:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="15" Grid.Column="4" />
                         <TextBox IsReadOnly="True" Name="txtDelivery" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="15" Grid.Column="5"/>
 
-                        <CheckBox IsEnabled="False" Name="cbRush" Content="Rush" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
+                        <CheckBox IsEnabled="False" Name="cbRush" Content="Rush" HorizontalAlignment="Center" Margin="-60,0,0,0" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
 
                         <Label Name="lblRushOrder" Content="Rush Order:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
                         <TextBox  IsReadOnly="True" Name="txtRushOrder" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="16" Grid.Column="5" />

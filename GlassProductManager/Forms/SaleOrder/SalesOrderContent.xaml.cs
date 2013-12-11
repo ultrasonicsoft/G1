@@ -707,13 +707,18 @@ namespace GlassProductManager
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
         {
+            OpenSalesOrder();
+        }
+
+        private void OpenSalesOrder()
+        {
             if (cmbSalesOrderNumbers.SelectedIndex < 0 && cmbSalesOrderNumbers.SelectedItem == null)
             {
                 Helper.ShowErrorMessageBox("Please select Sales Order Number");
                 return;
             }
             string quoteNumber = (cmbSalesOrderNumbers.SelectedItem as System.Data.DataRowView)[0].ToString();
-            
+
             if (string.IsNullOrEmpty(quoteNumber))
             {
                 Helper.ShowErrorMessageBox("Invalid Quote Number associated with this Sales order. No data found!");
@@ -752,6 +757,11 @@ namespace GlassProductManager
             {
                 Helper.ShowErrorMessageBox("Please provide required details.");
             }
+        }
+
+        private void cmbSalesOrderNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OpenSalesOrder();
         }
     }
 }

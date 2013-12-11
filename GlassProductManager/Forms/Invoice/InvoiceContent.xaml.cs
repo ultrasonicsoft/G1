@@ -810,13 +810,18 @@ namespace GlassProductManager
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
         {
+            OpenInvoice();
+        }
+
+        private void OpenInvoice()
+        {
             if (cmbInvoiceNumbers.SelectedIndex < 0 && cmbInvoiceNumbers.SelectedItem == null)
             {
                 Helper.ShowErrorMessageBox("Please select Invoice!");
                 return;
             }
             string quoteNumber = (cmbInvoiceNumbers.SelectedItem as System.Data.DataRowView)[0].ToString();
-           
+
             if (string.IsNullOrEmpty(quoteNumber))
             {
                 Helper.ShowErrorMessageBox("Invalid Quote Number associated with this Invoice. No data found!");
@@ -877,6 +882,12 @@ namespace GlassProductManager
         private void dgQuoteItems_LostFocus(object sender, RoutedEventArgs e)
         {
             dgQuoteItems.SelectedIndex = -1;
+        }
+
+        private void cmbInvoiceNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OpenInvoice();
+
         }
     }
 }

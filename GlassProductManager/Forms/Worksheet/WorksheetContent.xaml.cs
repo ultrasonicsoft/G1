@@ -650,6 +650,11 @@ namespace GlassProductManager
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
         {
+            OpenWorksheet();
+        }
+
+        private void OpenWorksheet()
+        {
             if (cmbWorksheetNumbers.SelectedIndex < 0 && cmbWorksheetNumbers.SelectedItem == null)
             {
                 Helper.ShowErrorMessageBox("Please select Worksheet number");
@@ -713,6 +718,11 @@ namespace GlassProductManager
                 InvoiceContent invoice = new InvoiceContent(true, txtQuoteNumber.Text);
                 parent.ucMainContent.ShowPage(invoice);
             }
+        }
+
+        private void cmbWorksheetNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OpenWorksheet();
         }
     }
 }
