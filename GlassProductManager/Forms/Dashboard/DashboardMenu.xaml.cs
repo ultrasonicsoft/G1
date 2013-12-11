@@ -77,6 +77,24 @@ namespace GlassProductManager
 
         internal void ShowCurrentPage(System.Windows.Controls.Primitives.ToggleButton selectedOption, UserControl currentPage = null)
         {
+
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+            if (parent != null)
+            {
+                NewQuoteContent newQuote = parent.ucMainContent.CurrentPage as NewQuoteContent;
+
+                if (newQuote != null && selectedOption != btnCreateNewQuote)
+                {
+                    var result = Helper.ShowQuestionMessageBox("All your current Quote change will be lost. Are you sure to leave Quote page?");
+                    if (result != MessageBoxResult.Yes)
+                    {
+                        selectedOption.IsChecked = false;
+                        return;
+                    }
+
+                }
+            }
+
             foreach (KeyValuePair<System.Windows.Controls.Primitives.ToggleButton, UserControl> item in availableOptions)
             {
                 if (item.Key == selectedOption)
@@ -84,7 +102,6 @@ namespace GlassProductManager
                     item.Key.IsChecked = true;
                     if (IsIndirectCall == false)
                     {
-                        Dashboard parent = Window.GetWindow(this) as Dashboard;
                         if (parent != null)
                         {
                             parent.ucMainContent.ShowPage(currentPage);
@@ -138,7 +155,7 @@ namespace GlassProductManager
         {
             ShowCurrentPage(btnMakePayment, new MakeInvoicePayment());
         }
-        
+
         private void btnCommanderSection_Checked(object sender, RoutedEventArgs e)
         {
             ShowCurrentPage(btnCommanderSection, new CommanderSectionContent());
