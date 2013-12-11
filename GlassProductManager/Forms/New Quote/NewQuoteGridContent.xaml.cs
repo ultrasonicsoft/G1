@@ -647,7 +647,9 @@ namespace GlassProductManager
             QuoteGridEntity selectedLineItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
             if (selectedLineItem == null)
                 return;
-            selectedLineItem.Total = ((double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity).ToString("0.00");
+            double newUnitPrice =  double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
+            selectedLineItem.UnitPrice = newUnitPrice.ToString("0.00");
+            selectedLineItem.Total = (newUnitPrice * selectedLineItem.Quantity).ToString("0.00");
             UpdateQuoteTotal();
 
         }
@@ -661,7 +663,9 @@ namespace GlassProductManager
                     if (selectedLineItem == null || string.IsNullOrEmpty(txtAdditionalCostForItem.Text) || string.IsNullOrEmpty(selectedLineItem.UnitPrice))
                         continue;
 
-                    selectedLineItem.Total = ((double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice)) * selectedLineItem.Quantity).ToString("0.00");
+                    double newUnitPrice = double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
+                    selectedLineItem.UnitPrice  = newUnitPrice.ToString("0.00");
+                    selectedLineItem.Total = (newUnitPrice * selectedLineItem.Quantity).ToString("0.00");
                 }
                 UpdateQuoteTotal();
             }
@@ -1666,6 +1670,30 @@ namespace GlassProductManager
             if (selectedItem == null)
                 return;
             allQuoteData.Remove(selectedItem);
+        }
+
+        private void cmbQuoteNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbQuoteNumbers.SelectedIndex < 0 && cmbQuoteNumbers.SelectedItem == null)
+            {
+                Helper.ShowErrorMessageBox("Please select Quote!");
+                return;
+            }
+            string quoteNumber = (cmbQuoteNumbers.SelectedItem as System.Data.DataRowView)[1].ToString();
+            //foreach (string item in txtSmartSearch.Text.Split('-'))
+            //{
+            //    if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
+            //    {
+            //        quoteNumber = item.Trim();
+            //        break;
+            //    }
+            //}
+            if (string.IsNullOrEmpty(quoteNumber))
+            {
+                Helper.ShowErrorMessageBox("Invalid Quote Number");
+                return;
+            }
+            OpenSelectedQuote(quoteNumber);
         }
     }
 }

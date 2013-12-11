@@ -80,5 +80,10 @@ namespace GlassProductManager
                     break;
             }
         }
+
+        private void cmbWorkItemTypes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadSelectedWorkItem();
+        }
     }
 }

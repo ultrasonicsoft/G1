@@ -13,13 +13,13 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150" />
             </Grid.ColumnDefinitions>
             <Label Content="Select Work Item:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <ComboBox Name="cmbWorkItemTypes" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="120" Grid.Column="1"/>
-            <Button Name="btnOpenWorkItem" Content="Load"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Grid.Column="2" Click="btnOpenWorkItem_Click"/>
+            <ComboBox Name="cmbWorkItemTypes" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="130" Grid.Column="1" SelectionChanged="cmbWorkItemTypes_SelectionChanged"/>
+            <Button Name="btnOpenWorkItem" Content="Load"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="30" Grid.Column="2" Click="btnOpenWorkItem_Click"/>
         </Grid>
 
         <pageTransitions:PageTransition Name="ucWorkItem"  Grid.Row="1"  TransitionType="Slide" />

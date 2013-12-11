@@ -86,7 +86,7 @@
                             </Grid.ColumnDefinitions>
                             <Label Content="Search:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
                             <!--<controls:AutoCompleteBox Name="txtSmartSearch" IsTextCompletionEnabled="True" FilterMode="Contains" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="280"/>-->
-                            <ComboBox Name="cmbQuoteNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="1" IsEditable="True" />
+                            <ComboBox Name="cmbQuoteNumbers" HorizontalAlignment="Left" VerticalAlignment="Center" Width="170" Grid.Row="0" Grid.Column="1" IsEditable="True" SelectionChanged="cmbQuoteNumbers_SelectionChanged" />
 
                             <Button Name="btnOpenQuote" Content="Open Quote"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Height="30" Grid.Row="0" Grid.Column="2" Click="btnOpenQuote_Click" />
                             <Button Name="btnNewQuote" Content="New Quote"  HorizontalAlignment="Center" VerticalAlignment="Center"  Width="100" Height="30" Grid.Row="0" Grid.Column="3" Click="btnNewQuote_Click" />
