@@ -135,6 +135,9 @@ namespace GlassProductManager
 
             gbGlassDetails.IsEnabled = true;
             currentItem.ThicknessID = int.Parse(thicknessID);
+
+            currentItem.Thickness = (cmbThickness.SelectedItem as System.Data.DataRowView)[1].ToString();
+
             UpdateCurrentTotal();
         }
 

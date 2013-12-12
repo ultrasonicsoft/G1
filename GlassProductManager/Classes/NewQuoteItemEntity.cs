@@ -42,6 +42,7 @@ namespace GlassProductManager
         private double _cutoutTotal;
         private double _pricePerUnit;
         private string _shape;
+        private string _thickness;
 
         //Rates
         private double _cutsqftRate = 0;
@@ -80,7 +81,6 @@ namespace GlassProductManager
                 CalculateTotal();
             }
         }
-        internal string Thickness { get; set; }
 
         internal double TotalSqFT
         {
@@ -125,6 +125,12 @@ namespace GlassProductManager
         {
             get { return _shape; }
             set { _shape = value; }
+        }
+
+        internal string Thickness
+        {
+            get { return _thickness; }
+            set { _thickness = value; }
         }
 
         internal bool IsTempered
@@ -440,6 +446,10 @@ namespace GlassProductManager
             if (false == string.IsNullOrEmpty(_shape))
             {
                 description.AppendFormat(" [{0}]", _shape);
+            }
+            if(false== string.IsNullOrEmpty(_thickness))
+            {
+                description.AppendFormat(" [{0}]", _thickness);
             }
 
             if (_isTempered)

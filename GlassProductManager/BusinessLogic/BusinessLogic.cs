@@ -465,6 +465,52 @@ namespace GlassProductManager
             return customerID;
         }
 
+        internal static void UpdateCustomer(CustomerDetails soldTo, string customerID)
+        {
+            try
+            {
+                SqlParameter pAddress = new SqlParameter();
+                pAddress.ParameterName = "Address";
+                pAddress.Value = soldTo.Address ?? string.Empty;
+
+                SqlParameter pFirstName = new SqlParameter();
+                pFirstName.ParameterName = "FirstName";
+                pFirstName.Value = soldTo.FirstName;
+
+                SqlParameter pLastName = new SqlParameter();
+                pLastName.ParameterName = "LastName";
+                pLastName.Value = soldTo.LastName;
+
+                SqlParameter pPhone = new SqlParameter();
+                pPhone.ParameterName = "Phone";
+                pPhone.Value = soldTo.Phone ?? string.Empty;
+
+                SqlParameter pFax = new SqlParameter();
+                pFax.ParameterName = "Fax";
+                pFax.Value = soldTo.Fax ?? string.Empty;
+
+                SqlParameter pEmail = new SqlParameter();
+                pEmail.ParameterName = "Email";
+                pEmail.Value = soldTo.Email ?? string.Empty;
+
+                SqlParameter pMisc = new SqlParameter();
+                pMisc.ParameterName = "Misc";
+                pMisc.Value = soldTo.Misc ?? string.Empty;
+
+                SqlParameter pCustomerID = new SqlParameter();
+                pCustomerID.ParameterName = "customerID";
+                pCustomerID.Value = customerID;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateCustomer, pAddress, pFirstName, pLastName, pPhone, pFax, pEmail, pMisc, pCustomerID);
+                
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
         private static void InsertShippingDetails(string customerID, string quoteNumber, CustomerDetails shipTo)
         {
             try

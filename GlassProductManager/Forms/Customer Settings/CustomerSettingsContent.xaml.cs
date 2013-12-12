@@ -23,6 +23,8 @@ namespace GlassProductManager
     public partial class CustomerSettingsContent : UserControl
     {
         private ListCollectionView m_CustomerListForSearch;
+        private bool isEdit = false;
+        private bool isNew = false;
 
         public CustomerSettingsContent()
         {
@@ -195,12 +197,16 @@ namespace GlassProductManager
 
         private void btnNewCusotmer_Click(object sender, RoutedEventArgs e)
         {
+            UpdateStatus(true);
             dgCustomerList.CanUserAddRows = true;
+            isNew = true;
         }
 
         private void btnSaveCustomer_Click(object sender, RoutedEventArgs e)
         {
-            CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.Items.Count - 2] as CustomerSmartDataEntity;
+            int index = isNew ? 2 : 1;
+
+            CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.Items.Count - index] as CustomerSmartDataEntity;
             if (newCustomer == null)
             {
                 Helper.ShowErrorMessageBox("Error during saving new customer.");
@@ -215,19 +221,42 @@ namespace GlassProductManager
             customer.Fax = newCustomer.Fax;
             customer.Misc = newCustomer.Misc;
             customer.Fax = newCustomer.Fax;
-            
-            BusinessLogic.CreateNewCustomer(customer);
 
-            Helper.ShowInformationMessageBox("New customer saved successfully!");
+            if (isNew == true)
+            {
+                BusinessLogic.CreateNewCustomer(customer);
+            }
+            else if (isEdit == true)
+            {
+                BusinessLogic.UpdateCustomer(customer, newCustomer.ID);
+            }
+
+            if (isNew)
+            {
+                Helper.ShowInformationMessageBox("New customer saved successfully!");
+            }
+            else if (isEdit)
+            {
+                Helper.ShowInformationMessageBox("Customer information updated successfully!");
+            }
+
             FillCustomerDetails();
             dgCustomerList.CanUserAddRows = false;
 
+            UpdateStatus(false);
+            
+            isEdit = false;
+            isNew = false;
         }
 
         private void btnCancelEdit_Click(object sender, RoutedEventArgs e)
         {
             FillCustomerDetails();
             dgCustomerList.CanUserAddRows = false;
+            UpdateStatus(false);
+
+            isEdit = false;
+            isNew = false;
         }
 
         private void btnDeleteCustomer_Click(object sender, RoutedEventArgs e)
@@ -254,5 +283,20 @@ namespace GlassProductManager
             }
         }
 
+        private void btnEditCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateStatus(true);
+            isEdit = true;
+        }
+
+        private void UpdateStatus(bool status) 
+        {
+            dgCustomerList.IsReadOnly = !status;
+            dgCustomerList.CanUserAddRows = !status;
+            btnSaveCustomer.IsEnabled = status;
+            btnCancelEdit.IsEnabled = status;
+            btnEditCustomer.IsEnabled = !status;
+            btnNewCusotmer.IsEnabled = !status;
+        }
     }
 }

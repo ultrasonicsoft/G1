@@ -91,7 +91,6 @@ namespace GlassProductManager
                         selectedOption.IsChecked = false;
                         return;
                     }
-
                 }
             }
 
