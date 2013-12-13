@@ -79,5 +79,6 @@ namespace GlassProductManager
         internal const string GetAllSalesOrderNumbers = "[GetAllSalesOrderNumbers]";
         internal const string GetAllWorksheetNumbers = "[GetAllWorksheetNumbers]";
         internal const string UpdateCustomer = "[UpdateCustomer]";
+        internal const string GetAllCustomers = "[GetAllCustomers]";
     }
 }

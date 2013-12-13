@@ -979,6 +979,39 @@ namespace GlassProductManager
             return customerList;
         }
 
+        internal static ObservableCollection<CustomerSmartDataEntity> GetAllCustomers()
+        {
+            ObservableCollection<CustomerSmartDataEntity> customerList = new ObservableCollection<CustomerSmartDataEntity>();
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllCustomers, null);
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                    return customerList;
+
+                CustomerSmartDataEntity newCustomer = null;
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    newCustomer = new CustomerSmartDataEntity();
+                    newCustomer.ID = result.Tables[0].Rows[rowIndex][ColumnNames.ID].ToString();
+                    newCustomer.FirstName = result.Tables[0].Rows[rowIndex][ColumnNames.FirstName].ToString();
+                    newCustomer.LastName = result.Tables[0].Rows[rowIndex][ColumnNames.LastName].ToString();
+                    newCustomer.Address = result.Tables[0].Rows[rowIndex][ColumnNames.Address].ToString();
+                    newCustomer.Phone = result.Tables[0].Rows[rowIndex][ColumnNames.Phone].ToString();
+                    newCustomer.Fax = result.Tables[0].Rows[rowIndex][ColumnNames.Fax].ToString();
+                    newCustomer.Email = result.Tables[0].Rows[rowIndex][ColumnNames.Email].ToString();
+                    newCustomer.Misc = result.Tables[0].Rows[rowIndex][ColumnNames.Misc].ToString();
+                    
+                    customerList.Add(newCustomer);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return customerList;
+        }
+
         internal static void DeleteCustomer(string customerID)
         {
             try

@@ -190,7 +190,7 @@ namespace GlassProductManager
 
         private void FillCustomerDetails()
         {
-            var result = BusinessLogic.GetAllCustomerDetails();
+            var result = BusinessLogic.GetAllCustomers();
             dgCustomerList.ItemsSource = result;
             m_CustomerListForSearch = new ListCollectionView(result);
         }
