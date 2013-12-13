@@ -66,11 +66,11 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="90" Visibility="Hidden"></DataGridTextColumn>
                 <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"  Width="90" SortDirection="Descending" Visibility="Hidden" ></DataGridTextColumn>
-                <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="90"></DataGridTextColumn>
-                <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="90"></DataGridTextColumn>
-                <DataGridTextColumn Header="Fax" Binding="{Binding Fax}" Width="90"></DataGridTextColumn>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="90"></DataGridTextColumn>
-                <DataGridTextColumn Header="Misc" Binding="{Binding Misc}" Width="90"></DataGridTextColumn>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="90" Visibility="Hidden"></DataGridTextColumn>
+                <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="90" Visibility="Hidden"></DataGridTextColumn>
+                <DataGridTextColumn Header="Fax" Binding="{Binding Fax}" Width="90" Visibility="Hidden"></DataGridTextColumn>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="90" Visibility="Hidden"></DataGridTextColumn>
+                <DataGridTextColumn Header="Misc" Binding="{Binding Misc}" Width="90" Visibility="Hidden"></DataGridTextColumn>
                 <DataGridTextColumn Header="Quote No." Binding="{Binding QuoteNumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="SO No." Binding="{Binding SONumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="Worksheet No." Binding="{Binding WorksheetNumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
