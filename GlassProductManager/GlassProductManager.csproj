@@ -101,11 +101,12 @@
     <Compile Include="Forms\Commander Mode\CommanderSectionContent.xaml.cs">
       <DependentUpon>CommanderSectionContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Commander Mode\InvoiceMasterContent.xaml.cs">
-      <DependentUpon>InvoiceMasterContent.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Commander Mode\CustomerMasterContent.xaml.cs">
       <DependentUpon>CustomerMasterContent.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Forms\Commander Mode\InvoiceMasterContent.xaml.cs">
+      <DependentUpon>InvoiceMasterContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Commander Mode\WorksheetMasterContent.xaml.cs">
       <DependentUpon>WorksheetMasterContent.xaml</DependentUpon>
@@ -170,11 +171,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Forms\Commander Mode\InvoiceMasterContent.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Forms\Commander Mode\CustomerMasterContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Commander Mode\InvoiceMasterContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
