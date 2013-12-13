@@ -64,8 +64,8 @@
             </DataGrid.GroupStyle>
             
             <DataGrid.Columns>
-                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="90" ></DataGridTextColumn>
-                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"  Width="90" SortDirection="Descending" ></DataGridTextColumn>
+                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="90" Visibility="Hidden"></DataGridTextColumn>
+                <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"  Width="90" SortDirection="Descending" Visibility="Hidden" ></DataGridTextColumn>
                 <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Fax" Binding="{Binding Fax}" Width="90"></DataGridTextColumn>
