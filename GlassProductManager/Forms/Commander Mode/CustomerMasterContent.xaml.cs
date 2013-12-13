@@ -81,7 +81,7 @@ namespace GlassProductManager
         {
             try
             {
-                CustomerDetails currentRow = value as CustomerDetails;
+                CustomerSmartDataEntity currentRow = value as CustomerSmartDataEntity;
 
                 if (dgCustomerList.Columns.Count > 1)
                 {
@@ -102,7 +102,7 @@ namespace GlassProductManager
             return false;
         }
 
-        private bool IsSearchCriteriaMatched(CustomerDetails currentRow)
+        private bool IsSearchCriteriaMatched(CustomerSmartDataEntity currentRow)
         {
             return currentRow.FirstName.ToString()
                                               .ToLower()
@@ -125,6 +125,26 @@ namespace GlassProductManager
                                               .ToLower()
                                               .Contains(txtSearch.Text
                                                                 .ToLower()) ||
+                                    currentRow.QuoteNumber.ToString()
+                                              .ToLower()
+                                              .Contains(txtSearch.Text
+                                                                .ToLower()) ||
+                                    currentRow.SONumber.ToString()
+                                              .ToLower()
+                                              .Contains(txtSearch.Text
+                                                                .ToLower()) ||
+                                    currentRow.WorksheetNumber.ToString()
+                                              .ToLower()
+                                              .Contains(txtSearch.Text
+                                                                .ToLower()) ||
+                                    currentRow.InvoiceNumber.ToString()
+                                              .ToLower()
+                                              .Contains(txtSearch.Text
+                                                                .ToLower()) ||
+                                    currentRow.PONumber.ToString()
+                                              .ToLower()
+                                              .Contains(txtSearch.Text
+                                                                .ToLower()) ||
                                     currentRow.Email.ToString()
                                               .ToLower()
                                               .Contains(txtSearch.Text
@@ -140,9 +160,9 @@ namespace GlassProductManager
             try
             {
                 dgCustomerList.ItemsSource = null;
-                ObservableCollection<CustomerDetails> fileList = new ObservableCollection<CustomerDetails>();
+                ObservableCollection<CustomerSmartDataEntity> fileList = new ObservableCollection<CustomerSmartDataEntity>();
 
-                foreach (CustomerDetails row in _CustomerListForSearch)
+                foreach (CustomerSmartDataEntity row in _CustomerListForSearch)
                 {
                     fileList.Add(row);
                 }
