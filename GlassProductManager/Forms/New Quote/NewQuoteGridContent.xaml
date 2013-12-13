@@ -243,7 +243,7 @@
                                 <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
                             <Button Name="btnRegenerate" Content="Regenerate"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="18" Grid.Column="0" Width="100" Height="30"  Click="btnRegenerate_Click"/>
-                            <Button Name="btnSave" Content="Save"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="18" Grid.Column="1" Width="100" Height="30"  Click="btnSave_Click"/>
+                            <Button Name="btnSave" Content="Save"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="1" Width="100" Height="30"  Click="btnSave_Click" Margin="0,0,0,3"/>
                             <Button Name="btnDelete" Content="Delete"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="18" Grid.Column="2" Width="100" Height="30"  Click="btnDelete_Click"/>
                             <Button Name="btnClone" Content="Clone"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="18" Grid.Column="3" Width="100" Height="30"  Click="btnClone_Click"/>
                             <!--<Button Name="btnPrint" Content="_Print"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="18" Grid.Column="4" Width="75" Click="btnPrint_Click"/>-->

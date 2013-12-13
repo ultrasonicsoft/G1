@@ -47,6 +47,7 @@ namespace GlassProductManager
             workItems.Add("Sale Orders");
             workItems.Add("Worksheets");
             workItems.Add("Invoices");
+            workItems.Add("Customers");
             cmbWorkItemTypes.ItemsSource = workItems;
             cmbWorkItemTypes.SelectedIndex = 0;
         }
@@ -75,6 +76,10 @@ namespace GlassProductManager
                 case 3:
                     InvoiceMasterContent invoiceMaster = new InvoiceMasterContent();
                     ucWorkItem.ShowPage(invoiceMaster);
+                    break;
+                case 4:
+                    CustomerMasterContent customerMaster = new CustomerMasterContent();
+                    ucWorkItem.ShowPage(customerMaster);
                     break;
                 default:
                     break;

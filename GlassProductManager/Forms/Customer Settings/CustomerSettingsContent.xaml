@@ -28,11 +28,11 @@
                 <DataGridTextColumn Header="Fax" Binding="{Binding Fax}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="90"></DataGridTextColumn>
                 <DataGridTextColumn Header="Misc" Binding="{Binding Misc}" Width="90"></DataGridTextColumn>
-                <DataGridTextColumn Header="Quote No." Binding="{Binding QuoteNumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
+                <!--<DataGridTextColumn Header="Quote No." Binding="{Binding QuoteNumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="SO No." Binding="{Binding SONumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="Worksheet No." Binding="{Binding WorksheetNumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="PO No." Binding="{Binding PONumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="Invoice No." Binding="{Binding InvoiceNumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="Invoice No." Binding="{Binding InvoiceNumber}" Width="90" IsReadOnly="True"></DataGridTextColumn>-->
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Center" >
@@ -52,10 +52,10 @@
             <Button Name="btnSaveCustomer" IsEnabled="False" Content="Save" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Click="btnSaveCustomer_Click"/>
             <Button Name="btnCancelEdit" IsEnabled="False" Content="Cancel" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Click="btnCancelEdit_Click"/>
             <Button Name="btnDeleteCustomer" Content="Delete" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Click="btnDeleteCustomer_Click"/>
-            <Button Name="btnOpenSO" Content="Open SO" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+            <!--<Button Name="btnOpenSO" Content="Open SO" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
             <Button Name="btnOpenPO" Content="Open PO" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
             <Button Name="btnOpenWorksheet" Content="Open Worksheet" Grid.Row="0" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
-            <Button Name="btnOpenInvoice" Content="Open Invoice" Grid.Row="0" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+            <Button Name="btnOpenInvoice" Content="Open Invoice" Grid.Row="0" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>-->
         </Grid>
     </Grid>
 </UserControl>

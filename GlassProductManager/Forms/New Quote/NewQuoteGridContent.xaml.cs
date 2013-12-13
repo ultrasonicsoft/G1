@@ -1568,9 +1568,11 @@ namespace GlassProductManager
             {
                 DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
                 DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnSaleOrder);
-                SalesOrderContent soContent = new SalesOrderContent(true,txtQuoteNumber.Text);
+                SalesOrderContent soContent = new SalesOrderContent(true, txtQuoteNumber.Text);
                 parent.ucMainContent.ShowPage(soContent);
             }
+
+           
         }
 
         private void cmbQuoteStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)

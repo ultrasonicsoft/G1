@@ -91,7 +91,7 @@ namespace GlassProductManager
             if (Regex.IsMatch(input.Text, @"^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$"))
                 //if (Regex.IsMatch(input.Text, @"/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/"))
             {
-                input.Style = null;
+                SetToDefaultStyle(input);
                 result = true;
             }
             else
@@ -116,7 +116,7 @@ namespace GlassProductManager
 
             if (Regex.IsMatch(input.Text, @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))
             {
-                input.Style = null;
+                SetToDefaultStyle(input);
                 result = true;
             }
             else

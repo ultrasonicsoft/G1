@@ -83,7 +83,7 @@ namespace GlassProductManager
             {
                 NewQuoteContent newQuote = parent.ucMainContent.CurrentPage as NewQuoteContent;
 
-                if (newQuote != null && selectedOption != btnCreateNewQuote)
+                if (newQuote != null && selectedOption != btnCreateNewQuote && IsIndirectCall == false)
                 {
                     var result = Helper.ShowQuestionMessageBox("All your current Quote change will be lost. Are you sure to leave Quote page?");
                     if (result != MessageBoxResult.Yes)

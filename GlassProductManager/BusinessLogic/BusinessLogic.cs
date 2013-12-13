@@ -966,7 +966,7 @@ namespace GlassProductManager
                     newCustomer.WorksheetNumber = result.Tables[0].Rows[rowIndex][ColumnNames.WorksheetNumber].ToString();
                     newCustomer.PONumber = result.Tables[0].Rows[rowIndex][ColumnNames.PONumber].ToString();
                     newCustomer.InvoiceNumber = result.Tables[0].Rows[rowIndex][ColumnNames.InvoiceNumber].ToString();
-
+                    newCustomer.FullName = newCustomer.LastName + ", " + newCustomer.FirstName;
                     newCustomer.QuoteNumber = result.Tables[0].Rows[rowIndex][ColumnNames.QuoteNumber].ToString();
 
                     customerList.Add(newCustomer);
