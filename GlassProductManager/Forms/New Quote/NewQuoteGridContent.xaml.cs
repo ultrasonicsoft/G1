@@ -1007,13 +1007,15 @@ namespace GlassProductManager
                 string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 string clientName = string.Empty;
 
+                int customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+                
                 if (string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) == false && string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
                 {
-                    clientName = string.Format("{0} {1}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim());
+                    clientName = string.Format("{0} {1} {2}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim(), customerID.ToString());
                 }
                 else
                 {
-                    clientName = string.Format("{0}{1}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim());
+                    clientName = string.Format("{0} {1}", txtSoldToFirstName.Text.Trim(), customerID.ToString());
                 }
                 string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Quote + Constants.FolderSeparator;
                 string filename = string.Format(Constants.QuoteFileName, txtQuoteNumber.Text);
