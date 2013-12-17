@@ -428,11 +428,11 @@ namespace GlassProductManager
 
                 SqlParameter pFirstName = new SqlParameter();
                 pFirstName.ParameterName = "FirstName";
-                pFirstName.Value = soldTo.FirstName;
+                pFirstName.Value = soldTo.FirstName ?? string.Empty;
 
                 SqlParameter pLastName = new SqlParameter();
                 pLastName.ParameterName = "LastName";
-                pLastName.Value = soldTo.LastName;
+                pLastName.Value = soldTo.LastName ?? string.Empty;
 
                 SqlParameter pPhone = new SqlParameter();
                 pPhone.ParameterName = "Phone";
