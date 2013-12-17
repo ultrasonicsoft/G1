@@ -323,7 +323,7 @@ namespace GlassProductManager
                 {
 
                     QuoteHeader header = BuildQuoteHeader(txtQuoteNumber.Text);
-                     customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+                    customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
                     header.CustomerID = customerID;
                     BusinessLogic.UpdateQuoteHeader(header, true);
 
@@ -348,9 +348,9 @@ namespace GlassProductManager
             FillCustomerNames();
 
             cbIsNewClient.IsChecked = false;
-             customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+            customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
             cmbCustomers.SelectedValue = customerID;
-            
+
         }
 
         private void SaveNewQuote(string quoteNumber)
@@ -647,7 +647,7 @@ namespace GlassProductManager
             QuoteGridEntity selectedLineItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
             if (selectedLineItem == null)
                 return;
-            double newUnitPrice =  double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
+            double newUnitPrice = double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
             selectedLineItem.UnitPrice = newUnitPrice.ToString("0.00");
             selectedLineItem.Total = (newUnitPrice * selectedLineItem.Quantity).ToString("0.00");
             UpdateQuoteTotal();
@@ -664,7 +664,7 @@ namespace GlassProductManager
                         continue;
 
                     double newUnitPrice = double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
-                    selectedLineItem.UnitPrice  = newUnitPrice.ToString("0.00");
+                    selectedLineItem.UnitPrice = newUnitPrice.ToString("0.00");
                     selectedLineItem.Total = (newUnitPrice * selectedLineItem.Quantity).ToString("0.00");
                 }
                 UpdateQuoteTotal();
@@ -678,7 +678,7 @@ namespace GlassProductManager
             //    Helper.ShowErrorMessageBox("Please select Customer/Quote No. first");
             //    return;
             //}
-            if (cmbQuoteNumbers.SelectedIndex <0 &&  cmbQuoteNumbers.SelectedItem == null)
+            if (cmbQuoteNumbers.SelectedIndex < 0 && cmbQuoteNumbers.SelectedItem == null)
             {
                 Helper.ShowErrorMessageBox("Please select Quote!");
                 return;
@@ -708,7 +708,7 @@ namespace GlassProductManager
                 Helper.ShowInformationMessageBox("No data found for selected quote!");
                 return;
             }
-            
+
             cbIsNewClient.IsChecked = false;
             int customerID = BusinessLogic.GetCustomerID(result.Header.QuoteNumber);
             cmbCustomers.SelectedValue = customerID;
@@ -1005,8 +1005,17 @@ namespace GlassProductManager
             try
             {
                 string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                string clientName = string.Format("{0} {1}", txtSoldToFirstName.Text, txtSoldToLastName.Text);
-                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator+  clientName + Constants.FolderSeparator + Constants.Quote + Constants.FolderSeparator;
+                string clientName = string.Empty;
+
+                if (string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) == false && string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
+                {
+                    clientName = string.Format("{0} {1}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim());
+                }
+                else
+                {
+                    clientName = string.Format("{0}{1}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim());
+                }
+                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Quote + Constants.FolderSeparator;
                 string filename = string.Format(Constants.QuoteFileName, txtQuoteNumber.Text);
                 string completeFilePath = relativePath + Constants.FolderSeparator + filename;
 
@@ -1249,9 +1258,17 @@ namespace GlassProductManager
             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
 
-            gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-           XStringFormat.TopLeft);
+            if (string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false) 
+            {
+                gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
+           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
+            }
+            else
+            {
+                gfx.DrawString(string.Format("{1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
+           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
+            }
+
 
             // Print Phone
             yBaseOffset += yIncrementalOffset;
@@ -1507,7 +1524,7 @@ namespace GlassProductManager
             if (false == Helper.IsValidPhone(txtShipToPhone))
             {
                 txtShipToPhone.Text = string.Empty;
-            } 
+            }
         }
 
         private void btnClone_Click(object sender, RoutedEventArgs e)
@@ -1533,7 +1550,7 @@ namespace GlassProductManager
             {
                 mailToURL = @"mailto:balramchavan@gmail.com?Subject=SubjTxt&Body=Bod_Txt&Attach=c:\\file.txt";
                 Process.Start(mailToURL);
-                
+
             }
         }
 
@@ -1572,7 +1589,7 @@ namespace GlassProductManager
                 parent.ucMainContent.ShowPage(soContent);
             }
 
-           
+
         }
 
         private void cmbQuoteStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1633,10 +1650,10 @@ namespace GlassProductManager
             {
                 return;
             }
-            if (e.Column.DisplayIndex == 1 )
+            if (e.Column.DisplayIndex == 1)
             {
                 TextBox txtQuantity = e.EditingElement as TextBox;
-                if(txtQuantity !=null )
+                if (txtQuantity != null)
                 {
                     double quantity = 0;
                     double.TryParse(txtQuantity.Text, out quantity);
@@ -1645,7 +1662,7 @@ namespace GlassProductManager
                     entity.Total = (quantity * unitPrice).ToString("0.00");
                 }
             }
-            else if ( e.Column.DisplayIndex == 5)
+            else if (e.Column.DisplayIndex == 5)
             {
                 TextBox txtUnitPrice = e.EditingElement as TextBox;
                 if (txtUnitPrice != null)
