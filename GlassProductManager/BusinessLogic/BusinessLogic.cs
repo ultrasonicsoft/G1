@@ -1256,6 +1256,7 @@ namespace GlassProductManager
                 rates.NotchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE].ToString());
                 rates.HingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
                 rates.PatchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
+                rates.MinimumTotalSqft = double.Parse(result.Tables[0].Rows[0][ColumnNames.MinimumTotalSqft].ToString());
 
             }
             catch (Exception ex)
@@ -1282,7 +1283,11 @@ namespace GlassProductManager
                 pPatchRate.ParameterName = "PatchRate";
                 pPatchRate.Value = miscRate.PatchRate;
 
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateMiscRate, pNotchRate, pHingeRate, pPatchRate);
+                SqlParameter pMinimumTotalSqft = new SqlParameter();
+                pMinimumTotalSqft.ParameterName = "MinimumTotalSqft";
+                pMinimumTotalSqft.Value = miscRate.MinimumTotalSqft;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateMiscRate, pNotchRate, pHingeRate, pPatchRate, pMinimumTotalSqft);
             }
             catch (Exception ex)
             {

@@ -165,6 +165,14 @@ namespace GlassProductManager
 
         private void txtTotalSqFtCharged_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (string.IsNullOrEmpty(txtTotalSqFtCharged.Text) == false && currentItem != null)
+            {
+                int chargedTotalSqft = int.Parse(txtTotalSqFtCharged.Text);
+                if(chargedTotalSqft < currentItem.MinimumTotalSqft)
+                {
+                    txtTotalSqFtCharged.Text = currentItem.MinimumTotalSqft.ToString();
+                }
+            }
             SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged");
         }
 

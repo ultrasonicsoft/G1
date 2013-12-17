@@ -11,5 +11,7 @@ namespace GlassProductManager
         public double NotchRate { get; set; }
         public double HingeRate { get; set; }
         public double PatchRate { get; set; }
+
+        public double MinimumTotalSqft { get; set; }
     }
 }

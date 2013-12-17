@@ -64,6 +64,7 @@ namespace GlassProductManager
             txtNotchRate.Text = result.NotchRate.ToString();
             txtHingeRate.Text = result.HingeRate.ToString();
             txtPatchRate.Text = result.PatchRate.ToString();
+            txtMinimumTotalSqft.Text = result.MinimumTotalSqft.ToString();
 
         }
 
@@ -477,6 +478,7 @@ namespace GlassProductManager
             miscRate.NotchRate = double.Parse(txtNotchRate.Text);
             miscRate.HingeRate = double.Parse(txtHingeRate.Text);
             miscRate.PatchRate = double.Parse(txtPatchRate.Text);
+            miscRate.MinimumTotalSqft = double.Parse(txtMinimumTotalSqft.Text);
 
             if (BusinessLogic.UpdateMiscRate(miscRate))
             {
@@ -489,6 +491,7 @@ namespace GlassProductManager
             txtNotchRate.IsReadOnly = true;
             txtHingeRate.IsReadOnly = true;
             txtPatchRate.IsReadOnly = true;
+            txtMinimumTotalSqft.IsReadOnly = true;
 
             btnEditMiscRate.IsEnabled = true;
             btnSaveMiscRate.IsEnabled = false;
@@ -640,6 +643,14 @@ namespace GlassProductManager
             }
         }
 
+        private void txtMinimumTotalSqft_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditMiscRate.IsEnabled == false)
+            {
+                btnSaveMiscRate.IsEnabled = Helper.IsValidCurrency(txtMinimumTotalSqft);
+            }
+        }
+
         private void txtHoleRate_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (btnEditMiscRate.IsEnabled == false)
@@ -681,6 +692,7 @@ namespace GlassProductManager
             txtNotchRate.IsReadOnly = false;
             txtHingeRate.IsReadOnly = false;
             txtPatchRate.IsReadOnly = false;
+            txtMinimumTotalSqft.IsReadOnly = false;
 
             btnEditMiscRate.IsEnabled = false;
             btnSaveMiscRate.IsEnabled = true;
@@ -692,6 +704,7 @@ namespace GlassProductManager
             txtNotchRate.IsReadOnly = true;
             txtHingeRate.IsReadOnly = true;
             txtPatchRate.IsReadOnly = true;
+            txtMinimumTotalSqft.IsReadOnly = true;
 
             btnEditMiscRate.IsEnabled = true;
             btnSaveMiscRate.IsEnabled = false;

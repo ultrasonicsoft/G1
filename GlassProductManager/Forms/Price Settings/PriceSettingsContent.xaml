@@ -189,6 +189,8 @@
                 <TextBox Name="txtHingeRate" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="3" TextChanged="txtHingeRate_TextChanged"/>
                 <Label  Content="Patch Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
                 <TextBox Name="txtPatchRate" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1" TextChanged="txtPatchRate_TextChanged"/>
+                <Label  Content="Minimum Total Sqft:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
+                <TextBox Name="txtMinimumTotalSqft" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="3" TextChanged="txtMinimumTotalSqft_TextChanged"/>
                 <Button Name="btnEditMiscRate" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="1" Click="btnEditMiscRate_Click" />
                 <Button Name="btnSaveMiscRate" IsEnabled="False" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="2" Click="btnSaveMiscRate_Click" />
                 <Button Name="btnCancelMiscRate" IsEnabled="False" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="3" Click="btnCancelMiscRate_Click" />

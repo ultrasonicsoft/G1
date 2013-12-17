@@ -54,6 +54,7 @@ namespace GlassProductManager
         private double _hingeRate = 0;
         private double _patchRate = 0;
         private double _holeRate = 0;
+        private int _minimumTotalSqft = 0;
 
         internal ObservableCollection<CutoutData> _allCutoutData = new ObservableCollection<CutoutData>();
 
@@ -67,6 +68,11 @@ namespace GlassProductManager
             }
         }
 
+        public int MinimumTotalSqft 
+        {
+            get { return _minimumTotalSqft; }
+            set { _minimumTotalSqft = value; }
+        }
 
         internal string GlassType { get; set; }
 
@@ -382,6 +388,13 @@ namespace GlassProductManager
             _hingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
             _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
             _holeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HOLE_RATE].ToString());
+            
+            _minimumTotalSqft = int.Parse(result.Tables[0].Rows[0][ColumnNames.MinimumTotalSqft].ToString());
+
+            if(_totalSqFTCharged < _minimumTotalSqft)
+            {
+                _totalSqFTCharged = _minimumTotalSqft;
+            }
 
             if (false == _isTempered)
             {
