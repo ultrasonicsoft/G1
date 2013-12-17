@@ -302,6 +302,12 @@ namespace GlassProductManager
         {
             int customerID = 0;
 
+            if(true == string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) || txtSoldToFirstName.Text.Equals("First Name") == true)
+            {
+                Helper.ShowErrorMessageBox("Sold to First Name can not be empty. Please provide First Name.");
+                txtSoldToFirstName.Focus();
+                return;
+            }
             if (false == Helper.IsNonEmpty(txtQuoteNumber))
             {
                 Helper.ShowErrorMessageBox("Quote Number can not be empty. Please provide Quote Number.");
