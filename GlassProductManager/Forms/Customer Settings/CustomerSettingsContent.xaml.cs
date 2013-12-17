@@ -206,7 +206,8 @@ namespace GlassProductManager
         {
             int index = isNew ? 2 : 1;
 
-            CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.Items.Count - index] as CustomerSmartDataEntity;
+            //CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.Items.Count - index] as CustomerSmartDataEntity;
+            CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.SelectedIndex] as CustomerSmartDataEntity;
             if (newCustomer == null)
             {
                 Helper.ShowErrorMessageBox("Error during saving new customer.");
