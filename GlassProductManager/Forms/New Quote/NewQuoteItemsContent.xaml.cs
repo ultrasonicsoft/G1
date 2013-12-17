@@ -1099,10 +1099,11 @@ namespace GlassProductManager
         internal void ClearTextBox(object sender, RoutedEventArgs e)
         {
             TextBox input = sender as TextBox;
-            if (input.Text.Trim() == "0" || input.Text.Trim() == "x/y")
-            {
-                input.Text = string.Empty;
-            }
+            //if (input.Text.Trim() == "0" || input.Text.Trim() == "x/y")
+            //{
+            //    input.Text = string.Empty;
+            //}
+            input.Text = string.Empty;
 
         }
         internal void ResetTextBox(object sender, RoutedEventArgs e)
