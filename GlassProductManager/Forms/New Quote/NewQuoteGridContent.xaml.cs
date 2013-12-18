@@ -19,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Data;
 
 namespace GlassProductManager
 {
@@ -483,6 +485,10 @@ namespace GlassProductManager
         private void dgQuoteItems_LostFocus(object sender, RoutedEventArgs e)
         {
             UpdateQuoteTotal();
+
+            
+
+            
         }
 
         private void txtEnergySurcharge_TextChanged(object sender, TextChangedEventArgs e)
@@ -1373,20 +1379,20 @@ namespace GlassProductManager
 
         private void PrintQuoteDetails(XGraphics gfx, XFont font)
         {
-            int xStartDetailRect = 30;
+            int xStartDetailRect = 10;
             int yStartDetailRect = 400;
-            int widthDetailRect = 1150;
+            int widthDetailRect = 1180;
             int heightDetailRect = 700;
 
             int heightHeaderRect = 50;
 
-            int xLineColumn = 100;
+            int xLineColumn = 90;
             int xQuantityColumn = 150;
             int xDescriptionColumn = 790;
-            int xDimensionColumn = 920;
-            int xSqFtColumn = 980;
+            int xDimensionColumn = 930;
+            int xSqFtColumn = 990;
             int xUnitPriceColumn = 1080;
-            int xTotalColumn = 1180;
+            int xTotalColumn = 1190;
 
             XPen pen = new XPen(XColors.Black, 1);
             XRect detailsRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightDetailRect);
@@ -1687,7 +1693,16 @@ namespace GlassProductManager
         private void btnAddNewLineItem_Click(object sender, RoutedEventArgs e)
         {
             QuoteGridEntity entity = new QuoteGridEntity();
+            entity.LineID = dgQuoteItems.Items.Count + 1;
             allQuoteData.Add(entity);
+
+            ICollectionView dataView = CollectionViewSource.GetDefaultView(dgQuoteItems.ItemsSource);
+            //clear the existing sort order
+            dataView.SortDescriptions.Clear();
+            //create a new sort order for the sorting that is done lastly
+            dataView.SortDescriptions.Add(new SortDescription("LineID", ListSortDirection.Ascending));
+            //refresh the view which in turn refresh the grid
+            dataView.Refresh();
 
         }
 
@@ -1696,6 +1711,15 @@ namespace GlassProductManager
             QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
             if (selectedItem == null)
                 return;
+
+            QuoteGridEntity tempItem = null;
+            for (int index = dgQuoteItems.SelectedIndex + 1; index < dgQuoteItems.Items.Count; index++)
+            {
+                tempItem = dgQuoteItems.Items[index] as QuoteGridEntity;
+                if (tempItem == null)
+                    continue;
+                tempItem.LineID = tempItem.LineID - 1;
+            }
             allQuoteData.Remove(selectedItem);
         }
 

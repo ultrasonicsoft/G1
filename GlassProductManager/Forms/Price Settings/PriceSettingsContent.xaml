@@ -125,15 +125,15 @@
                 <Label  Content="Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2"/>
                 <ComboBox Name="cmbThickness" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbThickness_SelectionChanged" Grid.Row="0" Grid.Column="3"/>
                 <Label  Content="Cutout SqFt Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Name="txtCutoutSqFtRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1" TextChanged="txtCutoutSqFtRate_TextChanged"/>
+                <TextBox Name="txtCutoutSqFtRate"  IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1" TextChanged="txtCutoutSqFtRate_TextChanged"/>
                 <Label  Content="Tempered Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
-                <TextBox Name="txtTemperedRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="3" TextChanged="txtTemperedRate_TextChanged"/>
+                <TextBox Name="txtTemperedRate"  IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="3" TextChanged="txtTemperedRate_TextChanged"/>
                 <Label  Content="Polish Straight Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
-                <TextBox Name="txtPolishStraightRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="2" Grid.Column="1" TextChanged="txtPolishStraightRate_TextChanged"/>
+                <TextBox Name="txtPolishStraightRate" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="2" Grid.Column="1" TextChanged="txtPolishStraightRate_TextChanged"/>
                 <Label  Content="Polish Shape Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2"/>
-                <TextBox Name="txtPolishShapeRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="2" Grid.Column="3" TextChanged="txtPolishShapeRate_TextChanged"/>
+                <TextBox Name="txtPolishShapeRate" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="2" Grid.Column="3" TextChanged="txtPolishShapeRate_TextChanged"/>
                 <Label  Content="Miter Rate:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
-                <TextBox Name="txtMiterRate"  HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="3" Grid.Column="1" TextChanged="txtMiterRate_TextChanged"/>
+                <TextBox Name="txtMiterRate" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="3" Grid.Column="1" TextChanged="txtMiterRate_TextChanged"/>
                 <Button Name="btnEditGlassDetails" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="5" Grid.Column="1" Click="btnEditGlassDetails_Click" />
                 <Button Name="btnSaveGlassDetails" IsEnabled="False" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="5" Grid.Column="2" Click="btnSaveGlassDetails_Click" />
                 <Button Name="btnCancelEditGlassDetails" IsEnabled="False" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="5" Grid.Column="3" Click="btnCancelEditGlassDetails_Click" />
