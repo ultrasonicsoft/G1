@@ -102,8 +102,8 @@
                         <Label Name="lblShipTo" Content="Ship to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" />
 
                         <Label Name="lblSoldToName" Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
-                        <TextBox IsReadOnly="True"  Name="txtSoldToFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" />
-                        <TextBox  IsReadOnly="True" Name="txtSoldToLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Margin="80,0,0,0" Grid.ColumnSpan="2"/>
+                        <TextBox IsReadOnly="True"  Name="txtSoldToFirstName" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" />
+                        <TextBox  IsReadOnly="True" Name="txtSoldToLastName"  TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Margin="80,0,0,0" Grid.ColumnSpan="2"/>
                         <Label Name="lblSoldToAddress" Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" />
                         <TextBox  IsReadOnly="True" Name="txtSoldToAddress" TextWrapping="Wrap" Width="150"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
                         <Label Name="lblSoldtoPhone" Content="Phone:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" />
@@ -116,8 +116,8 @@
                         <TextBox IsReadOnly="True"  Name="txtSoldToMisc" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="1"/>
 
                         <Label Name="lblShipToName" Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="3" />
-                        <TextBox  IsReadOnly="True" Name="txtShiptoFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" />
-                        <TextBox IsReadOnly="True" Name="txtShiptoLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" Margin="80,0,0,0"  />
+                        <TextBox  IsReadOnly="True" Name="txtShiptoFirstName"  TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" />
+                        <TextBox IsReadOnly="True" Name="txtShiptoLastName"  TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" Margin="80,0,0,0"  />
                         <Label Name="lblShipToAddress" Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="3" />
                         <TextBox IsReadOnly="True" Name="txtShipToAddress" TextWrapping="Wrap" Width="150"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2"/>
                         <Label Name="lblShipToPhone" Content="Phone:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="3" />

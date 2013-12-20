@@ -107,8 +107,8 @@
                         <Label Name="lblShipTo" Content="Ship to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" />
 
                         <Label Name="lblSoldToName" Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
-                        <TextBox  Name="txtSoldToFirstName"  Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" LostFocus="txtSoldToFirstName_LostFocus" GotFocus="txtSoldToFirstName_GotFocus"  Height="27" TabIndex="6"/>
-                        <TextBox  Name="txtSoldToLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Margin="80,0,0,0" Grid.ColumnSpan="2" LostFocus="txtSoldToLastName_LostFocus" GotFocus="txtSoldToLastName_GotFocus"  Height="27" TabIndex="7"/>
+                        <TextBox  Name="txtSoldToFirstName"   TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" LostFocus="txtSoldToFirstName_LostFocus" GotFocus="txtSoldToFirstName_GotFocus"  Height="27" TabIndex="6"/>
+                        <TextBox  Name="txtSoldToLastName" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Margin="80,0,0,0" Grid.ColumnSpan="2" LostFocus="txtSoldToLastName_LostFocus" GotFocus="txtSoldToLastName_GotFocus"  Height="27" TabIndex="7"/>
                         <Label Name="lblSoldToAddress" Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" />
                         <TextBox  Name="txtSoldToAddress" TextWrapping="Wrap" Width="180" Grid.ColumnSpan="3"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1"  Height="27" TabIndex="8"/>
                         <Label Name="lblSoldtoPhone" Content="Phone:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0" />
@@ -121,8 +121,8 @@
                         <TextBox  Name="txtSoldToMisc" TextWrapping="Wrap"  Width="180" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="1"  Height="27" TabIndex="12"/>
 
                         <Label Name="lblShipToName" Content="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="3" />
-                        <TextBox  Name="txtShiptoFirstName" Text="First Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" GotFocus="txtShiptoFirstName_GotFocus" LostFocus="txtShiptoFirstName_LostFocus"  Height="27" TabIndex="14"/>
-                        <TextBox  Name="txtShiptoLastName" Text="Last Name" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" Margin="80,0,0,0" GotFocus="txtShiptoLastName_GotFocus" LostFocus="txtShiptoLastName_LostFocus"  Height="27" TabIndex="15" />
+                        <TextBox  Name="txtShiptoFirstName" TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" GotFocus="txtShiptoFirstName_GotFocus" LostFocus="txtShiptoFirstName_LostFocus"  Height="27" TabIndex="14"/>
+                        <TextBox  Name="txtShiptoLastName"  TextWrapping="Wrap" Width="70"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Grid.Column="4" Margin="80,0,0,0" GotFocus="txtShiptoLastName_GotFocus" LostFocus="txtShiptoLastName_LostFocus"  Height="27" TabIndex="15" />
                         <Label Name="lblShipToAddress" Content="Address:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="3" />
                         <TextBox  Name="txtShipToAddress" TextWrapping="Wrap" Width="230"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2"  Height="27" TabIndex="16"/>
                         <Label Name="lblShipToPhone" Content="Phone:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="3" />

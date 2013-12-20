@@ -304,7 +304,7 @@ namespace GlassProductManager
         {
             int customerID = 0;
 
-            if(true == string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) || txtSoldToFirstName.Text.Equals("First Name") == true)
+            if(true == string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) )
             {
                 Helper.ShowErrorMessageBox("Sold to First Name can not be empty. Please provide First Name.");
                 txtSoldToFirstName.Focus();
@@ -915,63 +915,66 @@ namespace GlassProductManager
         {
             if (string.IsNullOrEmpty(txtSoldToFirstName.Text))
             {
-                txtSoldToFirstName.Text = "First Name";
+                txtSoldToFirstName.Text = string.Empty;
             }
         }
 
         private void txtSoldToFirstName_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txtSoldToFirstName.Text.Equals("First Name"))
-            {
-                txtSoldToFirstName.Text = string.Empty;
-            }
+            //if (txtSoldToFirstName.Text.Equals("First Name"))
+            //{
+            //    txtSoldToFirstName.Text = string.Empty;
+            //}
         }
 
         private void txtSoldToLastName_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtSoldToLastName.Text))
             {
-                txtSoldToLastName.Text = "Last Name";
+                //txtSoldToLastName.Text = "Last Name";
+                txtSoldToLastName.Text = string.Empty;
             }
         }
 
         private void txtSoldToLastName_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txtSoldToLastName.Text.Equals("Last Name"))
-            {
-                txtSoldToLastName.Text = string.Empty;
-            }
+            //if (txtSoldToLastName.Text.Equals("Last Name"))
+            //{
+            //    txtSoldToLastName.Text = string.Empty;
+            //}
         }
 
         private void txtShiptoFirstName_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txtShiptoFirstName.Text.Equals("First Name"))
-            {
-                txtShiptoFirstName.Text = string.Empty;
-            }
+            //if (txtShiptoFirstName.Text.Equals("First Name"))
+            //{
+            //    txtShiptoFirstName.Text = string.Empty;
+            //}
         }
 
         private void txtShiptoFirstName_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtShiptoFirstName.Text))
             {
-                txtShiptoFirstName.Text = "First Name";
+                //txtShiptoFirstName.Text = "First Name";
+                txtShiptoFirstName.Text = string.Empty;
             }
         }
 
         private void txtShiptoLastName_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txtShiptoLastName.Text.Equals("Last Name"))
-            {
-                txtShiptoLastName.Text = string.Empty;
-            }
+            //if (txtShiptoLastName.Text.Equals("Last Name"))
+            //{
+            //    txtShiptoLastName.Text = string.Empty;
+            //}
         }
 
         private void txtShiptoLastName_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtShiptoLastName.Text))
             {
-                txtShiptoLastName.Text = "Last Name";
+                //txtShiptoLastName.Text = "Last Name";
+                txtShiptoLastName.Text = string.Empty;
             }
         }
 
