@@ -283,7 +283,7 @@
                                 <Label Content="Sq. Ft." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
                                 <TextBox  Name="txtSqFt1" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="3" TextChanged="txtSqFt1_TextChanged" LostFocus="ResetTextBox" GotFocus="ClearTextBox" TabIndex="84" />
                                 <Label Content="Total" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
-                                <TextBox  Name="txtGlassType1Total" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" IsReadOnly="True" GotFocus="ClearTextBox" TabIndex="85"/>
+                                <TextBox  Name="txtGlassType1Total" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" IsReadOnly="True" />
 
                                 <Label Content="Glass Type 1"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
                                 <ComboBox Name="cmbGlassType2" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="3" Grid.Column="0" SelectionChanged="cmbGlassType2_SelectionChanged" TabIndex="86" />
