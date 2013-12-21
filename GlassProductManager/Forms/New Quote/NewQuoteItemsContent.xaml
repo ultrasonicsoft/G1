@@ -111,7 +111,7 @@
 
                                 <!-- Total Sqft -->
                                 <Label Content="Total Sq.Ft:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="9" />
-                                <TextBox Name="txtTotalSqFtCharged" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="10" Height="23" Width="50"  LostFocus="ResetTextBox" TextChanged="txtTotalSqFtCharged_TextChanged" GotFocus="ClearTextBox" TabIndex="59"   />
+                                <TextBox Name="txtTotalSqFtCharged" Text="0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="10" Height="23" Width="50"   TextChanged="txtTotalSqFtCharged_TextChanged" GotFocus="ClearTextBox" TabIndex="59" LostFocus="txtTotalSqFtCharged_LostFocus"   />
 
                             </Grid>
                         </GroupBox>

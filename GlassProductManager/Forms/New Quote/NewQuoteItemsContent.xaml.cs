@@ -167,7 +167,7 @@ namespace GlassProductManager
         {
             if (string.IsNullOrEmpty(txtTotalSqFtCharged.Text) == false && currentItem != null)
             {
-                int chargedTotalSqft = int.Parse(txtTotalSqFtCharged.Text);
+                int chargedTotalSqft = int.Parse(txtTotalSqFt.Text);
                 if(chargedTotalSqft < currentItem.MinimumTotalSqft)
                 {
                     txtTotalSqFtCharged.Text = currentItem.MinimumTotalSqft.ToString();
@@ -178,10 +178,10 @@ namespace GlassProductManager
 
         private void txtTotalSqFt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT",true);
+            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT",true,true);
         }
 
-        private void SetQuoteValidationError(TextBox input, string propertyName, bool isDecimalCheck = false)
+        private void SetQuoteValidationError(TextBox input, string propertyName, bool isDecimalCheck = false, bool isInteger = false)
         {
             if (isInitialized == false)
                 return;
@@ -190,10 +190,14 @@ namespace GlassProductManager
             {
                 NewItemsChanged(input.Text, propertyName);
             }
-            else if(isDecimalCheck == true && Helper.IsValidCurrency(input))
+            else if(isDecimalCheck == true && isInteger == false && Helper.IsValidCurrency(input))
             {
                 currentItem.TotalSqFT = double.Parse(input.Text);
                 //NewItemsChanged(input.Text, propertyName);
+            }
+            else if (isInteger == true && Helper.IsNumberOnly(input))
+            {
+                currentItem.TotalSqFT = int.Parse(input.Text);
             }
         }
 
@@ -776,7 +780,7 @@ namespace GlassProductManager
             }
             txtGlassHeightCharged.Text = height.ToString();
             double totalSqft = (width * height) / 144.0;
-            txtTotalSqFt.Text = totalSqft.ToString("0.00");
+            txtTotalSqFt.Text = totalSqft.ToString("0");
             txtTotalSqFtCharged.Text = Math.Ceiling(totalSqft).ToString("0");
         }
 
@@ -1117,6 +1121,11 @@ namespace GlassProductManager
             {
                 input.Text = string.IsNullOrEmpty(input.Text) ? "0" : input.Text;
             }
+        }
+
+        private void txtTotalSqFtCharged_LostFocus(object sender, RoutedEventArgs e)
+        {
+            txtTotalSqFtCharged.Text= currentItem.TotalSqFTCharged.ToString();
         }
 
 

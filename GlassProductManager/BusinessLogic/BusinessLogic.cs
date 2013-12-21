@@ -1923,5 +1923,44 @@ namespace GlassProductManager
             }
             return isInvoicePresent;
         }
+
+        internal static BarcodeEntity GetBarcodeDetails(string quoteNumber)
+        {
+            BarcodeEntity barcode = null;
+            DataSet result = null;
+
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetBarcodeDetails, pQuoteNumber);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                {
+                    return barcode;
+                }
+                barcode = new BarcodeEntity();
+                barcode.LastName = result.Tables[0].Rows[0][ColumnNames.LastName].ToString();
+                barcode.FirstName = result.Tables[0].Rows[0][ColumnNames.FirstName].ToString();
+                barcode.SalesOrder = result.Tables[0].Rows[0][ColumnNames.SONumber].ToString();
+                barcode.Worksheet = result.Tables[0].Rows[0][ColumnNames.WSNumber].ToString();
+                barcode.OrderDate = result.Tables[0].Rows[0][ColumnNames.CreatedOn].ToString();
+                barcode.CustomerPO = result.Tables[0].Rows[0][ColumnNames.CustomerPO].ToString();
+                barcode.Description = result.Tables[0].Rows[0][ColumnNames.Description].ToString();
+                barcode.SqFt = result.Tables[0].Rows[0][ColumnNames.SqFt].ToString();
+                barcode.Size = result.Tables[0].Rows[0][ColumnNames.Dimension].ToString();
+                barcode.Logo = result.Tables[0].Rows[0][ColumnNames.IsLogo].ToString();
+                barcode.Quantity = result.Tables[0].Rows[0][ColumnNames.Quantity].ToString();
+                barcode.Line = result.Tables[0].Rows[0][ColumnNames.LineID].ToString();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return barcode;
+        }
     }
 }

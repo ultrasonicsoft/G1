@@ -16,7 +16,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="ReachFramework" />
+    <Reference Include="Seagull.BarTender.Print, Version=10.1.2.1, Culture=neutral, PublicKeyToken=109ff779a1b4cbc7, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -83,6 +84,7 @@
     </ApplicationDefinition>
     <Compile Include="Classes\InvoiceEntity.cs" />
     <Compile Include="Classes\InvoicePaymentEntity.cs" />
+    <Compile Include="Classes\BarcodeEntity.cs" />
     <Compile Include="Classes\WorksheetEntity.cs" />
     <Compile Include="Classes\SaleOrderEntity.cs" />
     <Compile Include="Classes\QuoteMasterEntity.cs" />
@@ -98,6 +100,9 @@
     <Compile Include="Classes\CutoutData.cs" />
     <Compile Include="Classes\Insulation.cs" />
     <Compile Include="Classes\QuoteHeader.cs" />
+    <Compile Include="Forms\Barcode Printer\BarcodePrinter.xaml.cs">
+      <DependentUpon>BarcodePrinter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Commander Mode\CommanderSectionContent.xaml.cs">
       <DependentUpon>CommanderSectionContent.xaml</DependentUpon>
     </Compile>
@@ -167,6 +172,10 @@
     <Compile Include="Queries\ColumnNames.cs" />
     <Compile Include="Queries\SelectQueries.cs" />
     <Compile Include="Queries\StoredProcedures.cs" />
+    <Page Include="Forms\Barcode Printer\BarcodePrinter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Forms\Commander Mode\CommanderSectionContent.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -280,6 +289,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Glass_Barcode_Template.btw">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -315,7 +327,7 @@
   <ItemGroup>
     <Content Include="Database\GlassManagerDB.sql" />
     <Resource Include="logo.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\validate.png" />
   </ItemGroup>

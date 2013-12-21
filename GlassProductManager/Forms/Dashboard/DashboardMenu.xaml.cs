@@ -28,7 +28,8 @@ namespace GlassProductManager
         SaleOrder,
         Worksheet,
         Invoice,
-        MakePayment
+        MakePayment,
+        BarCodePrinter
     }
 
     public partial class DashboardMenu : UserControl
@@ -45,6 +46,7 @@ namespace GlassProductManager
         CommanderSectionContent commanderSection;
         InvoiceContent invoice;
         MakeInvoicePayment makePayment;
+        BarcodePrinter barcodePrinter;
 
         public DashboardMenu()
         {
@@ -61,6 +63,7 @@ namespace GlassProductManager
             invoice = new InvoiceContent();
             makePayment = new MakeInvoicePayment();
             commanderSection = new CommanderSectionContent();
+            barcodePrinter = new BarcodePrinter();
 
             availableOptions.Add(btnHome, home);
             availableOptions.Add(btnCreateNewQuote, newQuote);
@@ -71,6 +74,7 @@ namespace GlassProductManager
             availableOptions.Add(btnInvoice, invoice);
             availableOptions.Add(btnMakePayment, makePayment);
             availableOptions.Add(btnCommanderSection, commanderSection);
+            availableOptions.Add(btnBarcodePrinter, barcodePrinter);
 
             btnHome.IsChecked = true;
         }
@@ -158,6 +162,11 @@ namespace GlassProductManager
         private void btnCommanderSection_Checked(object sender, RoutedEventArgs e)
         {
             ShowCurrentPage(btnCommanderSection, new CommanderSectionContent());
+        }
+
+        private void btnBarcodePrinter_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowCurrentPage(btnBarcodePrinter, new BarcodePrinter());
         }
     }
 }
