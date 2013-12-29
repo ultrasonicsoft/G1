@@ -304,7 +304,7 @@ namespace GlassProductManager
         {
             int customerID = 0;
 
-            if(true == string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) )
+            if (true == string.IsNullOrWhiteSpace(txtSoldToFirstName.Text))
             {
                 Helper.ShowErrorMessageBox("Sold to First Name can not be empty. Please provide First Name.");
                 txtSoldToFirstName.Focus();
@@ -486,9 +486,9 @@ namespace GlassProductManager
         {
             UpdateQuoteTotal();
 
-            
 
-            
+
+
         }
 
         private void txtEnergySurcharge_TextChanged(object sender, TextChangedEventArgs e)
@@ -1023,7 +1023,7 @@ namespace GlassProductManager
                 string clientName = string.Empty;
 
                 int customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
-                
+
                 if (string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) == false && string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
                 {
                     clientName = string.Format("{0} {1} {2}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim(), customerID.ToString());
@@ -1275,7 +1275,7 @@ namespace GlassProductManager
             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
 
-            if (string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false) 
+            if (string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
             {
                 gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
@@ -1667,29 +1667,32 @@ namespace GlassProductManager
             {
                 return;
             }
-            if (e.Column.DisplayIndex == 1)
+            switch (e.Column.DisplayIndex)
             {
-                TextBox txtQuantity = e.EditingElement as TextBox;
-                if (txtQuantity != null)
-                {
-                    double quantity = 0;
-                    double.TryParse(txtQuantity.Text, out quantity);
-                    double unitPrice = 0;
-                    double.TryParse(entity.UnitPrice, out unitPrice);
-                    entity.Total = (quantity * unitPrice).ToString("0.00");
-                }
+                case 1:
+                    TextBox txtQuantity = e.EditingElement as TextBox;
+                    if (txtQuantity != null)
+                    {
+                        int quantity = 0;
+                        int.TryParse(txtQuantity.Text, out quantity);
+                        entity.Quantity = quantity;
+                    }
+                    break;
+                case 5:
+                    TextBox txtUnitPrice = e.EditingElement as TextBox;
+                    if (txtUnitPrice != null)
+                    {
+                        double unitPrice = 0;
+                        double.TryParse(txtUnitPrice.Text, out unitPrice);
+                        entity.UnitPrice = unitPrice.ToString("0.00");
+                    }
+                    break;
+                default:
+                    break;
             }
-            else if (e.Column.DisplayIndex == 5)
+            if (e.Column.DisplayIndex == 1 || e.Column.DisplayIndex == 5)
             {
-                TextBox txtUnitPrice = e.EditingElement as TextBox;
-                if (txtUnitPrice != null)
-                {
-                    double unitPrice = 0;
-                    double.TryParse(txtUnitPrice.Text, out unitPrice);
-                    double quantity = 0;
-                    double.TryParse(entity.Quantity.ToString(), out quantity);
-                    entity.Total = (quantity * unitPrice).ToString("0.00");
-                }
+                    entity.Total = (double.Parse(entity.UnitPrice??"0") * entity.Quantity).ToString("0.00");
             }
         }
 
