@@ -325,6 +325,9 @@
     <Resource Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Database\1 - EmptyTables.sql" />
+    <Content Include="Database\2 - StoredProcedures.sql" />
+    <Content Include="Database\3 - CustomerDefaultData.sql" />
     <Content Include="Database\GlassManagerDB.sql" />
     <Resource Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
