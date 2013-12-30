@@ -214,7 +214,11 @@ namespace GlassProductManager
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
             BarcodeEntity barcode = BusinessLogic.GetBarcodeDetails(txtQuoteNumber.Text);
-
+            if (barcode == null)
+            {
+                Helper.ShowErrorMessageBox("Please select worksheet first!");
+                return;
+            }
             PrintBarcode(barcode);
         }
 
@@ -223,12 +227,8 @@ namespace GlassProductManager
             // Initialize and start a new engine 
             try
             {
-
-
                 using (Engine btEngine = new Engine())
                 {
-
-
                     string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\Glass_Barcode_Template.btw";
                     btEngine.Start();
                     // Open a label format specifying the default printer 
@@ -275,7 +275,12 @@ namespace GlassProductManager
                         btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = txtWSNumber.Text + "-" + barcode.Line;
                     }
                     // Open a label format specifying a different printer 
-                    string printerName = txtPrinterName.Text;
+                    if(cmbPrinterSelection.SelectedValue == null)
+                    {
+                        Helper.ShowErrorMessageBox("Please select printer!");
+                        return;
+                    }
+                    string printerName = cmbPrinterSelection.SelectedValue.ToString();
                     //btFormat = btEngine.Documents.Open(fileName, "Microsoft XPS Document Writer");
                     btFormat = btEngine.Documents.Open(fileName, printerName);
                     // Print the label 
@@ -317,6 +322,11 @@ namespace GlassProductManager
         private void cmbWorksheetNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             OpenWorksheet();
+        }
+
+        private void cmbPrinterSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

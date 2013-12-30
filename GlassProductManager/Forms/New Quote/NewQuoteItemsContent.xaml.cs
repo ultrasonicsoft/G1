@@ -172,6 +172,7 @@ namespace GlassProductManager
                 {
                     txtTotalSqFtCharged.Text = currentItem.MinimumTotalSqft.ToString();
                 }
+                txtSqFt1.Text = txtTotalSqFtCharged.Text;
             }
             SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged");
         }
@@ -1126,6 +1127,20 @@ namespace GlassProductManager
         private void txtTotalSqFtCharged_LostFocus(object sender, RoutedEventArgs e)
         {
             txtTotalSqFtCharged.Text= currentItem.TotalSqFTCharged.ToString();
+        }
+
+        private void cbInsulationDetails_Checked(object sender, RoutedEventArgs e)
+        {
+            cbInsulation.IsChecked = true;
+            cmbGlassType1.SelectedIndex = cmbGlassType.SelectedIndex;
+            cmbThickness1.SelectedIndex = cmbThickness.SelectedIndex;
+            cmbTemp1.SelectedIndex = cbIsTempered.IsChecked.Value ? 0 : 1;
+            txtSqFt1.Text = txtTotalSqFtCharged.Text;
+        }
+
+        private void cbInsulationDetails_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ResetInsulation();
         }
 
 

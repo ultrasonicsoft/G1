@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+             xmlns:Printing="clr-namespace:System.Drawing.Printing;assembly=System.Drawing"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
     <ScrollViewer Margin="0,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
@@ -181,9 +182,9 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <Label  Name="lblAdditionalInstruction" Content="Printer Name:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" />
-                        <TextBox Name="txtPrinterName" Grid.ColumnSpan="5" Width="200" Text="Microsoft XPS Document Writer" TextWrapping="Wrap"   HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="14" Grid.Column="0" />
-
+                        <Label  Name="lblAdditionalInstruction" Content="Select Printer:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" />
+                        <!--<TextBox Name="txtPrinterName" Grid.ColumnSpan="5" Width="200" Text="Microsoft XPS Document Writer" TextWrapping="Wrap"   HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="14" Grid.Column="0" />-->
+                        <ComboBox Name="cmbPrinterSelection" Width="200" ItemsSource="{x:Static Printing:PrinterSettings.InstalledPrinters}" Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3" SelectionChanged="cmbPrinterSelection_SelectionChanged" HorizontalAlignment="Left" />
                         <!--<TextBox Name="txtAdditionalInstruction"  Margin="10,0,0,0" TextWrapping="Wrap" Width="750" Height="100"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="7" Grid.RowSpan="5" AcceptsReturn="True" />-->
 
                         <Grid Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Center">

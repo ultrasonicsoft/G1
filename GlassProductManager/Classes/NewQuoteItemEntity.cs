@@ -454,7 +454,17 @@ namespace GlassProductManager
         {
             StringBuilder description = new StringBuilder();
 
-            description.Append(GlassType);
+            if (_isInsulation)
+            {
+                string isTemp1 = GlassType1.IsTempered ? "Temp" : "Not Temp";
+                string isTemp2 = GlassType2.IsTempered ? "Temp" : "Not Temp";
+                description.AppendFormat("[Insulation: ({0}-{1}-{2}) ({3}-{4}-{5}) {6} SqFt]", GlassType1.GlassType, GlassType1.Thickness, isTemp1, GlassType2.GlassType, GlassType2.Thickness, isTemp2, GlassType1.SqFt);
+                description.Append(Environment.NewLine);
+            }
+            else
+            {
+                description.Append(GlassType);
+            }
 
             if (false == string.IsNullOrEmpty(_shape))
             {
@@ -525,12 +535,7 @@ namespace GlassProductManager
             {
                 description.AppendFormat(" [Logo]");
             }
-            if (_isInsulation)
-            {
-                string isTemp1 = GlassType1.IsTempered ? "Temp" : "Not Temp";
-                string isTemp2 = GlassType2.IsTempered ? "Temp" : "Not Temp";
-                description.AppendFormat(" [Insulation: ({0}-{1}-{2}) ({3}-{4}-{5}) {6} SqFt]", GlassType1.GlassType, GlassType1.Thickness, isTemp1, GlassType2.GlassType, GlassType2.Thickness, isTemp2, GlassType1.SqFt);
-            }
+            
             return description.ToString();
         }
     }
