@@ -379,15 +379,15 @@ namespace GlassProductManager
             if (result == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
                 return;
 
-            _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
-            _temperedRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
-            _polishStraightRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT].ToString());
-            _polishShapeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE].ToString());
-            _miterRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.MITER_RATE].ToString());
-            _notchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE].ToString());
-            _hingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
-            _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
-            _holeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HOLE_RATE].ToString());
+            _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
+            _temperedRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
+            _polishStraightRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT].ToString());
+            _polishShapeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE].ToString());
+            _miterRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.MITER_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.MITER_RATE].ToString());
+            _notchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE].ToString());
+            _hingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
+            _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
+            _holeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HOLE_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.HOLE_RATE].ToString());
             
             _minimumTotalSqft = int.Parse(result.Tables[0].Rows[0][ColumnNames.MinimumTotalSqft].ToString());
 
@@ -475,7 +475,8 @@ namespace GlassProductManager
                 description.AppendFormat(" [Cutout: {0}]", _allCutoutData.Count);
             }
 
-            if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches > 0)
+            //if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches > 0)
+                if (_isStraightPolish == true)
             {
                 description.AppendFormat(" [Polish: -> Long {0}, Short {1}, (in) {2}]", _straightPolishLongSide, _straightPolishShortSide, _straightPolishTotalInches);
             }

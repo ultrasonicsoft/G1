@@ -394,9 +394,10 @@ namespace GlassProductManager
         {
             if (_thicknessAction == UserAction.AddNew)
             {
-                if (false == IsExistingThickness())
+                if (true == IsExistingThickness())
                 {
-                    Helper.ShowErrorMessageBox("This Glass type already present in the system.");
+                    Helper.ShowErrorMessageBox("This glass thickness already present in the system.");
+                    return;
                 }
                 else
                 {
