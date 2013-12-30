@@ -77,6 +77,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Shape:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
                                 <ComboBox Name="cmbShape" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" SelectionChanged="cmbShape_SelectionChanged" TabIndex="50" />
+                                <Label Content="Insulation Details:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" />
+                                <CheckBox Content="Insulation Job?" Name="cbInsulationDetails" Grid.Row="0"  Grid.Column="6" TabIndex="80" Grid.ColumnSpan="2" />
 
                                 <!-- ACTUAL SECTION -->
                                 <Label Content="Actual :" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
