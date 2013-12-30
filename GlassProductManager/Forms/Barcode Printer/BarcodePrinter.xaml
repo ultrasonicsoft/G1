@@ -181,8 +181,10 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <Label  Name="lblAdditionalInstruction" Content="Additional Instruction:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" />
-                        <TextBox Name="txtAdditionalInstruction"  Margin="10,0,0,0" TextWrapping="Wrap" Width="750" Height="100"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="7" Grid.RowSpan="5" AcceptsReturn="True" />
+                        <Label  Name="lblAdditionalInstruction" Content="Printer Name:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" />
+                        <TextBox Name="txtPrinterName" Grid.ColumnSpan="5" Width="200" Text="Microsoft XPS Document Writer" TextWrapping="Wrap"   HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="14" Grid.Column="0" />
+
+                        <!--<TextBox Name="txtAdditionalInstruction"  Margin="10,0,0,0" TextWrapping="Wrap" Width="750" Height="100"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="7" Grid.RowSpan="5" AcceptsReturn="True" />-->
 
                         <Grid Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>

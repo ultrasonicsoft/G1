@@ -221,70 +221,80 @@ namespace GlassProductManager
         private void PrintBarcode(BarcodeEntity barcode)
         {
             // Initialize and start a new engine 
-
-            using (Engine btEngine = new Engine())
+            try
             {
-                ;
 
-                string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) +  @"\Glass_Barcode_Template.btw";
-                btEngine.Start();
-                // Open a label format specifying the default printer 
-                LabelFormatDocument btFormat = btEngine.Documents.Open(fileName);
 
-                if (btFormat.SubStrings[BarCodeConstants.CustomerName] != null)
+                using (Engine btEngine = new Engine())
                 {
-                    btFormat.SubStrings[BarCodeConstants.CustomerName].Value = barcode.LastName + " " + barcode.FirstName;
-                }
-                if (btFormat.SubStrings[BarCodeConstants.SalesOrder] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.SalesOrder].Value = barcode.SalesOrder;
-                }
-                if (btFormat.SubStrings[BarCodeConstants.OrderDate] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.OrderDate].Value = barcode.OrderDate;
-                }
-                if (btFormat.SubStrings[BarCodeConstants.CustomerPO] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.CustomerPO].Value = barcode.CustomerPO;
-                }
-                if (btFormat.SubStrings[BarCodeConstants.Worksheet] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.Worksheet].Value = barcode.Worksheet;
-                }
-                if (btFormat.SubStrings[BarCodeConstants.Size] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.Size].Value = barcode.Size;
-                }
-                if (btFormat.SubStrings[BarCodeConstants.SQFT] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.SQFT].Value = barcode.SqFt;
-                }
-                if (btFormat.SubStrings[BarCodeConstants.Logo] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.Logo].Value = barcode.Logo =="1"? "Logo" : "No Logo";
-                }
-                if (btFormat.SubStrings[BarCodeConstants.Description] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.Description].Value = barcode.Description;
-                }
-                if (btFormat.SubStrings[BarCodeConstants.BarcodeItem] != null)
-                {
-                    btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = txtWSNumber.Text + "-" + barcode.Line;
-                }
-                // Open a label format specifying a different printer 
-                btFormat = btEngine.Documents.Open(fileName, "Microsoft XPS Document Writer");
-                // Print the label 
-                Result result = btFormat.Print();
 
-                if (result == Result.Success)
-                {
-                    Helper.ShowInformationMessageBox("Barcoded printing successfully!");
+
+                    string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\Glass_Barcode_Template.btw";
+                    btEngine.Start();
+                    // Open a label format specifying the default printer 
+                    LabelFormatDocument btFormat = btEngine.Documents.Open(fileName);
+
+                    if (btFormat.SubStrings[BarCodeConstants.CustomerName] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.CustomerName].Value = barcode.LastName + " " + barcode.FirstName;
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.SalesOrder] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.SalesOrder].Value = barcode.SalesOrder;
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.OrderDate] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.OrderDate].Value = barcode.OrderDate;
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.CustomerPO] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.CustomerPO].Value = barcode.CustomerPO;
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.Worksheet] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.Worksheet].Value = barcode.Worksheet;
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.Size] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.Size].Value = barcode.Size;
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.SQFT] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.SQFT].Value = barcode.SqFt;
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.Logo] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.Logo].Value = barcode.Logo == "1" ? "Logo" : "No Logo";
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.Description] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.Description].Value = barcode.Description;
+                    }
+                    if (btFormat.SubStrings[BarCodeConstants.BarcodeItem] != null)
+                    {
+                        btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = txtWSNumber.Text + "-" + barcode.Line;
+                    }
+                    // Open a label format specifying a different printer 
+                    string printerName = txtPrinterName.Text;
+                    //btFormat = btEngine.Documents.Open(fileName, "Microsoft XPS Document Writer");
+                    btFormat = btEngine.Documents.Open(fileName, printerName);
+                    // Print the label 
+                    Result result = btFormat.Print();
+
+                    if (result == Result.Success)
+                    {
+                        Helper.ShowInformationMessageBox("Barcoded printing successfully!");
+                    }
+                    else
+                    {
+                        Helper.ShowInformationMessageBox("Barcoded printing failed!");
+                    }
                 }
-                else
-                {
-                    Helper.ShowInformationMessageBox("Barcoded printing failed!");
-                }
-            } 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void DeleteWorksheet()
