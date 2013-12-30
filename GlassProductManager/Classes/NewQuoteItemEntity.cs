@@ -475,7 +475,7 @@ namespace GlassProductManager
                 description.AppendFormat(" [{0}]", _thickness);
             }
 
-            if (_isTempered)
+            if (_isTempered && _isInsulation == false)
             {
                 description.Append(" [Temp]");
             }

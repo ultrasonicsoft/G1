@@ -190,7 +190,7 @@ namespace GlassProductManager
 
         private void FillCustomerDetails()
         {
-            var result = BusinessLogic.GetAllCustomers();
+            ObservableCollection<CustomerSmartDataEntity> result = BusinessLogic.GetAllCustomers();
             dgCustomerList.ItemsSource = result;
             m_CustomerListForSearch = new ListCollectionView(result);
         }
@@ -298,6 +298,20 @@ namespace GlassProductManager
             btnCancelEdit.IsEnabled = status;
             btnEditCustomer.IsEnabled = !status;
             btnNewCusotmer.IsEnabled = !status;
+        }
+
+        void ShowHideDetails(object sender, RoutedEventArgs e)
+        {
+            CustomerSmartDataEntity obj = ((FrameworkElement)sender).DataContext as CustomerSmartDataEntity;
+
+            //for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+            //    if (vis is DataGridRow)
+            //    {
+            //        var row = (DataGridRow)vis;
+            //        row.DetailsVisibility =
+            //          row.DetailsVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            //        break;
+            //    }
         }
     }
 }

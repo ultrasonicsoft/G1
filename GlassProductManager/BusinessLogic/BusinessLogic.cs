@@ -1001,7 +1001,7 @@ namespace GlassProductManager
                     newCustomer.Fax = result.Tables[0].Rows[rowIndex][ColumnNames.Fax].ToString();
                     newCustomer.Email = result.Tables[0].Rows[rowIndex][ColumnNames.Email].ToString();
                     newCustomer.Misc = result.Tables[0].Rows[rowIndex][ColumnNames.Misc].ToString();
-                    
+                    newCustomer.Image = @"F:\Balram Data\Important\GitRepositories\GlassProductManager\GlassProductManager\Logo.jpg";
                     customerList.Add(newCustomer);
                 }
             }

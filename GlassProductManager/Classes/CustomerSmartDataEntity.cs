@@ -22,6 +22,8 @@ namespace GlassProductManager
         public string WorksheetNumber { get; set; }
         public string PONumber { get; set; }
         public string InvoiceNumber { get; set; }
+
+        public string Image { get; set; }
        
     }
 }
