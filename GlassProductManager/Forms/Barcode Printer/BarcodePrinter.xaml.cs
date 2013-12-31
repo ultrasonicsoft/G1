@@ -289,7 +289,7 @@ namespace GlassProductManager
                             }
                             if (btFormat.SubStrings[BarCodeConstants.Logo] != null)
                             {
-                                btFormat.SubStrings[BarCodeConstants.Logo].Value = barcode.Logo == "1" ? "Logo" : "No Logo";
+                                btFormat.SubStrings[BarCodeConstants.Logo].Value = barcode.Logo;
                             }
                             if (btFormat.SubStrings[BarCodeConstants.Description] != null)
                             {
