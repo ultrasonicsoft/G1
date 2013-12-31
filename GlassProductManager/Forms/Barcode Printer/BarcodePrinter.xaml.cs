@@ -297,7 +297,7 @@ namespace GlassProductManager
                             }
                             if (btFormat.SubStrings[BarCodeConstants.BarcodeItem] != null)
                             {
-                                btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = txtWSNumber.Text + "-" + barcode.Line;
+                                btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = txtWSNumber.Text + "-" + barcode.Line + "-" + (index + 1).ToString();
                             }
                             if (btFormat.SubStrings[BarCodeConstants.DueDate] != null)
                             {
