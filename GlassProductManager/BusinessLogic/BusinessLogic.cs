@@ -576,6 +576,13 @@ namespace GlassProductManager
                 SqlParameter pPricePerUnit = null;
                 SqlParameter pTotal = null;
 
+                SqlParameter pActualDescription = null;
+                SqlParameter pActualDimension = null;
+                SqlParameter pActualTotalSQFT = null;
+                SqlParameter pIsLogo = null;
+                SqlParameter pShape = null;
+
+
                 foreach (QuoteGridEntity item in allQuoteData)
                 {
                     pQuantity = new SqlParameter();
@@ -607,7 +614,28 @@ namespace GlassProductManager
                     pTotal.ParameterName = "Total";
                     pTotal.Value = item.Total;
 
-                    SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteLineItem, pLineID, pQuoteNumber, pQuantity, pDescription, pDimension, pSqFt, pPricePerUnit, pTotal);
+                    pActualDescription = new SqlParameter();
+                    pActualDescription.ParameterName = "ActualDescription";
+                    pActualDescription.Value = item.ActualDescription??item.Description;
+
+                    pActualDimension = new SqlParameter();
+                    pActualDimension.ParameterName = "ActualDimension";
+                    pActualDimension.Value = item.ActualDimension??item.Dimension;
+
+                    pActualTotalSQFT = new SqlParameter();
+                    pActualTotalSQFT.ParameterName = "ActualTotalSQFT";
+                    pActualTotalSQFT.Value = item.ActualTotalSQFT??item.TotalSqFt;
+
+                    pIsLogo = new SqlParameter();
+                    pIsLogo.ParameterName = "IsLogo";
+                    pIsLogo.Value = item.IsLogo;
+
+                    pShape = new SqlParameter();
+                    pShape.ParameterName = "Shape";
+                    pShape.Value = item.Shape;
+
+                    SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteLineItem, pLineID, pQuoteNumber, pQuantity, pDescription, pDimension, pSqFt, pPricePerUnit, pTotal,
+                                     pActualTotalSQFT, pIsLogo, pShape);
 
                 }
             }
@@ -1924,9 +1952,9 @@ namespace GlassProductManager
             return isInvoicePresent;
         }
 
-        internal static BarcodeEntity GetBarcodeDetails(string quoteNumber)
+        internal static List<BarcodeEntity> GetBarcodeDetails(string quoteNumber)
         {
-            BarcodeEntity barcode = null;
+            List<BarcodeEntity> allBarcodeData = null;
             DataSet result = null;
 
             try
@@ -1939,28 +1967,38 @@ namespace GlassProductManager
 
                 if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
                 {
-                    return barcode;
+                    return allBarcodeData;
                 }
-                barcode = new BarcodeEntity();
-                barcode.LastName = result.Tables[0].Rows[0][ColumnNames.LastName].ToString();
-                barcode.FirstName = result.Tables[0].Rows[0][ColumnNames.FirstName].ToString();
-                barcode.SalesOrder = result.Tables[0].Rows[0][ColumnNames.SONumber].ToString();
-                barcode.Worksheet = result.Tables[0].Rows[0][ColumnNames.WSNumber].ToString();
-                barcode.OrderDate = result.Tables[0].Rows[0][ColumnNames.CreatedOn].ToString();
-                barcode.CustomerPO = result.Tables[0].Rows[0][ColumnNames.CustomerPO].ToString();
-                barcode.Description = result.Tables[0].Rows[0][ColumnNames.Description].ToString();
-                barcode.SqFt = result.Tables[0].Rows[0][ColumnNames.SqFt].ToString();
-                barcode.Size = result.Tables[0].Rows[0][ColumnNames.Dimension].ToString();
-                barcode.Logo = result.Tables[0].Rows[0][ColumnNames.IsLogo].ToString();
-                barcode.Quantity = result.Tables[0].Rows[0][ColumnNames.Quantity].ToString();
-                barcode.Line = result.Tables[0].Rows[0][ColumnNames.LineID].ToString();
+                BarcodeEntity tempBarCode = null;
+                allBarcodeData = new List<BarcodeEntity>();
 
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    tempBarCode = new BarcodeEntity();
+                    tempBarCode.LastName = result.Tables[0].Rows[rowIndex][ColumnNames.LastName].ToString();
+                    tempBarCode.FirstName = result.Tables[0].Rows[rowIndex][ColumnNames.FirstName].ToString();
+                    tempBarCode.SalesOrder = result.Tables[0].Rows[rowIndex][ColumnNames.SONumber].ToString();
+                    tempBarCode.Worksheet = result.Tables[0].Rows[rowIndex][ColumnNames.WSNumber].ToString();
+                    tempBarCode.OrderDate = result.Tables[0].Rows[rowIndex][ColumnNames.CreatedOn].ToString();
+                    tempBarCode.CustomerPO = result.Tables[0].Rows[rowIndex][ColumnNames.CustomerPO].ToString();
+                    tempBarCode.Description = result.Tables[0].Rows[rowIndex][ColumnNames.Description].ToString();
+                    tempBarCode.SqFt = result.Tables[0].Rows[rowIndex][ColumnNames.SqFt].ToString();
+                    tempBarCode.Size = result.Tables[0].Rows[rowIndex][ColumnNames.Dimension].ToString();
+                    tempBarCode.Logo = result.Tables[0].Rows[rowIndex][ColumnNames.IsLogo].ToString() == "False" ? "No" : "Yes";
+                    tempBarCode.Quantity = result.Tables[0].Rows[rowIndex][ColumnNames.Quantity].ToString();
+                    tempBarCode.Line = result.Tables[0].Rows[rowIndex][ColumnNames.LineID].ToString();
+                    tempBarCode.DueDate = result.Tables[0].Rows[rowIndex][ColumnNames.RequestedShipDate].ToString();
+                    tempBarCode.Shape = result.Tables[0].Rows[rowIndex][ColumnNames.Shape].ToString();
+                    
+                    allBarcodeData.Add(tempBarCode);
+                }
+               
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
             }
-            return barcode;
+            return allBarcodeData;
         }
     }
 }

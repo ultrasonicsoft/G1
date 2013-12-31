@@ -28,12 +28,15 @@ namespace GlassProductManager
         internal const string CustomerPO = "CustomerPO";
         internal const string Worksheet = "Worksheet";
         internal const string Size = "Size";
-        internal const string Quantity = "Quantity";
+        internal const string TotalQuantity = "TotalQuantity";
+        internal const string CurrentQuantity = "CurrentQuantity";
         internal const string Line = "Line";
         internal const string SQFT = "SQFT";
         internal const string Logo = "Logo";
         internal const string Description = "Description";
         internal const string BarcodeItem = "BarcodeItem";
+        internal const string DueDate = "DueDate";
+        internal const string GlassShape = "GlassShape";
     }
 
 }

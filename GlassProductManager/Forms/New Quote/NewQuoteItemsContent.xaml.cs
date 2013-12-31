@@ -664,8 +664,6 @@ namespace GlassProductManager
 
         private void btnAddToQuote_Click(object sender, RoutedEventArgs e)
         {
-            string itemDescription = currentItem.GetDescriptionString();
-
             Dashboard parent = Window.GetWindow(this) as Dashboard;
             if (parent != null)
             {
@@ -683,11 +681,19 @@ namespace GlassProductManager
                         }
                         newItem.LineID = grid.allQuoteData.Count + 1;
                         newItem.Quantity = currentItem.Quantity;
-                        newItem.Description = itemDescription;
+                        // item description string have charged dimension of glass to be print on quote
+                        newItem.Description = currentItem.GetDescriptionString();
                         newItem.Dimension = GetDimensionString();
-                        newItem.TotalSqFt = currentItem.TotalSqFT.ToString();
+                        newItem.TotalSqFt = currentItem.TotalSqFTCharged.ToString();
                         newItem.UnitPrice = currentItem.PricePerUnit.ToString("0.00");
                         newItem.Total = currentItem.CurrentTotal.ToString("0.00");
+                        newItem.Shape = currentItem.Shape;
+
+                        // Actual description string have action dimension of glass to be sent to worker for cutting glass
+                        newItem.ActualDescription = currentItem.GetDescriptionString(true);
+                        newItem.ActualDimension = GetActualDimensionString();
+                        newItem.ActualTotalSQFT = currentItem.TotalSqFT.ToString();
+                        newItem.IsLogo = currentItem.IsLogoRequired;
                         grid.allQuoteData.Add(newItem);
                     }
                 }
@@ -695,6 +701,22 @@ namespace GlassProductManager
         }
 
         private string GetDimensionString()
+        {
+            string defaultFraction = "x/y";
+
+            if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                return string.Format(@"{0}"" x {1}""", currentItem.GlassWidth, currentItem.GlassHeight);
+
+            else if (false == string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                return string.Format(@"{0} {1}"" x {2}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight);
+
+            else if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && false == string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                return string.Format(@"{0}"" x {1} {2}""", currentItem.GlassWidth, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+            else
+                return string.Format(@"{0} {1}"" x  {2} {3}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+        }
+
+        private string GetActualDimensionString()
         {
             string defaultFraction = "x/y";
 

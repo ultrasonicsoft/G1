@@ -122,6 +122,7 @@ namespace GlassProductManager
         internal const string InvoiceStatus = "InvoiceStatus";
 
         internal const string IsLogo = "IsLogo";
+        internal const string Shape = "Shape";
 
     }
 }

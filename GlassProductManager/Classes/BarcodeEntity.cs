@@ -20,6 +20,8 @@ namespace GlassProductManager
         public string SqFt { get; set; }
         public string Logo { get; set; }
         public string Description { get; set; }
+        public string Shape { get; set; }
+        public string DueDate { get; set; }
     }
 
 }

@@ -1,3 +1,5 @@
-﻿1. New Quote button error
-2. Description column is overlapped on dimension
-3. Customer list is not refreshing.
+﻿1. logic for recording n showing actual description 
+2. showing image on barcode
+3. Logo - Yes or No
+4. DueDate = Requested date
+5. Barcode printing - Print All and Print Selected

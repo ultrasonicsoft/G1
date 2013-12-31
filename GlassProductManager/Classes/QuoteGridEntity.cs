@@ -10,11 +10,54 @@ namespace GlassProductManager
 {
     public class QuoteGridEntity : INotifyPropertyChanged
     {
+        private int _lineID;
+        private int _quantity;
+        private string _description;
+        private string _dimension;
+        private string _totalSqFt;
+        private string _unitPrice;
+        private string _total;
+        private string _actualDimension;
+        private string _actualTotalSQFT;
+        private bool _isLogo;
+        private string _actualDescription;
+        private string _shape;
+
+        public string ActualDescription
+        {
+            get { return _actualDescription; }
+            set { _actualDescription = value; }
+        }
+
+        public string Shape
+        {
+            get { return _shape; }
+            set { _shape = value; }
+        }
+
+        public string ActualDimension
+        {
+            get { return _actualDimension; }
+            set { _actualDimension = value; }
+        }
+
+        public string ActualTotalSQFT
+        {
+            get { return _actualTotalSQFT; }
+            set { _actualTotalSQFT = value; }
+        }
+
+        public bool IsLogo
+        {
+            get { return _isLogo; }
+            set { _isLogo = value; }
+        }
+
+
         public QuoteGridEntity()
         {
         }
 
-        private int _lineID;
         public int LineID
         {
             get { return _lineID; }
@@ -25,7 +68,6 @@ namespace GlassProductManager
             }
         }
 
-        private int _quantity;
         public int Quantity
         {
             get { return _quantity; }
@@ -36,7 +78,6 @@ namespace GlassProductManager
             }
         }
 
-        private string _description;
         public string Description
         {
             get { return _description; }
@@ -47,7 +88,6 @@ namespace GlassProductManager
             }
         }
 
-        private string _dimension;
         public string Dimension
         {
             get { return _dimension; }
@@ -58,7 +98,6 @@ namespace GlassProductManager
             }
         }
 
-        private string _totalSqFt;
         public string TotalSqFt
         {
             get { return _totalSqFt; }
@@ -69,7 +108,6 @@ namespace GlassProductManager
             }
         }
 
-        private string _unitPrice;
         public string UnitPrice
         {
             get { return _unitPrice; }
@@ -80,7 +118,6 @@ namespace GlassProductManager
             }
         }
 
-        private string _total;
         public string Total
         {
             get { return _total; }

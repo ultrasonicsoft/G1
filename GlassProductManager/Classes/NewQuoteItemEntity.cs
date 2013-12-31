@@ -56,6 +56,7 @@ namespace GlassProductManager
         private double _holeRate = 0;
         private int _minimumTotalSqft = 0;
 
+
         internal ObservableCollection<CutoutData> _allCutoutData = new ObservableCollection<CutoutData>();
 
         internal int GlassTypeID
@@ -450,9 +451,10 @@ namespace GlassProductManager
             _currentTotal = _currentTotal * _quantity;
         }
 
-        internal string GetDescriptionString()
+        internal string GetDescriptionString(bool isActual = false)
         {
             StringBuilder description = new StringBuilder();
+            
 
             if (_isInsulation)
             {
@@ -538,5 +540,6 @@ namespace GlassProductManager
             
             return description.ToString();
         }
+             
     }
 }
