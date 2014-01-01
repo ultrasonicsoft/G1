@@ -14,7 +14,13 @@ namespace DBHelper
 
         static SQLHelper()
         {
-            dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["default"].ConnectionString;
+            //dbConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["default"].ConnectionString;
+        }
+
+        public static string ConnectionString
+        {
+            get { return dbConnectionString; }
+            set { dbConnectionString = value; }
         }
 
         public static bool ConfigureDatabase()

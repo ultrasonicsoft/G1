@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using DBHelper;
 
 namespace GlassProductManager
 {
@@ -13,5 +14,33 @@ namespace GlassProductManager
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            MainWindow main = null;
+            if (string.IsNullOrEmpty( GlassProductManager.Properties.Settings.Default.ConnectionString) == false)
+            {
+                SQLHelper.ConnectionString = GlassProductManager.Properties.Settings.Default.ConnectionString;
+            }
+
+            if (string.IsNullOrEmpty(SQLHelper.ConnectionString) == false)
+            {
+                //main = new MainWindow();
+                //main.ShowDialog();
+                //main.Close();
+            }
+            else
+            {
+                ConfigureDatabase configureDB = new ConfigureDatabase();
+                configureDB.ShowDialog();
+                if (configureDB.IsDatabaseReady)
+                {
+                    //main = new MainWindow();
+                    //main.ShowDialog();
+                    //main.Close();
+                }
+            }
+        }
     }
 }

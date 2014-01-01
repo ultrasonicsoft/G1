@@ -29,7 +29,8 @@ namespace GlassProductManager
         Worksheet,
         Invoice,
         MakePayment,
-        BarCodePrinter
+        BarCodePrinter,
+        ConfigureDatabase
     }
 
     public partial class DashboardMenu : UserControl
@@ -167,6 +168,13 @@ namespace GlassProductManager
         private void btnBarcodePrinter_Checked(object sender, RoutedEventArgs e)
         {
             ShowCurrentPage(btnBarcodePrinter, new BarcodePrinter());
+        }
+
+        private void btnConfigureDatabase_Checked(object sender, RoutedEventArgs e)
+        {
+            ConfigureDatabase configureDB = new ConfigureDatabase();
+            configureDB.ShowDialog();
+            btnConfigureDatabase.IsChecked = false;
         }
     }
 }

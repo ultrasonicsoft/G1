@@ -48,10 +48,12 @@
     <Reference Include="ReachFramework" />
     <Reference Include="Seagull.BarTender.Print, Version=10.1.2.1, Culture=neutral, PublicKeyToken=109ff779a1b4cbc7, processorArchitecture=x86" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Printing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Controls.Input.Toolkit">
       <HintPath>..\packages\WPFToolkit.3.5.50211.1\lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
     </Reference>
@@ -134,6 +136,9 @@
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\GlassRate.cs" />
+    <Compile Include="Forms\Database Configuration\ConfigureDatabase.xaml.cs">
+      <DependentUpon>ConfigureDatabase.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\HomeContent.xaml.cs">
       <DependentUpon>HomeContent.xaml</DependentUpon>
     </Compile>
@@ -212,6 +217,10 @@
     <Page Include="Forms\Dashboard\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Database Configuration\ConfigureDatabase.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Forms\HomeContent.xaml">
       <SubType>Designer</SubType>
