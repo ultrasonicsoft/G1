@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBHelper
+namespace GlassProductManager
 {
     public class SQLHelper
     {
@@ -136,6 +136,24 @@ namespace DBHelper
                 throw ex;
             }
 
+            return result;
+        }
+
+        public static bool TestConnection(string connectionString)
+        {
+            bool result = true;
+            try
+            {
+                SqlConnection testConnection = new SqlConnection(connectionString);
+                testConnection.Open();
+                testConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                //Helper.ShowErrorMessageBox("Database server is down! Please check your database server or contact your vendor!", "Case Control SysteM");
+                //Environment.Exit(0);
+            }
             return result;
         }
     }

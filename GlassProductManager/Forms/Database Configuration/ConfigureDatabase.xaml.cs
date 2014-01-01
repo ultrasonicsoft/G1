@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DBHelper;
 
 namespace GlassProductManager
 {
@@ -81,6 +80,20 @@ namespace GlassProductManager
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void btnTestConnection_Click(object sender, RoutedEventArgs e)
+        {
+            string connectionString = string.Format(System.Configuration.ConfigurationSettings.AppSettings["defaultConStr"],
+                                txtServerName.Text, txtDatabaseName.Text, txtUserName.Text, txtPassword.Password);
+            if(SQLHelper.TestConnection(connectionString))
+            {
+                Helper.ShowInformationMessageBox("Connection successful!");
+            }
+            else
+            {
+                Helper.ShowErrorMessageBox("Connection failed! Please contact your vendor.");
+            }
         }
     }
 }
