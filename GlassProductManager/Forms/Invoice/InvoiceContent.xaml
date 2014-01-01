@@ -161,13 +161,14 @@
 
                         <DataGrid AutoGenerateColumns="False"  IsReadOnly="True" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="11" Grid.ColumnSpan="6" SelectionMode="Single" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgQuoteItems_LostFocus" >
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Line Item No." Binding="{Binding LineID}" Width="85" SortDirection="Ascending">
+                                <DataGridTextColumn Header="Line #" Binding="{Binding LineID}" Width="65" SortDirection="Ascending"/>
+                                <!--<DataGridTextColumn Header="Line Item No." Binding="{Binding LineID}" Width="85" SortDirection="Ascending">
                                     <DataGridTextColumn.CellStyle>
                                         <Style>
                                             <Setter Property="TextBlock.TextAlignment" Value="Center" />
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
+                                </DataGridTextColumn>-->
                                 <!--TODO: Make it Combo box-->
                                 <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="45" />
                                 <!--<DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="350" ></DataGridTextColumn>-->
@@ -178,15 +179,16 @@
                                         </Style>
                                     </DataGridTextColumn.EditingElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="Dimension (in)" Binding="{Binding Dimension}" Width="90"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Dimension (in)" Binding="{Binding Dimension}" Width="95"></DataGridTextColumn>
                                 <DataGridTextColumn Header="Sq.Ft." Binding="{Binding TotalSqFt}" Width="50"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Price/Pc ($)" Binding="{Binding UnitPrice}" Width="80">
+                                <DataGridTextColumn Header="Price/Pc ($)" Binding="{Binding UnitPrice}" Width="100" />
+                                <!--<DataGridTextColumn Header="Price/Pc ($)" Binding="{Binding UnitPrice}" Width="80">
                                     <DataGridTextColumn.CellStyle>
                                         <Style>
                                             <Setter Property="TextBlock.TextAlignment" Value="Right" />
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
+                                </DataGridTextColumn>-->
                                 <DataGridTextColumn Header="Total ($)" Binding="{Binding Total}" Width="90"></DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>

@@ -158,18 +158,20 @@
                         <ComboBox IsEnabled="False" Name="cmbLeadTimeType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="80" Grid.Row="9" Grid.Column="7" IsTextSearchEnabled="True" IsEditable="True"/>
                         <ComboBox IsEnabled="False" Name="cmbLeadTime" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Grid.Row="9" Grid.Column="5"  Margin="55,0,0,0" IsTextSearchEnabled="True" IsEditable="True"/>
 
-                        <DataGrid AutoGenerateColumns="False"  IsReadOnly="True" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="11" Grid.ColumnSpan="6" SelectionMode="Single" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" >
+                        <DataGrid AutoGenerateColumns="False" SelectionMode="Extended"  IsReadOnly="True" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="11" Grid.ColumnSpan="6" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" >
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Line Item No." Binding="{Binding LineID}" Width="85" SortDirection="Ascending">
+                                <DataGridTextColumn Header="Line #" Binding="{Binding LineID}" Width="65" SortDirection="Ascending"/>
+
+                                <!--<DataGridTextColumn Header="Line Item No." Binding="{Binding LineID}" Width="85" SortDirection="Ascending">
                                     <DataGridTextColumn.CellStyle>
                                         <Style>
                                             <Setter Property="TextBlock.TextAlignment" Value="Center" />
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
+                                </DataGridTextColumn>-->
                                 <!--TODO: Make it Combo box-->
-                                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="45" />
-                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="350" >
+                                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="55" />
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="400" >
                                     <DataGridTextColumn.EditingElementStyle>
                                         <Style TargetType="TextBox">
                                             <Setter Property="AcceptsReturn" Value="true"/>
@@ -187,13 +189,14 @@
                         <ComboBox Name="cmbPrinterSelection" Width="200" ItemsSource="{x:Static Printing:PrinterSettings.InstalledPrinters}" Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3" SelectionChanged="cmbPrinterSelection_SelectionChanged" HorizontalAlignment="Left" />
                         <!--<TextBox Name="txtAdditionalInstruction"  Margin="10,0,0,0" TextWrapping="Wrap" Width="750" Height="100"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="7" Grid.RowSpan="5" AcceptsReturn="True" />-->
 
-                        <Grid Grid.Row="19" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Center">
+                        <Grid Grid.Row="13" Grid.Column="2" Grid.ColumnSpan="6" HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition  Width="110"/>
                                 <ColumnDefinition Width="110"/>
                                 <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="btnPrint" Content="Print"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="0" Width="75" Click="btnPrint_Click" />
+                            <Button Name="btnPrint" Content="Print All"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="0" Width="75" Click="btnPrint_Click" />
+                            <Button Name="btnPrintSelected" Content="Print Selected"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnPrintSelected_Click" />
                             <!--<Button Name="btnExportPdf" Content="Export PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnExportPdf_Click" />
                             <Button Name="btnSendToInvoice" Content="Send to Invoice"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="100" Click="btnSendToInvoice_Click" />-->
                         </Grid>

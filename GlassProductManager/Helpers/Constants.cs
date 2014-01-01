@@ -22,6 +22,7 @@ namespace GlassProductManager
 
     class BarCodeConstants
     {
+        internal const string BarcodeTemplateFileName = "Glass_Barcode_Template.btw";
         internal const string CustomerName = "CustomerName";
         internal const string SalesOrder = "SalesOrder";
         internal const string OrderDate = "OrderDate";

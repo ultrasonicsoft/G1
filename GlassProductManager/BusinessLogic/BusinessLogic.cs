@@ -1989,6 +1989,10 @@ namespace GlassProductManager
                     tempBarCode.Line = result.Tables[0].Rows[rowIndex][ColumnNames.LineID].ToString();
                     tempBarCode.DueDate = result.Tables[0].Rows[rowIndex][ColumnNames.RequestedShipDate].ToString();
                     tempBarCode.Shape = result.Tables[0].Rows[rowIndex][ColumnNames.Shape].ToString();
+                    if (tempBarCode.Shape.Equals("Quadrilateral"))
+                    {
+                        tempBarCode.Shape = "Square";
+                    }
                     
                     allBarcodeData.Add(tempBarCode);
                 }
