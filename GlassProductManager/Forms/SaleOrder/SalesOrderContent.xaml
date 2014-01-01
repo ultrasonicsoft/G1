@@ -42,7 +42,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Image Name="imgLogo" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.RowSpan="3" VerticalAlignment="Top" Height="auto"  Width="auto" Grid.Row="0" Grid.Column="0" Source="/GlassProductManager;component/logo.jpg"   />
+                        <Image Name="imgLogo" Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.RowSpan="3" VerticalAlignment="Top" Height="auto"  Width="auto" Grid.Row="0" Grid.Column="0" Source="/GlassProductManager;component/applogo.jpg"   />
 
 
                         <Grid Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Grid.RowSpan="3">
