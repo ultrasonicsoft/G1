@@ -47,5 +47,11 @@ namespace GlassProductManager
         {
             Environment.Exit(0);
         }
+
+        private void btnConfigureDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            ConfigureDatabase configure = new ConfigureDatabase();
+            configure.ShowDialog();
+        }
     }
 }

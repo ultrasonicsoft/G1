@@ -5,7 +5,7 @@
         WindowStartupLocation="CenterScreen" 
         xmlns:System="clr-namespace:System;assembly=mscorlib" Title="Glass Manager"
         
-        Height="200" Width="350"
+        Height="200" Width="450"
          ResizeMode="NoResize" WindowStyle="None" >
     <Window.Resources>
         <SolidColorBrush x:Key="LightBackground" Color="#2D2D30"/>
@@ -21,12 +21,14 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Label Grid.Row="1" Grid.Column="0" Content="User Name" Height="28" HorizontalAlignment="Right" VerticalAlignment="Center" Name="label1" FontSize="12" />
-        <TextBox  Text="admin" Grid.Row="1" Grid.Column="1" Height="30" HorizontalAlignment="Left" Name="txtUserName" VerticalAlignment="Center" FontSize="12" Width="150" TabIndex="0" ForceCursor="True" />
+        <TextBox  Text="admin" Grid.Row="1" Grid.Column="1" Height="30" Grid.ColumnSpan="2"  HorizontalAlignment="Left" Name="txtUserName" VerticalAlignment="Center" FontSize="12" Width="180" TabIndex="0" ForceCursor="True" />
         <Label Grid.Row="2" Grid.Column="0" Content="Password" Height="28" HorizontalAlignment="Right" Name="label2" VerticalAlignment="Center" FontSize="12"/>
-        <PasswordBox Password="admin" Foreground="White" Grid.Row="2" Grid.Column="1"  Height="30" HorizontalAlignment="Left" Name="txtPassword" VerticalAlignment="Center" FontSize="12" Width="150" TabIndex="1" />
-        <Button Grid.Row="3" Grid.Column="0" Content="Sign In" Height="30" Width="150" HorizontalAlignment="Center" Name="btnSignIn" VerticalAlignment="Center" IsDefault="True" Click="btnSignIn_Click" TabIndex="2" />
-        <Button Grid.Row="3" Grid.Column="1"  Content="Close" Height="30" Width="150" HorizontalAlignment="Center" Name="btnClose" VerticalAlignment="Center"  IsCancel="True" Click="btnClose_Click" />
+        <PasswordBox Password="admin" Foreground="White" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1"  Height="30" HorizontalAlignment="Left" Name="txtPassword" VerticalAlignment="Center" FontSize="12" Width="180" TabIndex="1" />
+        <Button Grid.Row="3" Grid.Column="0" Content="Sign In" Height="30" Width="100" HorizontalAlignment="Center" Name="btnSignIn" VerticalAlignment="Center" IsDefault="True" Click="btnSignIn_Click" TabIndex="2" />
+        <Button Grid.Row="3" Grid.Column="1"  Content="Close" Height="30" Width="100" HorizontalAlignment="Center" Name="btnClose" VerticalAlignment="Center"  IsCancel="True" Click="btnClose_Click" />
+        <Button Grid.Row="3" Name="btnConfigureDatabase"  Grid.Column="2"  Content="Configure Database" Height="30" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center"  IsCancel="True" Click="btnConfigureDatabase_Click" />
     </Grid>
 </Window>
