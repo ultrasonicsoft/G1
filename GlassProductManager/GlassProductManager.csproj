@@ -85,6 +85,7 @@
     <Compile Include="Classes\InvoiceEntity.cs" />
     <Compile Include="Classes\InvoicePaymentEntity.cs" />
     <Compile Include="Classes\BarcodeEntity.cs" />
+    <Compile Include="Classes\PdfPrintingSetting.cs" />
     <Compile Include="Classes\WorksheetEntity.cs" />
     <Compile Include="Classes\SaleOrderEntity.cs" />
     <Compile Include="Classes\QuoteMasterEntity.cs" />
@@ -328,6 +329,7 @@
     <Content Include="Database\1 - EmptyTables.sql" />
     <Content Include="Database\2 - StoredProcedures.sql" />
     <Content Include="Database\3 - CustomerDefaultData.sql" />
+    <Content Include="Database\DeleteCustomerData.sql" />
     <Content Include="Database\GlassManagerDB.sql" />
     <Resource Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

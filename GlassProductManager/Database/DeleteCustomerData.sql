@@ -1,0 +1,12 @@
+DELETE FROM Customer
+DELETE FROM dbo.CustomerShippingAddress
+DELETE FROM dbo.Invoice
+DELETE FROM dbo.InvoicePaymentDetails
+DELETE FROM dbo.OtherShippingAddress
+DELETE FROM dbo.QuoteFooter
+DELETE FROM dbo.QuoteHeader
+DELETE FROM dbo.QuoteHeader
+DELETE FROM dbo.QuoteLineItems
+DELETE FROM dbo.SaleOrder
+DELETE FROM dbo.Worksheet
+DELETE FROM dbo.WorkshopItem

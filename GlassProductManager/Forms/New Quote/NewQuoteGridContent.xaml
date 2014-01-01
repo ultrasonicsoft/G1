@@ -170,7 +170,7 @@
                                 <!--TODO: Make it Combo box-->
                                 <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="55" />
                                 <!--<DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="350" ></DataGridTextColumn>-->
-                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="400" >
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="395" >
                                     <DataGridTextColumn.EditingElementStyle>
                                         <Style TargetType="TextBox">
                                             <Setter Property="AcceptsReturn" Value="true"/>

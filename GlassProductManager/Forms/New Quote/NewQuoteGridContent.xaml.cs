@@ -1058,21 +1058,18 @@ namespace GlassProductManager
                 // Get an XGraphics object for drawing
                 XGraphics gfx = XGraphics.FromPdfPage(page);
 
-                // Create a font
-                XFont font = new XFont("Verdana", 12, XFontStyle.Regular);
-
                 // Print Company Logo
                 PrintLogo(gfx);
-                PrintQuoteHeader(gfx, font);
+                PrintQuoteHeader(gfx, PdfPrintingSetting.NormalFont);
 
                 XPen pen = new XPen(XColors.Black, 1);
                 gfx.DrawRoundedRectangle(pen, 80, 180, 1100, 200, 30, 20);
 
-                PrintSoldToAddress(gfx, font);
-                PrintShipToAddress(gfx, font);
-                PrintShippingDetails(gfx, font);
-                PrintQuoteDetails(gfx, font);
-                PrintQuoteFooter(gfx, font);
+                PrintSoldToAddress(gfx, PdfPrintingSetting.NormalFont);
+                PrintShipToAddress(gfx, PdfPrintingSetting.NormalFont);
+                PrintShippingDetails(gfx, PdfPrintingSetting.NormalFont);
+                PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont);
+                PrintQuoteFooter(gfx, PdfPrintingSetting.NormalFont);
 
                 //PrinterSettings settings = new PrinterSettings();
                 //PrintDialog oDiaLog = new PrintDialog();
@@ -1119,7 +1116,7 @@ namespace GlassProductManager
             int yBaseOffset = 15;
             int yIncrementalOffset = 25;
             int labelWidth = 100;
-            int labelHeight = 100;
+            int labelHeight = 200;
 
             // Print Quote Number
             gfx.DrawString(lblQuoteNo.Content.ToString(), font, XBrushes.Black,
@@ -1174,98 +1171,17 @@ namespace GlassProductManager
             XStringFormat.TopLeft);
         }
 
-        private void PrintShipToAddress(XGraphics gfx, XFont font)
-        {
-            int xBaseOffset = 500;
-            int xIncrementalOffset = 560;
-            int yBaseOffset = 200;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
-
-            XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
-
-            // Print Ship To
-            gfx.DrawString(lblShipTo.Content.ToString(), boldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-
-            // Print Name 
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToName.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-           XStringFormat.TopLeft);
-
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToAddress.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtShipToAddress.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtShipToPhone.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Fax
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToFax.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtShipToFax.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Email
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToEmail.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtShipToEmail.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Misc
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToMisc.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtShipToMisc.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-        }
-
         private void PrintSoldToAddress(XGraphics gfx, XFont font)
         {
             int xBaseOffset = 100;
-            int xIncrementalOffset = 160;
+            int xIncrementalOffset = 170;
             int yBaseOffset = 200;
             int yIncrementalOffset = 25;
             int labelWidth = 100;
-            int labelHeight = 100;
+            int labelHeight = 200;
 
-
-
-
-            XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
             // Print Sold To
-            gfx.DrawString(lblSoldTo.Content.ToString(), boldFont, XBrushes.Black,
+            gfx.DrawString(lblSoldTo.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
               new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
               XStringFormat.TopLeft);
 
@@ -1334,6 +1250,80 @@ namespace GlassProductManager
          XStringFormat.TopLeft);
 
             gfx.DrawString(txtSoldToMisc.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+        }
+        private void PrintShipToAddress(XGraphics gfx, XFont font)
+        {
+            int xBaseOffset = 500;
+            int xIncrementalOffset = 560;
+            int yBaseOffset = 200;
+            int yIncrementalOffset = 25;
+            int labelWidth = 100;
+            int labelHeight = 100;
+
+            // Print Ship To
+            gfx.DrawString(lblShipTo.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+              XStringFormat.TopLeft);
+
+            // Print Name 
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblShipToName.Content.ToString(), font, XBrushes.Black,
+            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
+           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+           XStringFormat.TopLeft);
+
+            // Print Phone
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblShipToAddress.Content.ToString(), font, XBrushes.Black,
+         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+         XStringFormat.TopLeft);
+
+            gfx.DrawString(txtShipToAddress.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            // Print Phone
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
+         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+         XStringFormat.TopLeft);
+
+            gfx.DrawString(txtShipToPhone.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            // Print Fax
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblShipToFax.Content.ToString(), font, XBrushes.Black,
+         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+         XStringFormat.TopLeft);
+
+            gfx.DrawString(txtShipToFax.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            // Print Email
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblShipToEmail.Content.ToString(), font, XBrushes.Black,
+         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+         XStringFormat.TopLeft);
+
+            gfx.DrawString(txtShipToEmail.Text, font, XBrushes.Black,
+            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+            XStringFormat.TopLeft);
+
+            // Print Misc
+            yBaseOffset += yIncrementalOffset;
+            gfx.DrawString(lblShipToMisc.Content.ToString(), font, XBrushes.Black,
+         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+         XStringFormat.TopLeft);
+
+            gfx.DrawString(txtShipToMisc.Text, font, XBrushes.Black,
             new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
         }
@@ -1456,16 +1446,14 @@ namespace GlassProductManager
         private void PrintQuoteFooter(XGraphics gfx, XFont font)
         {
             int xBaseOffset = 900;
-            int xIncrementalOffset = 1060;
+            int xIncrementalOffset = 1080;
             int yBaseOffset = 1150;
             int yIncrementalOffset = 25;
             int labelWidth = 100;
             int labelHeight = 100;
 
-            XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
-
             // Print Quote Number
-            gfx.DrawString(lblSubTotalCaption.Content.ToString(), boldFont, XBrushes.Black,
+            gfx.DrawString(lblSubTotalCaption.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
               new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
               XStringFormat.TopLeft);
 
@@ -1476,7 +1464,7 @@ namespace GlassProductManager
             // Print Quote Number
             yBaseOffset += yIncrementalOffset;
             string energy = cbDollar.IsChecked.Value ? "Energy Surcharge ($):" : "Energy Surcharge (%):";
-            gfx.DrawString(energy, boldFont, XBrushes.Black,
+            gfx.DrawString(energy, PdfPrintingSetting.BoldFont, XBrushes.Black,
               new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
               XStringFormat.TopLeft);
             gfx.DrawString(txtEnergySurcharge.Text, font, XBrushes.Black,
@@ -1485,7 +1473,7 @@ namespace GlassProductManager
 
             // Print Quote Number
             yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblDiscount.Content.ToString(), boldFont, XBrushes.Black,
+            gfx.DrawString(lblDiscount.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
               new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
               XStringFormat.TopLeft);
             gfx.DrawString(txtDiscount.Text, font, XBrushes.Black,
@@ -1494,7 +1482,7 @@ namespace GlassProductManager
 
             // Print Quote Number
             yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblDelivery.Content.ToString(), boldFont, XBrushes.Black,
+            gfx.DrawString(lblDelivery.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
               new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
               XStringFormat.TopLeft);
             gfx.DrawString(txtDelivery.Text, font, XBrushes.Black,
@@ -1505,7 +1493,7 @@ namespace GlassProductManager
             if (cbRush.IsChecked.Value)
             {
                 yBaseOffset += yIncrementalOffset;
-                gfx.DrawString(lblRushOrder.Content.ToString(), boldFont, XBrushes.Black,
+                gfx.DrawString(lblRushOrder.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
                   new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
                   XStringFormat.TopLeft);
                 gfx.DrawString(txtRushOrder.Text, font, XBrushes.Black,
@@ -1514,7 +1502,7 @@ namespace GlassProductManager
             }
 
             yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblTax.Content.ToString(), boldFont, XBrushes.Black,
+            gfx.DrawString(lblTax.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
               new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
               XStringFormat.TopLeft);
             gfx.DrawString(txtTax.Text, font, XBrushes.Black,
@@ -1523,10 +1511,10 @@ namespace GlassProductManager
 
 
             yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblGrandTotalCaption.Content.ToString(), boldFont, XBrushes.Black,
+            gfx.DrawString(lblGrandTotalCaption.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
-            gfx.DrawString(lblGrandTotal.Content.ToString(), boldFont, XBrushes.Black,
+            gfx.DrawString(lblGrandTotal.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
             new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
             XStringFormat.TopLeft);
         }
