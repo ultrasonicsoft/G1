@@ -37,6 +37,6 @@
 
         <Button Grid.Row="6" Grid.Column="0" Content="Save" Height="30" Width="150" HorizontalAlignment="Center" Name="btnSave" VerticalAlignment="Center" IsDefault="True" Click="btnSave_Click" TabIndex="2" />
         <Button Grid.Row="6" Grid.Column="1"  Content="Close" Height="30" Width="150" HorizontalAlignment="Center" Name="btnClose" VerticalAlignment="Center"  IsCancel="True" Click="btnClose_Click" />
-        <Button Grid.Row="5" Grid.Column="0"  Content="Test Database Connection" Grid.ColumnSpan="2" Height="30" Width="150" HorizontalAlignment="Center" Name="btnTestConnection" VerticalAlignment="Center"  IsCancel="True" Click="btnTestConnection_Click" />
+        <Button Grid.Row="5" Grid.Column="0"  Content="Test Database Connection" Grid.ColumnSpan="2" Height="30" Width="150" HorizontalAlignment="Center" Name="btnTestConnection" VerticalAlignment="Center"  Click="btnTestConnection_Click" />
     </Grid>
 </Window>
