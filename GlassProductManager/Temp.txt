@@ -1,36 +1,37 @@
-﻿  <!--<ToggleButton.Template>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border CornerRadius="3" Background="{TemplateBinding Background}">
-                            <ContentPresenter Margin="3" 
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                                            <GradientStop Color="#FFF3F3F3" Offset="1"/>
-                                            <GradientStop Color="LawnGreen" Offset="0.307"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="False">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                                            <GradientStop Color="#FFF3F3F3" Offset="1"/>
-                                            <GradientStop Color="Cyan" Offset="0.307"/>
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </ToggleButton.Template>-->
+﻿
 
 				http://gsselle.wordpress.com/2013/05/26/wpf-datagrid-update-insert-and-delete-operations/
 				http://www.dotnetcurry.com/ShowArticle.aspx?ID=566
 				http://social.msdn.microsoft.com/Forums/vstudio/en-US/4face39e-55d2-41db-b698-ff4c8271f658/wpf-datagrid-addeditdelete-item-by-row?forum=wpf
 				http://blogs.u2u.be/diederik/post/2009/09/29/Inserting-Updating-and-Deleting-from-a-WPF-DataGrid.aspx
+
+				
+
+=====================================================================================
+Internet Access on Emulator
+=====================================================================================
+Android - Emulator internet access
+In Eclipse:
+
+Window>Preferences>Android>Launch
+
+Default emulator options: -dns-server 8.8.8.8,8.8.4.4
+
+=====================================================================================
+Install Android application apk file on Emulator
+=====================================================================================
+Windows:
+
+Execute the emulator (SDK Manager.exe->Tools->Manage AVDs...->New then Start)
+Start the console (Windows XP), Run -> type cmd, and move to the platform-tools folder of SDK directory.
+Paste the APK file in the 'android-sdk\tools' or 'platform-tools' folder.
+Then type the following command.
+
+adb install [apk file name]
+
+Example:
+
+adb install Jorgesys.apk
+
+
+http://49.249.132.65/GlassProductManager/Service1.svc/personsdataJSON
