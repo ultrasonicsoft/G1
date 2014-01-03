@@ -39,5 +39,17 @@ namespace GlassProductManager
         internal const string DueDate = "DueDate";
         internal const string GlassShape = "GlassShape";
     }
+    
+   enum WorksheetItemStatus
+   {
+       NotStarted,
+       Cut,
+       Polish,
+       Drill,
+       WaterJet,
+       Temper,
+       Insulate,
+       Completed
+   }
 
 }

@@ -1714,7 +1714,6 @@ namespace GlassProductManager
                 pConfirmedDate.Value = confirmedDate;
 
                 SQLHelper.ExecuteStoredProcedure(StoredProcedures.GenerateWorksheet, pQuoteNumber, pConfirmedDate);
-
             }
             catch (Exception ex)
             {
@@ -2002,6 +2001,73 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
             return allBarcodeData;
+        }
+
+        internal static string GetWorksheetNumber(string quoteNumber)
+        {
+            string worksheetNumber = string.Empty;
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "QuoteNumber";
+                pQuoteNumber.Value = quoteNumber;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetWorksheetNumber, pQuoteNumber);
+
+                if(result == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count==0)
+                {
+                    return worksheetNumber ;
+                }
+                worksheetNumber = result.Tables[0].Rows[0][0].ToString();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+
+            return worksheetNumber;
+        }
+
+        internal static void GenerateWorksheetItems(string WSNumber,  ObservableCollection<QuoteGridEntity> allQuoteData)
+        {
+            try
+            {
+                SqlParameter pWSNumber = new SqlParameter();
+                pWSNumber.ParameterName = "wsNumber";
+                pWSNumber.Value = WSNumber;
+
+                SqlParameter pMmodifiedOn = new SqlParameter();
+                pMmodifiedOn.ParameterName = "modifiedOn";
+                pMmodifiedOn.Value = DateTime.Now;
+
+                WorksheetItemEntity entity = null;
+                
+                foreach (QuoteGridEntity lineItem in allQuoteData)
+                {
+                    for (int index = 0; index < lineItem.Quantity; index++)
+                    {
+                        entity = new WorksheetItemEntity() { WSNumber = WSNumber, LineID = lineItem.LineID, Status = WorksheetItemStatus.NotStarted.ToString(), ModifiedByOperator = FirmSettings.UserName };
+
+                        SqlParameter pLineID = new SqlParameter();
+                        pLineID.ParameterName = "lineID";
+                        pLineID.Value = entity.LineID;
+
+                        SqlParameter pStatus = new SqlParameter();
+                        pStatus.ParameterName = "status";
+                        pStatus.Value = entity.Status;
+
+                        SqlParameter pModifiedByOperatorID = new SqlParameter();
+                        pModifiedByOperatorID.ParameterName = "modifiedByOperatorID";
+                        pModifiedByOperatorID.Value = entity.ModifiedByOperator;
+
+                        SQLHelper.ExecuteStoredProcedure(StoredProcedures.GenerateWorksheetItems, pWSNumber, pLineID, pStatus, pModifiedByOperatorID, pMmodifiedOn);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
     }
 }

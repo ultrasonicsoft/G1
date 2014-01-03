@@ -81,5 +81,7 @@ namespace GlassProductManager
         internal const string UpdateCustomer = "[UpdateCustomer]";
         internal const string GetAllCustomers = "[GetAllCustomers]";
         internal const string GetBarcodeDetails = "[GetBarcodeDetails]";
+        internal const string GetWorksheetNumber = "[GetWorksheetNumber]";
+        internal const string GenerateWorksheetItems = "[GenerateWorksheetItems]";
     }
 }

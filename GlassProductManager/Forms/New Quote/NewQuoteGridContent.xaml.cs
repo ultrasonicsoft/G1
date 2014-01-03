@@ -1578,6 +1578,9 @@ namespace GlassProductManager
                 {
                     BusinessLogic.GenerateSaleOrder(txtQuoteNumber.Text, DateTime.Now);
                     BusinessLogic.GenerateWorksheet(txtQuoteNumber.Text, DateTime.Now);
+                    string worksheetNumber = BusinessLogic.GetWorksheetNumber(txtQuoteNumber.Text);
+                    
+                    BusinessLogic.GenerateWorksheetItems(worksheetNumber, allQuoteData);
                     ShowSaleOrderForm();
                 }
             }

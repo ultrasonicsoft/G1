@@ -103,6 +103,7 @@
     <Compile Include="Classes\CutoutData.cs" />
     <Compile Include="Classes\Insulation.cs" />
     <Compile Include="Classes\QuoteHeader.cs" />
+    <Compile Include="Classes\WorksheetItemEntity.cs" />
     <Compile Include="Forms\Barcode Printer\BarcodePrinter.xaml.cs">
       <DependentUpon>BarcodePrinter.xaml</DependentUpon>
     </Compile>
