@@ -34,6 +34,15 @@ namespace GlassProductManager
             RequestFormat = WebMessageFormat.Json
           )]
         WorksheetItem GetWorksheetItemDetails(string worksheetItemID);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            UriTemplate = "UpdateGlassItemStatus",
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            ResponseFormat = WebMessageFormat.Json,
+            RequestFormat = WebMessageFormat.Json
+          )]
+        void UpdateGlassItemStatus(WorksheetItemIDStatus item);
     }
 
 
@@ -158,6 +167,27 @@ namespace GlassProductManager
         {
             get { return password; }
             set { password = value; }
+        }
+    }
+
+    [DataContract]
+    public class WorksheetItemIDStatus
+    {
+        int id;
+        string status;
+
+        [DataMember(Name = "ID")]
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
+        }
+
+        [DataMember(Name = "Status")]
+        public string Status
+        {
+            get { return status; }
+            set { status = value; }
         }
     }
 }

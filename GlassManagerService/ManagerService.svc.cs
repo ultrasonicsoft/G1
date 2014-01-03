@@ -46,10 +46,15 @@ namespace GlassProductManager
 
         public bool Login(User user)
         {
-            bool result = true;
+            bool result = false;
 
             result = BusinessLogic.IsValidUser(user.Name, user.Password);
             return result;
+        }
+
+        public void UpdateGlassItemStatus(WorksheetItemIDStatus item)
+        {
+            BusinessLogic.UpdateGlassItemStatus(item.ID.ToString(), item.Status);
         }
     }
 }

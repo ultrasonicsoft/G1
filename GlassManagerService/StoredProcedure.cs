@@ -9,6 +9,7 @@ namespace GlassProductManager
     {
         internal const string IsValidUser = "IsValidUser";
         internal const string GetWorksheetItemDetails = "GetWorksheetItemDetails";
+        internal const string UpdateGlassItemStatus = "UpdateGlassItemStatus";
 
     }
 }

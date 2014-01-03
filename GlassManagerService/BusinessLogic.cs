@@ -84,5 +84,27 @@ namespace GlassProductManager
 
             return item;
         }
+
+        internal static void UpdateGlassItemStatus(string glassItemID, string status)
+        {
+            DataSet result = null;
+            try
+            {
+                SqlParameter pGlassItemID = new SqlParameter();
+                pGlassItemID.ParameterName = "glassItemID";
+                pGlassItemID.Value = int.Parse(glassItemID);
+
+                SqlParameter pStatus = new SqlParameter();
+                pStatus.ParameterName = "status";
+                pStatus.Value = status;
+
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateGlassItemStatus, pGlassItemID, pStatus);
+               
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
