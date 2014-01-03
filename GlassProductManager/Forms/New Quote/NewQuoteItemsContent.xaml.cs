@@ -688,6 +688,13 @@ namespace GlassProductManager
                         newItem.UnitPrice = currentItem.PricePerUnit.ToString("0.00");
                         newItem.Total = currentItem.CurrentTotal.ToString("0.00");
                         newItem.Shape = currentItem.Shape;
+                        
+                        // Line item details
+                        newItem.IsPolish = currentItem.IsMiter || currentItem.IsStraightPolish || currentItem.IsCustomShapePolish;
+                        newItem.IsDrill = currentItem.IsHoles;
+                        newItem.IsWaterJet = currentItem.IsNotch || currentItem.IsHinges || currentItem.IsPatches || currentItem.IsCutout;
+                        newItem.IsTemper = currentItem.IsTempered;
+                        newItem.IsInsulate = currentItem.IsInsulation;
 
                         // Actual description string have action dimension of glass to be sent to worker for cutting glass
                         newItem.ActualDescription = currentItem.GetDescriptionString(true);

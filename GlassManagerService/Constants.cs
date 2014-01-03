@@ -11,5 +11,11 @@ namespace GlassProductManager
         internal const string Status = "Status";
         internal const string Description = "Description";
         internal const string Quantity = "Quantity";
+
+        internal const string IsPolish = "IsPolish";
+        internal const string IsDrills = "IsDrills";
+        internal const string IsWaterjet = "IsWaterjet";
+        internal const string IsTemper = "IsTemper";
+        internal const string IsInsulate = "IsInsulate";
     }
 }

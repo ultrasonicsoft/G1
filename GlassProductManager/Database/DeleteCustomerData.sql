@@ -9,4 +9,4 @@ DELETE FROM dbo.QuoteHeader
 DELETE FROM dbo.QuoteLineItems
 DELETE FROM dbo.SaleOrder
 DELETE FROM dbo.Worksheet
-DELETE FROM dbo.WorkshopItem
+DELETE FROM dbo.WorksheetLineItem

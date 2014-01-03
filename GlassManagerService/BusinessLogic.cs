@@ -70,6 +70,12 @@ namespace GlassProductManager
                 item.Quantity = result.Tables[0].Rows[0][ColumnNames.Quantity].ToString();
                 item.Quantity = itemID + "/" + item.Quantity;
                 item.Status = result.Tables[0].Rows[0][ColumnNames.Status].ToString();
+                
+                item.IsPolish = bool.Parse(result.Tables[0].Rows[0][ColumnNames.IsPolish].ToString());
+                item.IsDrill= bool.Parse(result.Tables[0].Rows[0][ColumnNames.IsDrills].ToString());
+                item.IsWaterJet = bool.Parse(result.Tables[0].Rows[0][ColumnNames.IsWaterjet].ToString());
+                item.IsTemper = bool.Parse(result.Tables[0].Rows[0][ColumnNames.IsTemper].ToString());
+                item.IsInsulate = bool.Parse(result.Tables[0].Rows[0][ColumnNames.IsInsulate].ToString());
 
             }
             catch (Exception ex)

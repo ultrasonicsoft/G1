@@ -22,6 +22,11 @@ namespace GlassProductManager
         private bool _isLogo;
         private string _actualDescription;
         private string _shape;
+        private bool _isPolish;
+        private bool _isDrill;
+        private bool _isWaterJet;
+        private bool _isTemper;
+        private bool _isInsulate;
 
         public string ActualDescription
         {
@@ -53,6 +58,32 @@ namespace GlassProductManager
             set { _isLogo = value; }
         }
 
+        public bool IsPolish
+        {
+            get { return _isPolish; }
+            set { _isPolish = value; }
+        }
+
+        public bool IsDrill
+        {
+            get { return _isDrill; }
+            set { _isDrill = value; }
+        }
+        public bool IsWaterJet
+        {
+            get { return _isWaterJet; }
+            set { _isWaterJet = value; }
+        }
+        public bool IsTemper
+        {
+            get { return _isTemper; }
+            set { _isTemper = value; }
+        }
+        public bool IsInsulate
+        {
+            get { return _isInsulate; }
+            set { _isInsulate = value; }
+        }
 
         public QuoteGridEntity()
         {

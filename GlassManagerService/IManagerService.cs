@@ -62,11 +62,16 @@ namespace GlassProductManager
     [DataContract]
     public class WorksheetItem
     {
-        string description;
-        string wsNumber;
-        string quantity;
-        string status;
-        int id;
+        private string description;
+        private string wsNumber;
+        private string quantity;
+        private string status;
+        private int id;
+        private bool _isPolish;
+        private bool _isDrill;
+        private bool _isWaterJet;
+        private bool _isTemper;
+        private bool _isInsulate;
 
         [DataMember]
         public int ID
@@ -101,6 +106,37 @@ namespace GlassProductManager
         {
             get { return quantity; }
             set { quantity = value; }
+        }
+
+         [DataMember]
+        public bool IsPolish
+        {
+            get { return _isPolish; }
+            set { _isPolish = value; }
+        }
+         [DataMember]
+        public bool IsDrill
+        {
+            get { return _isDrill; }
+            set { _isDrill = value; }
+        }
+         [DataMember]
+        public bool IsWaterJet
+        {
+            get { return _isWaterJet; }
+            set { _isWaterJet = value; }
+        }
+         [DataMember]
+        public bool IsTemper
+        {
+            get { return _isTemper; }
+            set { _isTemper = value; }
+        }
+         [DataMember]
+        public bool IsInsulate
+        {
+            get { return _isInsulate; }
+            set { _isInsulate = value; }
         }
     }
 

@@ -581,6 +581,12 @@ namespace GlassProductManager
                 SqlParameter pIsLogo = null;
                 SqlParameter pShape = null;
 
+                SqlParameter pIsPolish = null;
+                SqlParameter pIsDrills = null;
+                SqlParameter pIsWaterjet = null;
+                SqlParameter pIsTemper = null;
+                SqlParameter pIsInsulate = null;
+
 
                 foreach (QuoteGridEntity item in allQuoteData)
                 {
@@ -633,8 +639,29 @@ namespace GlassProductManager
                     pShape.ParameterName = "Shape";
                     pShape.Value = item.Shape;
 
+                    pIsPolish = new SqlParameter();
+                    pIsPolish.ParameterName = "IsPolish";
+                    pIsPolish.Value = item.IsPolish;
+
+                    pIsDrills = new SqlParameter();
+                    pIsDrills.ParameterName = "IsDrills";
+                    pIsDrills.Value = item.IsDrill;
+
+                    pIsWaterjet = new SqlParameter();
+                    pIsWaterjet.ParameterName = "IsWaterjet";
+                    pIsWaterjet.Value = item.IsWaterJet;
+
+                    pIsTemper = new SqlParameter();
+                    pIsTemper.ParameterName = "IsTemper";
+                    pIsTemper.Value = item.IsTemper;
+
+                    pIsInsulate = new SqlParameter();
+                    pIsInsulate.ParameterName = "IsInsulate";
+                    pIsInsulate.Value = item.IsInsulate;
+
                     SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteLineItem, pLineID, pQuoteNumber, pQuantity, pDescription, pDimension, pSqFt, pPricePerUnit, pTotal,
-                                     pActualTotalSQFT, pIsLogo, pShape);
+                                     pActualTotalSQFT, pIsLogo, pShape
+                                     ,pIsPolish,pIsDrills,pIsWaterjet,pIsTemper,pIsInsulate);
 
                 }
             }
