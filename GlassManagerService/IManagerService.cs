@@ -65,6 +65,15 @@ namespace GlassProductManager
         string description;
         string wsNumber;
         string quantity;
+        string status;
+        int id;
+
+        [DataMember]
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
         [DataMember]
         public string Description
@@ -78,6 +87,13 @@ namespace GlassProductManager
         {
             get { return wsNumber; }
             set { wsNumber = value; }
+        }
+
+        [DataMember]
+        public string Status
+        {
+            get { return status; }
+            set { status = value; }
         }
 
         [DataMember]

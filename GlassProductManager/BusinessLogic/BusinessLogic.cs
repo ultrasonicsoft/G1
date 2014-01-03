@@ -2046,7 +2046,11 @@ namespace GlassProductManager
                 {
                     for (int index = 0; index < lineItem.Quantity; index++)
                     {
-                        entity = new WorksheetItemEntity() { WSNumber = WSNumber, LineID = lineItem.LineID, Status = WorksheetItemStatus.NotStarted.ToString(), ModifiedByOperator = FirmSettings.UserName };
+                        entity = new WorksheetItemEntity() { ItemID=index+1, WSNumber = WSNumber, LineID = lineItem.LineID, Status = WorksheetItemStatus.NotStarted.ToString(), ModifiedByOperator = FirmSettings.UserName };
+
+                        SqlParameter pItemID = new SqlParameter();
+                        pItemID.ParameterName = "itemID";
+                        pItemID.Value = entity.ItemID;
 
                         SqlParameter pLineID = new SqlParameter();
                         pLineID.ParameterName = "lineID";
@@ -2060,7 +2064,7 @@ namespace GlassProductManager
                         pModifiedByOperatorID.ParameterName = "modifiedByOperatorID";
                         pModifiedByOperatorID.Value = entity.ModifiedByOperator;
 
-                        SQLHelper.ExecuteStoredProcedure(StoredProcedures.GenerateWorksheetItems, pWSNumber, pLineID, pStatus, pModifiedByOperatorID, pMmodifiedOn);
+                        SQLHelper.ExecuteStoredProcedure(StoredProcedures.GenerateWorksheetItems, pWSNumber, pItemID,pLineID, pStatus, pModifiedByOperatorID, pMmodifiedOn);
                     }
                 }
             }

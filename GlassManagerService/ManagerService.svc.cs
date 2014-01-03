@@ -36,11 +36,11 @@ namespace GlassProductManager
 
         public WorksheetItem GetWorksheetItemDetails(string worksheetItemID)
         {
-            WorksheetItem workItemDetails = new WorksheetItem();
+            string[] worksheetInputData = worksheetItemID.Split('-');
 
-            workItemDetails.Description = "Clear glass";
-            workItemDetails.Quantity = "1/3";
-            workItemDetails.WSNumber= "W0002";
+            WorksheetItem workItemDetails = BusinessLogic.GetWorksheetItemDetails(worksheetInputData[0],worksheetInputData[1],worksheetInputData[2]);
+
+            workItemDetails.WSNumber = worksheetInputData[0];
             return workItemDetails;
         }
 
