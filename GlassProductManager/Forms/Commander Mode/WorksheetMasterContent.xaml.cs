@@ -168,7 +168,7 @@ namespace GlassProductManager
 
         private void FillWorksheetDetails()
         {
-            var result = BusinessLogic.GetWorksheetMasterData();
+            ObservableCollection<WorksheetEntity> result = BusinessLogic.GetWorksheetMasterData();
             dgWorksheetDetails.ItemsSource = result;
             m_WorksheetListForSearch = new ListCollectionView(result);
         }

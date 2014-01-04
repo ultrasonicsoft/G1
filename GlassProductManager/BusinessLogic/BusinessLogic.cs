@@ -1584,6 +1584,8 @@ namespace GlassProductManager
                 if (result == null || result.Tables == null || result.Tables.Count == 0)
                 { return quoteMasterData; }
 
+                
+
                 quoteMasterData = new ObservableCollection<WorksheetEntity>();
                 WorksheetEntity temp = null;
                 object dbValue = null;
@@ -1611,6 +1613,18 @@ namespace GlassProductManager
 
                     dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.TotalQuantity];
                     temp.TotalQuantity = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    // Get progress for current worksheet
+                    SqlParameter pWsNumber = new SqlParameter();
+                    pWsNumber.ParameterName = "wsNumber";
+                    pWsNumber.Value = temp.WorksheetNumber;
+                    var progressResult = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetWorksheetProgress, pWsNumber);
+
+                    if (progressResult == null || progressResult.Tables == null || progressResult.Tables.Count == 0)
+                    { continue; }
+
+                    dbValue = progressResult.Tables[0].Rows[0][ColumnNames.Progress];
+                    temp.Progress = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
 
                     quoteMasterData.Add(temp);
                 }
@@ -2099,6 +2113,46 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
+        }
+
+        internal static ObservableCollection<WorksheetLineItemEntity> GetWorksheetLineItemDetails(string wsNumber, int lineID)
+        {
+            ObservableCollection<WorksheetLineItemEntity> worksheetItemDetails = null;
+            try
+            {
+                SqlParameter pWSNumber = new SqlParameter();
+                pWSNumber.ParameterName = "wsNumber";
+                pWSNumber.Value = wsNumber;
+
+                SqlParameter pLineID = new SqlParameter();
+                pLineID.ParameterName = "lineID";
+                pLineID.Value = lineID;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetWorksheetLineItemDetails, pWSNumber, pLineID);
+                
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return worksheetItemDetails;
+
+                worksheetItemDetails = new ObservableCollection<WorksheetLineItemEntity>();
+                WorksheetLineItemEntity item = new WorksheetLineItemEntity();
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    item = new WorksheetLineItemEntity();
+                    item.ID = int.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.ID].ToString());
+                    item.LineID = result.Tables[0].Rows[rowIndex][ColumnNames.LineID].ToString();
+                    item.ItemID = result.Tables[0].Rows[rowIndex][ColumnNames.ItemID].ToString();
+                    item.ModifiedOn = DateTime.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.ModifiedOn].ToString()).ToShortDateString();
+                    item.OperatorName = result.Tables[0].Rows[rowIndex][ColumnNames.OperatorName].ToString();
+                    item.Status = result.Tables[0].Rows[rowIndex][ColumnNames.Status].ToString();
+
+                    worksheetItemDetails.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return  worksheetItemDetails;
         }
     }
 }

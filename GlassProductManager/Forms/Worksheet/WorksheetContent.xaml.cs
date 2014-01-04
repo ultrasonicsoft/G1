@@ -35,6 +35,14 @@ namespace GlassProductManager
             set { _allQuoteData = value; }
         }
 
+        private ObservableCollection<WorksheetLineItemEntity> _allWorksheetLineItemData = new ObservableCollection<WorksheetLineItemEntity>();
+
+        public ObservableCollection<WorksheetLineItemEntity> allWorksheetLineItemData
+        {
+            get { return _allWorksheetLineItemData; }
+            set { _allWorksheetLineItemData = value; }
+        }
+
         public WorksheetContent()
         {
             InitializeComponent();
@@ -723,6 +731,17 @@ namespace GlassProductManager
         private void cmbWorksheetNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             OpenWorksheet();
+        }
+
+        private void dgQuoteItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
+            if (selectedItem == null)
+            {
+                return;
+            }
+            _allWorksheetLineItemData = BusinessLogic.GetWorksheetLineItemDetails(txtWSNumber.Text, selectedItem.LineID);
+            dgWorksheetLineItemDetails.ItemsSource = _allWorksheetLineItemData;
         }
     }
 }

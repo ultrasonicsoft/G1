@@ -88,6 +88,7 @@
     <Compile Include="Classes\InvoicePaymentEntity.cs" />
     <Compile Include="Classes\BarcodeEntity.cs" />
     <Compile Include="Classes\PdfPrintingSetting.cs" />
+    <Compile Include="Classes\WorksheetLineItemEntity.cs" />
     <Compile Include="Classes\WorksheetEntity.cs" />
     <Compile Include="Classes\SaleOrderEntity.cs" />
     <Compile Include="Classes\QuoteMasterEntity.cs" />
@@ -162,7 +163,7 @@
       <DependentUpon>NewQuoteGridContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlassShape.cs" />
-    <Compile Include="Classes\NewQuoteItemEntity.cs" />
+    <Compile Include="Forms\New Quote\NewQuoteItemEntity.cs" />
     <Compile Include="Forms\New Quote\NewQuoteItemsContent.xaml.cs">
       <DependentUpon>NewQuoteItemsContent.xaml</DependentUpon>
     </Compile>

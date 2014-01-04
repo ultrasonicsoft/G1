@@ -124,5 +124,8 @@ namespace GlassProductManager
         internal const string IsLogo = "IsLogo";
         internal const string Shape = "Shape";
 
+        internal const string ModifiedOn = "ModifiedOn";
+        internal const string ItemID = "ItemID";
+
     }
 }
