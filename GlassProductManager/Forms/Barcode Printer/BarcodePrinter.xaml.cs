@@ -339,6 +339,11 @@ namespace GlassProductManager
             return result;
         }
 
+        public static void PrintLineItem(string wsNumber, int lineID, int itemID)
+        {
+            int i = 0;
+        }
+
         private void cmbWorksheetNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             OpenWorksheet();

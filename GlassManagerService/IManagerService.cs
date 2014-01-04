@@ -43,6 +43,15 @@ namespace GlassProductManager
             RequestFormat = WebMessageFormat.Json
           )]
         void UpdateGlassItemStatus(WorksheetItemIDStatus item);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            UriTemplate = "PrintBarcodeLabel",
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            ResponseFormat = WebMessageFormat.Json,
+            RequestFormat = WebMessageFormat.Json
+          )]
+        void PrintBarcodeLabel(BarcodeLabel item);
     }
 
 
@@ -188,6 +197,35 @@ namespace GlassProductManager
         {
             get { return status; }
             set { status = value; }
+        }
+    }
+
+    [DataContract]
+    public class BarcodeLabel
+    {
+        string wsNumber;
+        int lineID;
+        int itemID;
+
+        [DataMember(Name = "WSNumber")]
+        public string WSNumber
+        {
+            get { return wsNumber; }
+            set { wsNumber = value; }
+        }
+
+        [DataMember(Name = "LineID")]
+        public int LineID
+        {
+            get { return lineID; }
+            set { lineID = value; }
+        }
+
+        [DataMember(Name = "ItemID")]
+        public int ItemID
+        {
+            get { return itemID; }
+            set { itemID = value; }
         }
     }
 }

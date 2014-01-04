@@ -47,14 +47,20 @@ namespace GlassProductManager
         public bool Login(User user)
         {
             bool result = false;
-
+            
             result = BusinessLogic.IsValidUser(user.Name, user.Password);
             return result;
         }
 
         public void UpdateGlassItemStatus(WorksheetItemIDStatus item)
         {
-            BusinessLogic.UpdateGlassItemStatus(item.ID.ToString(), item.Status);
+            BusinessLogic.UpdateGlassItemStatus(item.ID.ToString(), item.Status);            
+        }
+
+        public void PrintBarcodeLabel(BarcodeLabel item)
+        {
+            int i = 0;
+            //GlassProductManager.BarcodePrinter.PrintLineItem(item.WSNumber, item.LineID, item.ItemID);
         }
     }
 }

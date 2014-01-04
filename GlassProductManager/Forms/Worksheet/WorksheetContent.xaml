@@ -176,7 +176,7 @@
                                 </DataGridTextColumn>
                                 <DataGridTextColumn Header="Dimension (in)" Binding="{Binding Dimension}" Width="100"></DataGridTextColumn>
                                 <DataGridTextColumn Header="Sq.Ft." Binding="{Binding TotalSqFt}" Width="80"></DataGridTextColumn>
-                                <DataGridTextColumn Header="Progress" Binding="{Binding Progress}" Width="80"></DataGridTextColumn>
+                                <DataGridTextColumn Header="Progress" Binding="{Binding Progress}" Width="80" Visibility="Hidden"></DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
 
