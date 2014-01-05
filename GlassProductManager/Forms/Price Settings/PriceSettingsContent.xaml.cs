@@ -367,6 +367,11 @@ namespace GlassProductManager
 
         private void btnEditThickness_Click(object sender, RoutedEventArgs e)
         {
+            if (lbThickness.Items.Count == 0)
+            {
+                Helper.ShowErrorMessageBox("There are no thickness to edit. Please craete new!");
+                return;
+            }
             _thicknessAction = UserAction.Edit;
             btnSaveThickness.IsEnabled = true;
 
