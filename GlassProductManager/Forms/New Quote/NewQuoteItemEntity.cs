@@ -522,7 +522,7 @@ namespace GlassProductManager
                 description.AppendFormat(" [Notches: {0}]", _notches);
                 isAnyMiscAvailable = true;
             }
-            if (_isMiter && _miterLongSide > 0 && _miterShortSide > 0 && _miterTotalInches > 0)
+            if (_isMiter )
             {
                 description.AppendFormat(" [Miter: Long {0}, Short {1}, (in) {2}]", _miterLongSide, _miterShortSide, _miterTotalInches);
                 isAnyMiscAvailable = true;
