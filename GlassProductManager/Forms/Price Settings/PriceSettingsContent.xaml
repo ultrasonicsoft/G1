@@ -44,10 +44,10 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 <ComboBox Grid.Row="0" Grid.Column="1"  Name="cmbGlassTypeManageGlassType" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbGlassTypeManageGlassType_SelectionChanged" />
-                
+
                 <Label  Content="Glass Type Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
                 <TextBox Name="txtGlassTypeName" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1"  IsEnabled="True"/>
-                
+
                 <Grid Grid.Row="2" Grid.ColumnSpan="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -83,9 +83,9 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="Glass Type:" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 <ComboBox Grid.Row="0" Grid.Column="1"  Name="cmbGlassTypeManageThickness" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbGlassTypeManageThickness_SelectionChanged" />
-                <Label  Content="Thickness:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                <Label  Content="Thickness:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Margin="62,2,0,2"/>
                 <TextBox Name="txtThicknessManage" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1"/>
-                <ListBox Name="lbThickness"  HorizontalAlignment="Left" Height="120"  Grid.RowSpan="4" VerticalAlignment="Top" Width="100" Grid.Row="0" Grid.Column="2" SelectionChanged="lbThickness_SelectionChanged"/>
+                <ListBox Name="lbThickness"  ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" Height="120"   Grid.RowSpan="4" VerticalAlignment="Top" Width="140" Foreground="White" Grid.Row="0" Grid.Column="2" SelectionChanged="lbThickness_SelectionChanged"/>
 
                 <Grid Grid.Row="4" Grid.ColumnSpan="4">
                     <Grid.ColumnDefinitions>
@@ -96,7 +96,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Button Name="btnAddNewThickness" Content="Add New" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="0" Click="btnAddNewThickness_Click" />
-                    <Button Name="btnEditThickness" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="1" Click="btnEditThickness_Click" />
+                    <Button Name="btnEditThickness" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75"  Grid.Row="0" Grid.Column="1" Click="btnEditThickness_Click" Height="22" Margin="11,0,11,4" />
                     <Button Name="btnSaveThickness" IsEnabled="False" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="3" Click="btnSaveThickness_Click" />
                     <Button Name="btnCancelEditThickness" IsEnabled="False" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="2" Click="btnCancelEditThickness_Click" />
                     <Button Name="btnDeleteThickness" Content="Delete" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="0" Grid.Column="4" />
@@ -215,7 +215,7 @@
                 <ComboBox Grid.Row="0" Grid.Column="1"  Name="cmbThicknessHoleRates" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="cmbThicknessHoleRates_SelectionChanged"  />
                 <Label Content="Hole Rate" HorizontalAlignment="Right" VerticalAlignment="Center"  Grid.Row="0" Grid.Column="2"  />
                 <TextBox Name="txtHoleRate" IsReadOnly="True" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="0" Grid.Column="3" TextChanged="txtHoleRate_TextChanged"/>
-               
+
                 <Button Name="btnEditHoleRate" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="2" Grid.Column="1" Click="btnEditHoleRate_Click"  />
                 <Button Name="btnSaveHoleRate" IsEnabled="False" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="2" Grid.Column="2" Click="btnSaveHoleRate_Click"  />
                 <Button Name="btnCancelHoleRate" IsEnabled="False" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"  Grid.Row="2" Grid.Column="3" Click="btnCancelHoleRate_Click"  />

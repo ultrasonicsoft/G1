@@ -221,9 +221,12 @@ namespace GlassProductManager
             var result = BusinessLogic.GetLeadTimeSettings();
             if (result == null)
                 return;
-            cmbLeadTime.SelectedIndex = int.Parse(result.Rows[0][ColumnNames.LeadTimeID].ToString());
-            cmbLeadTimeType.SelectedIndex = int.Parse(result.Rows[0][ColumnNames.LeadTimeTypeID].ToString());
-            cbUseAsDefault.IsChecked = bool.Parse(result.Rows[0][ColumnNames.IsDefaultLeadTime].ToString());
+            object tempDBValue = result.Rows[0][ColumnNames.LeadTimeID];
+            cmbLeadTime.SelectedIndex = int.Parse(tempDBValue == DBNull.Value ? "0" : tempDBValue.ToString());
+            tempDBValue = result.Rows[0][ColumnNames.LeadTimeTypeID];
+            cmbLeadTimeType.SelectedIndex = int.Parse(tempDBValue == DBNull.Value ? "0" : tempDBValue.ToString());
+            tempDBValue = result.Rows[0][ColumnNames.IsDefaultLeadTime];
+            cbUseAsDefault.IsChecked = bool.Parse(tempDBValue == DBNull.Value ? "false" : tempDBValue.ToString());
         }
 
         private void FillShippingMethods()
