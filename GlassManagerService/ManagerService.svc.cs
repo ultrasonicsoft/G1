@@ -14,22 +14,25 @@ namespace GlassProductManager
     {
         public List<Person> GetPersonsDataJSON()
         {
-            Person p1 = new Person();
-            p1.ID = 1;
-            p1.Name = "Balram";
-
-            Person p2 = new Person();
-            p2.ID = 2;
-            p2.Name = "Kishor";
-
-            Person p3 = new Person();
-            p3.ID = 3;
-            p3.Name = "Jay";
-
+            bool result = BusinessLogic.IsValidUser("admin", "admin");
             List<Person> persons = new List<Person>();
-            persons.Add(p1);
-            persons.Add(p2);
-            persons.Add(p3);
+
+            if (result)
+            {
+                Person p1 = new Person();
+                p1.ID = 1;
+                p1.Name = "DB Connection successful";
+
+                persons.Add(p1);
+               
+            }
+            else
+            {
+                Person p4 = new Person();
+                p4.ID = 4;
+                p4.Name = "DB Connection failed";
+                persons.Add(p4);
+            }
 
             return persons;
         }
@@ -38,7 +41,7 @@ namespace GlassProductManager
         {
             string[] worksheetInputData = worksheetItemID.Split('-');
 
-            WorksheetItem workItemDetails = BusinessLogic.GetWorksheetItemDetails(worksheetInputData[0],worksheetInputData[1],worksheetInputData[2]);
+            WorksheetItem workItemDetails = BusinessLogic.GetWorksheetItemDetails(worksheetInputData[0], worksheetInputData[1], worksheetInputData[2]);
 
             workItemDetails.WSNumber = worksheetInputData[0];
             return workItemDetails;
@@ -47,14 +50,14 @@ namespace GlassProductManager
         public bool Login(User user)
         {
             bool result = false;
-            
+
             result = BusinessLogic.IsValidUser(user.Name, user.Password);
             return result;
         }
 
         public void UpdateGlassItemStatus(WorksheetItemIDStatus item)
         {
-            BusinessLogic.UpdateGlassItemStatus(item.ID.ToString(), item.Status);            
+            BusinessLogic.UpdateGlassItemStatus(item.ID.ToString(), item.Status);
         }
 
         public void PrintBarcodeLabel(BarcodeLabel item)
