@@ -692,12 +692,53 @@ namespace GlassProductManager
                 {
                     BusinessLogic.DeleteWorksheet(txtQuoteNumber.Text);
                     Helper.ShowInformationMessageBox("Worksheet is delete successfully!");
+                    ResetControls();
                 }
             }
             else
             {
                 Helper.ShowErrorMessageBox("Please provide required details.");
             }
+        }
+
+        private void ResetControls()
+        {
+            txtWSNumber.Text = string.Empty;
+            txtCustomerPO.Text = string.Empty;
+            dtWSCreatedOn.SelectedDate = null;
+            dtQuoteRequestedOn.SelectedDate = null;
+            cmbPaymentType.SelectedIndex = -1;
+            txtQuoteNumber.Text = string.Empty;
+
+            FillAllWorksheetNumbers();
+            cmbWorksheetNumbers.SelectedIndex = -1;
+
+            cbIsShipToSameAddress.IsChecked = false;
+
+            txtSoldToAddress.Text = string.Empty;
+            txtSoldToEmail.Text = string.Empty;
+            txtSoldToFax.Text = string.Empty;
+            txtSoldToFirstName.Text = string.Empty;
+            txtSoldToLastName.Text = string.Empty;
+            txtSoldToMisc.Text = string.Empty;
+            txtSoldToPhone.Text = string.Empty;
+
+            txtShipToAddress.Text = string.Empty;
+            txtShipToEmail.Text = string.Empty;
+            txtShipToFax.Text = string.Empty;
+            txtShiptoFirstName.Text = string.Empty;
+            txtShiptoLastName.Text = string.Empty;
+            txtShipToMisc.Text = string.Empty;
+            txtShipToPhone.Text = string.Empty;
+
+            allQuoteData = new ObservableCollection<QuoteGridEntity>();
+            dgQuoteItems.ItemsSource = allQuoteData;
+
+            allWorksheetLineItemData = new ObservableCollection<WorksheetLineItemEntity>();
+            dgWorksheetLineItemDetails.ItemsSource = allWorksheetLineItemData;
+
+            txtAdditionalInstruction.Text = string.Empty;
+
         }
 
         private void btnSendToInvoice_Click(object sender, RoutedEventArgs e)
