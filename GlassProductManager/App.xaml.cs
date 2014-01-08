@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -17,28 +18,35 @@ namespace GlassProductManager
         {
             base.OnStartup(e);
 
-            MainWindow main = null;
-            if (string.IsNullOrEmpty( GlassProductManager.Properties.Settings.Default.ConnectionString) == false)
+            try
             {
-                SQLHelper.ConnectionString = GlassProductManager.Properties.Settings.Default.ConnectionString;
-            }
+                MainWindow main = null;
+                if (string.IsNullOrEmpty(GlassProductManager.Properties.Settings.Default.ConnectionString) == false)
+                {
+                    SQLHelper.ConnectionString = GlassProductManager.Properties.Settings.Default.ConnectionString;
+                }
 
-            if (string.IsNullOrEmpty(SQLHelper.ConnectionString) == false)
-            {
-                //main = new MainWindow();
-                //main.ShowDialog();
-                //main.Close();
-            }
-            else
-            {
-                ConfigureDatabase configureDB = new ConfigureDatabase();
-                configureDB.ShowDialog();
-                if (configureDB.IsDatabaseReady)
+                if (string.IsNullOrEmpty(SQLHelper.ConnectionString) == false)
                 {
                     //main = new MainWindow();
                     //main.ShowDialog();
                     //main.Close();
                 }
+                else
+                {
+                    ConfigureDatabase configureDB = new ConfigureDatabase();
+                    configureDB.ShowDialog();
+                    if (configureDB.IsDatabaseReady)
+                    {
+                        //main = new MainWindow();
+                        //main.ShowDialog();
+                        //main.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
     }
