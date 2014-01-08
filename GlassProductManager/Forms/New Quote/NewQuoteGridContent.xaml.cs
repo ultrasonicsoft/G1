@@ -1524,6 +1524,11 @@ namespace GlassProductManager
 
         private void btnExportPdf_Click(object sender, RoutedEventArgs e)
         {
+            if(dgQuoteItems.Items.Count == 0)
+            {
+                Helper.ShowErrorMessageBox("There are no line items for this quote. Can not print empty quote!");
+                return;
+            }
             PrintQuote();
         }
 
@@ -1745,6 +1750,42 @@ namespace GlassProductManager
                 return;
             }
             OpenSelectedQuote(quoteNumber);
+        }
+
+        private void cbIsShipToSameAddress_Checked(object sender, RoutedEventArgs e)
+        {
+            EnableShippingAddressControls(true);
+        }
+
+        private void EnableShippingAddressControls(bool status)
+        {
+            ClearShippintAddressControls();
+
+            txtShipToAddress.IsReadOnly = !status;
+            txtShipToEmail.IsReadOnly = !status;
+            txtShipToFax.IsReadOnly = !status;
+            txtShiptoFirstName.IsReadOnly = !status;
+            txtShiptoLastName.IsReadOnly = !status;
+            txtShipToMisc.IsReadOnly = !status;
+            txtShipToPhone.IsReadOnly = !status;
+            txtShiptoLastName.IsReadOnly = !status;
+        }
+
+        private void ClearShippintAddressControls()
+        {
+            txtShipToAddress.Text = string.Empty;
+            txtShipToEmail.Text = string.Empty;
+            txtShipToFax.Text = string.Empty;
+            txtShiptoFirstName.Text = string.Empty;
+            txtShiptoLastName.Text = string.Empty;
+            txtShipToMisc.Text = string.Empty;
+            txtShipToPhone.Text = string.Empty;
+            txtShiptoLastName.Text = string.Empty;
+        }
+
+        private void cbIsShipToSameAddress_Unchecked(object sender, RoutedEventArgs e)
+        {
+            EnableShippingAddressControls(false);
         }
     }
 }

@@ -751,12 +751,61 @@ namespace GlassProductManager
                 {
                     BusinessLogic.DeleteSalesOrder (txtQuoteNumber.Text);
                     Helper.ShowInformationMessageBox("Sales Order is delete successfully!");
+                    
+                    ResetControls();
                 }
             }
             else
             {
                 Helper.ShowErrorMessageBox("Please provide required details.");
             }
+        }
+
+        private void ResetControls()
+        {
+            txtSONumber.Text = string.Empty;
+            txtCustomerPO.Text = string.Empty;
+            dtQuoteCreatedOn.SelectedDate = null;
+            dtQuoteRequestedOn.SelectedDate = null;
+            cmbPaymentType.SelectedIndex = -1;
+            txtQuoteNumber.Text = string.Empty;
+
+            FillAllSalesOrderNumbers();
+            cmbSalesOrderNumbers.SelectedIndex= -1;
+            
+            cbIsShipToSameAddress.IsChecked = false;
+
+            txtSoldToAddress.Text = string.Empty;
+            txtSoldToEmail.Text = string.Empty;
+            txtSoldToFax.Text = string.Empty;
+            txtSoldToFirstName.Text = string.Empty;
+            txtSoldToLastName.Text = string.Empty;
+            txtSoldToMisc.Text = string.Empty;
+            txtSoldToPhone.Text = string.Empty;
+
+            txtShipToAddress.Text = string.Empty;
+            txtShipToEmail.Text = string.Empty;
+            txtShipToFax.Text = string.Empty;
+            txtShiptoFirstName.Text = string.Empty;
+            txtShiptoLastName.Text = string.Empty;
+            txtShipToMisc.Text = string.Empty;
+            txtShipToPhone.Text = string.Empty;
+
+            allQuoteData = new ObservableCollection<QuoteGridEntity>();
+            dgQuoteItems.ItemsSource = allQuoteData;
+
+            lblSubTotal.Content = "$ 0.00";
+            cbDollar.IsChecked = false;
+            cbRush.IsChecked = false;
+
+            txtEnergySurcharge.Text = string.Empty;
+            txtDiscount.Text = string.Empty;
+            txtDelivery.Text = string.Empty;
+            txtRushOrder.Text = string.Empty;
+            txtTax.Text = string.Empty;
+
+            lblGrandTotal.Content = "$ 0.00";
+
         }
 
         private void cmbSalesOrderNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -102,7 +102,7 @@
 
                         <Label Name="lblSoldTo" Content="Sold to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" />
 
-                        <CheckBox Name="cbIsShipToSameAddress" Content="Ship to other address" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Margin="90,0,0,0" Grid.ColumnSpan="3" TabIndex="13"  />
+                        <CheckBox Name="cbIsShipToSameAddress" Content="Ship to other address" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Margin="90,0,0,0" Grid.ColumnSpan="3" TabIndex="13" Checked="cbIsShipToSameAddress_Checked" Unchecked="cbIsShipToSameAddress_Unchecked"  />
 
                         <Label Name="lblShipTo" Content="Ship to:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="4" Grid.Column="4" />
 

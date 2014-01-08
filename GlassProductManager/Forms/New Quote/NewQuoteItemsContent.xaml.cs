@@ -27,7 +27,7 @@ namespace GlassProductManager
     public partial class NewQuoteItemsContent : UserControl
     {
         NewQuoteItemEntity currentItem = null;
-
+        private bool isReset = false;
         public ObservableCollection<CutoutData> allCutoutData
         {
             get { return currentItem._allCutoutData; }
@@ -168,7 +168,7 @@ namespace GlassProductManager
             if (string.IsNullOrEmpty(txtTotalSqFtCharged.Text) == false && currentItem != null)
             {
                 int chargedTotalSqft = int.Parse(txtTotalSqFt.Text);
-                if(chargedTotalSqft < currentItem.MinimumTotalSqft)
+                if (chargedTotalSqft < currentItem.MinimumTotalSqft && isReset == false)
                 {
                     txtTotalSqFtCharged.Text = currentItem.MinimumTotalSqft.ToString();
                 }
@@ -702,6 +702,8 @@ namespace GlassProductManager
                         newItem.ActualTotalSQFT = currentItem.TotalSqFT.ToString();
                         newItem.IsLogo = currentItem.IsLogoRequired;
                         grid.allQuoteData.Add(newItem);
+
+                        ResetAllControls();
                     }
                 }
             }
@@ -860,6 +862,14 @@ namespace GlassProductManager
             txtGlassHeightFraction.Text = "x/y";
             txtGlassWidthFraction.Text = "x/y";
 
+            //quantity
+            txtQuantity.Text = "0";
+
+            //Total SQFT Charged
+            isReset = true;
+            txtTotalSqFtCharged.Text = "0";
+            isReset = false;
+
             // Custom Shape
             cmbShape.SelectedIndex = -1;
             //txtShapeHeight.Text = "0";
@@ -902,6 +912,9 @@ namespace GlassProductManager
 
             // Total labels
             lblCutoutTotal.Content = "$ 0.00";
+
+            // Running Total
+            currentItem.CurrentTotal = 0;
 
         }
 
