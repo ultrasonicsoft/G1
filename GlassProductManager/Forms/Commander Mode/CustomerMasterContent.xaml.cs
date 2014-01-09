@@ -188,13 +188,20 @@ namespace GlassProductManager
 
         private void FillCustomerDetails()
         {
-            var result = BusinessLogic.GetAllCustomerDetails();
-            //dgCustomerList.ItemsSource = result;
-            _CustomerListForSearch = new ListCollectionView(result);
+            try
+            {
+                var result = BusinessLogic.GetAllCustomerDetails();
+                //dgCustomerList.ItemsSource = result;
+                _CustomerListForSearch = new ListCollectionView(result);
 
-            ListCollectionView collection = new ListCollectionView(result);
-            collection.GroupDescriptions.Add(new PropertyGroupDescription("FullName"));
-            dgCustomerList.ItemsSource = collection;
+                ListCollectionView collection = new ListCollectionView(result);
+                collection.GroupDescriptions.Add(new PropertyGroupDescription("FullName"));
+                dgCustomerList.ItemsSource = collection;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void dgCustomerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -204,20 +211,26 @@ namespace GlassProductManager
 
         private void OpenWorksheet()
         {
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-
-            WorksheetEntity entity = dgCustomerList.SelectedItem as WorksheetEntity;
-
-            if (entity == null)
+            try
             {
-                return;
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                WorksheetEntity entity = dgCustomerList.SelectedItem as WorksheetEntity;
+
+                if (entity == null)
+                {
+                    return;
+                }
+                if (parent != null)
+                {
+                    DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                    DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnWorksheet);
+                    WorksheetContent newQuote = new WorksheetContent(true, entity.QuoteNumber);
+                    parent.ucMainContent.ShowPage(newQuote);
+                }
             }
-            if (parent != null)
+            catch (Exception ex)
             {
-                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnWorksheet);
-                WorksheetContent newQuote = new WorksheetContent(true, entity.QuoteNumber);
-                parent.ucMainContent.ShowPage(newQuote);
+                Logger.LogException(ex);
             }
         }
 
@@ -233,25 +246,32 @@ namespace GlassProductManager
 
         private void DeleteCustomer()
         {
-            if (FirmSettings.IsAdmin == false)
+            try
             {
-                Helper.ShowErrorMessageBox("Only Administrator can delete customer");
-                return;
-            }
-            CustomerSmartDataEntity selectedCustomer = dgCustomerList.SelectedItem as CustomerSmartDataEntity;
-            if (selectedCustomer == null)
-            {
-                Helper.ShowErrorMessageBox("Please select customer to delete.");
-                return;
-            }
+                if (FirmSettings.IsAdmin == false)
+                {
+                    Helper.ShowErrorMessageBox("Only Administrator can delete customer");
+                    return;
+                }
+                CustomerSmartDataEntity selectedCustomer = dgCustomerList.SelectedItem as CustomerSmartDataEntity;
+                if (selectedCustomer == null)
+                {
+                    Helper.ShowErrorMessageBox("Please select customer to delete.");
+                    return;
+                }
 
-            var result = Helper.ShowQuestionMessageBox("All information of customer will be deleted. Are you sure to delete?");
-            if (result == MessageBoxResult.Yes)
+                var result = Helper.ShowQuestionMessageBox("All information of customer will be deleted. Are you sure to delete?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    BusinessLogic.DeleteCustomer(selectedCustomer.ID);
+                    Helper.ShowInformationMessageBox("Customer deleted successfully!");
+                    FillCustomerDetails();
+                    dgCustomerList.CanUserAddRows = false;
+                }
+            }
+            catch (Exception ex)
             {
-                BusinessLogic.DeleteCustomer(selectedCustomer.ID);
-                Helper.ShowInformationMessageBox("Customer deleted successfully!");
-                FillCustomerDetails();
-                dgCustomerList.CanUserAddRows = false;
+                Logger.LogException(ex);
             }
         }
 

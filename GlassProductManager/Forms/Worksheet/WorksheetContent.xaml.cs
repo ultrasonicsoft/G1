@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -75,11 +76,18 @@ namespace GlassProductManager
 
         private void FillAllWorksheetNumbers()
         {
-            var result = BusinessLogic.GetAllWorksheetNumbers();
-            cmbWorksheetNumbers.DisplayMemberPath = ColumnNames.Type;
-            cmbWorksheetNumbers.SelectedValuePath = ColumnNames.ID;
-            cmbWorksheetNumbers.ItemsSource = result.DefaultView;
-            cmbWorksheetNumbers.SelectedIndex = -1;
+            try
+            {
+                var result = BusinessLogic.GetAllWorksheetNumbers();
+                cmbWorksheetNumbers.DisplayMemberPath = ColumnNames.Type;
+                cmbWorksheetNumbers.SelectedValuePath = ColumnNames.ID;
+                cmbWorksheetNumbers.ItemsSource = result.DefaultView;
+                cmbWorksheetNumbers.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillSmartSearchData()
@@ -89,90 +97,127 @@ namespace GlassProductManager
 
         private void FillShippingMethods()
         {
-            var result = BusinessLogic.GetAllShippingMethods();
-            cmbShippingMethod.DisplayMemberPath = ColumnNames.Shipping;
-            cmbShippingMethod.SelectedValuePath = ColumnNames.ID;
-            cmbShippingMethod.ItemsSource = result.DefaultView;
-            cmbShippingMethod.SelectedIndex = 0;
+            try
+            {
+                var result = BusinessLogic.GetAllShippingMethods();
+                cmbShippingMethod.DisplayMemberPath = ColumnNames.Shipping;
+                cmbShippingMethod.SelectedValuePath = ColumnNames.ID;
+                cmbShippingMethod.ItemsSource = result.DefaultView;
+                cmbShippingMethod.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillLeadTimeTypes()
         {
-            var result = BusinessLogic.GetAllLeadTimeTypes();
-            cmbLeadTimeType.DisplayMemberPath = ColumnNames.LeadTimeType;
-            cmbLeadTimeType.SelectedValuePath = ColumnNames.ID;
-            cmbLeadTimeType.ItemsSource = result.DefaultView;
+            try
+            {
+                var result = BusinessLogic.GetAllLeadTimeTypes();
+                cmbLeadTimeType.DisplayMemberPath = ColumnNames.LeadTimeType;
+                cmbLeadTimeType.SelectedValuePath = ColumnNames.ID;
+                cmbLeadTimeType.ItemsSource = result.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillLeadTime()
         {
-            var result = BusinessLogic.GetAllLeadTime();
-            cmbLeadTime.DisplayMemberPath = ColumnNames.LeadTime;
-            cmbLeadTime.SelectedValuePath = ColumnNames.ID;
-            cmbLeadTime.ItemsSource = result.DefaultView;
+            try
+            {
+                var result = BusinessLogic.GetAllLeadTime();
+                cmbLeadTime.DisplayMemberPath = ColumnNames.LeadTime;
+                cmbLeadTime.SelectedValuePath = ColumnNames.ID;
+                cmbLeadTime.ItemsSource = result.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillPaymentTypes()
         {
-            var result = BusinessLogic.GetAllPaymentTypes();
-            cmbPaymentType.DisplayMemberPath = ColumnNames.Type;
-            cmbPaymentType.SelectedValuePath = ColumnNames.ID;
-            cmbPaymentType.ItemsSource = result.DefaultView;
-            cmbPaymentType.SelectedIndex = 0;
+            try
+            {
+                var result = BusinessLogic.GetAllPaymentTypes();
+                cmbPaymentType.DisplayMemberPath = ColumnNames.Type;
+                cmbPaymentType.SelectedValuePath = ColumnNames.ID;
+                cmbPaymentType.ItemsSource = result.DefaultView;
+                cmbPaymentType.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        
         }
 
         private void OpenSelectedWorksheet(string quoteNumber)
         {
-            QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
-            if (result == null)
+            try
             {
-                Helper.ShowInformationMessageBox("No data found for selected quote!");
-                return;
+                QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
+                if (result == null)
+                {
+                    Helper.ShowInformationMessageBox("No data found for selected quote!");
+                    return;
+                }
+
+                txtWSNumber.Text = result.Header.WorksheetNumber;
+
+                #region Fill Header Information
+
+                txtQuoteNumber.Text = result.Header.QuoteNumber;
+                txtCustomerPO.Text = result.Header.CustomerPO;
+                dtWSCreatedOn.SelectedDate = DateTime.Parse(result.Header.SaleOrderConfirmedOn);
+                dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
+                cmbPaymentType.SelectedValue = result.Header.PaymentModeID;
+
+                if (result.Header.SoldTo != null)
+                    SetSoldToDetails(result.Header.SoldTo);
+
+                if (FirmSettings.IsAdmin)
+                {
+                    cmbOperator.Text = result.Header.OperatorName;
+                }
+                {
+                    txtOperatorName.Text = result.Header.OperatorName;
+                }
+                if (result.Header.IsShipToOtherAddress)
+                {
+                    SetShipToDetails(result.Header.ShipTo);
+                }
+                cmbShippingMethod.SelectedIndex = result.Header.ShippingMethodID;
+                cmbLeadTime.SelectedIndex = result.Header.LeadTimeID;
+                cmbLeadTimeType.SelectedIndex = result.Header.LeadTimeTypeID;
+
+                #endregion
+
+                #region Fill Line Items
+
+                allQuoteData = result.LineItems;
+                dgQuoteItems.ItemsSource = allQuoteData;
+
+                #endregion
+
+                #region Fill Footer Information
+
+                if (result.Footer == null)
+                    return;
+
+                #endregion
             }
-
-            txtWSNumber.Text = result.Header.WorksheetNumber;
-
-            #region Fill Header Information
-
-            txtQuoteNumber.Text = result.Header.QuoteNumber;
-            txtCustomerPO.Text = result.Header.CustomerPO;
-            dtWSCreatedOn.SelectedDate = DateTime.Parse(result.Header.SaleOrderConfirmedOn);
-            dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
-            cmbPaymentType.SelectedValue = result.Header.PaymentModeID;
-
-            if (result.Header.SoldTo != null)
-                SetSoldToDetails(result.Header.SoldTo);
-
-            if (FirmSettings.IsAdmin)
+            catch (Exception ex)
             {
-                cmbOperator.Text = result.Header.OperatorName;
+                Logger.LogException(ex);
             }
-            {
-                txtOperatorName.Text = result.Header.OperatorName;
-            }
-            if (result.Header.IsShipToOtherAddress)
-            {
-                SetShipToDetails(result.Header.ShipTo);
-            }
-            cmbShippingMethod.SelectedIndex = result.Header.ShippingMethodID;
-            cmbLeadTime.SelectedIndex = result.Header.LeadTimeID;
-            cmbLeadTimeType.SelectedIndex = result.Header.LeadTimeTypeID;
-
-            #endregion
-
-            #region Fill Line Items
-
-            allQuoteData = result.LineItems;
-            dgQuoteItems.ItemsSource = allQuoteData;
-
-            #endregion
-
-            #region Fill Footer Information
-
-            if (result.Footer == null)
-                return;
-
-            #endregion
+         
         }
 
         private void SetShipToDetails(CustomerDetails shipTo)
@@ -272,388 +317,437 @@ namespace GlassProductManager
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Logger.LogException(ex);
             }
         }
 
         private static void PrintLogo(XGraphics gfx)
         {
-            XImage image = XImage.FromFile("Logo.jpg");
-            const double dx = 350, dy = 140;
-            //gfx.TranslateTransform(dx / 2, dy / 2);
-            gfx.ScaleTransform(0.5);
-            //gfx.TranslateTransform(-dx / 2, -dy / 2);
-            double width = image.PixelWidth * 72 / image.HorizontalResolution;
-            double height = image.PixelHeight * 72 / image.HorizontalResolution;
-            gfx.DrawImage(image, 5, 5, dx, dy);
+            try
+            {
+                XImage image = XImage.FromFile("Logo.jpg");
+                const double dx = 350, dy = 140;
+                //gfx.TranslateTransform(dx / 2, dy / 2);
+                gfx.ScaleTransform(0.5);
+                //gfx.TranslateTransform(-dx / 2, -dy / 2);
+                double width = image.PixelWidth * 72 / image.HorizontalResolution;
+                double height = image.PixelHeight * 72 / image.HorizontalResolution;
+                gfx.DrawImage(image, 5, 5, dx, dy);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            
         }
 
         private void PrintQuoteHeader(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 800;
-            int xIncrementalOffset = 940;
-            int yHeaderOffset = 15;
-            int yBaseOffset = 55;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
+            try
+            {
+                int xBaseOffset = 800;
+                int xIncrementalOffset = 940;
+                int yHeaderOffset = 15;
+                int yBaseOffset = 55;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 100;
 
-            XFont headerFont = new XFont("Verdana", 22, XFontStyle.Bold);
-            gfx.DrawString("Worksheet", headerFont, XBrushes.Black,
-         new XRect(xBaseOffset, yHeaderOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                XFont headerFont = new XFont("Verdana", 22, XFontStyle.Bold);
+                gfx.DrawString("Worksheet", headerFont, XBrushes.Black,
+             new XRect(xBaseOffset, yHeaderOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            // Print Quote Number
-            gfx.DrawString(lblWSNumber.Content.ToString(), font, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtWSNumber.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Quote Number
+                gfx.DrawString(lblWSNumber.Content.ToString(), font, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
+                gfx.DrawString(txtWSNumber.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            yBaseOffset += yIncrementalOffset;
+                yBaseOffset += yIncrementalOffset;
 
-            // Print Customer PO
-            gfx.DrawString(lblCustomerPO.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Customer PO
+                gfx.DrawString(lblCustomerPO.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(txtCustomerPO.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtCustomerPO.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            yBaseOffset += yIncrementalOffset;
+                yBaseOffset += yIncrementalOffset;
 
-            // Print Quote Created On
-            gfx.DrawString(lblWSCreatedOn.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Quote Created On
+                gfx.DrawString(lblWSCreatedOn.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(dtWSCreatedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(dtWSCreatedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            yBaseOffset += yIncrementalOffset;
+                yBaseOffset += yIncrementalOffset;
 
-            // Print Quote Requested On
-            gfx.DrawString(lblRequestedShipDate.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Quote Requested On
+                gfx.DrawString(lblRequestedShipDate.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            yBaseOffset += yIncrementalOffset;
+                yBaseOffset += yIncrementalOffset;
 
-            // Print Payment Mode
-            gfx.DrawString(lblPaymentType.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Payment Mode
+                gfx.DrawString(lblPaymentType.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(cmbPaymentType.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(cmbPaymentType.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void PrintShipToAddress(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 500;
-            int xIncrementalOffset = 560;
-            int yBaseOffset = 200;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
+            try
+            {
+                int xBaseOffset = 500;
+                int xIncrementalOffset = 560;
+                int yBaseOffset = 200;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 100;
 
-            XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
+                XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
 
-            // Print Ship To
-            gfx.DrawString(lblShipTo.Content.ToString(), boldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
+                // Print Ship To
+                gfx.DrawString(lblShipTo.Content.ToString(), boldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
 
-            // Print Name 
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToName.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Name 
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToName.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-           XStringFormat.TopLeft);
+                gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+               XStringFormat.TopLeft);
 
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToAddress.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToAddress.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToAddress.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToAddress.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToPhone.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToPhone.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Fax
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToFax.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Fax
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToFax.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToFax.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToFax.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Email
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToEmail.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Email
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToEmail.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToEmail.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToEmail.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Misc
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToMisc.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Misc
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToMisc.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToMisc.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToMisc.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void PrintSoldToAddress(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 100;
-            int xIncrementalOffset = 160;
-            int yBaseOffset = 200;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
+            try
+            {
+                int xBaseOffset = 100;
+                int xIncrementalOffset = 160;
+                int yBaseOffset = 200;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 100;
 
 
 
 
-            XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
-            // Print Sold To
-            gfx.DrawString(lblSoldTo.Content.ToString(), boldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
+                XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
+                // Print Sold To
+                gfx.DrawString(lblSoldTo.Content.ToString(), boldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
 
-            // Print Name 
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToName.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Name 
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToName.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-           XStringFormat.TopLeft);
+                gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+               XStringFormat.TopLeft);
 
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToAddress.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToAddress.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtSoldToAddress.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtSoldToAddress.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtSoldToPhone.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtSoldToPhone.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Fax
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToFax.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Fax
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToFax.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtSoldToFax.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtSoldToFax.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Email
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToEmail.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Email
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToEmail.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtSoldToEmail.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtSoldToEmail.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Misc
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToMisc.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Misc
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToMisc.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtSoldToMisc.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtSoldToMisc.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void PrintShippingDetails(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 900;
-            int xIncrementalOffset = 1050;
-            int yBaseOffset = 200;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
+            try
+            {
+                int xBaseOffset = 900;
+                int xIncrementalOffset = 1050;
+                int yBaseOffset = 200;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 100;
 
-            XPen pen = new XPen(XColors.Black, 1);
+                XPen pen = new XPen(XColors.Black, 1);
 
-            // Print Operator Name 
-            gfx.DrawString(lblOperator.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Operator Name 
+                gfx.DrawString(lblOperator.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(cmbOperator.Text, font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-           XStringFormat.TopLeft);
+                gfx.DrawString(cmbOperator.Text, font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+               XStringFormat.TopLeft);
 
-            // Print Shipping Method
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShippingMethod.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Shipping Method
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShippingMethod.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(cmbShippingMethod.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(cmbShippingMethod.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblLeadTime.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblLeadTime.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(string.Format("{0} {1}", cmbLeadTime.Text, cmbLeadTimeType.Text), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
+                gfx.DrawString(string.Format("{0} {1}", cmbLeadTime.Text, cmbLeadTimeType.Text), font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void PrintQuoteDetails(XGraphics gfx, XFont font)
         {
-            int xStartDetailRect = 80;
-            int yStartDetailRect = 400;
-            int widthDetailRect = 1100;
-            int heightDetailRect = 700;
-
-            int heightHeaderRect = 50;
-
-            int xLineColumn = 150;
-            int xQuantityColumn = 200;
-            int xDescriptionColumn = 790;
-            //int xDimensionColumn = 920;
-            //int xDimensionColumn = 920;
-            //int xSqFtColumn = 980;
-            //int xUnitPriceColumn = 1080;
-            //int xTotalColumn = 1180;
-            int xDimensionColumn = 980;
-            int xSqFtColumn = 1180;
-            int xUnitPriceColumn = 1080;
-            int xTotalColumn = 1180;
-
-            XPen pen = new XPen(XColors.Black, 1);
-            XRect detailsRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightDetailRect);
-            gfx.DrawRectangle(pen, detailsRect);
-
-            XStringFormat format = new XStringFormat();
-            XRect headerRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightHeaderRect);
-
-            gfx.DrawRectangle(pen, XBrushes.Gray, headerRect);
-            gfx.DrawLine(XPens.Black, xLineColumn, yStartDetailRect, xLineColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xQuantityColumn, yStartDetailRect, xQuantityColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xDescriptionColumn, yStartDetailRect, xDescriptionColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xDimensionColumn, yStartDetailRect, xDimensionColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xSqFtColumn, yStartDetailRect, xSqFtColumn, yStartDetailRect + detailsRect.Height);
-            //gfx.DrawLine(XPens.Black, xUnitPriceColumn, yStartDetailRect, xUnitPriceColumn, yStartDetailRect + detailsRect.Height);
-            //gfx.DrawLine(XPens.Black, xTotalColumn, yStartDetailRect, xTotalColumn, yStartDetailRect + detailsRect.Height);
-
-            XBrush brush = XBrushes.White;
-            gfx.DrawString("Line No.", font, brush, new XRect(xStartDetailRect + 15, yStartDetailRect + 15, xLineColumn, heightHeaderRect), format);
-            gfx.DrawString("Qty", font, brush, new XRect(xLineColumn + 15, yStartDetailRect + 15, xQuantityColumn, heightHeaderRect), format);
-            gfx.DrawString("Description", font, brush, new XRect(xQuantityColumn + 65, yStartDetailRect + 15, xDescriptionColumn, heightHeaderRect), format);
-            gfx.DrawString("Dimension (in)", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
-            gfx.DrawString("Sq.Ft.", font, brush, new XRect(xDimensionColumn + 15, yStartDetailRect + 15, xSqFtColumn, heightHeaderRect), format);
-            //gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
-            //gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
-
-            int yQuoteItemOffset = yStartDetailRect + 45;
-            int yOffset = 20;
-            brush = XBrushes.Black;
-
-            XTextFormatter tf = new XTextFormatter(gfx);
-            //gfx.DrawRectangle(XBrushes.SeaShell, rect);
-            //tf.Alignment = ParagraphAlignment.Left;
-            XRect rect;
-            foreach (QuoteGridEntity selectedLineItem in allQuoteData)
+            try
             {
-                if (selectedLineItem == null || selectedLineItem.Description == null || selectedLineItem.Dimension == null)
-                    continue;
+                int xStartDetailRect = 80;
+                int yStartDetailRect = 400;
+                int widthDetailRect = 1100;
+                int heightDetailRect = 700;
 
-                XSize size = gfx.MeasureString(selectedLineItem.Description, font);
+                int heightHeaderRect = 50;
 
-                gfx.DrawString(selectedLineItem.LineID.ToString(), font, brush, new XRect(xStartDetailRect + 40, yQuoteItemOffset + yOffset, xLineColumn, heightHeaderRect), format);
-                gfx.DrawString(selectedLineItem.Quantity.ToString(), font, brush, new XRect(xLineColumn + 25, yQuoteItemOffset + yOffset, xQuantityColumn, heightHeaderRect), format);
+                int xLineColumn = 150;
+                int xQuantityColumn = 200;
+                int xDescriptionColumn = 790;
+                //int xDimensionColumn = 920;
+                //int xDimensionColumn = 920;
+                //int xSqFtColumn = 980;
+                //int xUnitPriceColumn = 1080;
+                //int xTotalColumn = 1180;
+                int xDimensionColumn = 980;
+                int xSqFtColumn = 1180;
+                int xUnitPriceColumn = 1080;
+                int xTotalColumn = 1180;
 
-                rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + 100);
-                tf.DrawString(selectedLineItem.Description, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-                //gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + size.Height), format);
+                XPen pen = new XPen(XColors.Black, 1);
+                XRect detailsRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightDetailRect);
+                gfx.DrawRectangle(pen, detailsRect);
 
-                gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
-                gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
+                XStringFormat format = new XStringFormat();
+                XRect headerRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightHeaderRect);
 
-                yQuoteItemOffset += 50;
+                gfx.DrawRectangle(pen, XBrushes.Gray, headerRect);
+                gfx.DrawLine(XPens.Black, xLineColumn, yStartDetailRect, xLineColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xQuantityColumn, yStartDetailRect, xQuantityColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xDescriptionColumn, yStartDetailRect, xDescriptionColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xDimensionColumn, yStartDetailRect, xDimensionColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xSqFtColumn, yStartDetailRect, xSqFtColumn, yStartDetailRect + detailsRect.Height);
+                //gfx.DrawLine(XPens.Black, xUnitPriceColumn, yStartDetailRect, xUnitPriceColumn, yStartDetailRect + detailsRect.Height);
+                //gfx.DrawLine(XPens.Black, xTotalColumn, yStartDetailRect, xTotalColumn, yStartDetailRect + detailsRect.Height);
+
+                XBrush brush = XBrushes.White;
+                gfx.DrawString("Line No.", font, brush, new XRect(xStartDetailRect + 15, yStartDetailRect + 15, xLineColumn, heightHeaderRect), format);
+                gfx.DrawString("Qty", font, brush, new XRect(xLineColumn + 15, yStartDetailRect + 15, xQuantityColumn, heightHeaderRect), format);
+                gfx.DrawString("Description", font, brush, new XRect(xQuantityColumn + 65, yStartDetailRect + 15, xDescriptionColumn, heightHeaderRect), format);
+                gfx.DrawString("Dimension (in)", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
+                gfx.DrawString("Sq.Ft.", font, brush, new XRect(xDimensionColumn + 15, yStartDetailRect + 15, xSqFtColumn, heightHeaderRect), format);
+                //gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
+                //gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
+
+                int yQuoteItemOffset = yStartDetailRect + 45;
+                int yOffset = 20;
+                brush = XBrushes.Black;
+
+                XTextFormatter tf = new XTextFormatter(gfx);
+                //gfx.DrawRectangle(XBrushes.SeaShell, rect);
+                //tf.Alignment = ParagraphAlignment.Left;
+                XRect rect;
+                foreach (QuoteGridEntity selectedLineItem in allQuoteData)
+                {
+                    if (selectedLineItem == null || selectedLineItem.Description == null || selectedLineItem.Dimension == null)
+                        continue;
+
+                    XSize size = gfx.MeasureString(selectedLineItem.Description, font);
+
+                    gfx.DrawString(selectedLineItem.LineID.ToString(), font, brush, new XRect(xStartDetailRect + 40, yQuoteItemOffset + yOffset, xLineColumn, heightHeaderRect), format);
+                    gfx.DrawString(selectedLineItem.Quantity.ToString(), font, brush, new XRect(xLineColumn + 25, yQuoteItemOffset + yOffset, xQuantityColumn, heightHeaderRect), format);
+
+                    rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + 100);
+                    tf.DrawString(selectedLineItem.Description, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                    //gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + size.Height), format);
+
+                    gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
+                    gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
+
+                    yQuoteItemOffset += 50;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void PrintQuoteFooter(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 100;
-            int xIncrementalOffset = 160;
-            int yBaseOffset = 1150;
-            int yIncrement = 1170;
-            int yIncrementalOffset = 125;
-            int labelWidth = 750;
-            int labelHeight = 100;
+            try
+            {
+                int xBaseOffset = 100;
+                int xIncrementalOffset = 160;
+                int yBaseOffset = 1150;
+                int yIncrement = 1170;
+                int yIncrementalOffset = 125;
+                int labelWidth = 750;
+                int labelHeight = 100;
 
-            XRect headerRect = new XRect(xBaseOffset - 10, yBaseOffset - 10, 1000, 250);
-            XPen pen = new XPen(XColors.Black, 1);
-            gfx.DrawRectangle(pen, headerRect);
+                XRect headerRect = new XRect(xBaseOffset - 10, yBaseOffset - 10, 1000, 250);
+                XPen pen = new XPen(XColors.Black, 1);
+                gfx.DrawRectangle(pen, headerRect);
 
-            XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
+                XFont boldFont = new XFont("Verdana", 12, XFontStyle.Bold);
 
-            gfx.DrawString(lblAdditionalInstruction.Content.ToString(), boldFont, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(lblAdditionalInstruction.Content.ToString(), boldFont, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            XTextFormatter tf = new XTextFormatter(gfx);
-            XRect rect = new XRect(xBaseOffset, yIncrement, labelWidth, labelHeight);
-            tf.DrawString(txtAdditionalInstruction.Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-          
+                XTextFormatter tf = new XTextFormatter(gfx);
+                XRect rect = new XRect(xBaseOffset, yIncrement, labelWidth, labelHeight);
+                tf.DrawString(txtAdditionalInstruction.Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnOpenSO_Click(object sender, RoutedEventArgs e)
@@ -663,18 +757,26 @@ namespace GlassProductManager
 
         private void OpenWorksheet()
         {
-            if (cmbWorksheetNumbers.SelectedIndex < 0 && cmbWorksheetNumbers.SelectedItem == null)
+            try
             {
-                Helper.ShowErrorMessageBox("Please select Worksheet number");
-                return;
+                if (cmbWorksheetNumbers.SelectedIndex < 0 && cmbWorksheetNumbers.SelectedItem == null)
+                {
+                    Helper.ShowErrorMessageBox("Please select Worksheet number");
+                    return;
+                }
+                string quoteNumber = (cmbWorksheetNumbers.SelectedItem as System.Data.DataRowView)[0].ToString();
+                if (string.IsNullOrEmpty(quoteNumber))
+                {
+                    Helper.ShowErrorMessageBox("Invalid Quote Number associated with this Worksheet. No data found!");
+                    return;
+                }
+                OpenSelectedWorksheet(quoteNumber);
             }
-            string quoteNumber = (cmbWorksheetNumbers.SelectedItem as System.Data.DataRowView)[0].ToString();
-            if (string.IsNullOrEmpty(quoteNumber))
+            catch (Exception ex)
             {
-                Helper.ShowErrorMessageBox("Invalid Quote Number associated with this Worksheet. No data found!");
-                return;
+                Logger.LogException(ex);
             }
-            OpenSelectedWorksheet(quoteNumber);
+          
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -685,19 +787,26 @@ namespace GlassProductManager
 
         private void DeleteWorksheet()
         {
-            if (Helper.IsNonEmpty(txtQuoteNumber) && Helper.IsNonEmpty(txtWSNumber))
+            try
             {
-                bool isWorksheetPresent = BusinessLogic.IsWorksheetPresent(txtQuoteNumber.Text);
-                if (isWorksheetPresent)
+                if (Helper.IsNonEmpty(txtQuoteNumber) && Helper.IsNonEmpty(txtWSNumber))
                 {
-                    BusinessLogic.DeleteWorksheet(txtQuoteNumber.Text);
-                    Helper.ShowInformationMessageBox("Worksheet is delete successfully!");
-                    ResetControls();
+                    bool isWorksheetPresent = BusinessLogic.IsWorksheetPresent(txtQuoteNumber.Text);
+                    if (isWorksheetPresent)
+                    {
+                        BusinessLogic.DeleteWorksheet(txtQuoteNumber.Text);
+                        Helper.ShowInformationMessageBox("Worksheet is delete successfully!");
+                        ResetControls();
+                    }
+                }
+                else
+                {
+                    Helper.ShowErrorMessageBox("Please provide required details.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Helper.ShowErrorMessageBox("Please provide required details.");
+                Logger.LogException(ex);
             }
         }
 
@@ -743,30 +852,38 @@ namespace GlassProductManager
 
         private void btnSendToInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtQuoteNumber.Text) || string.IsNullOrEmpty(txtWSNumber.Text))
+            try
             {
-                Helper.ShowErrorMessageBox("No Worksheet selected for generating invoice.");
-                return;
+                if (string.IsNullOrEmpty(txtQuoteNumber.Text) || string.IsNullOrEmpty(txtWSNumber.Text))
+                {
+                    Helper.ShowErrorMessageBox("No Worksheet selected for generating invoice.");
+                    return;
+                }
+
+                bool isInvoiceExists = BusinessLogic.IsInvoicePresent(txtQuoteNumber.Text);
+
+                if (isInvoiceExists == true)
+                {
+                    Helper.ShowErrorMessageBox("Invoice already exists for current worksheet. Please delete current invoice.");
+                    return;
+                }
+
+                BusinessLogic.GenerateInvoice(txtQuoteNumber.Text, DateTime.Now);
+
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                if (parent != null)
+                {
+                    DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                    DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnInvoice);
+                    InvoiceContent invoice = new InvoiceContent(true, txtQuoteNumber.Text);
+                    parent.ucMainContent.ShowPage(invoice);
+                }
             }
-
-            bool isInvoiceExists = BusinessLogic.IsInvoicePresent(txtQuoteNumber.Text);
-
-            if (isInvoiceExists == true)
+            catch (Exception ex)
             {
-                Helper.ShowErrorMessageBox("Invoice already exists for current worksheet. Please delete current invoice.");
-                return;
+                Logger.LogException(ex);
             }
-
-            BusinessLogic.GenerateInvoice(txtQuoteNumber.Text, DateTime.Now);
             
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            if (parent != null)
-            {
-                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnInvoice);
-                InvoiceContent invoice = new InvoiceContent(true, txtQuoteNumber.Text);
-                parent.ucMainContent.ShowPage(invoice);
-            }
         }
 
         private void cmbWorksheetNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -776,13 +893,21 @@ namespace GlassProductManager
 
         private void dgQuoteItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
-            if (selectedItem == null)
+            try
             {
-                return;
+                QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
+                if (selectedItem == null)
+                {
+                    return;
+                }
+                _allWorksheetLineItemData = BusinessLogic.GetWorksheetLineItemDetails(txtWSNumber.Text, selectedItem.LineID);
+                dgWorksheetLineItemDetails.ItemsSource = _allWorksheetLineItemData;
             }
-            _allWorksheetLineItemData = BusinessLogic.GetWorksheetLineItemDetails(txtWSNumber.Text, selectedItem.LineID);
-            dgWorksheetLineItemDetails.ItemsSource = _allWorksheetLineItemData;
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
     }
 }

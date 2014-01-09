@@ -42,14 +42,22 @@ namespace GlassProductManager
 
         private void FillWorkItemTypes()
         {
-            List<string> workItems = new List<string>();
-            workItems.Add("Quotes");
-            workItems.Add("Sale Orders");
-            workItems.Add("Worksheets");
-            workItems.Add("Invoices");
-            workItems.Add("Customers");
-            cmbWorkItemTypes.ItemsSource = workItems;
-            cmbWorkItemTypes.SelectedIndex = 0;
+            try
+            {
+                List<string> workItems = new List<string>();
+                workItems.Add("Quotes");
+                workItems.Add("Sale Orders");
+                workItems.Add("Worksheets");
+                workItems.Add("Invoices");
+                workItems.Add("Customers");
+                cmbWorkItemTypes.ItemsSource = workItems;
+                cmbWorkItemTypes.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void btnOpenWorkItem_Click(object sender, RoutedEventArgs e)
@@ -59,30 +67,37 @@ namespace GlassProductManager
 
         private void LoadSelectedWorkItem()
         {
-            switch (cmbWorkItemTypes.SelectedIndex)
+            try
             {
-                case 0:
-                    QuoteMasterContent quoteMaster = new QuoteMasterContent();
-                    ucWorkItem.ShowPage(quoteMaster);
-                    break;
-                case 1:
-                    SaleOrderMasterContent saleOrderMaster = new SaleOrderMasterContent();
-                    ucWorkItem.ShowPage(saleOrderMaster);
-                    break;
-                case 2:
-                    WorksheetMasterContent worksheetMaster = new WorksheetMasterContent();
-                    ucWorkItem.ShowPage(worksheetMaster);
-                    break;
-                case 3:
-                    InvoiceMasterContent invoiceMaster = new InvoiceMasterContent();
-                    ucWorkItem.ShowPage(invoiceMaster);
-                    break;
-                case 4:
-                    CustomerMasterContent customerMaster = new CustomerMasterContent();
-                    ucWorkItem.ShowPage(customerMaster);
-                    break;
-                default:
-                    break;
+                switch (cmbWorkItemTypes.SelectedIndex)
+                {
+                    case 0:
+                        QuoteMasterContent quoteMaster = new QuoteMasterContent();
+                        ucWorkItem.ShowPage(quoteMaster);
+                        break;
+                    case 1:
+                        SaleOrderMasterContent saleOrderMaster = new SaleOrderMasterContent();
+                        ucWorkItem.ShowPage(saleOrderMaster);
+                        break;
+                    case 2:
+                        WorksheetMasterContent worksheetMaster = new WorksheetMasterContent();
+                        ucWorkItem.ShowPage(worksheetMaster);
+                        break;
+                    case 3:
+                        InvoiceMasterContent invoiceMaster = new InvoiceMasterContent();
+                        ucWorkItem.ShowPage(invoiceMaster);
+                        break;
+                    case 4:
+                        CustomerMasterContent customerMaster = new CustomerMasterContent();
+                        ucWorkItem.ShowPage(customerMaster);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -22,43 +23,58 @@ namespace GlassProductManager
     {
         public NewQuoteContent()
         {
-            InitializeComponent();
-
-            if (ucNewQuoteItems.CurrentPage == null)
+            try
             {
-                NewQuoteItemsContent items = new NewQuoteItemsContent();
-                ucNewQuoteItems.ShowPage(items);
-            }
+                InitializeComponent();
 
-            if (ucNewQuoteGrid.CurrentPage == null)
-            {
-                NewQuoteGridContent grid = new NewQuoteGridContent();
-                ucNewQuoteGrid.ShowPage(grid);
+                if (ucNewQuoteItems.CurrentPage == null)
+                {
+                    NewQuoteItemsContent items = new NewQuoteItemsContent();
+                    ucNewQuoteItems.ShowPage(items);
+                }
+
+                if (ucNewQuoteGrid.CurrentPage == null)
+                {
+                    NewQuoteGridContent grid = new NewQuoteGridContent();
+                    ucNewQuoteGrid.ShowPage(grid);
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            
         }
 
         public NewQuoteContent(bool _isOpenQuoteRequested, string _quoteNumber)
         {
-            InitializeComponent();
-
-            if (ucNewQuoteItems.CurrentPage == null)
+            try
             {
-                NewQuoteItemsContent items = new NewQuoteItemsContent();
-                ucNewQuoteItems.ShowPage(items);
+                InitializeComponent();
+
+                if (ucNewQuoteItems.CurrentPage == null)
+                {
+                    NewQuoteItemsContent items = new NewQuoteItemsContent();
+                    ucNewQuoteItems.ShowPage(items);
+                }
+
+                if (ucNewQuoteGrid.CurrentPage == null)
+                {
+                    NewQuoteGridContent grid = null;
+                    if (_isOpenQuoteRequested == true)
+                    {
+                        grid = new NewQuoteGridContent(_isOpenQuoteRequested, _quoteNumber);
+                    }
+                    else
+                    {
+                        grid = new NewQuoteGridContent();
+                    }
+                    ucNewQuoteGrid.ShowPage(grid);
+                }
             }
-
-            if (ucNewQuoteGrid.CurrentPage == null)
+            catch (Exception ex)
             {
-                NewQuoteGridContent grid = null;
-                if (_isOpenQuoteRequested == true)
-                {
-                    grid = new NewQuoteGridContent(_isOpenQuoteRequested, _quoteNumber);
-                }
-                else
-                {
-                    grid = new NewQuoteGridContent();
-                }
-                ucNewQuoteGrid.ShowPage(grid);
+                Logger.LogException(ex);
             }
         }
     }

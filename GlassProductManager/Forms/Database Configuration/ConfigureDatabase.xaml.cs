@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -39,7 +40,7 @@ namespace GlassProductManager
                     return;
                 }
 
-                Properties.Settings.Default.ConnectionString = string.Format(System.Configuration.ConfigurationSettings.AppSettings["defaultConStr"], 
+                Properties.Settings.Default.ConnectionString = string.Format(System.Configuration.ConfigurationSettings.AppSettings["defaultConStr"],
                                 txtServerName.Text, txtDatabaseName.Text, txtUserName.Text, txtPassword.Password);
                 SQLHelper.ConnectionString = Properties.Settings.Default.ConnectionString;
                 Properties.Settings.Default.Save();
@@ -50,31 +51,39 @@ namespace GlassProductManager
             }
             catch (Exception ex)
             {
-                Helper.ShowErrorMessageBox(ex.Message);
+                Logger.LogException(ex);
                 IsDatabaseReady = false;
             }
         }
 
         private void DisplayCurrentConnectionString()
         {
-            if (false == string.IsNullOrEmpty(Properties.Settings.Default.ConnectionString))
+            try
             {
-                string[] parts = Properties.Settings.Default.ConnectionString.Split(';');
+                if (false == string.IsNullOrEmpty(Properties.Settings.Default.ConnectionString))
+                {
+                    string[] parts = Properties.Settings.Default.ConnectionString.Split(';');
 
-                string[] temp = parts[0].Split('=');
-                txtServerName.Text = temp[1];
+                    string[] temp = parts[0].Split('=');
+                    txtServerName.Text = temp[1];
 
-                temp = parts[1].Split('=');
-                txtDatabaseName.Text = temp[1];
+                    temp = parts[1].Split('=');
+                    txtDatabaseName.Text = temp[1];
 
-                string database = temp[1];
+                    string database = temp[1];
 
-                temp = parts[2].Split('=');
-                txtUserName.Text = temp[1];
+                    temp = parts[2].Split('=');
+                    txtUserName.Text = temp[1];
 
-                temp = parts[3].Split('=');
-                txtPassword.Password = temp[1];
+                    temp = parts[3].Split('=');
+                    txtPassword.Password = temp[1];
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -84,16 +93,24 @@ namespace GlassProductManager
 
         private void btnTestConnection_Click(object sender, RoutedEventArgs e)
         {
-            string connectionString = string.Format(System.Configuration.ConfigurationSettings.AppSettings["defaultConStr"],
+            try
+            {
+                string connectionString = string.Format(System.Configuration.ConfigurationSettings.AppSettings["defaultConStr"],
                                 txtServerName.Text, txtDatabaseName.Text, txtUserName.Text, txtPassword.Password);
-            if(SQLHelper.TestConnection(connectionString))
-            {
-                Helper.ShowInformationMessageBox("Connection successful!");
+                if (SQLHelper.TestConnection(connectionString))
+                {
+                    Helper.ShowInformationMessageBox("Connection successful!");
+                }
+                else
+                {
+                    Helper.ShowErrorMessageBox("Connection failed! Please contact your vendor.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Helper.ShowErrorMessageBox("Connection failed! Please contact your vendor.");
+                Logger.LogException(ex);
             }
+            
         }
     }
 }

@@ -172,9 +172,17 @@ namespace GlassProductManager
 
         private void FillQuoteDetails()
         {
-            var result = BusinessLogic.GetQuoteMasterData();
-            dgQuoteDetails.ItemsSource = result;
-            m_QuoteListForSearch = new ListCollectionView(result);
+            try
+            {
+
+                var result = BusinessLogic.GetQuoteMasterData();
+                dgQuoteDetails.ItemsSource = result;
+                m_QuoteListForSearch = new ListCollectionView(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnOpenQuote_Click(object sender, RoutedEventArgs e)
@@ -189,45 +197,59 @@ namespace GlassProductManager
 
         private void OpenSelectedQuote()
         {
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-
-            QuoteMasterEntity entity = dgQuoteDetails.SelectedItem as QuoteMasterEntity;
-
-            if (entity == null)
+            try
             {
-                return;
-            }
 
-            DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-            if (sideMenu != null)
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+
+                QuoteMasterEntity entity = dgQuoteDetails.SelectedItem as QuoteMasterEntity;
+
+                if (entity == null)
+                {
+                    return;
+                }
+
+                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                if (sideMenu != null)
+                {
+                    sideMenu.IsIndirectCall = true;
+                    sideMenu.btnCreateNewQuote.IsChecked = true;
+                    sideMenu.IsIndirectCall = false;
+                }
+
+                NewQuoteContent newQuote = new NewQuoteContent(true, entity.QuoteNumber);
+                parent.ucMainContent.ShowPage(newQuote);
+            }
+            catch (Exception ex)
             {
-                sideMenu.IsIndirectCall = true;
-                sideMenu.btnCreateNewQuote.IsChecked = true;
-                sideMenu.IsIndirectCall = false;
+                Logger.LogException(ex);
             }
-
-            NewQuoteContent newQuote = new NewQuoteContent(true, entity.QuoteNumber);
-            parent.ucMainContent.ShowPage(newQuote);
         }
 
         private void btnDeleteQuote_Click(object sender, RoutedEventArgs e)
         {
-            QuoteMasterEntity entity = dgQuoteDetails.SelectedItem as QuoteMasterEntity;
-
-            if (entity == null)
+            try
             {
-                Helper.ShowErrorMessageBox("Select quote for deletion");
-                return;
+                QuoteMasterEntity entity = dgQuoteDetails.SelectedItem as QuoteMasterEntity;
+                if (entity == null)
+                {
+                    Helper.ShowErrorMessageBox("Select quote for deletion");
+                    return;
+                }
+                var result = Helper.ShowQuestionMessageBox("Deleting quote will delete SalesOrder, Worksheet and Invoice associated with this quote. Are you sure to delete this quote?");
+
+                if (result == MessageBoxResult.Yes)
+                {
+
+                    BusinessLogic.DeleteQuote(entity.QuoteNumber);
+                    Helper.ShowInformationMessageBox("Quote deleted successfully.");
+                    FillQuoteDetails();
+
+                }
             }
-            var result = Helper.ShowQuestionMessageBox("Deleting quote will delete SalesOrder, Worksheet and Invoice associated with this quote. Are you sure to delete this quote?");
-
-            if (result == MessageBoxResult.Yes)
+            catch (Exception ex)
             {
-                
-                BusinessLogic.DeleteQuote(entity.QuoteNumber);
-                Helper.ShowInformationMessageBox("Quote deleted successfully.");
-                FillQuoteDetails();
-
+                Logger.LogException(ex);
             }
         }
 

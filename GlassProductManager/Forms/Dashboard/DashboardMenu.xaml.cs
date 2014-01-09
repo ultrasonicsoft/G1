@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -51,73 +52,88 @@ namespace GlassProductManager
 
         public DashboardMenu()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            availableOptions = new Dictionary<System.Windows.Controls.Primitives.ToggleButton, UserControl>();
+                availableOptions = new Dictionary<System.Windows.Controls.Primitives.ToggleButton, UserControl>();
 
-            home = new HomeContent();
-            newQuote = new NewQuoteContent();
-            customer = new CustomerSettingsContent();
-            priceSettings = new PriceSettingsContent();
-            soSection = new SalesOrderContent();
-            worksheetSection = new WorksheetContent();
-            invoice = new InvoiceContent();
-            makePayment = new MakeInvoicePayment();
-            commanderSection = new CommanderSectionContent();
-            barcodePrinter = new BarcodePrinter();
+                home = new HomeContent();
+                newQuote = new NewQuoteContent();
+                customer = new CustomerSettingsContent();
+                priceSettings = new PriceSettingsContent();
+                soSection = new SalesOrderContent();
+                worksheetSection = new WorksheetContent();
+                invoice = new InvoiceContent();
+                makePayment = new MakeInvoicePayment();
+                commanderSection = new CommanderSectionContent();
+                barcodePrinter = new BarcodePrinter();
 
-            availableOptions.Add(btnHome, home);
-            availableOptions.Add(btnCreateNewQuote, newQuote);
-            availableOptions.Add(btnPriceSettings, priceSettings);
-            availableOptions.Add(btnCustomerSettings, customer);
-            availableOptions.Add(btnSaleOrder, soSection);
-            availableOptions.Add(btnWorksheet, worksheetSection);
-            availableOptions.Add(btnInvoice, invoice);
-            availableOptions.Add(btnMakePayment, makePayment);
-            availableOptions.Add(btnCommanderSection, commanderSection);
-            availableOptions.Add(btnBarcodePrinter, barcodePrinter);
+                availableOptions.Add(btnHome, home);
+                availableOptions.Add(btnCreateNewQuote, newQuote);
+                availableOptions.Add(btnPriceSettings, priceSettings);
+                availableOptions.Add(btnCustomerSettings, customer);
+                availableOptions.Add(btnSaleOrder, soSection);
+                availableOptions.Add(btnWorksheet, worksheetSection);
+                availableOptions.Add(btnInvoice, invoice);
+                availableOptions.Add(btnMakePayment, makePayment);
+                availableOptions.Add(btnCommanderSection, commanderSection);
+                availableOptions.Add(btnBarcodePrinter, barcodePrinter);
 
-            btnHome.IsChecked = true;
+                btnHome.IsChecked = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+          
         }
 
         internal void ShowCurrentPage(System.Windows.Controls.Primitives.ToggleButton selectedOption, UserControl currentPage = null)
         {
-
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            if (parent != null)
+            try
             {
-                NewQuoteContent newQuote = parent.ucMainContent.CurrentPage as NewQuoteContent;
-
-                if (newQuote != null && selectedOption != btnCreateNewQuote && IsIndirectCall == false)
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                if (parent != null)
                 {
-                    var result = Helper.ShowQuestionMessageBox("All your current Quote change will be lost. Are you sure to leave Quote page?");
-                    if (result != MessageBoxResult.Yes)
-                    {
-                        selectedOption.IsChecked = false;
-                        return;
-                    }
-                }
-            }
+                    NewQuoteContent newQuote = parent.ucMainContent.CurrentPage as NewQuoteContent;
 
-            foreach (KeyValuePair<System.Windows.Controls.Primitives.ToggleButton, UserControl> item in availableOptions)
-            {
-                if (item.Key == selectedOption)
-                {
-                    item.Key.IsChecked = true;
-                    if (IsIndirectCall == false)
+                    if (newQuote != null && selectedOption != btnCreateNewQuote && IsIndirectCall == false)
                     {
-                        if (parent != null)
+                        var result = Helper.ShowQuestionMessageBox("All your current Quote change will be lost. Are you sure to leave Quote page?");
+                        if (result != MessageBoxResult.Yes)
                         {
-                            parent.ucMainContent.ShowPage(currentPage);
-                            //parent.ucMainContent.ShowPage(item.Value);
+                            selectedOption.IsChecked = false;
+                            return;
                         }
                     }
                 }
-                else
+
+                foreach (KeyValuePair<System.Windows.Controls.Primitives.ToggleButton, UserControl> item in availableOptions)
                 {
-                    item.Key.IsChecked = false;
+                    if (item.Key == selectedOption)
+                    {
+                        item.Key.IsChecked = true;
+                        if (IsIndirectCall == false)
+                        {
+                            if (parent != null)
+                            {
+                                parent.ucMainContent.ShowPage(currentPage);
+                                //parent.ucMainContent.ShowPage(item.Value);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        item.Key.IsChecked = false;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            
         }
 
         private void btnHome_Checked(object sender, RoutedEventArgs e)
@@ -172,9 +188,17 @@ namespace GlassProductManager
 
         private void btnConfigureDatabase_Checked(object sender, RoutedEventArgs e)
         {
-            ConfigureDatabase configureDB = new ConfigureDatabase();
-            configureDB.ShowDialog();
-            btnConfigureDatabase.IsChecked = false;
+            try
+            {
+                ConfigureDatabase configureDB = new ConfigureDatabase();
+                configureDB.ShowDialog();
+                btnConfigureDatabase.IsChecked = false;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
     }
 }

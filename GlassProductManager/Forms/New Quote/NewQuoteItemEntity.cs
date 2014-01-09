@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -376,168 +377,181 @@ namespace GlassProductManager
 
         private void CalculateTotal()
         {
-            var result = BusinessLogic.GetRatesByGlassTypeAndThickness(_glassTypeID, _thicknessID);
-            if (result == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
-                return;
+            try
+            {
+                var result = BusinessLogic.GetRatesByGlassTypeAndThickness(_glassTypeID, _thicknessID);
+                if (result == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return;
 
-            _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
-            _temperedRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
-            _polishStraightRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT].ToString());
-            _polishShapeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE].ToString());
-            _miterRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.MITER_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.MITER_RATE].ToString());
-            _notchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE].ToString());
-            _hingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
-            _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
-            _holeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HOLE_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.HOLE_RATE].ToString());
+                _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
+                _temperedRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
+                _polishStraightRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.POLISHSTRAIGHT].ToString());
+                _polishShapeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.POLISHSHAPE].ToString());
+                _miterRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.MITER_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.MITER_RATE].ToString());
+                _notchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.NOTCH_RATE].ToString());
+                _hingeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HINGE_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.HINGE_RATE].ToString());
+                _patchRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.PATCH_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.PATCH_RATE].ToString());
+                _holeRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.HOLE_RATE] == DBNull.Value ? "0" : result.Tables[0].Rows[0][ColumnNames.HOLE_RATE].ToString());
+
+                _minimumTotalSqft = int.Parse(result.Tables[0].Rows[0][ColumnNames.MinimumTotalSqft].ToString());
+
+                if (_totalSqFTCharged < _minimumTotalSqft)
+                {
+                    _totalSqFTCharged = _minimumTotalSqft;
+                }
+
+                if (false == _isTempered)
+                {
+                    _currentTotal = _totalSqFTCharged == 0 ? 0 : _totalSqFTCharged * _cutsqftRate;
+                    //_currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _cutsqftRate;
+                }
+                else if (_temperedRate != 0)
+                {
+                    _currentTotal = _totalSqFTCharged == 0 ? 0 : _totalSqFTCharged * _temperedRate;
+                }
+
+
+                if (true == _isStraightPolish)
+                {
+                    _currentTotal += _straightPolishTotalInches * _polishStraightRate;
+                }
+
+                if (true == _isCustomShapePolish)
+                {
+                    _currentTotal += _customPolishTotalInches * _polishShapeRate;
+                }
+                if (true == _isMiter)
+                {
+                    _currentTotal += _miterTotalInches * _miterRate;
+                }
+                if (true == _isNotch && _totalSqFTCharged != 0)
+                {
+                    _currentTotal += _notches * _notchRate;
+                }
+                if (true == _isHinges && _totalSqFTCharged != 0)
+                {
+                    _currentTotal += _hinges * _hingeRate;
+                }
+                if (true == _isPatches && _totalSqFTCharged != 0)
+                {
+                    _currentTotal += _patches * _patchRate;
+                }
+
+                if (true == _isHoles && _totalSqFTCharged != 0)
+                {
+                    _currentTotal += _holes * _holeRate;
+                }
+
+                if (true == _isInsulation && _totalSqFTCharged != 0)
+                {
+                    _currentTotal += _insulateTotalCost;
+                }
+                if (true == _isCutout && _totalSqFTCharged != 0)
+                {
+                    _currentTotal += _cutoutTotal;
+                }
+                _pricePerUnit = _currentTotal;
+                _currentTotal = _currentTotal * _quantity;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
             
-            _minimumTotalSqft = int.Parse(result.Tables[0].Rows[0][ColumnNames.MinimumTotalSqft].ToString());
-
-            if(_totalSqFTCharged < _minimumTotalSqft)
-            {
-                _totalSqFTCharged = _minimumTotalSqft;
-            }
-
-            if (false == _isTempered)
-            {
-                _currentTotal = _totalSqFTCharged == 0 ? 0 : _totalSqFTCharged * _cutsqftRate;
-                //_currentTotal = _totalSqFT == 0 ? 0 : _totalSqFT * _cutsqftRate;
-            }
-            else if (_temperedRate != 0)
-            {
-                _currentTotal = _totalSqFTCharged == 0 ? 0 : _totalSqFTCharged * _temperedRate;
-            }
-
-
-            if (true == _isStraightPolish)
-            {
-                _currentTotal += _straightPolishTotalInches * _polishStraightRate;
-            }
-
-            if (true == _isCustomShapePolish)
-            {
-                _currentTotal += _customPolishTotalInches * _polishShapeRate;
-            }
-            if (true == _isMiter)
-            {
-                _currentTotal += _miterTotalInches * _miterRate;
-            }
-            if (true == _isNotch && _totalSqFTCharged != 0)
-            {
-                _currentTotal += _notches * _notchRate;
-            }
-            if (true == _isHinges && _totalSqFTCharged != 0)
-            {
-                _currentTotal += _hinges * _hingeRate;
-            }
-            if (true == _isPatches && _totalSqFTCharged != 0)
-            {
-                _currentTotal += _patches * _patchRate;
-            }
-
-            if (true == _isHoles && _totalSqFTCharged != 0)
-            {
-                _currentTotal += _holes * _holeRate;
-            }
-
-            if (true == _isInsulation && _totalSqFTCharged != 0)
-            {
-                _currentTotal += _insulateTotalCost;
-            }
-            if (true == _isCutout && _totalSqFTCharged != 0)
-            {
-                _currentTotal += _cutoutTotal;
-            }
-            _pricePerUnit = _currentTotal;
-            _currentTotal = _currentTotal * _quantity;
         }
 
         internal string GetDescriptionString(bool isActual = false)
         {
             StringBuilder description = new StringBuilder();
-            
 
-            if (_isInsulation)
+            try
             {
-                string isTemp1 = GlassType1.IsTempered ? "Temp" : "Not Temp";
-                string isTemp2 = GlassType2.IsTempered ? "Temp" : "Not Temp";
-                description.AppendFormat("[Insulation: ({0}-{1}-{2}) ({3}-{4}-{5}) {6} SqFt]", GlassType1.GlassType, GlassType1.Thickness, isTemp1, GlassType2.GlassType, GlassType2.Thickness, isTemp2, GlassType1.SqFt);
-                description.Append(Environment.NewLine);
-            }
-            else
-            {
-                description.Append(GlassType);
-            }
+                if (_isInsulation)
+                {
+                    string isTemp1 = GlassType1.IsTempered ? "Temp" : "Not Temp";
+                    string isTemp2 = GlassType2.IsTempered ? "Temp" : "Not Temp";
+                    description.AppendFormat("[Insulation: ({0}-{1}-{2}) ({3}-{4}-{5}) {6} SqFt]", GlassType1.GlassType, GlassType1.Thickness, isTemp1, GlassType2.GlassType, GlassType2.Thickness, isTemp2, GlassType1.SqFt);
+                    description.Append(Environment.NewLine);
+                }
+                else
+                {
+                    description.Append(GlassType);
+                }
 
-            if (false == string.IsNullOrEmpty(_shape))
-            {
-                description.AppendFormat(" [{0}]", _shape);
-            }
-            if(false== string.IsNullOrEmpty(_thickness))
-            {
-                description.AppendFormat(" [{0}]", _thickness);
-            }
+                if (false == string.IsNullOrEmpty(_shape))
+                {
+                    description.AppendFormat(" [{0}]", _shape);
+                }
+                if (false == string.IsNullOrEmpty(_thickness))
+                {
+                    description.AppendFormat(" [{0}]", _thickness);
+                }
 
-            if (_isTempered && _isInsulation == false)
-            {
-                description.Append(" [Temp]");
-            }
+                if (_isTempered && _isInsulation == false)
+                {
+                    description.Append(" [Temp]");
+                }
 
-            if (_isCutout)
-            {
-                description.AppendFormat(" [Cutout: {0}]", _allCutoutData.Count);
-            }
+                if (_isCutout)
+                {
+                    description.AppendFormat(" [Cutout: {0}]", _allCutoutData.Count);
+                }
 
-            //if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches > 0)
+                //if (_isStraightPolish && _straightPolishLongSide > 0 && _straightPolishShortSide > 0 && _straightPolishTotalInches > 0)
                 if (_isStraightPolish == true)
-            {
-                description.AppendFormat(" [Polish: -> Long {0}, Short {1}, (in) {2}]", _straightPolishLongSide, _straightPolishShortSide, _straightPolishTotalInches);
-            }
+                {
+                    description.AppendFormat(" [Polish: -> Long {0}, Short {1}, (in) {2}]", _straightPolishLongSide, _straightPolishShortSide, _straightPolishTotalInches);
+                }
 
-            if (_isCustomShapePolish && _customPolishTotalInches > 0)
-            {
-                description.AppendFormat(" [CusPolish: (in) {0}]", _customPolishTotalInches);
-            }
+                if (_isCustomShapePolish && _customPolishTotalInches > 0)
+                {
+                    description.AppendFormat(" [CusPolish: (in) {0}]", _customPolishTotalInches);
+                }
 
-            description.AppendFormat(" " + Environment.NewLine);
+                description.AppendFormat(" " + Environment.NewLine);
 
-            bool isAnyMiscAvailable = false;
+                bool isAnyMiscAvailable = false;
 
-            if (_isHoles && _holes >= 0)
-            {
-                description.AppendFormat(" [Holes: {0}]", _holes);
-                isAnyMiscAvailable = true;
-            }
-            if (_isHinges && _hinges >= 0)
-            {
-                description.AppendFormat(" [Hinges: {0}]", _hinges);
-                isAnyMiscAvailable = true;
-            }
-            if (_isPatches && _patches >= 0)
-            {
-                description.AppendFormat(" [Patches: {0}]", _patches);
-                isAnyMiscAvailable = true;
-            }
-            if (_isNotch && _notches >= 0)
-            {
-                description.AppendFormat(" [Notches: {0}]", _notches);
-                isAnyMiscAvailable = true;
-            }
-            if (_isMiter )
-            {
-                description.AppendFormat(" [Miter: Long {0}, Short {1}, (in) {2}]", _miterLongSide, _miterShortSide, _miterTotalInches);
-                isAnyMiscAvailable = true;
-            }
+                if (_isHoles && _holes >= 0)
+                {
+                    description.AppendFormat(" [Holes: {0}]", _holes);
+                    isAnyMiscAvailable = true;
+                }
+                if (_isHinges && _hinges >= 0)
+                {
+                    description.AppendFormat(" [Hinges: {0}]", _hinges);
+                    isAnyMiscAvailable = true;
+                }
+                if (_isPatches && _patches >= 0)
+                {
+                    description.AppendFormat(" [Patches: {0}]", _patches);
+                    isAnyMiscAvailable = true;
+                }
+                if (_isNotch && _notches >= 0)
+                {
+                    description.AppendFormat(" [Notches: {0}]", _notches);
+                    isAnyMiscAvailable = true;
+                }
+                if (_isMiter)
+                {
+                    description.AppendFormat(" [Miter: Long {0}, Short {1}, (in) {2}]", _miterLongSide, _miterShortSide, _miterTotalInches);
+                    isAnyMiscAvailable = true;
+                }
 
-            if (isAnyMiscAvailable)
-            {
-                description.Append(Environment.NewLine);
-            }
+                if (isAnyMiscAvailable)
+                {
+                    description.Append(Environment.NewLine);
+                }
 
-            if (IsLogoRequired)
-            {
-                description.AppendFormat(" [Logo]");
+                if (IsLogoRequired)
+                {
+                    description.AppendFormat(" [Logo]");
+                }
             }
-            
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
             return description.ToString();
         }
              

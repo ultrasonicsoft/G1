@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -58,18 +59,26 @@ namespace GlassProductManager
 
         private void SetDefaultContent()
         {
-            if (ucMainContent.CurrentPage == null)
+            try
             {
-                ucMainContent.ShowPage(homeContent);
+                if (ucMainContent.CurrentPage == null)
+                {
+                    ucMainContent.ShowPage(homeContent);
+                }
+                if (ucWelcomeUser.CurrentPage == null)
+                {
+                    ucWelcomeUser.ShowPage(welcomeUser);
+                }
+                if (ucDashboardMenu.CurrentPage == null)
+                {
+                    ucDashboardMenu.ShowPage(dashboardMenu);
+                }
             }
-            if (ucWelcomeUser.CurrentPage == null)
+            catch (Exception ex)
             {
-                ucWelcomeUser.ShowPage(welcomeUser);
+                Logger.LogException(ex);
             }
-            if (ucDashboardMenu.CurrentPage == null)
-            {
-                ucDashboardMenu.ShowPage(dashboardMenu);
-            }
+            
         }
 
         #endregion

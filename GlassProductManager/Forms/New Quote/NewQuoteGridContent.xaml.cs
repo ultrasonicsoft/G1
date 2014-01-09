@@ -21,6 +21,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Data;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -58,37 +59,52 @@ namespace GlassProductManager
 
         private void ConfigureInitialSetup()
         {
-            FillShippingMethods();
-            FillLeadTimeTypes();
-            FillLeadTime();
+            try
+            {
+                FillShippingMethods();
+                FillLeadTimeTypes();
+                FillLeadTime();
 
-            cbIsNewClient.IsChecked = true;
+                cbIsNewClient.IsChecked = true;
 
-            dtQuoteCreatedOn.SelectedDate = DateTime.Now;
-            dtQuoteRequestedOn.SelectedDate = DateTime.Now;
+                dtQuoteCreatedOn.SelectedDate = DateTime.Now;
+                dtQuoteRequestedOn.SelectedDate = DateTime.Now;
 
-            UpdateDefaultLeadTimeSettings();
+                UpdateDefaultLeadTimeSettings();
 
-            _allQuoteData.CollectionChanged += _allQuoteData_CollectionChanged;
-            GetNewQuoteID();
+                _allQuoteData.CollectionChanged += _allQuoteData_CollectionChanged;
+                GetNewQuoteID();
 
-            SetOperatorAccess();
-            FillSmartSearchData();
+                SetOperatorAccess();
+                FillSmartSearchData();
 
-            FillCustomerNames();
+                FillCustomerNames();
 
-            FillPaymentTypes();
-            FillQuoteStatus();
+                FillPaymentTypes();
+                FillQuoteStatus();
 
-            FillAllQuoteNumbers();
+                FillAllQuoteNumbers();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            
         }
 
         private void FillCustomerNames()
         {
-            var result = BusinessLogic.GetAllCustomerNames();
-            cmbCustomers.DisplayMemberPath = ColumnNames.Item;
-            cmbCustomers.SelectedValuePath = ColumnNames.ID;
-            cmbCustomers.ItemsSource = result.DefaultView;
+            try
+            {
+                var result = BusinessLogic.GetAllCustomerNames();
+                cmbCustomers.DisplayMemberPath = ColumnNames.Item;
+                cmbCustomers.SelectedValuePath = ColumnNames.ID;
+                cmbCustomers.ItemsSource = result.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillSmartSearchData()
@@ -98,52 +114,82 @@ namespace GlassProductManager
 
         private void FillPaymentTypes()
         {
-            var result = BusinessLogic.GetAllPaymentTypes();
-            cmbPaymentType.DisplayMemberPath = ColumnNames.Type;
-            cmbPaymentType.SelectedValuePath = ColumnNames.ID;
-            cmbPaymentType.ItemsSource = result.DefaultView;
-            cmbPaymentType.SelectedIndex = 0;
+            try
+            {
+                var result = BusinessLogic.GetAllPaymentTypes();
+                cmbPaymentType.DisplayMemberPath = ColumnNames.Type;
+                cmbPaymentType.SelectedValuePath = ColumnNames.ID;
+                cmbPaymentType.ItemsSource = result.DefaultView;
+                cmbPaymentType.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void FillQuoteStatus()
         {
-            var result = BusinessLogic.GetAllQuoteStatus();
-            cmbQuoteStatus.DisplayMemberPath = ColumnNames.Type;
-            cmbQuoteStatus.SelectedValuePath = ColumnNames.ID;
-            cmbQuoteStatus.ItemsSource = result.DefaultView;
-            cmbQuoteStatus.SelectedIndex = 0;
+            try
+            {
+                var result = BusinessLogic.GetAllQuoteStatus();
+                cmbQuoteStatus.DisplayMemberPath = ColumnNames.Type;
+                cmbQuoteStatus.SelectedValuePath = ColumnNames.ID;
+                cmbQuoteStatus.ItemsSource = result.DefaultView;
+                cmbQuoteStatus.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+          
         }
 
         private void FillAllQuoteNumbers()
         {
-            var result = BusinessLogic.GetAllQuoteNumbers();
-            cmbQuoteNumbers.DisplayMemberPath = ColumnNames.Type;
-            cmbQuoteNumbers.SelectedValuePath = ColumnNames.ID;
-            cmbQuoteNumbers.ItemsSource = result.DefaultView;
-            cmbQuoteNumbers.SelectedIndex = -1;
+            try
+            {
+                var result = BusinessLogic.GetAllQuoteNumbers();
+                cmbQuoteNumbers.DisplayMemberPath = ColumnNames.Type;
+                cmbQuoteNumbers.SelectedValuePath = ColumnNames.ID;
+                cmbQuoteNumbers.ItemsSource = result.DefaultView;
+                cmbQuoteNumbers.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void SetOperatorAccess()
         {
-            if (FirmSettings.IsAdmin)
+            try
             {
-                cmbOperator.Visibility = System.Windows.Visibility.Visible;
-                txtOperatorName.Visibility = System.Windows.Visibility.Hidden;
+                if (FirmSettings.IsAdmin)
+                {
+                    cmbOperator.Visibility = System.Windows.Visibility.Visible;
+                    txtOperatorName.Visibility = System.Windows.Visibility.Hidden;
 
-                var result = BusinessLogic.GetAllOperatorNames();
-                cmbOperator.DisplayMemberPath = ColumnNames.UserName;
-                cmbOperator.SelectedValuePath = ColumnNames.ID;
-                cmbOperator.ItemsSource = result.DefaultView;
+                    var result = BusinessLogic.GetAllOperatorNames();
+                    cmbOperator.DisplayMemberPath = ColumnNames.UserName;
+                    cmbOperator.SelectedValuePath = ColumnNames.ID;
+                    cmbOperator.ItemsSource = result.DefaultView;
 
-                cmbOperator.Text = FirmSettings.UserName;
+                    cmbOperator.Text = FirmSettings.UserName;
+                }
+                else
+                {
+                    cmbOperator.Visibility = System.Windows.Visibility.Hidden;
+                    txtOperatorName.Visibility = System.Windows.Visibility.Visible;
+                    txtOperatorName.Text = FirmSettings.UserName;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                cmbOperator.Visibility = System.Windows.Visibility.Hidden;
-                txtOperatorName.Visibility = System.Windows.Visibility.Visible;
-                txtOperatorName.Text = FirmSettings.UserName;
+                Logger.LogException(ex);
             }
-
         }
 
         void _allQuoteData_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -153,105 +199,147 @@ namespace GlassProductManager
 
         private void UpdateQuoteTotal()
         {
-            double subTotal = 0;
-            double grandTotal = 0;
-
-            foreach (var item in allQuoteData)
+            try
             {
-                if (item == null || item.Total == null)
-                    continue;
+                double subTotal = 0;
+                double grandTotal = 0;
 
-                if (false == Helper.IsValidCurrency(item.Total))
+                foreach (var item in allQuoteData)
                 {
-                    continue;
+                    if (item == null || item.Total == null)
+                        continue;
+
+                    if (false == Helper.IsValidCurrency(item.Total))
+                    {
+                        continue;
+                    }
+                    subTotal += double.Parse(item.Total);
                 }
-                subTotal += double.Parse(item.Total);
-            }
-            lblSubTotal.Content = "$ " + subTotal.ToString("0.00");
+                lblSubTotal.Content = "$ " + subTotal.ToString("0.00");
 
-            double energySurcharge = double.Parse(txtEnergySurcharge.Text);
+                double energySurcharge = double.Parse(txtEnergySurcharge.Text);
 
-            if (energySurcharge > 0 && cbDollar.IsChecked == true)
-            {
-                grandTotal = subTotal + energySurcharge;
-            }
-            else if (energySurcharge > 0)
-            {
-                grandTotal = subTotal + (energySurcharge / 100) * subTotal;
-            }
-            else
-            {
-                grandTotal = subTotal;
-            }
-            double discount = double.Parse(txtDiscount.Text);
-            if (discount > 0)
-            {
-                grandTotal = grandTotal - (discount / 100) * subTotal;
-            }
-            double deliveryCharges = double.Parse(txtDelivery.Text);
+                if (energySurcharge > 0 && cbDollar.IsChecked == true)
+                {
+                    grandTotal = subTotal + energySurcharge;
+                }
+                else if (energySurcharge > 0)
+                {
+                    grandTotal = subTotal + (energySurcharge / 100) * subTotal;
+                }
+                else
+                {
+                    grandTotal = subTotal;
+                }
+                double discount = double.Parse(txtDiscount.Text);
+                if (discount > 0)
+                {
+                    grandTotal = grandTotal - (discount / 100) * subTotal;
+                }
+                double deliveryCharges = double.Parse(txtDelivery.Text);
 
-            if (deliveryCharges > 0)
-            {
-                grandTotal = grandTotal + deliveryCharges;
-            }
+                if (deliveryCharges > 0)
+                {
+                    grandTotal = grandTotal + deliveryCharges;
+                }
 
-            double rushOrder = double.Parse(txtRushOrder.Text);
+                double rushOrder = double.Parse(txtRushOrder.Text);
 
-            if (rushOrder > 0 && cbRush.IsChecked == true)
-            {
-                grandTotal = grandTotal + rushOrder;
-            }
-            double tax = double.Parse(txtTax.Text);
-            if (tax > 0)
-            {
-                grandTotal = grandTotal + tax;
-            }
+                if (rushOrder > 0 && cbRush.IsChecked == true)
+                {
+                    grandTotal = grandTotal + rushOrder;
+                }
+                double tax = double.Parse(txtTax.Text);
+                if (tax > 0)
+                {
+                    grandTotal = grandTotal + tax;
+                }
 
-            lblGrandTotal.Content = "$ " + grandTotal.ToString("0.00");
+                lblGrandTotal.Content = "$ " + grandTotal.ToString("0.00");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void GetNewQuoteID()
         {
-            string quoteID = BusinessLogic.GetNewQuoteID();
-            txtQuoteNumber.Text = quoteID;
+            try
+            {
+                string quoteID = BusinessLogic.GetNewQuoteID();
+                txtQuoteNumber.Text = quoteID;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void UpdateDefaultLeadTimeSettings()
         {
-            var result = BusinessLogic.GetLeadTimeSettings();
-            if (result == null)
-                return;
-            object tempDBValue = result.Rows[0][ColumnNames.LeadTimeID];
-            cmbLeadTime.SelectedIndex = int.Parse(tempDBValue == DBNull.Value ? "0" : tempDBValue.ToString());
-            tempDBValue = result.Rows[0][ColumnNames.LeadTimeTypeID];
-            cmbLeadTimeType.SelectedIndex = int.Parse(tempDBValue == DBNull.Value ? "0" : tempDBValue.ToString());
-            tempDBValue = result.Rows[0][ColumnNames.IsDefaultLeadTime];
-            cbUseAsDefault.IsChecked = bool.Parse(tempDBValue == DBNull.Value ? "false" : tempDBValue.ToString());
+            try
+            {
+                var result = BusinessLogic.GetLeadTimeSettings();
+                if (result == null)
+                    return;
+                object tempDBValue = result.Rows[0][ColumnNames.LeadTimeID];
+                cmbLeadTime.SelectedIndex = int.Parse(tempDBValue == DBNull.Value ? "0" : tempDBValue.ToString());
+                tempDBValue = result.Rows[0][ColumnNames.LeadTimeTypeID];
+                cmbLeadTimeType.SelectedIndex = int.Parse(tempDBValue == DBNull.Value ? "0" : tempDBValue.ToString());
+                tempDBValue = result.Rows[0][ColumnNames.IsDefaultLeadTime];
+                cbUseAsDefault.IsChecked = bool.Parse(tempDBValue == DBNull.Value ? "false" : tempDBValue.ToString());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillShippingMethods()
         {
-            var result = BusinessLogic.GetAllShippingMethods();
-            cmbShippingMethod.DisplayMemberPath = ColumnNames.Shipping;
-            cmbShippingMethod.SelectedValuePath = ColumnNames.ID;
-            cmbShippingMethod.ItemsSource = result.DefaultView;
-            cmbShippingMethod.SelectedIndex = 0;
+            try
+            {
+                var result = BusinessLogic.GetAllShippingMethods();
+                cmbShippingMethod.DisplayMemberPath = ColumnNames.Shipping;
+                cmbShippingMethod.SelectedValuePath = ColumnNames.ID;
+                cmbShippingMethod.ItemsSource = result.DefaultView;
+                cmbShippingMethod.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillLeadTimeTypes()
         {
-            var result = BusinessLogic.GetAllLeadTimeTypes();
-            cmbLeadTimeType.DisplayMemberPath = ColumnNames.LeadTimeType;
-            cmbLeadTimeType.SelectedValuePath = ColumnNames.ID;
-            cmbLeadTimeType.ItemsSource = result.DefaultView;
+            try
+            {
+                var result = BusinessLogic.GetAllLeadTimeTypes();
+                cmbLeadTimeType.DisplayMemberPath = ColumnNames.LeadTimeType;
+                cmbLeadTimeType.SelectedValuePath = ColumnNames.ID;
+                cmbLeadTimeType.ItemsSource = result.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillLeadTime()
         {
-            var result = BusinessLogic.GetAllLeadTime();
-            cmbLeadTime.DisplayMemberPath = ColumnNames.LeadTime;
-            cmbLeadTime.SelectedValuePath = ColumnNames.ID;
-            cmbLeadTime.ItemsSource = result.DefaultView;
+            try
+            {
+                var result = BusinessLogic.GetAllLeadTime();
+                cmbLeadTime.DisplayMemberPath = ColumnNames.LeadTime;
+                cmbLeadTime.SelectedValuePath = ColumnNames.ID;
+                cmbLeadTime.ItemsSource = result.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnRegenerate_Click(object sender, RoutedEventArgs e)
@@ -273,157 +361,198 @@ namespace GlassProductManager
 
         private void cbUseAsDefault_Checked(object sender, RoutedEventArgs e)
         {
-            if (cmbLeadTime.SelectedIndex == -1 || cmbLeadTimeType.SelectedIndex == -1)
+            try
             {
-                Helper.ShowErrorMessageBox("Please select Lead Time first");
-                cbUseAsDefault.IsChecked = false;
-                return;
-            }
+                if (cmbLeadTime.SelectedIndex == -1 || cmbLeadTimeType.SelectedIndex == -1)
+                {
+                    Helper.ShowErrorMessageBox("Please select Lead Time first");
+                    cbUseAsDefault.IsChecked = false;
+                    return;
+                }
 
-            BusinessLogic.SetDefaultLeadTime(cmbLeadTime.SelectedIndex, cmbLeadTimeType.SelectedIndex);
+                BusinessLogic.SetDefaultLeadTime(cmbLeadTime.SelectedIndex, cmbLeadTimeType.SelectedIndex);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void cbUseAsDefault_Unchecked(object sender, RoutedEventArgs e)
         {
-            BusinessLogic.ResetDefaultLeadTime();
-            cmbLeadTime.SelectedIndex = -1;
-            cmbLeadTimeType.SelectedIndex = -1;
+            try
+            {
+                BusinessLogic.ResetDefaultLeadTime();
+                cmbLeadTime.SelectedIndex = -1;
+                cmbLeadTimeType.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void txtQuoteNumber_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (Helper.IsNonEmpty(txtQuoteNumber))
+            try
             {
-                bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
-                if (isQuoteNumberPresent)
+                if (Helper.IsNonEmpty(txtQuoteNumber))
                 {
-                    txtQuoteNumber.Text = string.Empty;
-                    Helper.ShowErrorMessageBox("Quote Number already used! Kindly provide new quote number.");
+                    bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
+                    if (isQuoteNumberPresent)
+                    {
+                        txtQuoteNumber.Text = string.Empty;
+                        Helper.ShowErrorMessageBox("Quote Number already used! Kindly provide new quote number.");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            int customerID = 0;
+            try
+            {
+                int customerID = 0;
 
-            if (true == string.IsNullOrWhiteSpace(txtSoldToFirstName.Text))
-            {
-                Helper.ShowErrorMessageBox("Sold to First Name can not be empty. Please provide First Name.");
-                txtSoldToFirstName.Focus();
-                return;
-            }
-            if (false == Helper.IsNonEmpty(txtQuoteNumber))
-            {
-                Helper.ShowErrorMessageBox("Quote Number can not be empty. Please provide Quote Number.");
-                txtQuoteNumber.Focus();
-                return;
-            }
-
-            if (allQuoteData.Count == 0)
-            {
-                Helper.ShowErrorMessageBox("There is no item in the quote. Please add atleast one.");
-                return;
-            }
-
-            bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
-            if (isQuoteNumberPresent)
-            {
-                var result = Helper.ShowQuestionMessageBox("Quote already present. Press Yes to update existing. Press No to Clone existing quote.");
-                if (result == MessageBoxResult.Yes)
+                if (true == string.IsNullOrWhiteSpace(txtSoldToFirstName.Text))
                 {
-
-                    QuoteHeader header = BuildQuoteHeader(txtQuoteNumber.Text);
-                    customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
-                    header.CustomerID = customerID;
-                    BusinessLogic.UpdateQuoteHeader(header, true);
-
-                    BusinessLogic.DeleteQuoteItems(txtQuoteNumber.Text);
-                    BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData);
-
-                    QuoteFooter footer = BuildQuoteFooter();
-                    BusinessLogic.UpdateQuoteFooter(txtQuoteNumber.Text, footer);
+                    Helper.ShowErrorMessageBox("Sold to First Name can not be empty. Please provide First Name.");
+                    txtSoldToFirstName.Focus();
+                    return;
                 }
-                else if (result == MessageBoxResult.No)
+                if (false == Helper.IsNonEmpty(txtQuoteNumber))
                 {
-                    CloneQuote();
+                    Helper.ShowErrorMessageBox("Quote Number can not be empty. Please provide Quote Number.");
+                    txtQuoteNumber.Focus();
+                    return;
                 }
+
+                if (allQuoteData.Count == 0)
+                {
+                    Helper.ShowErrorMessageBox("There is no item in the quote. Please add atleast one.");
+                    return;
+                }
+
+                bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
+                if (isQuoteNumberPresent)
+                {
+                    var result = Helper.ShowQuestionMessageBox("Quote already present. Press Yes to update existing. Press No to Clone existing quote.");
+                    if (result == MessageBoxResult.Yes)
+                    {
+
+                        QuoteHeader header = BuildQuoteHeader(txtQuoteNumber.Text);
+                        customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+                        header.CustomerID = customerID;
+                        BusinessLogic.UpdateQuoteHeader(header, true);
+
+                        BusinessLogic.DeleteQuoteItems(txtQuoteNumber.Text);
+                        BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData);
+
+                        QuoteFooter footer = BuildQuoteFooter();
+                        BusinessLogic.UpdateQuoteFooter(txtQuoteNumber.Text, footer);
+                    }
+                    else if (result == MessageBoxResult.No)
+                    {
+                        CloneQuote();
+                    }
+                }
+                else
+                {
+                    SaveNewQuote(txtQuoteNumber.Text);
+                }
+
+                FillSmartSearchData();
+
+                FillCustomerNames();
+
+                cbIsNewClient.IsChecked = false;
+                customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+                cmbCustomers.SelectedValue = customerID;
             }
-            else
+            catch (Exception ex)
             {
-                SaveNewQuote(txtQuoteNumber.Text);
+                Logger.LogException(ex);
             }
-
-            FillSmartSearchData();
-
-            FillCustomerNames();
-
-            cbIsNewClient.IsChecked = false;
-            customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
-            cmbCustomers.SelectedValue = customerID;
-
         }
 
         private void SaveNewQuote(string quoteNumber)
         {
-            QuoteHeader header = BuildQuoteHeader(quoteNumber);
-            BusinessLogic.SaveQuoteHeader(header);
+            try
+            {
+                QuoteHeader header = BuildQuoteHeader(quoteNumber);
+                BusinessLogic.SaveQuoteHeader(header);
 
-            BusinessLogic.SaveQuoteItems(quoteNumber, allQuoteData);
+                BusinessLogic.SaveQuoteItems(quoteNumber, allQuoteData);
 
-            QuoteFooter footer = BuildQuoteFooter();
-            BusinessLogic.SaveQuoteFooter(quoteNumber, footer);
+                QuoteFooter footer = BuildQuoteFooter();
+                BusinessLogic.SaveQuoteFooter(quoteNumber, footer);
 
-            Helper.ShowInformationMessageBox("Quote saved successfully!");
+                Helper.ShowInformationMessageBox("Quote saved successfully!");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private QuoteHeader BuildQuoteHeader(string quoteNumber)
         {
             QuoteHeader header = new QuoteHeader();
-            header.QuoteNumber = quoteNumber;
-            header.QuoteCreatedOn = dtQuoteCreatedOn.SelectedDate.Value.ToShortDateString();
-            header.QuoteRequestedOn = dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString();
-            header.CustomerPO = txtCustomerPO.Text;
-            header.IsNewCustomer = cbIsNewClient.IsChecked == true;
-            header.IsShipToOtherAddress = cbIsShipToSameAddress.IsChecked == true;
-            header.ShippingMethodID = cmbShippingMethod.SelectedIndex;
-            header.LeadTimeID = cmbLeadTime.SelectedIndex;
-            header.LeadTimeTypeID = cmbLeadTimeType.SelectedIndex;
+            try
+            {
+                header.QuoteNumber = quoteNumber;
+                header.QuoteCreatedOn = dtQuoteCreatedOn.SelectedDate.Value.ToShortDateString();
+                header.QuoteRequestedOn = dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString();
+                header.CustomerPO = txtCustomerPO.Text;
+                header.IsNewCustomer = cbIsNewClient.IsChecked == true;
+                header.IsShipToOtherAddress = cbIsShipToSameAddress.IsChecked == true;
+                header.ShippingMethodID = cmbShippingMethod.SelectedIndex;
+                header.LeadTimeID = cmbLeadTime.SelectedIndex;
+                header.LeadTimeTypeID = cmbLeadTimeType.SelectedIndex;
 
-            header.PaymentModeID = int.Parse(cmbPaymentType.SelectedValue.ToString());
-            header.QuoteStatusID = int.Parse(cmbQuoteStatus.SelectedValue.ToString());
+                header.PaymentModeID = int.Parse(cmbPaymentType.SelectedValue.ToString());
+                header.QuoteStatusID = int.Parse(cmbQuoteStatus.SelectedValue.ToString());
 
-            if (FirmSettings.IsAdmin)
-            {
-                header.OperatorName = cmbOperator.Text;
-            }
-            else
-            {
-                header.OperatorName = txtOperatorName.Text;
-            }
-            if (cbIsNewClient.IsChecked.Value == false)
-            {
-                header.CustomerID = int.Parse(cmbCustomers.SelectedValue.ToString());
-            }
-            header.SoldTo = new CustomerDetails();
-            header.SoldTo.FirstName = txtSoldToFirstName.Text;
-            header.SoldTo.LastName = txtSoldToLastName.Text;
-            header.SoldTo.Address = txtSoldToAddress.Text;
-            header.SoldTo.Phone = txtSoldToPhone.Text;
-            header.SoldTo.Email = txtSoldToEmail.Text;
-            header.SoldTo.Fax = txtSoldToFax.Text;
-            header.SoldTo.Misc = txtSoldToMisc.Text;
+                if (FirmSettings.IsAdmin)
+                {
+                    header.OperatorName = cmbOperator.Text;
+                }
+                else
+                {
+                    header.OperatorName = txtOperatorName.Text;
+                }
+                if (cbIsNewClient.IsChecked.Value == false)
+                {
+                    header.CustomerID = int.Parse(cmbCustomers.SelectedValue.ToString());
+                }
+                header.SoldTo = new CustomerDetails();
+                header.SoldTo.FirstName = txtSoldToFirstName.Text;
+                header.SoldTo.LastName = txtSoldToLastName.Text;
+                header.SoldTo.Address = txtSoldToAddress.Text;
+                header.SoldTo.Phone = txtSoldToPhone.Text;
+                header.SoldTo.Email = txtSoldToEmail.Text;
+                header.SoldTo.Fax = txtSoldToFax.Text;
+                header.SoldTo.Misc = txtSoldToMisc.Text;
 
-            if (cbIsShipToSameAddress.IsChecked == true)
+                if (cbIsShipToSameAddress.IsChecked == true)
+                {
+                    header.ShipTo = new CustomerDetails();
+                    header.ShipTo.FirstName = txtShiptoFirstName.Text;
+                    header.ShipTo.LastName = txtShiptoLastName.Text;
+                    header.ShipTo.Address = txtShipToAddress.Text;
+                    header.ShipTo.Phone = txtShipToPhone.Text;
+                    header.ShipTo.Email = txtShipToEmail.Text;
+                    header.ShipTo.Fax = txtShipToFax.Text;
+                    header.ShipTo.Misc = txtShipToMisc.Text;
+                }
+            }
+            catch (Exception ex)
             {
-                header.ShipTo = new CustomerDetails();
-                header.ShipTo.FirstName = txtShiptoFirstName.Text;
-                header.ShipTo.LastName = txtShiptoLastName.Text;
-                header.ShipTo.Address = txtShipToAddress.Text;
-                header.ShipTo.Phone = txtShipToPhone.Text;
-                header.ShipTo.Email = txtShipToEmail.Text;
-                header.ShipTo.Fax = txtShipToFax.Text;
-                header.ShipTo.Misc = txtShipToMisc.Text;
+                Logger.LogException(ex);
             }
             return header;
         }
@@ -431,15 +560,22 @@ namespace GlassProductManager
         private QuoteFooter BuildQuoteFooter()
         {
             QuoteFooter footer = new QuoteFooter();
-            footer.SubTotal = double.Parse(lblSubTotal.Content.ToString().Replace("$ ", string.Empty));
-            footer.IsDollar = cbDollar.IsChecked.Value == true;
-            footer.EnergySurcharge = double.Parse(txtEnergySurcharge.Text);
-            footer.Discount = double.Parse(txtDiscount.Text);
-            footer.Delivery = double.Parse(txtDelivery.Text);
-            footer.IsRushOrder = cbRush.IsChecked.Value == true;
-            footer.RushOrder = double.Parse(txtRushOrder.Text);
-            footer.Tax = double.Parse(txtTax.Text);
-            footer.GrandTotal = double.Parse(lblGrandTotal.Content.ToString().Replace("$ ", string.Empty));
+            try
+            {
+                footer.SubTotal = double.Parse(lblSubTotal.Content.ToString().Replace("$ ", string.Empty));
+                footer.IsDollar = cbDollar.IsChecked.Value == true;
+                footer.EnergySurcharge = double.Parse(txtEnergySurcharge.Text);
+                footer.Discount = double.Parse(txtDiscount.Text);
+                footer.Delivery = double.Parse(txtDelivery.Text);
+                footer.IsRushOrder = cbRush.IsChecked.Value == true;
+                footer.RushOrder = double.Parse(txtRushOrder.Text);
+                footer.Tax = double.Parse(txtTax.Text);
+                footer.GrandTotal = double.Parse(lblGrandTotal.Content.ToString().Replace("$ ", string.Empty));
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
             return footer;
         }
 
@@ -488,35 +624,45 @@ namespace GlassProductManager
         private void dgQuoteItems_LostFocus(object sender, RoutedEventArgs e)
         {
             UpdateQuoteTotal();
-
-
-
-
         }
 
         private void txtEnergySurcharge_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsValidCurrency(txtEnergySurcharge))
+            try
             {
-                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
+                if (Helper.IsValidCurrency(txtEnergySurcharge))
                 {
-                    UpdateQuoteTotal();
+                    if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
+                    {
+                        UpdateQuoteTotal();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void txtEnergySurcharge_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (Helper.IsValidCurrency(txtEnergySurcharge))
+            try
             {
-                if (allQuoteData.Count > 0)
+                if (Helper.IsValidCurrency(txtEnergySurcharge))
                 {
-                    txtEnergySurcharge.Text = string.IsNullOrEmpty(txtEnergySurcharge.Text) ? "0.00" : txtEnergySurcharge.Text;
+                    if (allQuoteData.Count > 0)
+                    {
+                        txtEnergySurcharge.Text = string.IsNullOrEmpty(txtEnergySurcharge.Text) ? "0.00" : txtEnergySurcharge.Text;
+                    }
+                }
+                else
+                {
+                    txtEnergySurcharge.Text = "0.00";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                txtEnergySurcharge.Text = "0.00";
+                Logger.LogException(ex);
             }
         }
 
@@ -659,127 +805,159 @@ namespace GlassProductManager
 
         private void btnUpdateSelectedItem_Click(object sender, RoutedEventArgs e)
         {
-            QuoteGridEntity selectedLineItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
-            if (selectedLineItem == null)
-                return;
-            double newUnitPrice = double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
-            selectedLineItem.UnitPrice = newUnitPrice.ToString("0.00");
-            selectedLineItem.Total = (newUnitPrice * selectedLineItem.Quantity).ToString("0.00");
-            UpdateQuoteTotal();
+            try
+            {
+                QuoteGridEntity selectedLineItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
+                if (selectedLineItem == null)
+                    return;
+                double newUnitPrice = double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
+                selectedLineItem.UnitPrice = newUnitPrice.ToString("0.00");
+                selectedLineItem.Total = (newUnitPrice * selectedLineItem.Quantity).ToString("0.00");
+                UpdateQuoteTotal();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
 
         }
 
         private void btnUpdateAllItem_Click(object sender, RoutedEventArgs e)
         {
-            if (allQuoteData.Count > 0)
+            try
             {
-                foreach (QuoteGridEntity selectedLineItem in allQuoteData)
+                if (allQuoteData.Count > 0)
                 {
-                    if (selectedLineItem == null || string.IsNullOrEmpty(txtAdditionalCostForItem.Text) || string.IsNullOrEmpty(selectedLineItem.UnitPrice))
-                        continue;
+                    foreach (QuoteGridEntity selectedLineItem in allQuoteData)
+                    {
+                        if (selectedLineItem == null || string.IsNullOrEmpty(txtAdditionalCostForItem.Text) || string.IsNullOrEmpty(selectedLineItem.UnitPrice))
+                            continue;
 
-                    double newUnitPrice = double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
-                    selectedLineItem.UnitPrice = newUnitPrice.ToString("0.00");
-                    selectedLineItem.Total = (newUnitPrice * selectedLineItem.Quantity).ToString("0.00");
+                        double newUnitPrice = double.Parse(txtAdditionalCostForItem.Text) + double.Parse(selectedLineItem.UnitPrice);
+                        selectedLineItem.UnitPrice = newUnitPrice.ToString("0.00");
+                        selectedLineItem.Total = (newUnitPrice * selectedLineItem.Quantity).ToString("0.00");
+                    }
+                    UpdateQuoteTotal();
                 }
-                UpdateQuoteTotal();
             }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+          
         }
 
         private void btnOpenQuote_Click(object sender, RoutedEventArgs e)
         {
-            //if (string.IsNullOrEmpty(txtSmartSearch.Text))
-            //{
-            //    Helper.ShowErrorMessageBox("Please select Customer/Quote No. first");
-            //    return;
-            //}
-            if (cmbQuoteNumbers.SelectedIndex < 0 && cmbQuoteNumbers.SelectedItem == null)
+            try
             {
-                Helper.ShowErrorMessageBox("Please select Quote!");
-                return;
+                //if (string.IsNullOrEmpty(txtSmartSearch.Text))
+                //{
+                //    Helper.ShowErrorMessageBox("Please select Customer/Quote No. first");
+                //    return;
+                //}
+                if (cmbQuoteNumbers.SelectedIndex < 0 && cmbQuoteNumbers.SelectedItem == null)
+                {
+                    Helper.ShowErrorMessageBox("Please select Quote!");
+                    return;
+                }
+                string quoteNumber = (cmbQuoteNumbers.SelectedItem as System.Data.DataRowView)[1].ToString();
+                //foreach (string item in txtSmartSearch.Text.Split('-'))
+                //{
+                //    if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
+                //    {
+                //        quoteNumber = item.Trim();
+                //        break;
+                //    }
+                //}
+                if (string.IsNullOrEmpty(quoteNumber))
+                {
+                    Helper.ShowErrorMessageBox("Invalid Quote Number");
+                    return;
+                }
+                OpenSelectedQuote(quoteNumber);
             }
-            string quoteNumber = (cmbQuoteNumbers.SelectedItem as System.Data.DataRowView)[1].ToString();
-            //foreach (string item in txtSmartSearch.Text.Split('-'))
-            //{
-            //    if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
-            //    {
-            //        quoteNumber = item.Trim();
-            //        break;
-            //    }
-            //}
-            if (string.IsNullOrEmpty(quoteNumber))
+            catch (Exception ex)
             {
-                Helper.ShowErrorMessageBox("Invalid Quote Number");
-                return;
+                Logger.LogException(ex);
             }
-            OpenSelectedQuote(quoteNumber);
+           
         }
 
         private void OpenSelectedQuote(string quoteNumber)
         {
-            QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
-            if (result == null)
+            try
             {
-                Helper.ShowInformationMessageBox("No data found for selected quote!");
-                return;
+                QuoteEntity result = BusinessLogic.GetQuoteDetails(quoteNumber);
+                if (result == null)
+                {
+                    Helper.ShowInformationMessageBox("No data found for selected quote!");
+                    return;
+                }
+
+                cbIsNewClient.IsChecked = false;
+                int customerID = BusinessLogic.GetCustomerID(result.Header.QuoteNumber);
+                cmbCustomers.SelectedValue = customerID;
+
+                #region Fill Header Information
+
+                txtQuoteNumber.Text = result.Header.QuoteNumber;
+                txtCustomerPO.Text = result.Header.CustomerPO;
+                dtQuoteCreatedOn.SelectedDate = DateTime.Parse(result.Header.QuoteCreatedOn);
+                dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
+                cmbPaymentType.SelectedValue = result.Header.PaymentModeID;
+                cmbQuoteStatus.SelectedValue = result.Header.QuoteStatusID;
+
+                if (result.Header.SoldTo != null)
+                    SetSoldToDetails(result.Header.SoldTo);
+
+                if (FirmSettings.IsAdmin)
+                {
+                    cmbOperator.Text = result.Header.OperatorName;
+                }
+                {
+                    txtOperatorName.Text = result.Header.OperatorName;
+                }
+                if (result.Header.IsShipToOtherAddress)
+                {
+                    SetShipToDetails(result.Header.ShipTo);
+                }
+                cmbShippingMethod.SelectedIndex = result.Header.ShippingMethodID;
+                cmbLeadTime.SelectedIndex = result.Header.LeadTimeID;
+                cmbLeadTimeType.SelectedIndex = result.Header.LeadTimeTypeID;
+
+                #endregion
+
+                #region Fill Line Items
+
+                allQuoteData = result.LineItems;
+                dgQuoteItems.ItemsSource = allQuoteData;
+
+                #endregion
+
+                #region Fill Footer Information
+
+                if (result.Footer == null)
+                    return;
+
+                lblSubTotal.Content = result.Footer.SubTotal.ToString("0.00");
+                cbDollar.IsChecked = result.Footer.IsDollar;
+                txtEnergySurcharge.Text = result.Footer.EnergySurcharge.ToString("0.00");
+                txtDiscount.Text = result.Footer.Discount.ToString("0.00");
+                txtDelivery.Text = result.Footer.Delivery.ToString("0.00");
+                cbRush.IsChecked = result.Footer.IsRushOrder;
+                txtRushOrder.Text = result.Footer.RushOrder.ToString("0.00");
+                txtTax.Text = result.Footer.Tax.ToString("0.00");
+                lblGrandTotal.Content = result.Footer.GrandTotal.ToString("0.00");
+
+                #endregion
             }
-
-            cbIsNewClient.IsChecked = false;
-            int customerID = BusinessLogic.GetCustomerID(result.Header.QuoteNumber);
-            cmbCustomers.SelectedValue = customerID;
-
-            #region Fill Header Information
-
-            txtQuoteNumber.Text = result.Header.QuoteNumber;
-            txtCustomerPO.Text = result.Header.CustomerPO;
-            dtQuoteCreatedOn.SelectedDate = DateTime.Parse(result.Header.QuoteCreatedOn);
-            dtQuoteRequestedOn.SelectedDate = DateTime.Parse(result.Header.QuoteRequestedOn);
-            cmbPaymentType.SelectedValue = result.Header.PaymentModeID;
-            cmbQuoteStatus.SelectedValue = result.Header.QuoteStatusID;
-
-            if (result.Header.SoldTo != null)
-                SetSoldToDetails(result.Header.SoldTo);
-
-            if (FirmSettings.IsAdmin)
+            catch (Exception ex)
             {
-                cmbOperator.Text = result.Header.OperatorName;
+                Logger.LogException(ex);
             }
-            {
-                txtOperatorName.Text = result.Header.OperatorName;
-            }
-            if (result.Header.IsShipToOtherAddress)
-            {
-                SetShipToDetails(result.Header.ShipTo);
-            }
-            cmbShippingMethod.SelectedIndex = result.Header.ShippingMethodID;
-            cmbLeadTime.SelectedIndex = result.Header.LeadTimeID;
-            cmbLeadTimeType.SelectedIndex = result.Header.LeadTimeTypeID;
-
-            #endregion
-
-            #region Fill Line Items
-
-            allQuoteData = result.LineItems;
-            dgQuoteItems.ItemsSource = allQuoteData;
-
-            #endregion
-
-            #region Fill Footer Information
-
-            if (result.Footer == null)
-                return;
-
-            lblSubTotal.Content = result.Footer.SubTotal.ToString("0.00");
-            cbDollar.IsChecked = result.Footer.IsDollar;
-            txtEnergySurcharge.Text = result.Footer.EnergySurcharge.ToString("0.00");
-            txtDiscount.Text = result.Footer.Discount.ToString("0.00");
-            txtDelivery.Text = result.Footer.Delivery.ToString("0.00");
-            cbRush.IsChecked = result.Footer.IsRushOrder;
-            txtRushOrder.Text = result.Footer.RushOrder.ToString("0.00");
-            txtTax.Text = result.Footer.Tax.ToString("0.00");
-            lblGrandTotal.Content = result.Footer.GrandTotal.ToString("0.00");
-
-            #endregion
+          
         }
 
         private void SetShipToDetails(CustomerDetails shipTo)
@@ -806,43 +984,67 @@ namespace GlassProductManager
 
         private void cmbCustomers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbCustomers.SelectedValue == null)
-                return;
-
-            CustomerDetails soldTo = null;
-            CustomerDetails shipTo = null;
-
-            BusinessLogic.GetCustomerDetails(out soldTo, out shipTo, cmbCustomers.SelectedValue.ToString());
-
-            if (soldTo != null)
+            try
             {
-                SetSoldToDetails(soldTo);
+                if (cmbCustomers.SelectedValue == null)
+                    return;
+
+                CustomerDetails soldTo = null;
+                CustomerDetails shipTo = null;
+
+                BusinessLogic.GetCustomerDetails(out soldTo, out shipTo, cmbCustomers.SelectedValue.ToString());
+
+                if (soldTo != null)
+                {
+                    SetSoldToDetails(soldTo);
+                }
+                if (shipTo != null)
+                {
+                    SetShipToDetails(shipTo);
+                }
             }
-            if (shipTo != null)
+            catch (Exception ex)
             {
-                SetShipToDetails(shipTo);
+                Logger.LogException(ex);
             }
+            
         }
 
         private void btnNewQuote_Click(object sender, RoutedEventArgs e)
         {
-            var result = Helper.ShowQuestionMessageBox("Are you sure to create new quote?");
-            if (result == MessageBoxResult.Yes)
+            try
             {
-                ResetQuote();
-                GetNewQuoteID();
+                var result = Helper.ShowQuestionMessageBox("Are you sure to create new quote?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    ResetQuote();
+                    GetNewQuoteID();
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+         
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var result = Helper.ShowQuestionMessageBox("Are you sure to delete this quote?");
-            if (result == MessageBoxResult.Yes)
+            try
             {
-                BusinessLogic.DeleteQuote(txtQuoteNumber.Text);
-                Helper.ShowInformationMessageBox("Quote deleted successfully.");
-                ResetQuote();
+                var result = Helper.ShowQuestionMessageBox("Are you sure to delete this quote?");
+                if (result == MessageBoxResult.Yes)
+                {
+                    BusinessLogic.DeleteQuote(txtQuoteNumber.Text);
+                    Helper.ShowInformationMessageBox("Quote deleted successfully.");
+                    ResetQuote();
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void ResetQuote()
@@ -867,11 +1069,19 @@ namespace GlassProductManager
 
         private void ResetQuoteItems()
         {
-            if (allQuoteData == null)
-                allQuoteData = new ObservableCollection<QuoteGridEntity>();
+            try
+            {
+                if (allQuoteData == null)
+                    allQuoteData = new ObservableCollection<QuoteGridEntity>();
 
-            allQuoteData.Clear();
-            dgQuoteItems.ItemsSource = allQuoteData;
+                allQuoteData.Clear();
+                dgQuoteItems.ItemsSource = allQuoteData;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void ResetShipTo()
@@ -1096,440 +1306,500 @@ namespace GlassProductManager
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Logger.LogException(ex);
             }
         }
 
         private static void PrintLogo(XGraphics gfx)
         {
-            XImage image = XImage.FromFile("Logo.jpg");
-            const double dx = 350, dy = 140;
-            //gfx.TranslateTransform(dx / 2, dy / 2);
-            gfx.ScaleTransform(0.5);
-            //gfx.TranslateTransform(-dx / 2, -dy / 2);
-            double width = image.PixelWidth * 72 / image.HorizontalResolution;
-            double height = image.PixelHeight * 72 / image.HorizontalResolution;
-            gfx.DrawImage(image, 5, 5, dx, dy);
+            try
+            {
+                XImage image = XImage.FromFile("Logo.jpg");
+                const double dx = 350, dy = 140;
+                //gfx.TranslateTransform(dx / 2, dy / 2);
+                gfx.ScaleTransform(0.5);
+                //gfx.TranslateTransform(-dx / 2, -dy / 2);
+                double width = image.PixelWidth * 72 / image.HorizontalResolution;
+                double height = image.PixelHeight * 72 / image.HorizontalResolution;
+                gfx.DrawImage(image, 5, 5, dx, dy);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+         
         }
 
         private void PrintQuoteHeader(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 800;
-            int xIncrementalOffset = 940;
-            int yBaseOffset = 15;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 200;
+            try
+            {
+                int xBaseOffset = 800;
+                int xIncrementalOffset = 940;
+                int yBaseOffset = 15;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 200;
 
-            // Print Quote Number
-            gfx.DrawString(lblQuoteNo.Content.ToString(), font, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtQuoteNumber.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Quote Number
+                gfx.DrawString(lblQuoteNo.Content.ToString(), font, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
+                gfx.DrawString(txtQuoteNumber.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            yBaseOffset += yIncrementalOffset;
+                yBaseOffset += yIncrementalOffset;
 
-            // Print Customer PO
-            gfx.DrawString(lblCustomerPO.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Customer PO
+                gfx.DrawString(lblCustomerPO.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(txtCustomerPO.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtCustomerPO.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            yBaseOffset += yIncrementalOffset;
+                yBaseOffset += yIncrementalOffset;
 
-            // Print Quote Created On
-            gfx.DrawString(lblQuoteCreatedOn.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Quote Created On
+                gfx.DrawString(lblQuoteCreatedOn.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(dtQuoteCreatedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(dtQuoteCreatedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            yBaseOffset += yIncrementalOffset;
+                yBaseOffset += yIncrementalOffset;
 
-            // Print Quote Requested On
-            gfx.DrawString(lblRequestedShipDate.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Quote Requested On
+                gfx.DrawString(lblRequestedShipDate.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(dtQuoteRequestedOn.SelectedDate.Value.ToShortDateString(), font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            yBaseOffset += yIncrementalOffset;
+                yBaseOffset += yIncrementalOffset;
 
-            // Print Payment Mode
-            gfx.DrawString(lblPaymentType.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Payment Mode
+                gfx.DrawString(lblPaymentType.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(cmbPaymentType.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(cmbPaymentType.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void PrintSoldToAddress(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 100;
-            int xIncrementalOffset = 170;
-            int yBaseOffset = 200;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 200;
-
-            // Print Sold To
-            gfx.DrawString(lblSoldTo.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-
-            // Print Name 
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToName.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            if (string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
+            try
             {
-                gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
+                int xBaseOffset = 100;
+                int xIncrementalOffset = 170;
+                int yBaseOffset = 200;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 200;
+
+                // Print Sold To
+                gfx.DrawString(lblSoldTo.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
+
+                // Print Name 
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToName.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                if (string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
+                {
+                    gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
+                }
+                else
+                {
+                    gfx.DrawString(string.Format("{1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
+                }
+
+
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToAddress.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
+
+                gfx.DrawString(txtSoldToAddress.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
+
+                gfx.DrawString(txtSoldToPhone.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                // Print Fax
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToFax.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
+
+                gfx.DrawString(txtSoldToFax.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                // Print Email
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToEmail.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
+
+                gfx.DrawString(txtSoldToEmail.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                // Print Misc
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldToMisc.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
+
+                gfx.DrawString(txtSoldToMisc.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
             }
-            else
+            catch (Exception ex)
             {
-                gfx.DrawString(string.Format("{1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
+                Logger.LogException(ex);
             }
-
-
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToAddress.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtSoldToAddress.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtSoldToPhone.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Fax
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToFax.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtSoldToFax.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Email
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToEmail.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtSoldToEmail.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Misc
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldToMisc.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
-
-            gfx.DrawString(txtSoldToMisc.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+           
         }
         private void PrintShipToAddress(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 500;
-            int xIncrementalOffset = 560;
-            int yBaseOffset = 200;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
+            try
+            {
+                int xBaseOffset = 500;
+                int xIncrementalOffset = 560;
+                int yBaseOffset = 200;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 100;
 
-            // Print Ship To
-            gfx.DrawString(lblShipTo.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
+                // Print Ship To
+                gfx.DrawString(lblShipTo.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
 
-            // Print Name 
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToName.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Name 
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToName.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-           XStringFormat.TopLeft);
+                gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+               XStringFormat.TopLeft);
 
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToAddress.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToAddress.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToAddress.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToAddress.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblSoldtoPhone.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToPhone.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToPhone.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Fax
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToFax.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Fax
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToFax.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToFax.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToFax.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Email
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToEmail.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Email
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToEmail.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToEmail.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToEmail.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Misc
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShipToMisc.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Misc
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShipToMisc.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(txtShipToMisc.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(txtShipToMisc.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void PrintShippingDetails(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 900;
-            int xIncrementalOffset = 1050;
-            int yBaseOffset = 200;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
+            try
+            {
+                int xBaseOffset = 900;
+                int xIncrementalOffset = 1050;
+                int yBaseOffset = 200;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 100;
 
-            XPen pen = new XPen(XColors.Black, 1);
+                XPen pen = new XPen(XColors.Black, 1);
 
-            // Print Operator Name 
-            gfx.DrawString(lblOperator.Content.ToString(), font, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                // Print Operator Name 
+                gfx.DrawString(lblOperator.Content.ToString(), font, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            gfx.DrawString(cmbOperator.Text, font, XBrushes.Black,
-           new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-           XStringFormat.TopLeft);
+                gfx.DrawString(cmbOperator.Text, font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+               XStringFormat.TopLeft);
 
-            // Print Shipping Method
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblShippingMethod.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Shipping Method
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblShippingMethod.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(cmbShippingMethod.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+                gfx.DrawString(cmbShippingMethod.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
 
-            // Print Phone
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblLeadTime.Content.ToString(), font, XBrushes.Black,
-         new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-         XStringFormat.TopLeft);
+                // Print Phone
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblLeadTime.Content.ToString(), font, XBrushes.Black,
+             new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+             XStringFormat.TopLeft);
 
-            gfx.DrawString(string.Format("{0} {1}", cmbLeadTime.Text, cmbLeadTimeType.Text), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
+                gfx.DrawString(string.Format("{0} {1}", cmbLeadTime.Text, cmbLeadTimeType.Text), font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void PrintQuoteDetails(XGraphics gfx, XFont font)
         {
-            int xStartDetailRect = 10;
-            int yStartDetailRect = 400;
-            int widthDetailRect = 1180;
-            int heightDetailRect = 700;
-
-            int heightHeaderRect = 50;
-
-            int xLineColumn = 90;
-            int xQuantityColumn = 150;
-            int xDescriptionColumn = 790;
-            int xDimensionColumn = 930;
-            int xSqFtColumn = 990;
-            int xUnitPriceColumn = 1080;
-            int xTotalColumn = 1190;
-
-            XPen pen = new XPen(XColors.Black, 1);
-            XRect detailsRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightDetailRect);
-            gfx.DrawRectangle(pen, detailsRect);
-
-            XStringFormat format = new XStringFormat();
-            XRect headerRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightHeaderRect);
-
-            gfx.DrawRectangle(pen, XBrushes.Gray, headerRect);
-            gfx.DrawLine(XPens.Black, xLineColumn, yStartDetailRect, xLineColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xQuantityColumn, yStartDetailRect, xQuantityColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xDescriptionColumn, yStartDetailRect, xDescriptionColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xDimensionColumn, yStartDetailRect, xDimensionColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xSqFtColumn, yStartDetailRect, xSqFtColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xUnitPriceColumn, yStartDetailRect, xUnitPriceColumn, yStartDetailRect + detailsRect.Height);
-            gfx.DrawLine(XPens.Black, xTotalColumn, yStartDetailRect, xTotalColumn, yStartDetailRect + detailsRect.Height);
-
-            XBrush brush = XBrushes.White;
-            gfx.DrawString("Line No.", font, brush, new XRect(xStartDetailRect + 15, yStartDetailRect + 15, xLineColumn, heightHeaderRect), format);
-            gfx.DrawString("Qty", font, brush, new XRect(xLineColumn + 15, yStartDetailRect + 15, xQuantityColumn, heightHeaderRect), format);
-            gfx.DrawString("Description", font, brush, new XRect(xQuantityColumn + 65, yStartDetailRect + 15, xDescriptionColumn, heightHeaderRect), format);
-            gfx.DrawString("Dimension (in)", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
-            gfx.DrawString("Sq.Ft.", font, brush, new XRect(xDimensionColumn + 15, yStartDetailRect + 15, xSqFtColumn, heightHeaderRect), format);
-            gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
-            gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
-
-            int yQuoteItemOffset = yStartDetailRect + 45;
-            int yOffset = 20;
-            brush = XBrushes.Black;
-
-            XTextFormatter tf = new XTextFormatter(gfx);
-            //gfx.DrawRectangle(XBrushes.SeaShell, rect);
-            //tf.Alignment = ParagraphAlignment.Left;
-            XRect rect;
-            foreach (QuoteGridEntity selectedLineItem in allQuoteData)
+            try
             {
-                if (selectedLineItem == null || selectedLineItem.Description == null || selectedLineItem.Dimension == null)
-                    continue;
+                int xStartDetailRect = 10;
+                int yStartDetailRect = 400;
+                int widthDetailRect = 1180;
+                int heightDetailRect = 700;
 
-                XSize size = gfx.MeasureString(selectedLineItem.Description, font);
+                int heightHeaderRect = 50;
 
-                gfx.DrawString(selectedLineItem.LineID.ToString(), font, brush, new XRect(xStartDetailRect + 40, yQuoteItemOffset + yOffset, xLineColumn, heightHeaderRect), format);
-                gfx.DrawString(selectedLineItem.Quantity.ToString(), font, brush, new XRect(xLineColumn + 25, yQuoteItemOffset + yOffset, xQuantityColumn, heightHeaderRect), format);
+                int xLineColumn = 90;
+                int xQuantityColumn = 150;
+                int xDescriptionColumn = 790;
+                int xDimensionColumn = 930;
+                int xSqFtColumn = 990;
+                int xUnitPriceColumn = 1080;
+                int xTotalColumn = 1190;
 
-                rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + 100);
-                tf.DrawString(selectedLineItem.Description, font, XBrushes.Black, rect, XStringFormats.TopLeft);
-                //gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + size.Height), format);
+                XPen pen = new XPen(XColors.Black, 1);
+                XRect detailsRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightDetailRect);
+                gfx.DrawRectangle(pen, detailsRect);
 
-                gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
-                gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
-                gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
-                gfx.DrawString(double.Parse(selectedLineItem.Total).ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
+                XStringFormat format = new XStringFormat();
+                XRect headerRect = new XRect(xStartDetailRect, yStartDetailRect, widthDetailRect, heightHeaderRect);
 
-                yQuoteItemOffset += 50;
+                gfx.DrawRectangle(pen, XBrushes.Gray, headerRect);
+                gfx.DrawLine(XPens.Black, xLineColumn, yStartDetailRect, xLineColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xQuantityColumn, yStartDetailRect, xQuantityColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xDescriptionColumn, yStartDetailRect, xDescriptionColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xDimensionColumn, yStartDetailRect, xDimensionColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xSqFtColumn, yStartDetailRect, xSqFtColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xUnitPriceColumn, yStartDetailRect, xUnitPriceColumn, yStartDetailRect + detailsRect.Height);
+                gfx.DrawLine(XPens.Black, xTotalColumn, yStartDetailRect, xTotalColumn, yStartDetailRect + detailsRect.Height);
+
+                XBrush brush = XBrushes.White;
+                gfx.DrawString("Line No.", font, brush, new XRect(xStartDetailRect + 15, yStartDetailRect + 15, xLineColumn, heightHeaderRect), format);
+                gfx.DrawString("Qty", font, brush, new XRect(xLineColumn + 15, yStartDetailRect + 15, xQuantityColumn, heightHeaderRect), format);
+                gfx.DrawString("Description", font, brush, new XRect(xQuantityColumn + 65, yStartDetailRect + 15, xDescriptionColumn, heightHeaderRect), format);
+                gfx.DrawString("Dimension (in)", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
+                gfx.DrawString("Sq.Ft.", font, brush, new XRect(xDimensionColumn + 15, yStartDetailRect + 15, xSqFtColumn, heightHeaderRect), format);
+                gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
+                gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
+
+                int yQuoteItemOffset = yStartDetailRect + 45;
+                int yOffset = 20;
+                brush = XBrushes.Black;
+
+                XTextFormatter tf = new XTextFormatter(gfx);
+                //gfx.DrawRectangle(XBrushes.SeaShell, rect);
+                //tf.Alignment = ParagraphAlignment.Left;
+                XRect rect;
+                foreach (QuoteGridEntity selectedLineItem in allQuoteData)
+                {
+                    if (selectedLineItem == null || selectedLineItem.Description == null || selectedLineItem.Dimension == null)
+                        continue;
+
+                    XSize size = gfx.MeasureString(selectedLineItem.Description, font);
+
+                    gfx.DrawString(selectedLineItem.LineID.ToString(), font, brush, new XRect(xStartDetailRect + 40, yQuoteItemOffset + yOffset, xLineColumn, heightHeaderRect), format);
+                    gfx.DrawString(selectedLineItem.Quantity.ToString(), font, brush, new XRect(xLineColumn + 25, yQuoteItemOffset + yOffset, xQuantityColumn, heightHeaderRect), format);
+
+                    rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + 100);
+                    tf.DrawString(selectedLineItem.Description, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                    //gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + size.Height), format);
+
+                    gfx.DrawString(selectedLineItem.Dimension, font, brush, new XRect(xDescriptionColumn + 15, yQuoteItemOffset + yOffset, xDimensionColumn, heightHeaderRect), format);
+                    gfx.DrawString(selectedLineItem.TotalSqFt, font, brush, new XRect(xDimensionColumn + 15, yQuoteItemOffset + yOffset, xSqFtColumn, heightHeaderRect), format);
+                    gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
+                    gfx.DrawString(double.Parse(selectedLineItem.Total).ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
+
+                    yQuoteItemOffset += 50;
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+       
         }
 
         private void PrintQuoteFooter(XGraphics gfx, XFont font)
         {
-            int xBaseOffset = 900;
-            int xIncrementalOffset = 1080;
-            int yBaseOffset = 1150;
-            int yIncrementalOffset = 25;
-            int labelWidth = 100;
-            int labelHeight = 100;
-
-            // Print Quote Number
-            gfx.DrawString(lblSubTotalCaption.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-
-            gfx.DrawString(lblSubTotal.Content.ToString(), font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Quote Number
-            yBaseOffset += yIncrementalOffset;
-            string energy = cbDollar.IsChecked.Value ? "Energy Surcharge ($):" : "Energy Surcharge (%):";
-            gfx.DrawString(energy, PdfPrintingSetting.BoldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtEnergySurcharge.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Quote Number
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblDiscount.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtDiscount.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Quote Number
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblDelivery.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtDelivery.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-            // Print Quote Number
-            if (cbRush.IsChecked.Value)
+            try
             {
-                yBaseOffset += yIncrementalOffset;
-                gfx.DrawString(lblRushOrder.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                int xBaseOffset = 900;
+                int xIncrementalOffset = 1080;
+                int yBaseOffset = 1150;
+                int yIncrementalOffset = 25;
+                int labelWidth = 100;
+                int labelHeight = 100;
+
+                // Print Quote Number
+                gfx.DrawString(lblSubTotalCaption.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
                   new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
                   XStringFormat.TopLeft);
-                gfx.DrawString(txtRushOrder.Text, font, XBrushes.Black,
+
+                gfx.DrawString(lblSubTotal.Content.ToString(), font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                // Print Quote Number
+                yBaseOffset += yIncrementalOffset;
+                string energy = cbDollar.IsChecked.Value ? "Energy Surcharge ($):" : "Energy Surcharge (%):";
+                gfx.DrawString(energy, PdfPrintingSetting.BoldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
+                gfx.DrawString(txtEnergySurcharge.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                // Print Quote Number
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblDiscount.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
+                gfx.DrawString(txtDiscount.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                // Print Quote Number
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblDelivery.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
+                gfx.DrawString(txtDelivery.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+                // Print Quote Number
+                if (cbRush.IsChecked.Value)
+                {
+                    yBaseOffset += yIncrementalOffset;
+                    gfx.DrawString(lblRushOrder.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                      new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                      XStringFormat.TopLeft);
+                    gfx.DrawString(txtRushOrder.Text, font, XBrushes.Black,
+                    new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                    XStringFormat.TopLeft);
+                }
+
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblTax.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                  new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                  XStringFormat.TopLeft);
+                gfx.DrawString(txtTax.Text, font, XBrushes.Black,
+                new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+
+
+                yBaseOffset += yIncrementalOffset;
+                gfx.DrawString(lblGrandTotalCaption.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
+                XStringFormat.TopLeft);
+                gfx.DrawString(lblGrandTotal.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
                 new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
                 XStringFormat.TopLeft);
             }
-
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblTax.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
-              new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-              XStringFormat.TopLeft);
-            gfx.DrawString(txtTax.Text, font, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-
-
-            yBaseOffset += yIncrementalOffset;
-            gfx.DrawString(lblGrandTotalCaption.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
-            new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
-            gfx.DrawString(lblGrandTotal.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
-            new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-            XStringFormat.TopLeft);
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnExportPdf_Click(object sender, RoutedEventArgs e)
         {
-            if(dgQuoteItems.Items.Count == 0)
+            try
             {
-                Helper.ShowErrorMessageBox("There are no line items for this quote. Can not print empty quote!");
-                return;
+                if (dgQuoteItems.Items.Count == 0)
+                {
+                    Helper.ShowErrorMessageBox("There are no line items for this quote. Can not print empty quote!");
+                    return;
+                }
+                PrintQuote();
             }
-            PrintQuote();
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void txtShipToPhone_LostFocus(object sender, RoutedEventArgs e)
@@ -1569,50 +1839,69 @@ namespace GlassProductManager
 
         private void btnSendToSO_Click(object sender, RoutedEventArgs e)
         {
-            if (Helper.IsNonEmpty(txtQuoteNumber))
+            try
             {
-                bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
-                if (isQuoteNumberPresent == false)
+                if (Helper.IsNonEmpty(txtQuoteNumber))
                 {
-                    Helper.ShowErrorMessageBox("Given quote number not found in system.");
-                    return;
+                    bool isQuoteNumberPresent = BusinessLogic.IsQuoteNumberPresent(txtQuoteNumber.Text);
+                    if (isQuoteNumberPresent == false)
+                    {
+                        Helper.ShowErrorMessageBox("Given quote number not found in system.");
+                        return;
+                    }
+                    else if (BusinessLogic.IsSalesOrderPresent(txtQuoteNumber.Text))
+                    {
+                        Helper.ShowErrorMessageBox("Sales Order already present for given quote.");
+                        return;
+                    }
+                    else
+                    {
+                        BusinessLogic.GenerateSaleOrder(txtQuoteNumber.Text, DateTime.Now);
+                        BusinessLogic.GenerateWorksheet(txtQuoteNumber.Text, DateTime.Now);
+                        string worksheetNumber = BusinessLogic.GetWorksheetNumber(txtQuoteNumber.Text);
+
+                        BusinessLogic.GenerateWorksheetItems(worksheetNumber, allQuoteData);
+                        ShowSaleOrderForm();
+                    }
                 }
-                else if (BusinessLogic.IsSalesOrderPresent(txtQuoteNumber.Text))
-                {
-                    Helper.ShowErrorMessageBox("Sales Order already present for given quote.");
-                    return;
-                }
-                else
-                {
-                    BusinessLogic.GenerateSaleOrder(txtQuoteNumber.Text, DateTime.Now);
-                    BusinessLogic.GenerateWorksheet(txtQuoteNumber.Text, DateTime.Now);
-                    string worksheetNumber = BusinessLogic.GetWorksheetNumber(txtQuoteNumber.Text);
-                    
-                    BusinessLogic.GenerateWorksheetItems(worksheetNumber, allQuoteData);
-                    ShowSaleOrderForm();
-                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void ShowSaleOrderForm()
         {
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            if (parent != null)
+            try
             {
-                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnSaleOrder);
-                SalesOrderContent soContent = new SalesOrderContent(true, txtQuoteNumber.Text);
-                parent.ucMainContent.ShowPage(soContent);
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                if (parent != null)
+                {
+                    DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                    DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnSaleOrder);
+                    SalesOrderContent soContent = new SalesOrderContent(true, txtQuoteNumber.Text);
+                    parent.ucMainContent.ShowPage(soContent);
+                }
             }
-
-
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void cmbQuoteStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbQuoteStatus.SelectedItem != null)
+            try
             {
-                btnSendToSO.IsEnabled = (cmbQuoteStatus.SelectedItem as System.Data.DataRowView)[1].Equals(ColumnNames.Confirmed);
+                if (cmbQuoteStatus.SelectedItem != null)
+                {
+                    btnSendToSO.IsEnabled = (cmbQuoteStatus.SelectedItem as System.Data.DataRowView)[1].Equals(ColumnNames.Confirmed);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
@@ -1661,95 +1950,123 @@ namespace GlassProductManager
 
         private void dgQuoteItems_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            QuoteGridEntity entity = e.Row.Item as QuoteGridEntity;
-            if (entity == null)
+            try
             {
-                return;
+                QuoteGridEntity entity = e.Row.Item as QuoteGridEntity;
+                if (entity == null)
+                {
+                    return;
+                }
+                switch (e.Column.DisplayIndex)
+                {
+                    case 1:
+                        TextBox txtQuantity = e.EditingElement as TextBox;
+                        if (txtQuantity != null)
+                        {
+                            int quantity = 0;
+                            int.TryParse(txtQuantity.Text, out quantity);
+                            entity.Quantity = quantity;
+                        }
+                        break;
+                    case 5:
+                        TextBox txtUnitPrice = e.EditingElement as TextBox;
+                        if (txtUnitPrice != null)
+                        {
+                            double unitPrice = 0;
+                            double.TryParse(txtUnitPrice.Text, out unitPrice);
+                            entity.UnitPrice = unitPrice.ToString("0.00");
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (e.Column.DisplayIndex == 1 || e.Column.DisplayIndex == 5)
+                {
+                    entity.Total = (double.Parse(entity.UnitPrice ?? "0") * entity.Quantity).ToString("0.00");
+                }
             }
-            switch (e.Column.DisplayIndex)
+            catch (Exception ex)
             {
-                case 1:
-                    TextBox txtQuantity = e.EditingElement as TextBox;
-                    if (txtQuantity != null)
-                    {
-                        int quantity = 0;
-                        int.TryParse(txtQuantity.Text, out quantity);
-                        entity.Quantity = quantity;
-                    }
-                    break;
-                case 5:
-                    TextBox txtUnitPrice = e.EditingElement as TextBox;
-                    if (txtUnitPrice != null)
-                    {
-                        double unitPrice = 0;
-                        double.TryParse(txtUnitPrice.Text, out unitPrice);
-                        entity.UnitPrice = unitPrice.ToString("0.00");
-                    }
-                    break;
-                default:
-                    break;
-            }
-            if (e.Column.DisplayIndex == 1 || e.Column.DisplayIndex == 5)
-            {
-                    entity.Total = (double.Parse(entity.UnitPrice??"0") * entity.Quantity).ToString("0.00");
+                Logger.LogException(ex);
             }
         }
 
         private void btnAddNewLineItem_Click(object sender, RoutedEventArgs e)
         {
-            QuoteGridEntity entity = new QuoteGridEntity();
-            entity.LineID = dgQuoteItems.Items.Count + 1;
-            allQuoteData.Add(entity);
+            try
+            {
+                QuoteGridEntity entity = new QuoteGridEntity();
+                entity.LineID = dgQuoteItems.Items.Count + 1;
+                allQuoteData.Add(entity);
 
-            ICollectionView dataView = CollectionViewSource.GetDefaultView(dgQuoteItems.ItemsSource);
-            //clear the existing sort order
-            dataView.SortDescriptions.Clear();
-            //create a new sort order for the sorting that is done lastly
-            dataView.SortDescriptions.Add(new SortDescription("LineID", ListSortDirection.Ascending));
-            //refresh the view which in turn refresh the grid
-            dataView.Refresh();
-
+                ICollectionView dataView = CollectionViewSource.GetDefaultView(dgQuoteItems.ItemsSource);
+                //clear the existing sort order
+                dataView.SortDescriptions.Clear();
+                //create a new sort order for the sorting that is done lastly
+                dataView.SortDescriptions.Add(new SortDescription("LineID", ListSortDirection.Ascending));
+                //refresh the view which in turn refresh the grid
+                dataView.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnDeleteLineItem_Click(object sender, RoutedEventArgs e)
         {
-            QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
-            if (selectedItem == null)
-                return;
-
-            QuoteGridEntity tempItem = null;
-            for (int index = dgQuoteItems.SelectedIndex + 1; index < dgQuoteItems.Items.Count; index++)
+            try
             {
-                tempItem = dgQuoteItems.Items[index] as QuoteGridEntity;
-                if (tempItem == null)
-                    continue;
-                tempItem.LineID = tempItem.LineID - 1;
+                QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
+                if (selectedItem == null)
+                    return;
+
+                QuoteGridEntity tempItem = null;
+                for (int index = dgQuoteItems.SelectedIndex + 1; index < dgQuoteItems.Items.Count; index++)
+                {
+                    tempItem = dgQuoteItems.Items[index] as QuoteGridEntity;
+                    if (tempItem == null)
+                        continue;
+                    tempItem.LineID = tempItem.LineID - 1;
+                }
+                allQuoteData.Remove(selectedItem);
             }
-            allQuoteData.Remove(selectedItem);
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+           
         }
 
         private void cmbQuoteNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbQuoteNumbers.SelectedIndex < 0 && cmbQuoteNumbers.SelectedItem == null)
+            try
             {
-                Helper.ShowErrorMessageBox("Please select Quote!");
-                return;
+                if (cmbQuoteNumbers.SelectedIndex < 0 && cmbQuoteNumbers.SelectedItem == null)
+                {
+                    Helper.ShowErrorMessageBox("Please select Quote!");
+                    return;
+                }
+                string quoteNumber = (cmbQuoteNumbers.SelectedItem as System.Data.DataRowView)[1].ToString();
+                //foreach (string item in txtSmartSearch.Text.Split('-'))
+                //{
+                //    if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
+                //    {
+                //        quoteNumber = item.Trim();
+                //        break;
+                //    }
+                //}
+                if (string.IsNullOrEmpty(quoteNumber))
+                {
+                    Helper.ShowErrorMessageBox("Invalid Quote Number");
+                    return;
+                }
+                OpenSelectedQuote(quoteNumber);
             }
-            string quoteNumber = (cmbQuoteNumbers.SelectedItem as System.Data.DataRowView)[1].ToString();
-            //foreach (string item in txtSmartSearch.Text.Split('-'))
-            //{
-            //    if (item.Trim().StartsWith("Q") || item.Trim().StartsWith("q"))
-            //    {
-            //        quoteNumber = item.Trim();
-            //        break;
-            //    }
-            //}
-            if (string.IsNullOrEmpty(quoteNumber))
+            catch (Exception ex)
             {
-                Helper.ShowErrorMessageBox("Invalid Quote Number");
-                return;
+                Logger.LogException(ex);
             }
-            OpenSelectedQuote(quoteNumber);
         }
 
         private void cbIsShipToSameAddress_Checked(object sender, RoutedEventArgs e)

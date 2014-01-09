@@ -168,9 +168,16 @@ namespace GlassProductManager
 
         private void FillWorksheetDetails()
         {
-            ObservableCollection<WorksheetEntity> result = BusinessLogic.GetWorksheetMasterData();
-            dgWorksheetDetails.ItemsSource = result;
-            m_WorksheetListForSearch = new ListCollectionView(result);
+            try
+            {
+                ObservableCollection<WorksheetEntity> result = BusinessLogic.GetWorksheetMasterData();
+                dgWorksheetDetails.ItemsSource = result;
+                m_WorksheetListForSearch = new ListCollectionView(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void dgWorksheetDetails_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -180,20 +187,28 @@ namespace GlassProductManager
 
         private void OpenWorksheet()
         {
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-
-            WorksheetEntity entity = dgWorksheetDetails.SelectedItem as WorksheetEntity;
-
-            if (entity == null)
+            try
             {
-                return;
+
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+
+                WorksheetEntity entity = dgWorksheetDetails.SelectedItem as WorksheetEntity;
+
+                if (entity == null)
+                {
+                    return;
+                }
+                if (parent != null)
+                {
+                    DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                    DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnWorksheet);
+                    WorksheetContent newQuote = new WorksheetContent(true, entity.QuoteNumber);
+                    parent.ucMainContent.ShowPage(newQuote);
+                }
             }
-            if (parent != null)
+            catch (Exception ex)
             {
-                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnWorksheet);
-                WorksheetContent newQuote = new WorksheetContent(true, entity.QuoteNumber);
-                parent.ucMainContent.ShowPage(newQuote);
+                Logger.LogException(ex);
             }
         }
 
@@ -209,19 +224,27 @@ namespace GlassProductManager
 
         private void DeleteWorksheet()
         {
-            WorksheetEntity entity = dgWorksheetDetails.SelectedItem as WorksheetEntity;
-            if (entity == null)
+            try
             {
-                Helper.ShowErrorMessageBox("Select Worksheet for deletion");
-                return;
-            }
 
-            bool isWorksheetPresent = BusinessLogic.IsWorksheetPresent(entity.QuoteNumber);
-            if (isWorksheetPresent)
+                WorksheetEntity entity = dgWorksheetDetails.SelectedItem as WorksheetEntity;
+                if (entity == null)
+                {
+                    Helper.ShowErrorMessageBox("Select Worksheet for deletion");
+                    return;
+                }
+
+                bool isWorksheetPresent = BusinessLogic.IsWorksheetPresent(entity.QuoteNumber);
+                if (isWorksheetPresent)
+                {
+                    BusinessLogic.DeleteWorksheet(entity.QuoteNumber);
+                    Helper.ShowInformationMessageBox("Worksheet is delete successfully!");
+                    FillWorksheetDetails();
+                }
+            }
+            catch (Exception ex)
             {
-                BusinessLogic.DeleteWorksheet(entity.QuoteNumber);
-                Helper.ShowInformationMessageBox("Worksheet is delete successfully!");
-                FillWorksheetDetails();
+                Logger.LogException(ex);
             }
         }
 

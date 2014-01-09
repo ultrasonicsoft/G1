@@ -168,9 +168,16 @@ namespace GlassProductManager
 
         private void FillInvoiceDetails()
         {
-            var result = BusinessLogic.GetInvoiceMasterData();
-            dgInvoiceDetails.ItemsSource = result;
-            m_InvoiceListForSearch = new ListCollectionView(result);
+            try
+            {
+                var result = BusinessLogic.GetInvoiceMasterData();
+                dgInvoiceDetails.ItemsSource = result;
+                m_InvoiceListForSearch = new ListCollectionView(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnOpenInvoice_Click(object sender, RoutedEventArgs e)
@@ -185,47 +192,60 @@ namespace GlassProductManager
 
         private void OpenInvoice()
         {
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-
-            InvoiceEntity entity = dgInvoiceDetails.SelectedItem as InvoiceEntity;
-
-            if (entity == null)
+            try
             {
-                return;
+
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+
+                InvoiceEntity entity = dgInvoiceDetails.SelectedItem as InvoiceEntity;
+
+                if (entity == null)
+                {
+                    return;
+                }
+                if (parent != null)
+                {
+                    DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                    DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnInvoice);
+                    InvoiceContent invoice = new InvoiceContent(true, entity.QuoteNumber);
+                    parent.ucMainContent.ShowPage(invoice);
+                }
             }
-            if (parent != null)
+            catch (Exception ex)
             {
-                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-                DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnInvoice);
-                InvoiceContent invoice = new InvoiceContent(true, entity.QuoteNumber);
-                parent.ucMainContent.ShowPage(invoice);
+                Logger.LogException(ex);
             }
         }
 
         private void btnDeleteInvoice_Click(object sender, RoutedEventArgs e)
         {
-            InvoiceEntity entity = dgInvoiceDetails.SelectedItem as InvoiceEntity;
-
-            if (entity == null)
+            try
             {
-                Helper.ShowErrorMessageBox("Select invoice for deletion");
 
-                return;
+                InvoiceEntity entity = dgInvoiceDetails.SelectedItem as InvoiceEntity;
+
+                if (entity == null)
+                {
+                    Helper.ShowErrorMessageBox("Select invoice for deletion");
+
+                    return;
+                }
+
+                var result = Helper.ShowQuestionMessageBox("Are you sure to delete this invoice?");
+
+                if (result == MessageBoxResult.Yes)
+                {
+
+                    BusinessLogic.DeleteInvoice(entity.QuoteNumber);
+                    Helper.ShowInformationMessageBox("Invoice deleted successfully.");
+                    FillInvoiceDetails();
+
+                }
             }
-
-            var result = Helper.ShowQuestionMessageBox("Are you sure to delete this invoice?");
-
-            if (result == MessageBoxResult.Yes)
+            catch (Exception ex)
             {
-                
-                BusinessLogic.DeleteInvoice(entity.QuoteNumber);
-                Helper.ShowInformationMessageBox("Invoice deleted successfully.");
-                FillInvoiceDetails();
-
+                Logger.LogException(ex);
             }
         }
-
-      
-
     }
 }

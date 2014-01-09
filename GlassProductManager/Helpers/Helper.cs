@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -33,143 +34,195 @@ namespace GlassProductManager
         internal static bool IsNumberOnly(TextBox input)
         {
             bool result = false;
-            if (Regex.IsMatch(input.Text, @"^\d+$"))
+            try
             {
-                SetToDefaultStyle(input);
-                result = true;
+                if (Regex.IsMatch(input.Text, @"^\d+$"))
+                {
+                    SetToDefaultStyle(input);
+                    result = true;
+                }
+                else
+                {
+                    Style textBoxErrorStyle;
+                    FrameworkElement frameworkElement;
+                    frameworkElement = new FrameworkElement();
+                    //textBoxNormalStyle = (Style)frameworkElement.TryFindResource("textBoxNormalStyle");
+                    textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxNumericErrorStyle");
+                    input.Style = textBoxErrorStyle;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Style textBoxErrorStyle;
-                FrameworkElement frameworkElement;
-                frameworkElement = new FrameworkElement();
-                //textBoxNormalStyle = (Style)frameworkElement.TryFindResource("textBoxNormalStyle");
-                textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxNumericErrorStyle");
-                input.Style = textBoxErrorStyle;
+                Logger.LogException(ex);
             }
+
             return result;
         }
 
         private static void SetToDefaultStyle(TextBox input)
         {
-            Style txtNormalStyle;
-            FrameworkElement frameworkElement;
-            frameworkElement = new FrameworkElement();
-            txtNormalStyle = (Style)frameworkElement.TryFindResource("DefaultTextBox");
-            input.Style = txtNormalStyle;
+            try
+            {
+                Style txtNormalStyle;
+                FrameworkElement frameworkElement;
+                frameworkElement = new FrameworkElement();
+                txtNormalStyle = (Style)frameworkElement.TryFindResource("DefaultTextBox");
+                input.Style = txtNormalStyle;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         internal static bool IsNonEmpty(TextBox input)
         {
             bool result = false;
-            if (false == string.IsNullOrEmpty(input.Text))
+            try
             {
-                SetToDefaultStyle(input);
+                if (false == string.IsNullOrEmpty(input.Text))
+                {
+                    SetToDefaultStyle(input);
 
-                result = true;
+                    result = true;
+                }
+                else
+                {
+                    Style textBoxErrorStyle;
+                    FrameworkElement frameworkElement;
+                    frameworkElement = new FrameworkElement();
+                    textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxEmptyErrorStyle");
+                    input.Style = textBoxErrorStyle;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Style textBoxErrorStyle;
-                FrameworkElement frameworkElement;
-                frameworkElement = new FrameworkElement();
-                textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxEmptyErrorStyle");
-                input.Style = textBoxErrorStyle;
+                Logger.LogException(ex);
             }
+
             return result;
         }
 
         internal static bool IsValidPhone(TextBox input)
         {
             bool result = false;
-
-            if (input.Text == string.Empty)
+            try
             {
-                SetToDefaultStyle(input);
-                return true;
-            }
-            if (Regex.IsMatch(input.Text, @"^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$"))
+                if (input.Text == string.Empty)
+                {
+                    SetToDefaultStyle(input);
+                    return true;
+                }
+                if (Regex.IsMatch(input.Text, @"^[01]?[- .]?(\([2-9]\d{2}\)|[2-9]\d{2})[- .]?\d{3}[- .]?\d{4}$"))
                 //if (Regex.IsMatch(input.Text, @"/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/"))
-            {
-                SetToDefaultStyle(input);
-                result = true;
+                {
+                    SetToDefaultStyle(input);
+                    result = true;
+                }
+                else
+                {
+                    Style textBoxErrorStyle;
+                    FrameworkElement frameworkElement;
+                    frameworkElement = new FrameworkElement();
+                    textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxPhoneErrorStyle");
+                    input.Style = textBoxErrorStyle;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Style textBoxErrorStyle;
-                FrameworkElement frameworkElement;
-                frameworkElement = new FrameworkElement();
-                textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxPhoneErrorStyle");
-                input.Style = textBoxErrorStyle;
+                Logger.LogException(ex);
             }
+
             return result;
         }
 
         internal static bool IsValidEmail(TextBox input)
         {
             bool result = false;
-            if (input.Text == string.Empty)
+            try
             {
-                SetToDefaultStyle(input);
-                return true;
+                if (input.Text == string.Empty)
+                {
+                    SetToDefaultStyle(input);
+                    return true;
+                }
+
+                if (Regex.IsMatch(input.Text, @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))
+                {
+                    SetToDefaultStyle(input);
+                    result = true;
+                }
+                else
+                {
+                    Style textBoxErrorStyle;
+                    FrameworkElement frameworkElement;
+                    frameworkElement = new FrameworkElement();
+                    textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxEmailErrorStyle");
+                    input.Style = textBoxErrorStyle;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
 
-            if (Regex.IsMatch(input.Text, @"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$"))
-            {
-                SetToDefaultStyle(input);
-                result = true;
-            }
-            else
-            {
-                Style textBoxErrorStyle;
-                FrameworkElement frameworkElement;
-                frameworkElement = new FrameworkElement();
-                textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxEmailErrorStyle");
-                input.Style = textBoxErrorStyle;
-            }
             return result;
         }
 
         internal static bool IsValidCurrency(TextBox input)
         {
             bool result = false;
+            try
+            {
+                if (input.Text == "0.00")
+                {
+                    SetToDefaultStyle(input);
+                    return true;
+                }
 
-            if (input.Text == "0.00")
+                if (false == string.IsNullOrEmpty(input.Text) && Regex.IsMatch(input.Text, @"^[0-9]*(?:\.[0-9]*)?$"))
+                {
+                    SetToDefaultStyle(input);
+
+                    result = true;
+                }
+                else
+                {
+                    Style textBoxErrorStyle;
+                    FrameworkElement frameworkElement;
+                    frameworkElement = new FrameworkElement();
+                    textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxCurrencyErrorStyle");
+                    input.Style = textBoxErrorStyle;
+                }
+            }
+            catch (Exception ex)
             {
-                SetToDefaultStyle(input);
-                return true;
+                Logger.LogException(ex);
             }
 
-            if (false == string.IsNullOrEmpty(input.Text) && Regex.IsMatch(input.Text, @"^[0-9]*(?:\.[0-9]*)?$"))
-            {
-                SetToDefaultStyle(input);
-                
-                result = true;
-            }
-            else
-            {
-                Style textBoxErrorStyle;
-                FrameworkElement frameworkElement;
-                frameworkElement = new FrameworkElement();
-                textBoxErrorStyle = (Style)frameworkElement.TryFindResource("textBoxCurrencyErrorStyle");
-                input.Style = textBoxErrorStyle;
-            }
             return result;
         }
 
         internal static bool IsValidCurrency(string input)
         {
             bool result = false;
-
-            if (input == "0.00")
+            try
             {
-                return true;
+                if (input == "0.00")
+                {
+                    return true;
+                }
+
+                if (false == string.IsNullOrEmpty(input) && Regex.IsMatch(input, @"^[0-9]*(?:\.[0-9]*)?$"))
+                {
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
 
-            if (false == string.IsNullOrEmpty(input) && Regex.IsMatch(input, @"^[0-9]*(?:\.[0-9]*)?$"))
-            {
-                result = true;
-            }
             return result;
         }
 

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -45,7 +46,7 @@ namespace GlassProductManager
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.LogException(ex);
             }
             return isConfigured;
         }
@@ -68,7 +69,7 @@ namespace GlassProductManager
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.LogException(ex);
             }
 
             return scalarValue;
@@ -94,7 +95,7 @@ namespace GlassProductManager
             }
             catch (Exception ex)
             {
-                //Logger;
+                Logger.LogException(ex);
             }
             return result;
         }
@@ -126,14 +127,10 @@ namespace GlassProductManager
                         da.Dispose();
                     }
                 }
-
-
-
-
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.LogException(ex);
             }
 
             return result;
@@ -150,9 +147,8 @@ namespace GlassProductManager
             }
             catch (Exception ex)
             {
+                Logger.LogException(ex);
                 result = false;
-                //Helper.ShowErrorMessageBox("Database server is down! Please check your database server or contact your vendor!", "Case Control SysteM");
-                //Environment.Exit(0);
             }
             return result;
         }

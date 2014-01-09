@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -28,19 +29,27 @@ namespace GlassProductManager
 
         private void btnSignIn_Click(object sender, RoutedEventArgs e)
         {
-            if (BusinessLogic.IsValidUser(txtUserName.Text, txtPassword.Password))
+            try
             {
-                
-                Dashboard dialog = new Dashboard();
-                dialog.UserName = txtUserName.Text;
-                dialog.Show();
-                this.Close();
+                if (BusinessLogic.IsValidUser(txtUserName.Text, txtPassword.Password))
+                {
+
+                    Dashboard dialog = new Dashboard();
+                    dialog.UserName = txtUserName.Text;
+                    dialog.Show();
+                    this.Close();
+                }
+                else
+                {
+                    Helper.ShowErrorMessageBox("Invalid User name or Password");
+                    txtUserName.Focus();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Helper.ShowErrorMessageBox("Invalid User name or Password");
-                txtUserName.Focus();
+                Logger.LogException(ex);
             }
+
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)

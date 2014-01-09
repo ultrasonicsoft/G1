@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -63,22 +64,28 @@ namespace GlassProductManager
 
         private void FillInsulationDetails()
         {
-            var result = BusinessLogic.GetAllGlassTypes();
-            cmbGlassType1.DisplayMemberPath = ColumnNames.GLASS_TYPE;
-            cmbGlassType1.SelectedValuePath = ColumnNames.ID;
-            cmbGlassType1.ItemsSource = result.DefaultView;
+            try
+            {
+                var result = BusinessLogic.GetAllGlassTypes();
+                cmbGlassType1.DisplayMemberPath = ColumnNames.GLASS_TYPE;
+                cmbGlassType1.SelectedValuePath = ColumnNames.ID;
+                cmbGlassType1.ItemsSource = result.DefaultView;
 
-            cmbGlassType2.DisplayMemberPath = ColumnNames.GLASS_TYPE;
-            cmbGlassType2.SelectedValuePath = ColumnNames.ID;
-            cmbGlassType2.ItemsSource = result.DefaultView;
+                cmbGlassType2.DisplayMemberPath = ColumnNames.GLASS_TYPE;
+                cmbGlassType2.SelectedValuePath = ColumnNames.ID;
+                cmbGlassType2.ItemsSource = result.DefaultView;
 
-            ObservableCollection<string> list = new ObservableCollection<string>();
-            list.Add("Yes");
-            list.Add("No");
+                ObservableCollection<string> list = new ObservableCollection<string>();
+                list.Add("Yes");
+                list.Add("No");
 
-            cmbTemp1.ItemsSource = list;
-            cmbTemp2.ItemsSource = list;
-
+                cmbTemp1.ItemsSource = list;
+                cmbTemp2.ItemsSource = list;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private CutoutData GetNewCutoutObject()
@@ -89,56 +96,85 @@ namespace GlassProductManager
 
         private void FillGlassTypes()
         {
-            var result = BusinessLogic.GetAllGlassTypes();
-            cmbGlassType.DisplayMemberPath = ColumnNames.GLASS_TYPE;
-            cmbGlassType.SelectedValuePath = ColumnNames.ID;
-            cmbGlassType.ItemsSource = result.DefaultView;
+            try
+            {
+                var result = BusinessLogic.GetAllGlassTypes();
+                cmbGlassType.DisplayMemberPath = ColumnNames.GLASS_TYPE;
+                cmbGlassType.SelectedValuePath = ColumnNames.ID;
+                cmbGlassType.ItemsSource = result.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillShapes()
         {
-            var result = BusinessLogic.GetAllShapes();
-            cmbShape.DisplayMemberPath = ColumnNames.SHAPE;
-            cmbShape.SelectedValuePath = ColumnNames.ID;
-            cmbShape.ItemsSource = result.DefaultView;
+            try
+            {
+                var result = BusinessLogic.GetAllShapes();
+                cmbShape.DisplayMemberPath = ColumnNames.SHAPE;
+                cmbShape.SelectedValuePath = ColumnNames.ID;
+                cmbShape.ItemsSource = result.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void cmbGlassType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbGlassType.SelectedValue == null)
-                return;
-            string glassID = cmbGlassType.SelectedValue.ToString();
+            try
+            {
+                if (cmbGlassType.SelectedValue == null)
+                    return;
+                string glassID = cmbGlassType.SelectedValue.ToString();
 
-            var result = BusinessLogic.GetThicknessByGlassID(glassID);
-            cmbThickness.DisplayMemberPath = ColumnNames.THICKNESS;
-            cmbThickness.SelectedValuePath = ColumnNames.THICKNESSID;
-            cmbThickness.ItemsSource = result.DefaultView;
+                var result = BusinessLogic.GetThicknessByGlassID(glassID);
+                cmbThickness.DisplayMemberPath = ColumnNames.THICKNESS;
+                cmbThickness.SelectedValuePath = ColumnNames.THICKNESSID;
+                cmbThickness.ItemsSource = result.DefaultView;
 
-            currentItem.GlassTypeID = int.Parse(glassID);
-            currentItem.GlassType = cmbGlassType.SelectedItem.ToString();
-            currentItem.GlassType = (cmbGlassType.SelectedItem as System.Data.DataRowView)[1].ToString();
+                currentItem.GlassTypeID = int.Parse(glassID);
+                currentItem.GlassType = cmbGlassType.SelectedItem.ToString();
+                currentItem.GlassType = (cmbGlassType.SelectedItem as System.Data.DataRowView)[1].ToString();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void cmbThickness_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbThickness.SelectedValue == null)
+            try
             {
-                gbGlassDetails.IsEnabled = false;
-                return;
+                if (cmbThickness.SelectedValue == null)
+                {
+                    gbGlassDetails.IsEnabled = false;
+                    return;
+                }
+                string thicknessID = cmbThickness.SelectedValue.ToString();
+                if (string.IsNullOrEmpty(thicknessID))
+                {
+                    gbGlassDetails.IsEnabled = false;
+                    return;
+                }
+
+                gbGlassDetails.IsEnabled = true;
+                currentItem.ThicknessID = int.Parse(thicknessID);
+
+                currentItem.Thickness = (cmbThickness.SelectedItem as System.Data.DataRowView)[1].ToString();
+
+                UpdateCurrentTotal();
             }
-            string thicknessID = cmbThickness.SelectedValue.ToString();
-            if (string.IsNullOrEmpty(thicknessID))
+            catch (Exception ex)
             {
-                gbGlassDetails.IsEnabled = false;
-                return;
+                Logger.LogException(ex);
             }
 
-            gbGlassDetails.IsEnabled = true;
-            currentItem.ThicknessID = int.Parse(thicknessID);
-
-            currentItem.Thickness = (cmbThickness.SelectedItem as System.Data.DataRowView)[1].ToString();
-
-            UpdateCurrentTotal();
         }
 
         private void UpdateCurrentTotal()
@@ -165,40 +201,54 @@ namespace GlassProductManager
 
         private void txtTotalSqFtCharged_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(txtTotalSqFtCharged.Text) == false && currentItem != null)
+            try
             {
-                int chargedTotalSqft = int.Parse(txtTotalSqFt.Text);
-                if (chargedTotalSqft < currentItem.MinimumTotalSqft && isReset == false)
+                if (string.IsNullOrEmpty(txtTotalSqFtCharged.Text) == false && currentItem != null)
                 {
-                    txtTotalSqFtCharged.Text = currentItem.MinimumTotalSqft.ToString();
+                    int chargedTotalSqft = int.Parse(txtTotalSqFt.Text);
+                    if (chargedTotalSqft < currentItem.MinimumTotalSqft && isReset == false)
+                    {
+                        txtTotalSqFtCharged.Text = currentItem.MinimumTotalSqft.ToString();
+                    }
+                    txtSqFt1.Text = txtTotalSqFtCharged.Text;
                 }
-                txtSqFt1.Text = txtTotalSqFtCharged.Text;
+                SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged");
             }
-            SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged");
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void txtTotalSqFt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT",true,true);
+            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT", true, true);
         }
 
         private void SetQuoteValidationError(TextBox input, string propertyName, bool isDecimalCheck = false, bool isInteger = false)
         {
-            if (isInitialized == false)
-                return;
+            try
+            {
+                if (isInitialized == false)
+                    return;
 
-            if (isDecimalCheck == false && Helper.IsNumberOnly(input))
-            {
-                NewItemsChanged(input.Text, propertyName);
+                if (isDecimalCheck == false && Helper.IsNumberOnly(input))
+                {
+                    NewItemsChanged(input.Text, propertyName);
+                }
+                else if (isDecimalCheck == true && isInteger == false && Helper.IsValidCurrency(input))
+                {
+                    currentItem.TotalSqFT = double.Parse(input.Text);
+                    //NewItemsChanged(input.Text, propertyName);
+                }
+                else if (isInteger == true && Helper.IsNumberOnly(input))
+                {
+                    currentItem.TotalSqFT = int.Parse(input.Text);
+                }
             }
-            else if(isDecimalCheck == true && isInteger == false && Helper.IsValidCurrency(input))
+            catch (Exception ex)
             {
-                currentItem.TotalSqFT = double.Parse(input.Text);
-                //NewItemsChanged(input.Text, propertyName);
-            }
-            else if (isInteger == true && Helper.IsNumberOnly(input))
-            {
-                currentItem.TotalSqFT = int.Parse(input.Text);
+                Logger.LogException(ex);
             }
         }
 
@@ -292,7 +342,7 @@ namespace GlassProductManager
             txtMiterTotalInches.IsEnabled = true;
             txtMiterLongSide.IsEnabled = true;
             txtMiterShortSide.IsEnabled = true;
-            
+
             txtMiterTotalInches.Focus();
 
             currentItem.IsMiter = true;
@@ -307,7 +357,7 @@ namespace GlassProductManager
         private void cbNotches_Unchecked(object sender, RoutedEventArgs e)
         {
             txtNotchesNumber.Text = "0";
-            txtNotchesNumber.IsEnabled= false;
+            txtNotchesNumber.IsEnabled = false;
 
             currentItem.IsNotch = false;
             UpdateCurrentTotal();
@@ -377,67 +427,81 @@ namespace GlassProductManager
 
         private void NewItemsChanged(string newValue, string propertyChanged)
         {
-            if (currentItem == null)
-                return;
-
-            int tempValue = 0;
-            int.TryParse(newValue, out tempValue);
-
-            switch (propertyChanged)
+            try
             {
-                case "StraightPolishTotalInches":
-                    currentItem.StraightPolishTotalInches = tempValue;
-                    break;
-                case "CustomPolishTotalInches":
-                    currentItem.CustomPolishTotalInches = tempValue;
-                    break;
-                case "StraightPolishShortSide":
-                    currentItem.StraightPolishShortSide = tempValue;
-                    break;
-                case "StraightPolishLongSide":
-                    currentItem.StraightPolishLongSide = tempValue;
-                    break;
-                case "TotalSqFT":
-                    currentItem.TotalSqFT = tempValue;
-                    break;
-                case "MiterTotalInches":
-                    currentItem.MiterTotalInches = tempValue;
-                    break;
-                case "Notches":
-                    currentItem.Notches = tempValue;
-                    break;
-                case "Hinges":
-                    currentItem.Hinges = tempValue;
-                    break;
-                case "Patches":
-                    currentItem.Patches = tempValue;
-                    break;
-                case "Holes":
-                    currentItem.Holes = tempValue;
-                    break;
-                case "Quantity":
-                    currentItem.Quantity = tempValue;
-                    break;
-                case "TotalSqFTCharged":
-                    currentItem.TotalSqFTCharged = tempValue;
-                    break;
-                default:
-                    break;
-            }
+                if (currentItem == null)
+                    return;
 
-            UpdateCurrentTotal();
+                int tempValue = 0;
+                int.TryParse(newValue, out tempValue);
+
+                switch (propertyChanged)
+                {
+                    case "StraightPolishTotalInches":
+                        currentItem.StraightPolishTotalInches = tempValue;
+                        break;
+                    case "CustomPolishTotalInches":
+                        currentItem.CustomPolishTotalInches = tempValue;
+                        break;
+                    case "StraightPolishShortSide":
+                        currentItem.StraightPolishShortSide = tempValue;
+                        break;
+                    case "StraightPolishLongSide":
+                        currentItem.StraightPolishLongSide = tempValue;
+                        break;
+                    case "TotalSqFT":
+                        currentItem.TotalSqFT = tempValue;
+                        break;
+                    case "MiterTotalInches":
+                        currentItem.MiterTotalInches = tempValue;
+                        break;
+                    case "Notches":
+                        currentItem.Notches = tempValue;
+                        break;
+                    case "Hinges":
+                        currentItem.Hinges = tempValue;
+                        break;
+                    case "Patches":
+                        currentItem.Patches = tempValue;
+                        break;
+                    case "Holes":
+                        currentItem.Holes = tempValue;
+                        break;
+                    case "Quantity":
+                        currentItem.Quantity = tempValue;
+                        break;
+                    case "TotalSqFTCharged":
+                        currentItem.TotalSqFTCharged = tempValue;
+                        break;
+                    default:
+                        break;
+                }
+
+                UpdateCurrentTotal();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         #region Insulation Methods
 
         private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
         {
-            // Lookup for the source to be DataGridCell
-            if (e.OriginalSource.GetType() == typeof(DataGridCell))
+            try
             {
-                // Starts the Edit on the row;
-                DataGrid grd = (DataGrid)sender;
-                grd.BeginEdit(e);
+                // Lookup for the source to be DataGridCell
+                if (e.OriginalSource.GetType() == typeof(DataGridCell))
+                {
+                    // Starts the Edit on the row;
+                    DataGrid grd = (DataGrid)sender;
+                    grd.BeginEdit(e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
         #endregion
@@ -449,16 +513,30 @@ namespace GlassProductManager
 
         private void btnAddNewCutout_Click(object sender, RoutedEventArgs e)
         {
-            CutoutData gridData = GetNewCutoutObject();
-            allCutoutData.Add(gridData);
+            try
+            {
+                CutoutData gridData = GetNewCutoutObject();
+                allCutoutData.Add(gridData);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnDeleteCutout_Click(object sender, RoutedEventArgs e)
         {
-            CutoutData selectedItem = dgCutoutDetails.SelectedItem as CutoutData;
-            if (selectedItem == null)
-                return;
-            allCutoutData.Remove(selectedItem);
+            try
+            {
+                CutoutData selectedItem = dgCutoutDetails.SelectedItem as CutoutData;
+                if (selectedItem == null)
+                    return;
+                allCutoutData.Remove(selectedItem);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void dgCutoutDetails_LostFocus(object sender, RoutedEventArgs e)
@@ -468,108 +546,142 @@ namespace GlassProductManager
 
         private void CalculateCutoutTotalPrice()
         {
-            double totalPrice = 0;
-
-            CutoutData item = null;
-            for (int index = 0; index < dgCutoutDetails.Items.Count; index++)
+            try
             {
-                item = dgCutoutDetails.Items[index] as CutoutData;
-                if (item == null)
-                    continue;
-                totalPrice += item.Quantity * item.Price;
+                double totalPrice = 0;
 
+                CutoutData item = null;
+                for (int index = 0; index < dgCutoutDetails.Items.Count; index++)
+                {
+                    item = dgCutoutDetails.Items[index] as CutoutData;
+                    if (item == null)
+                        continue;
+                    totalPrice += item.Quantity * item.Price;
+
+                }
+
+                lblCutoutTotal.Content = "$ " + totalPrice.ToString("0.00");
+
+                currentItem.CutoutTotal = totalPrice;
+                UpdateCurrentTotal();
             }
-
-            lblCutoutTotal.Content = "$ " + totalPrice.ToString("0.00");
-
-            currentItem.CutoutTotal = totalPrice;
-            UpdateCurrentTotal();
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void cmbGlassType1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbGlassType1.SelectedValue == null)
-                return;
+            try
+            {
+                if (cmbGlassType1.SelectedValue == null)
+                    return;
 
-            string glassID = cmbGlassType1.SelectedValue.ToString();
+                string glassID = cmbGlassType1.SelectedValue.ToString();
 
-            var result = BusinessLogic.GetThicknessByGlassID(glassID);
-            cmbThickness1.DisplayMemberPath = ColumnNames.THICKNESS;
-            cmbThickness1.SelectedValuePath = ColumnNames.THICKNESSID;
-            cmbThickness1.ItemsSource = result.DefaultView;
+                var result = BusinessLogic.GetThicknessByGlassID(glassID);
+                cmbThickness1.DisplayMemberPath = ColumnNames.THICKNESS;
+                cmbThickness1.SelectedValuePath = ColumnNames.THICKNESSID;
+                cmbThickness1.ItemsSource = result.DefaultView;
 
-            UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
+                UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void cmbGlassType2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbGlassType2.SelectedValue == null)
-                return;
+            try
+            {
+                if (cmbGlassType2.SelectedValue == null)
+                    return;
 
-            string glassID = cmbGlassType2.SelectedValue.ToString();
+                string glassID = cmbGlassType2.SelectedValue.ToString();
 
-            var result = BusinessLogic.GetThicknessByGlassID(glassID);
-            cmbThickness2.DisplayMemberPath = ColumnNames.THICKNESS;
-            cmbThickness2.SelectedValuePath = ColumnNames.THICKNESSID;
-            cmbThickness2.ItemsSource = result.DefaultView;
+                var result = BusinessLogic.GetThicknessByGlassID(glassID);
+                cmbThickness2.DisplayMemberPath = ColumnNames.THICKNESS;
+                cmbThickness2.SelectedValuePath = ColumnNames.THICKNESSID;
+                cmbThickness2.ItemsSource = result.DefaultView;
 
-            UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, currentItem.GlassType2, txtSqFt2, txtGlassType2Total);
-
+                UpdateInsulationGlassTotal(cmbGlassType2, cmbThickness2, cmbTemp2, currentItem.GlassType2, txtSqFt2, txtGlassType2Total);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void UpdateInsulationGlassTotal(ComboBox glassType, ComboBox thickness, ComboBox isTempered, InsulationDetails currentGlassType, TextBox currentSQFT, TextBox currentGlassTotal)
         {
-            if (glassType.SelectedValue == null || thickness.SelectedValue == null || string.IsNullOrEmpty(currentSQFT.Text))
-                return;
-
-            currentGlassType.GlassTypeID = int.Parse(glassType.SelectedValue.ToString());
-            currentGlassType.GlassType = (glassType.SelectedItem as System.Data.DataRowView)[1].ToString();
-
-            currentGlassType.ThicknessID = int.Parse(thickness.SelectedValue.ToString());
-            currentGlassType.Thickness = (thickness.SelectedItem as System.Data.DataRowView)[1].ToString();
-
-            var result = BusinessLogic.GetRatesByGlassTypeAndThickness(currentGlassType.GlassTypeID, currentGlassType.ThicknessID);
-            if (result == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
-                return;
-
-            double _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
-            double _temperedSQFT = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
-
-            if (isTempered.SelectedValue != null)
+            try
             {
-                currentGlassType.IsTempered = isTempered.SelectedValue.ToString() == "Yes";
-            }
-            currentGlassType.SqFt = int.Parse(currentSQFT.Text);
+                if (glassType.SelectedValue == null || thickness.SelectedValue == null || string.IsNullOrEmpty(currentSQFT.Text))
+                    return;
 
-            if (currentGlassType.IsTempered)
+                currentGlassType.GlassTypeID = int.Parse(glassType.SelectedValue.ToString());
+                currentGlassType.GlassType = (glassType.SelectedItem as System.Data.DataRowView)[1].ToString();
+
+                currentGlassType.ThicknessID = int.Parse(thickness.SelectedValue.ToString());
+                currentGlassType.Thickness = (thickness.SelectedItem as System.Data.DataRowView)[1].ToString();
+
+                var result = BusinessLogic.GetRatesByGlassTypeAndThickness(currentGlassType.GlassTypeID, currentGlassType.ThicknessID);
+                if (result == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return;
+
+                double _cutsqftRate = double.Parse(result.Tables[0].Rows[0][ColumnNames.CUTSQFT].ToString());
+                double _temperedSQFT = double.Parse(result.Tables[0].Rows[0][ColumnNames.TEMPEREDSQFT].ToString());
+
+                if (isTempered.SelectedValue != null)
+                {
+                    currentGlassType.IsTempered = isTempered.SelectedValue.ToString() == "Yes";
+                }
+                currentGlassType.SqFt = int.Parse(currentSQFT.Text);
+
+                if (currentGlassType.IsTempered)
+                {
+                    currentGlassType.Total = currentGlassType.SqFt == 0 ? 0 : currentGlassType.SqFt * _temperedSQFT;
+                }
+                else
+                {
+                    currentGlassType.Total = currentGlassType.SqFt == 0 ? 0 : currentGlassType.SqFt * _cutsqftRate;
+                }
+
+                currentGlassTotal.Text = currentGlassType.Total.ToString();
+
+                UpdateInsulationTotal();
+            }
+            catch (Exception ex)
             {
-                currentGlassType.Total = currentGlassType.SqFt == 0 ? 0 : currentGlassType.SqFt * _temperedSQFT;
+                Logger.LogException(ex);
             }
-            else
-            {
-                currentGlassType.Total = currentGlassType.SqFt == 0 ? 0 : currentGlassType.SqFt * _cutsqftRate;
-            }
-
-            currentGlassTotal.Text = currentGlassType.Total.ToString();
-
-            UpdateInsulationTotal();
         }
 
         private void UpdateInsulationTotal()
         {
-            lblMaterialCost.Content = "$ " + (currentItem.GlassType1.Total + currentItem.GlassType2.Total).ToString("0.00");
+            try
+            {
+                lblMaterialCost.Content = "$ " + (currentItem.GlassType1.Total + currentItem.GlassType2.Total).ToString("0.00");
 
-            double insulationTierCost = BusinessLogic.GetInsulationTierCost(currentItem.GlassType1.SqFt);
-            lblInsulationTier.Content = "$ " + insulationTierCost.ToString("0.00");
+                double insulationTierCost = BusinessLogic.GetInsulationTierCost(currentItem.GlassType1.SqFt);
+                lblInsulationTier.Content = "$ " + insulationTierCost.ToString("0.00");
 
-            double insulationTierTotal = insulationTierCost * currentItem.GlassType1.SqFt;
-            lblInsulationTierTotal.Content = "$ " + insulationTierTotal.ToString("0.00");
+                double insulationTierTotal = insulationTierCost * currentItem.GlassType1.SqFt;
+                lblInsulationTierTotal.Content = "$ " + insulationTierTotal.ToString("0.00");
 
-            double insulationTotal = insulationTierTotal + currentItem.GlassType1.Total + currentItem.GlassType2.Total;
-            lblInsulationTotal.Content = "$ " + insulationTotal.ToString("0.00");
+                double insulationTotal = insulationTierTotal + currentItem.GlassType1.Total + currentItem.GlassType2.Total;
+                lblInsulationTotal.Content = "$ " + insulationTotal.ToString("0.00");
 
-            currentItem.InsulateTotalCost = insulationTotal;
-            UpdateCurrentTotal();
+                currentItem.InsulateTotalCost = insulationTotal;
+                UpdateCurrentTotal();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void cmbTemp1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -584,14 +696,21 @@ namespace GlassProductManager
 
         private void txtSqFt1_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsNumberOnly(txtSqFt1))
+            try
             {
-                if (currentItem == null)
-                    return;
+                if (Helper.IsNumberOnly(txtSqFt1))
+                {
+                    if (currentItem == null)
+                        return;
 
-                if (txtSqFt2 != null)
-                    txtSqFt2.Text = txtSqFt1.Text;
-                UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
+                    if (txtSqFt2 != null)
+                        txtSqFt2.Text = txtSqFt1.Text;
+                    UpdateInsulationGlassTotal(cmbGlassType1, cmbThickness1, cmbTemp1, currentItem.GlassType1, txtSqFt1, txtGlassType1Total);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
@@ -641,187 +760,272 @@ namespace GlassProductManager
 
         private void txtMiterLongSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentItem == null)
-                return;
-
-            if (Helper.IsNumberOnly(txtMiterLongSide))
+            try
             {
-                txtMiterLongSide.Text = string.IsNullOrEmpty(txtMiterLongSide.Text) ? "0" : txtMiterLongSide.Text;
-                currentItem.MiterLongSide = int.Parse(txtMiterLongSide.Text);
+                if (currentItem == null)
+                    return;
+
+                if (Helper.IsNumberOnly(txtMiterLongSide))
+                {
+                    txtMiterLongSide.Text = string.IsNullOrEmpty(txtMiterLongSide.Text) ? "0" : txtMiterLongSide.Text;
+                    currentItem.MiterLongSide = int.Parse(txtMiterLongSide.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
         private void txtMiterShortSide_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentItem == null)
-                return;
-
-            if (Helper.IsNumberOnly(txtMiterShortSide))
+            try
             {
-                txtMiterShortSide.Text = string.IsNullOrEmpty(txtMiterShortSide.Text) ? "0" : txtMiterShortSide.Text;
-                currentItem.MiterShortSide = int.Parse(txtMiterShortSide.Text);
+                if (currentItem == null)
+                    return;
+
+                if (Helper.IsNumberOnly(txtMiterShortSide))
+                {
+                    txtMiterShortSide.Text = string.IsNullOrEmpty(txtMiterShortSide.Text) ? "0" : txtMiterShortSide.Text;
+                    currentItem.MiterShortSide = int.Parse(txtMiterShortSide.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void btnAddToQuote_Click(object sender, RoutedEventArgs e)
         {
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-            if (parent != null)
+            try
             {
-                NewQuoteContent content = parent.ucMainContent.CurrentPage as NewQuoteContent;
-                if (content != null)
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                if (parent != null)
                 {
-                    NewQuoteGridContent grid = content.ucNewQuoteGrid.CurrentPage as NewQuoteGridContent;
-                    if (grid != null)
+                    NewQuoteContent content = parent.ucMainContent.CurrentPage as NewQuoteContent;
+                    if (content != null)
                     {
-                        QuoteGridEntity newItem = new QuoteGridEntity();
-                        
-                        if (grid.allQuoteData == null)
+                        NewQuoteGridContent grid = content.ucNewQuoteGrid.CurrentPage as NewQuoteGridContent;
+                        if (grid != null)
                         {
-                            grid.allQuoteData = new ObservableCollection<QuoteGridEntity>();
+                            QuoteGridEntity newItem = new QuoteGridEntity();
+
+                            if (grid.allQuoteData == null)
+                            {
+                                grid.allQuoteData = new ObservableCollection<QuoteGridEntity>();
+                            }
+                            newItem.LineID = grid.allQuoteData.Count + 1;
+                            newItem.Quantity = currentItem.Quantity;
+                            // item description string have charged dimension of glass to be print on quote
+                            newItem.Description = currentItem.GetDescriptionString();
+                            newItem.Dimension = GetDimensionString();
+                            newItem.TotalSqFt = currentItem.TotalSqFTCharged.ToString();
+                            newItem.UnitPrice = currentItem.PricePerUnit.ToString("0.00");
+                            newItem.Total = currentItem.CurrentTotal.ToString("0.00");
+                            newItem.Shape = currentItem.Shape;
+
+                            // Line item details
+                            newItem.IsPolish = currentItem.IsMiter || currentItem.IsStraightPolish || currentItem.IsCustomShapePolish;
+                            newItem.IsDrill = currentItem.IsHoles;
+                            newItem.IsWaterJet = currentItem.IsNotch || currentItem.IsHinges || currentItem.IsPatches || currentItem.IsCutout;
+                            newItem.IsTemper = currentItem.IsTempered;
+                            newItem.IsInsulate = currentItem.IsInsulation;
+
+                            // Actual description string have action dimension of glass to be sent to worker for cutting glass
+                            newItem.ActualDescription = currentItem.GetDescriptionString(true);
+                            newItem.ActualDimension = GetActualDimensionString();
+                            newItem.ActualTotalSQFT = currentItem.TotalSqFT.ToString();
+                            newItem.IsLogo = currentItem.IsLogoRequired;
+                            grid.allQuoteData.Add(newItem);
+
+                            ResetAllControls();
                         }
-                        newItem.LineID = grid.allQuoteData.Count + 1;
-                        newItem.Quantity = currentItem.Quantity;
-                        // item description string have charged dimension of glass to be print on quote
-                        newItem.Description = currentItem.GetDescriptionString();
-                        newItem.Dimension = GetDimensionString();
-                        newItem.TotalSqFt = currentItem.TotalSqFTCharged.ToString();
-                        newItem.UnitPrice = currentItem.PricePerUnit.ToString("0.00");
-                        newItem.Total = currentItem.CurrentTotal.ToString("0.00");
-                        newItem.Shape = currentItem.Shape;
-                        
-                        // Line item details
-                        newItem.IsPolish = currentItem.IsMiter || currentItem.IsStraightPolish || currentItem.IsCustomShapePolish;
-                        newItem.IsDrill = currentItem.IsHoles;
-                        newItem.IsWaterJet = currentItem.IsNotch || currentItem.IsHinges || currentItem.IsPatches || currentItem.IsCutout;
-                        newItem.IsTemper = currentItem.IsTempered;
-                        newItem.IsInsulate = currentItem.IsInsulation;
-
-                        // Actual description string have action dimension of glass to be sent to worker for cutting glass
-                        newItem.ActualDescription = currentItem.GetDescriptionString(true);
-                        newItem.ActualDimension = GetActualDimensionString();
-                        newItem.ActualTotalSQFT = currentItem.TotalSqFT.ToString();
-                        newItem.IsLogo = currentItem.IsLogoRequired;
-                        grid.allQuoteData.Add(newItem);
-
-                        ResetAllControls();
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private string GetDimensionString()
         {
             string defaultFraction = "x/y";
+            try
+            {
 
-            if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
-                return string.Format(@"{0}"" x {1}""", currentItem.GlassWidth, currentItem.GlassHeight);
+                if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                    return string.Format(@"{0}"" x {1}""", currentItem.GlassWidth, currentItem.GlassHeight);
 
-            else if (false == string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
-                return string.Format(@"{0} {1}"" x {2}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight);
+                else if (false == string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                    return string.Format(@"{0} {1}"" x {2}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight);
 
-            else if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && false == string.Equals(currentItem.GlassHeightFraction, defaultFraction))
-                return string.Format(@"{0}"" x {1} {2}""", currentItem.GlassWidth, currentItem.GlassHeight, currentItem.GlassHeightFraction);
-            else
-                return string.Format(@"{0} {1}"" x  {2} {3}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+                else if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && false == string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                    return string.Format(@"{0}"" x {1} {2}""", currentItem.GlassWidth, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+                else
+                    return string.Format(@"{0} {1}"" x  {2} {3}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return defaultFraction;
+            }
         }
 
         private string GetActualDimensionString()
         {
             string defaultFraction = "x/y";
+            try
+            {
 
-            if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
-                return string.Format(@"{0}"" x {1}""", currentItem.GlassWidth, currentItem.GlassHeight);
+                if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                    return string.Format(@"{0}"" x {1}""", currentItem.GlassWidth, currentItem.GlassHeight);
 
-            else if (false == string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
-                return string.Format(@"{0} {1}"" x {2}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight);
+                else if (false == string.Equals(currentItem.GlassWidthFraction, defaultFraction) && string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                    return string.Format(@"{0} {1}"" x {2}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight);
 
-            else if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && false == string.Equals(currentItem.GlassHeightFraction, defaultFraction))
-                return string.Format(@"{0}"" x {1} {2}""", currentItem.GlassWidth, currentItem.GlassHeight, currentItem.GlassHeightFraction);
-            else
-                return string.Format(@"{0} {1}"" x  {2} {3}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+                else if (string.Equals(currentItem.GlassWidthFraction, defaultFraction) && false == string.Equals(currentItem.GlassHeightFraction, defaultFraction))
+                    return string.Format(@"{0}"" x {1} {2}""", currentItem.GlassWidth, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+                else
+                    return string.Format(@"{0} {1}"" x  {2} {3}""", currentItem.GlassWidth, currentItem.GlassWidthFraction, currentItem.GlassHeight, currentItem.GlassHeightFraction);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return defaultFraction;
+            }
         }
 
         private void txtGlassWidth_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentItem == null)
-                return;
-
-            if (Helper.IsNumberOnly(txtGlassWidth))
+            try
             {
-                txtGlassWidth.Text = string.IsNullOrEmpty(txtGlassWidth.Text) ? "0" : txtGlassWidth.Text;
-                currentItem.GlassWidth = int.Parse(txtGlassWidth.Text);
+                if (currentItem == null)
+                    return;
 
-                UpdateTotalSqft();
+                if (Helper.IsNumberOnly(txtGlassWidth))
+                {
+                    txtGlassWidth.Text = string.IsNullOrEmpty(txtGlassWidth.Text) ? "0" : txtGlassWidth.Text;
+                    currentItem.GlassWidth = int.Parse(txtGlassWidth.Text);
 
+                    UpdateTotalSqft();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void txtGlassWidthCharged_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentItem == null)
-                return;
-
-            if (Helper.IsNumberOnly(txtGlassWidthCharged))
+            try
             {
-                txtGlassWidthCharged.Text = string.IsNullOrEmpty(txtGlassWidthCharged.Text) ? "0" : txtGlassWidthCharged.Text;
-                currentItem.GlassWidthCharged = int.Parse(txtGlassWidthCharged.Text);
+                if (currentItem == null)
+                    return;
 
-                UpdateTotalSqft();
+                if (Helper.IsNumberOnly(txtGlassWidthCharged))
+                {
+                    txtGlassWidthCharged.Text = string.IsNullOrEmpty(txtGlassWidthCharged.Text) ? "0" : txtGlassWidthCharged.Text;
+                    currentItem.GlassWidthCharged = int.Parse(txtGlassWidthCharged.Text);
 
+                    UpdateTotalSqft();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void txtGlassHeight_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentItem == null)
-                return;
-
-            if (Helper.IsNumberOnly(txtGlassHeight))
+            try
             {
-                txtGlassHeight.Text = string.IsNullOrEmpty(txtGlassHeight.Text) ? "0" : txtGlassHeight.Text;
-                currentItem.GlassHeight = int.Parse(txtGlassHeight.Text);
-                UpdateTotalSqft();
+                if (currentItem == null)
+                    return;
+
+                if (Helper.IsNumberOnly(txtGlassHeight))
+                {
+                    txtGlassHeight.Text = string.IsNullOrEmpty(txtGlassHeight.Text) ? "0" : txtGlassHeight.Text;
+                    currentItem.GlassHeight = int.Parse(txtGlassHeight.Text);
+                    UpdateTotalSqft();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void txtGlassHeightCharged_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentItem == null)
-                return;
-
-            if (Helper.IsNumberOnly(txtGlassHeightCharged))
+            try
             {
-                txtGlassHeightCharged.Text = string.IsNullOrEmpty(txtGlassHeightCharged.Text) ? "0" : txtGlassHeightCharged.Text;
-                currentItem.GlassHeightCharged = int.Parse(txtGlassHeightCharged.Text);
-                UpdateTotalSqft();
+                if (currentItem == null)
+                    return;
+
+                if (Helper.IsNumberOnly(txtGlassHeightCharged))
+                {
+                    txtGlassHeightCharged.Text = string.IsNullOrEmpty(txtGlassHeightCharged.Text) ? "0" : txtGlassHeightCharged.Text;
+                    currentItem.GlassHeightCharged = int.Parse(txtGlassHeightCharged.Text);
+                    UpdateTotalSqft();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
         private void UpdateTotalSqft()
         {
-            double width = double.Parse(txtGlassWidth.Text);
-            double height = double.Parse(txtGlassHeight.Text);
-            if (txtGlassWidthFraction.Text.Equals("x/y") == false)
+            try
             {
-                width++;
+                double width = double.Parse(txtGlassWidth.Text);
+                double height = double.Parse(txtGlassHeight.Text);
+                if (txtGlassWidthFraction.Text.Equals("x/y") == false)
+                {
+                    width++;
+                }
+                txtGlassWidthCharged.Text = width.ToString();
+                if (txtGlassHeightFraction.Text.Equals("x/y") == false)
+                {
+                    height++;
+                }
+                txtGlassHeightCharged.Text = height.ToString();
+                double totalSqft = (width * height) / 144.0;
+                txtTotalSqFt.Text = totalSqft.ToString("0");
+                txtTotalSqFtCharged.Text = Math.Ceiling(totalSqft).ToString("0");
             }
-            txtGlassWidthCharged.Text = width.ToString();
-            if (txtGlassHeightFraction.Text.Equals("x/y") == false)
+            catch (Exception ex)
             {
-                height++;
+                Logger.LogException(ex);
             }
-            txtGlassHeightCharged.Text = height.ToString();
-            double totalSqft = (width * height) / 144.0;
-            txtTotalSqFt.Text = totalSqft.ToString("0");
-            txtTotalSqFtCharged.Text = Math.Ceiling(totalSqft).ToString("0");
         }
 
         private void btnNewItem_Click(object sender, RoutedEventArgs e)
         {
-            if (currentItem != null)
+            try
             {
-                var result = Helper.ShowQuestionMessageBox("Are you sure to discard current changes?");
-                if (result == MessageBoxResult.Yes)
+                if (currentItem != null)
+                {
+                    var result = Helper.ShowQuestionMessageBox("Are you sure to discard current changes?");
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        currentItem = new NewQuoteItemEntity();
+                        allCutoutData.Clear();
+                        currentItem.GlassType1 = new InsulationDetails();
+                        currentItem.GlassType2 = new InsulationDetails();
+
+                        UpdateCurrentTotal();
+                        ResetAllControls();
+                    }
+                }
+                else
                 {
                     currentItem = new NewQuoteItemEntity();
                     allCutoutData.Clear();
@@ -832,17 +1036,10 @@ namespace GlassProductManager
                     ResetAllControls();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                currentItem = new NewQuoteItemEntity();
-                allCutoutData.Clear();
-                currentItem.GlassType1 = new InsulationDetails();
-                currentItem.GlassType2 = new InsulationDetails();
-
-                UpdateCurrentTotal();
-                ResetAllControls();
+                Logger.LogException(ex);
             }
-
         }
 
         private void ResetAllControls()
@@ -1052,7 +1249,7 @@ namespace GlassProductManager
             dgCutoutDetails.Focus();
 
             currentItem.IsCutout = true;
-            
+
             btnAddNewCutout_Click(null, null);
 
             UpdateCurrentTotal();
@@ -1137,9 +1334,16 @@ namespace GlassProductManager
 
         private void cmbShape_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbShape.SelectedItem != null)
+            try
             {
-                currentItem.Shape = (cmbShape.SelectedItem as System.Data.DataRowView)[1].ToString();
+                if (cmbShape.SelectedItem != null)
+                {
+                    currentItem.Shape = (cmbShape.SelectedItem as System.Data.DataRowView)[1].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
             }
         }
 
@@ -1155,20 +1359,27 @@ namespace GlassProductManager
         }
         internal void ResetTextBox(object sender, RoutedEventArgs e)
         {
-            TextBox input = sender as TextBox;
-            if (false == Helper.IsNumberOnly(input))
+            try
             {
-                input.Text = "0";
+                TextBox input = sender as TextBox;
+                if (false == Helper.IsNumberOnly(input))
+                {
+                    input.Text = "0";
+                }
+                else
+                {
+                    input.Text = string.IsNullOrEmpty(input.Text) ? "0" : input.Text;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                input.Text = string.IsNullOrEmpty(input.Text) ? "0" : input.Text;
+                Logger.LogException(ex);
             }
         }
 
         private void txtTotalSqFtCharged_LostFocus(object sender, RoutedEventArgs e)
         {
-            txtTotalSqFtCharged.Text= currentItem.TotalSqFTCharged.ToString();
+            txtTotalSqFtCharged.Text = currentItem.TotalSqFTCharged.ToString();
         }
 
         private void cbInsulationDetails_Checked(object sender, RoutedEventArgs e)
@@ -1184,7 +1395,5 @@ namespace GlassProductManager
         {
             ResetInsulation();
         }
-
-
     }
 }

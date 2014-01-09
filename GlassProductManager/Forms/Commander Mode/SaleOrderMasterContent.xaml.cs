@@ -172,9 +172,17 @@ namespace GlassProductManager
 
         private void FillSaleOrderDetails()
         {
-            var result = BusinessLogic.GetSaleOrderMasterData();
-            dgSaleOrderDetails.ItemsSource = result;
-            m_SaleListForSearch = new ListCollectionView(result);
+            try
+            {
+
+                var result = BusinessLogic.GetSaleOrderMasterData();
+                dgSaleOrderDetails.ItemsSource = result;
+                m_SaleListForSearch = new ListCollectionView(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnOpenSaleOrder_Click(object sender, RoutedEventArgs e)
@@ -189,25 +197,32 @@ namespace GlassProductManager
 
         private void OpenSalesOrder()
         {
-            Dashboard parent = Window.GetWindow(this) as Dashboard;
-
-            SaleOrderEntity entity = dgSaleOrderDetails.SelectedItem as SaleOrderEntity;
-
-            if (entity == null)
+            try
             {
-                return;
-            }
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
 
-            DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
-            if (sideMenu != null)
+                SaleOrderEntity entity = dgSaleOrderDetails.SelectedItem as SaleOrderEntity;
+
+                if (entity == null)
+                {
+                    return;
+                }
+
+                DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                if (sideMenu != null)
+                {
+                    sideMenu.IsIndirectCall = true;
+                    sideMenu.btnSaleOrder.IsChecked = true;
+                    sideMenu.IsIndirectCall = false;
+                }
+
+                SalesOrderContent newQuote = new SalesOrderContent(true, entity.QuoteNumber);
+                parent.ucMainContent.ShowPage(newQuote);
+            }
+            catch (Exception ex)
             {
-                sideMenu.IsIndirectCall = true;
-                sideMenu.btnSaleOrder.IsChecked = true;
-                sideMenu.IsIndirectCall = false;
+                Logger.LogException(ex);
             }
-
-            SalesOrderContent newQuote = new SalesOrderContent(true, entity.QuoteNumber);
-            parent.ucMainContent.ShowPage(newQuote);
         }
 
         private void btnDeleteSalesOrder_Click(object sender, RoutedEventArgs e)
@@ -217,19 +232,26 @@ namespace GlassProductManager
 
         private void DeleteSalesOrder()
         {
-            SaleOrderEntity entity = dgSaleOrderDetails.SelectedItem as SaleOrderEntity;
-            if (entity == null)
+            try
             {
-                Helper.ShowErrorMessageBox("Select Sales Order for deletion");
-                return;
-            }
+                SaleOrderEntity entity = dgSaleOrderDetails.SelectedItem as SaleOrderEntity;
+                if (entity == null)
+                {
+                    Helper.ShowErrorMessageBox("Select Sales Order for deletion");
+                    return;
+                }
 
-            bool isSalesOrderPresent = BusinessLogic.IsSalesOrderPresent(entity.QuoteNumber);
-            if (isSalesOrderPresent)
+                bool isSalesOrderPresent = BusinessLogic.IsSalesOrderPresent(entity.QuoteNumber);
+                if (isSalesOrderPresent)
+                {
+                    BusinessLogic.DeleteSalesOrder(entity.QuoteNumber);
+                    Helper.ShowInformationMessageBox("Sales Order is delete successfully!");
+                    FillSaleOrderDetails();
+                }
+            }
+            catch (Exception ex)
             {
-                BusinessLogic.DeleteSalesOrder(entity.QuoteNumber);
-                Helper.ShowInformationMessageBox("Sales Order is delete successfully!");
-                FillSaleOrderDetails();
+                Logger.LogException(ex);
             }
         }
 

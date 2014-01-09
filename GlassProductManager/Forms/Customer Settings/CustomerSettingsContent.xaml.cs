@@ -190,64 +190,84 @@ namespace GlassProductManager
 
         private void FillCustomerDetails()
         {
-            ObservableCollection<CustomerSmartDataEntity> result = BusinessLogic.GetAllCustomers();
-            dgCustomerList.ItemsSource = result;
-            m_CustomerListForSearch = new ListCollectionView(result);
+            try
+            {
+                ObservableCollection<CustomerSmartDataEntity> result = BusinessLogic.GetAllCustomers();
+                dgCustomerList.ItemsSource = result;
+                m_CustomerListForSearch = new ListCollectionView(result);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnNewCusotmer_Click(object sender, RoutedEventArgs e)
         {
-            UpdateStatus(true);
-            dgCustomerList.CanUserAddRows = true;
-            isNew = true;
+            try
+            {
+                UpdateStatus(true);
+                dgCustomerList.CanUserAddRows = true;
+                isNew = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnSaveCustomer_Click(object sender, RoutedEventArgs e)
         {
-            int index = isNew ? 2 : 1;
-
-            //CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.Items.Count - index] as CustomerSmartDataEntity;
-            CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.SelectedIndex] as CustomerSmartDataEntity;
-            if (newCustomer == null)
+            try
             {
-                Helper.ShowErrorMessageBox("Error during saving new customer.");
-                return;
-            }
-            CustomerDetails customer = new CustomerDetails();
-            customer.FirstName = newCustomer.FirstName;
-            customer.LastName = newCustomer.LastName;
-            customer.Address = newCustomer.Address;
-            customer.Phone = newCustomer.Phone;
-            customer.Email = newCustomer.Email;
-            customer.Fax = newCustomer.Fax;
-            customer.Misc = newCustomer.Misc;
-            customer.Fax = newCustomer.Fax;
+                int index = isNew ? 2 : 1;
+                //CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.Items.Count - index] as CustomerSmartDataEntity;
+                CustomerSmartDataEntity newCustomer = dgCustomerList.Items[dgCustomerList.SelectedIndex] as CustomerSmartDataEntity;
+                if (newCustomer == null)
+                {
+                    Helper.ShowErrorMessageBox("Error during saving new customer.");
+                    return;
+                }
+                CustomerDetails customer = new CustomerDetails();
+                customer.FirstName = newCustomer.FirstName;
+                customer.LastName = newCustomer.LastName;
+                customer.Address = newCustomer.Address;
+                customer.Phone = newCustomer.Phone;
+                customer.Email = newCustomer.Email;
+                customer.Fax = newCustomer.Fax;
+                customer.Misc = newCustomer.Misc;
+                customer.Fax = newCustomer.Fax;
 
-            if (isNew == true)
-            {
-                BusinessLogic.CreateNewCustomer(customer);
-            }
-            else if (isEdit == true)
-            {
-                BusinessLogic.UpdateCustomer(customer, newCustomer.ID);
-            }
+                if (isNew == true)
+                {
+                    BusinessLogic.CreateNewCustomer(customer);
+                }
+                else if (isEdit == true)
+                {
+                    BusinessLogic.UpdateCustomer(customer, newCustomer.ID);
+                }
 
-            if (isNew)
-            {
-                Helper.ShowInformationMessageBox("New customer saved successfully!");
-            }
-            else if (isEdit)
-            {
-                Helper.ShowInformationMessageBox("Customer information updated successfully!");
-            }
+                if (isNew)
+                {
+                    Helper.ShowInformationMessageBox("New customer saved successfully!");
+                }
+                else if (isEdit)
+                {
+                    Helper.ShowInformationMessageBox("Customer information updated successfully!");
+                }
 
-            FillCustomerDetails();
-            dgCustomerList.CanUserAddRows = false;
+                FillCustomerDetails();
+                dgCustomerList.CanUserAddRows = false;
 
-            UpdateStatus(false);
-            
-            isEdit = false;
-            isNew = false;
+                UpdateStatus(false);
+
+                isEdit = false;
+                isNew = false;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void btnCancelEdit_Click(object sender, RoutedEventArgs e)
