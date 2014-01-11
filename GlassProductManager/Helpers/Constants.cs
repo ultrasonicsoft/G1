@@ -18,6 +18,11 @@ namespace GlassProductManager
         internal const string SaleOrder = "Sale Orders";
         internal const string Invoices = "Invoice";
         internal const string InvoiceFileName = "Invoice {0}.pdf";
+        internal const string DBBackup = "DBBackup";
+        internal const string DatabaseName = "GlassManagerDB";
+        internal const string BackupExtension = ".bak";
+        internal const string DatabaseServerName = @"localhost\SQLEXPRESS";
+
     }
 
     class BarCodeConstants

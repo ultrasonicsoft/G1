@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ultrasonicsoft.Products;
+using Ultrasonicsoft.Products.BackupManager;
 
 namespace GlassProductManager
 {
@@ -199,6 +200,26 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
            
+        }
+
+        private void btnBackupDatabase_Checked(object sender, RoutedEventArgs e)
+        {
+            DBBackupManager manager = new DBBackupManager();
+            string dbBackupFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) +
+                                        System.IO.Path.DirectorySeparatorChar.ToString() + Constants.DBBackup;
+
+            string backupFileName = dbBackupFolder + System.IO.Path.DirectorySeparatorChar.ToString() +
+                                       Constants.DatabaseName + "-" + DateTime.Now.ToString("yyyyMMdd") + Constants.BackupExtension;
+
+            manager.SetupBackupFolder(dbBackupFolder);
+            manager.BackupDatabase(backupFileName, Constants.DatabaseServerName, Constants.DatabaseName);
+            string message = "Database backup done! Do you want to open backup folder?";
+            var result = Helper.ShowQuestionMessageBox(message, "Case Control System",MessageBoxButton.YesNo);
+            
+            if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
+            {
+                System.Diagnostics.Process.Start(dbBackupFolder);
+            }
         }
     }
 }
