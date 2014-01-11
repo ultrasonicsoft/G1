@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassManagerService", "GlassManagerService\GlassManagerService.csproj", "{F6250568-B52A-4C35-8F67-59A651D55419}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBBackupManager", "DBBackupManager\DBBackupManager.csproj", "{AD1BCE2F-EFC7-4F91-868E-7E68ACE55DEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F6250568-B52A-4C35-8F67-59A651D55419}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6250568-B52A-4C35-8F67-59A651D55419}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6250568-B52A-4C35-8F67-59A651D55419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD1BCE2F-EFC7-4F91-868E-7E68ACE55DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD1BCE2F-EFC7-4F91-868E-7E68ACE55DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD1BCE2F-EFC7-4F91-868E-7E68ACE55DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD1BCE2F-EFC7-4F91-868E-7E68ACE55DEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

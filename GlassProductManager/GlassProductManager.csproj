@@ -38,9 +38,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="DBBackupManager">
-      <HintPath>..\..\..\Project\Accounting Software WPF\Source Code\Case Control System\DBBackupManager\bin\Debug\DBBackupManager.dll</HintPath>
-    </Reference>
     <Reference Include="PdfSharp">
       <HintPath>..\packages\PdfSharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
@@ -320,6 +317,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DBBackupManager\DBBackupManager.csproj">
+      <Project>{ad1bce2f-efc7-4f91-868e-7e68ace55dee}</Project>
+      <Name>DBBackupManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DBHelper\DBHelper.csproj">
       <Project>{53d4fbc6-3393-4b45-9d80-edb9663d75f3}</Project>
       <Name>DBHelper</Name>
