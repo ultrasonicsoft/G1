@@ -264,6 +264,14 @@ namespace GlassProductManager
 
                 lblSubTotal.Content = result.Footer.SubTotal.ToString("0.00");
                 cbDollar.IsChecked = result.Footer.IsDollar;
+                if(cbDollar.IsChecked.Value)
+                {
+                    lblEnergySurcharge.Content = "Energy Surcharge($):";
+                }
+                else
+                {
+                    lblEnergySurcharge.Content = "Energy Surcharge(%):";
+                }
                 txtEnergySurcharge.Text = result.Footer.EnergySurcharge.ToString("0.00");
                 txtDiscount.Text = result.Footer.Discount.ToString("0.00");
                 txtDelivery.Text = result.Footer.Delivery.ToString("0.00");
@@ -382,10 +390,21 @@ namespace GlassProductManager
             try
             {
                 string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                string clientName = string.Format("{0} {1}", txtSoldToFirstName.Text, txtSoldToLastName.Text);
-                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Invoices  + Constants.FolderSeparator;
+                string clientName = string.Empty;
+
+                int customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+
+                if (string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) == false && string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
+                {
+                    clientName = string.Format("{0} {1} {2}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim(), customerID.ToString());
+                }
+                else
+                {
+                    clientName = string.Format("{0} {1}", txtSoldToFirstName.Text.Trim(), customerID.ToString());
+                }
+                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Invoices + Constants.FolderSeparator;
                 string filename = string.Format(Constants.InvoiceFileName, txtInvoiceNumber.Text);
-                string completeFilePath = relativePath + "\\" + filename;
+                string completeFilePath = relativePath + Constants.FolderSeparator + filename;
 
                 if (Directory.Exists(relativePath) == false)
                 {
@@ -569,9 +588,18 @@ namespace GlassProductManager
                 new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
                 XStringFormat.TopLeft);
 
-                gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
-               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-               XStringFormat.TopLeft);
+                if (false == string.IsNullOrEmpty(txtShiptoFirstName.Text) && false == string.IsNullOrEmpty(txtShiptoLastName.Text))
+                {
+                    gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
+                     new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                     XStringFormat.TopLeft);
+                }
+                else if (false == string.IsNullOrEmpty(txtShiptoFirstName.Text) && string.IsNullOrEmpty(txtShiptoLastName.Text) == true)
+                {
+                    gfx.DrawString(string.Format("{0}", txtShiptoFirstName.Text), font, XBrushes.Black,
+                     new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                     XStringFormat.TopLeft);
+                }
 
                 // Print Phone
                 yBaseOffset += yIncrementalOffset;
@@ -652,9 +680,16 @@ namespace GlassProductManager
                 new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
                 XStringFormat.TopLeft);
 
-                gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
-               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-               XStringFormat.TopLeft);
+                if (string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
+                {
+                    gfx.DrawString(string.Format("{0}, {1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
+                }
+                else
+                {
+                    gfx.DrawString(string.Format("{1}", txtSoldToLastName.Text, txtSoldToFirstName.Text), font, XBrushes.Black,
+               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight), XStringFormat.TopLeft);
+                }
 
                 // Print Phone
                 yBaseOffset += yIncrementalOffset;

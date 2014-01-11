@@ -220,6 +220,7 @@ namespace GlassProductManager
             {
                 System.Diagnostics.Process.Start(dbBackupFolder);
             }
+            btnBackupDatabase.IsChecked = false;
         }
     }
 }

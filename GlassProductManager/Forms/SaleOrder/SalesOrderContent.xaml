@@ -196,9 +196,9 @@
 
 
 
-                        <CheckBox IsEnabled="False" Name="cbDollar" Content="Dollar" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="3" />
+                        <CheckBox IsEnabled="False" Name="cbDollar" Margin="20,0,0,0" Content="Dollar" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="13" Grid.Column="5" />
 
-                        <Label  Content="Energy Surcharge:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
+                        <Label  Content="Energy Surcharge(%):" Name="lblEnergySurcharge" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
                         <TextBox IsReadOnly="True" Name="txtEnergySurcharge" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="5" />
 
                         <Label Name="lblDiscount" Content="Discount (%):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="4" />
@@ -207,7 +207,7 @@
                         <Label Name="lblDelivery" Content="Delivery:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="15" Grid.Column="4" />
                         <TextBox IsReadOnly="True" Name="txtDelivery" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="15" Grid.Column="5"/>
 
-                        <CheckBox IsEnabled="False" Name="cbRush" Content="Rush" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="3" />
+                        <CheckBox IsEnabled="False" Margin="20,0,0,0" Name="cbRush" Content="Rush" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="16" Grid.Column="5" />
 
                         <Label Name="lblRushOrder" Content="Rush Order:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
                         <TextBox  IsReadOnly="True" Name="txtRushOrder" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="16" Grid.Column="5" />
@@ -225,7 +225,7 @@
                                 <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
                             <Button Name="btnDelete" Content="Delete"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="0" Width="75" Margin="0,0,0,3" Click="btnDelete_Click" />
-                            <Button Name="btnExportPdf" Content="Export PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnExportPdf_Click" />
+                            <Button Name="btnExportPdf" Content="Export PDF"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="1" Width="75" Click="btnExportPdf_Click" Margin="0,0,0,1" />
                             <Button Name="btnOpenWorksheet" Content="Open Worksheet"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="120" Click="btnOpenWorksheet_Click"/>
                         </Grid>
                     </Grid>

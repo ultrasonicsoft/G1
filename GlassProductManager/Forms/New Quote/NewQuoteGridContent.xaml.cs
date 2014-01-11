@@ -668,6 +668,7 @@ namespace GlassProductManager
 
         private void cbDollar_Checked(object sender, RoutedEventArgs e)
         {
+            lblEnergySurcharge.Content = "Energy Surcharge ($):";
             if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
             {
                 UpdateQuoteTotal();
@@ -676,6 +677,7 @@ namespace GlassProductManager
 
         private void cbDollar_Unchecked(object sender, RoutedEventArgs e)
         {
+            lblEnergySurcharge.Content = "Energy Surcharge (%):";
             if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtEnergySurcharge.Text) == false)
             {
                 UpdateQuoteTotal();
@@ -1511,9 +1513,18 @@ namespace GlassProductManager
                 new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
                 XStringFormat.TopLeft);
 
-                gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
-               new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
-               XStringFormat.TopLeft);
+                if (false == string.IsNullOrEmpty(txtShiptoFirstName.Text) && false == string.IsNullOrEmpty(txtShiptoLastName.Text))
+                {
+                    gfx.DrawString(string.Format("{0}, {1}", txtShiptoLastName.Text, txtShiptoFirstName.Text), font, XBrushes.Black,
+                     new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                     XStringFormat.TopLeft);
+                }
+                else if(false == string.IsNullOrEmpty(txtShiptoFirstName.Text) && string.IsNullOrEmpty(txtShiptoLastName.Text)== true)
+                {
+                    gfx.DrawString(string.Format("{0}", txtShiptoFirstName.Text), font, XBrushes.Black,
+                     new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
+                     XStringFormat.TopLeft);
+                }
 
                 // Print Phone
                 yBaseOffset += yIncrementalOffset;

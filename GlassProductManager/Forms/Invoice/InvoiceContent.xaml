@@ -232,9 +232,9 @@
 
 
 
-                        <CheckBox IsEnabled="False" Name="cbDollar" Content="Dollar" HorizontalAlignment="Center" Margin="-60,0,0,0" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
+                        <CheckBox IsEnabled="False" Name="cbDollar" Content="Dollar" HorizontalAlignment="Center" Margin="30,0,0,0" VerticalAlignment="Center" Grid.Row="13" Grid.Column="5" />
 
-                        <Label  Content="Energy Surcharge:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
+                        <Label  Content="Energy Surcharge(%):" Name="lblEnergySurcharge" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="13" Grid.Column="4" />
                         <TextBox IsReadOnly="True" Name="txtEnergySurcharge" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="13" Grid.Column="5" />
 
                         <Label Name="lblDiscount" Content="Discount (%):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="4" />
@@ -243,11 +243,10 @@
                         <Label Name="lblDelivery" Content="Delivery:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="15" Grid.Column="4" />
                         <TextBox IsReadOnly="True" Name="txtDelivery" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="15" Grid.Column="5"/>
 
-                        <CheckBox IsEnabled="False" Name="cbRush" Content="Rush" HorizontalAlignment="Center" Margin="-60,0,0,0" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
+                        <CheckBox IsEnabled="False" Name="cbRush" Content="Rush" HorizontalAlignment="Center" Margin="30,0,0,0" VerticalAlignment="Center" Grid.Row="16" Grid.Column="5" />
 
                         <Label Name="lblRushOrder" Content="Rush Order:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
                         <TextBox  IsReadOnly="True" Name="txtRushOrder" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="16" Grid.Column="5" />
-
                         <Label Name="lblTax" Content="Tax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" />
                         <TextBox IsReadOnly="True" Name="txtTax" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" />
 

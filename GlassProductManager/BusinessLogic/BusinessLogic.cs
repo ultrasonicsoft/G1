@@ -555,7 +555,7 @@ namespace GlassProductManager
                 pMisc.ParameterName = "Misc";
                 pMisc.Value = shipTo.Misc;
 
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertQuoteLineItem, pQuoteNumber, pCustomerID, pAddress, pFirstName, pLastName, pPhone, pFax, pEmail, pMisc);
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertShippingDetails, pQuoteNumber, pCustomerID, pAddress, pFirstName, pLastName, pPhone, pFax, pEmail, pMisc);
 
             }
             catch (Exception ex)
@@ -642,7 +642,7 @@ namespace GlassProductManager
 
                     pShape = new SqlParameter();
                     pShape.ParameterName = "Shape";
-                    pShape.Value = item.Shape;
+                    pShape.Value = item.Shape??"Square";
 
                     pIsPolish = new SqlParameter();
                     pIsPolish.ParameterName = "IsPolish";

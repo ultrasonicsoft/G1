@@ -209,9 +209,9 @@
 
                         <Button Name="btnUpdateAllItem" Content="Update All Items"  HorizontalAlignment="Left" Grid.Row="17" VerticalAlignment="Center" Grid.Column="1" Width="120" Height="30"  Click="btnUpdateAllItem_Click" TabIndex="38"/>
 
-                        <CheckBox Name="cbDollar" Content="Dollar" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="3" Checked="cbDollar_Checked" Unchecked="cbDollar_Unchecked" TabIndex="30" />
+                        <CheckBox Name="cbDollar" Content="Dollar" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="14" Grid.Column="5" Checked="cbDollar_Checked" Unchecked="cbDollar_Unchecked" TabIndex="30" />
 
-                        <Label  Content="Energy Surcharge:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="4" />
+                        <Label  Content="Energy Surcharge (%):"  Name="lblEnergySurcharge" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="14" Grid.Column="4" />
                         <TextBox  Name="txtEnergySurcharge" Height="27" Text="0.00" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="14" Grid.Column="5" TextChanged="txtEnergySurcharge_TextChanged" LostFocus="txtEnergySurcharge_LostFocus" GotFocus="ClearTextBox" TabIndex="29"/>
 
                         <Label Name="lblDiscount" Content="Discount (%):" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="15" Grid.Column="4" />
@@ -220,7 +220,7 @@
                         <Label Name="lblDelivery" Content="Delivery:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="16" Grid.Column="4" />
                         <TextBox  Name="txtDelivery" Text="0.00" Height="27" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="16" Grid.Column="5" LostFocus="txtDelivery_LostFocus" TextChanged="txtDelivery_TextChanged" GotFocus="ClearTextBox" TabIndex="32"/>
 
-                        <CheckBox Name="cbRush" Content="Rush" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="17" Grid.Column="3" Unchecked="cbRush_Unchecked" Checked="cbRush_Checked" TabIndex="33" />
+                        <CheckBox Name="cbRush" Content="Rush" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" Unchecked="cbRush_Unchecked" Checked="cbRush_Checked" TabIndex="33" />
 
                         <Label Name="lblRushOrder" Content="Rush Order:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" />
                         <TextBox  Name="txtRushOrder" Text="0.00" Height="27" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" TextChanged="txtRushOrder_TextChanged" LostFocus="txtRushOrder_LostFocus" GotFocus="ClearTextBox" TabIndex="34"/>
