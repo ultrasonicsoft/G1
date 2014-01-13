@@ -42,8 +42,10 @@ namespace GlassProductManager
             string[] worksheetInputData = worksheetItemID.Split('-');
 
             WorksheetItem workItemDetails = BusinessLogic.GetWorksheetItemDetails(worksheetInputData[0], worksheetInputData[1], worksheetInputData[2]);
-
-            workItemDetails.WSNumber = worksheetInputData[0];
+            if (workItemDetails != null)
+            {
+                workItemDetails.WSNumber = worksheetInputData[0];
+            }
             return workItemDetails;
         }
 
