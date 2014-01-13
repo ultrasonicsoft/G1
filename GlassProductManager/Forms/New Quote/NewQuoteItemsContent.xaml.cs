@@ -692,7 +692,8 @@ namespace GlassProductManager
         {
             try
             {
-                lblMaterialCost.Content = "$ " + (currentItem.GlassType1.Total + currentItem.GlassType2.Total).ToString("0.00");
+                string materialCost = (currentItem.GlassType1.Total + currentItem.GlassType2.Total).ToString("0.00");
+                lblMaterialCost.Content = "$ " + materialCost;
 
                 double insulationTierCost = BusinessLogic.GetInsulationTierCost(currentItem.GlassType1.SqFt);
                 lblInsulationTier.Content = "$ " + insulationTierCost.ToString("0.00");
@@ -704,6 +705,13 @@ namespace GlassProductManager
                 lblInsulationTotal.Content = "$ " + insulationTotal.ToString("0.00");
 
                 currentItem.InsulateTotalCost = insulationTotal;
+
+                //Insulation details
+                currentItem.MaterialCost = float.Parse(materialCost);
+                currentItem.InsulationTier = float.Parse(insulationTierCost.ToString("0.00"));
+                currentItem.InsulationTierTotal = float.Parse(insulationTierTotal.ToString("0.00"));
+                currentItem.InsulationTotal = float.Parse(insulationTotal.ToString("0.00"));
+
                 UpdateCurrentTotal();
             }
             catch (Exception ex)
@@ -894,6 +902,9 @@ namespace GlassProductManager
                             newItem.IsLogo = currentItem.IsLogoRequired;
                             grid.allQuoteData.Add(newItem);
 
+                           
+
+                            grid.allLineItemDetails.Add(currentItem);
                             //ResetAllControls();
                         }
                     }
@@ -1400,6 +1411,7 @@ namespace GlassProductManager
                 if (cmbShape.SelectedItem != null)
                 {
                     currentItem.Shape = (cmbShape.SelectedItem as System.Data.DataRowView)[1].ToString();
+                    currentItem.ShapeID = int.Parse(cmbShape.SelectedValue.ToString());
                 }
             }
             catch (Exception ex)

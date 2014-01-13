@@ -564,7 +564,7 @@ namespace GlassProductManager
             }
         }
 
-        internal static void SaveQuoteItems(string quoteNumber, ObservableCollection<QuoteGridEntity> allQuoteData)
+        internal static void SaveQuoteItems(string quoteNumber, ObservableCollection<QuoteGridEntity> allQuoteData, ObservableCollection<NewQuoteItemEntity> allLineItems)
         {
             try
             {
@@ -592,6 +592,8 @@ namespace GlassProductManager
                 SqlParameter pIsTemper = null;
                 SqlParameter pIsInsulate = null;
 
+                int counter = 0;
+                NewQuoteItemEntity currentLineItem = new NewQuoteItemEntity();
 
                 foreach (QuoteGridEntity item in allQuoteData)
                 {
@@ -642,7 +644,7 @@ namespace GlassProductManager
 
                     pShape = new SqlParameter();
                     pShape.ParameterName = "Shape";
-                    pShape.Value = item.Shape??"Square";
+                    pShape.Value = item.Shape ?? "Square";
 
                     pIsPolish = new SqlParameter();
                     pIsPolish.ParameterName = "IsPolish";
@@ -668,7 +670,212 @@ namespace GlassProductManager
                                      pActualTotalSQFT, pIsLogo, pShape
                                      , pIsPolish, pIsDrills, pIsWaterjet, pIsTemper, pIsInsulate);
 
+                    // Save line item details
+                    currentLineItem = allLineItems[counter];
+                    
+                    SaveLineItemDetails(quoteNumber, item.LineID, currentLineItem);
+                    
+                    SaveLineItemCutoutDetails(quoteNumber, item.LineID, currentLineItem);
+
+                    SaveLineItemInsulationDetails(quoteNumber, item.LineID, currentLineItem);
+                    counter++;
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+
+
+        internal static void SaveLineItemDetails(string quoteNubmer, int lineID, NewQuoteItemEntity currentLineItem)
+        {
+            try
+            {
+                List<SqlParameter> allParameters = new List<SqlParameter>();
+
+                SqlParameter tempParameter = new SqlParameter() { ParameterName = "QuoteNumber", Value = quoteNubmer };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "LineID", Value = lineID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "SelectedGlassIndex", Value = currentLineItem.GlassTypeID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "SelectedThicknessIndex", Value = currentLineItem.ThicknessID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "IsLogo", Value = currentLineItem.IsLogoRequired };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "IsTempered", Value = currentLineItem.IsTempered };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "SelectedShapeIndex", Value = currentLineItem.ShapeID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "ActualWidth", Value = currentLineItem.GlassWidth };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "ActualWidthFraction", Value = currentLineItem.GlassWidthFraction };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "ActualHeight", Value = currentLineItem.GlassHeight };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "ActualHeightFraction", Value = currentLineItem.GlassHeightFraction };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Quantity", Value = currentLineItem.Quantity };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "ActualTotalSqft", Value = currentLineItem.TotalSqFT };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "ChargedWidth", Value = currentLineItem.GlassWidthCharged };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "ChargedHeight", Value = currentLineItem.GlassHeightCharged };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "ChargedTotal", Value = currentLineItem.TotalSqFTCharged };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "StraightTotalPolish", Value = currentLineItem.StraightPolishTotalInches };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "StraightLongSide", Value = currentLineItem.StraightPolishLongSide };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "StraightShortSide", Value = currentLineItem.StraightPolishShortSide };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "CustomTotalPolish", Value = currentLineItem.CustomPolishTotalInches };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "MiterTotalPolish", Value = currentLineItem.MiterTotalInches };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "MiterLongSide", Value = currentLineItem.MiterLongSide };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "MiterShortSide", Value = currentLineItem.MiterShortSide };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Notches", Value = currentLineItem.Notches };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Patches", Value = currentLineItem.Patches };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Holes", Value = currentLineItem.Holes };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Hinges", Value = currentLineItem.Hinges };
+                allParameters.Add(tempParameter);
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertLineItemDetails, allParameters.ToArray());
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return;
+
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        private static void SaveLineItemCutoutDetails(string quoteNubmer, int lineID, NewQuoteItemEntity currentLineItem)
+        {
+            try
+            {
+                List<SqlParameter> allParameters;
+
+                foreach (CutoutData item in currentLineItem._allCutoutData)
+                {
+                    allParameters = new List<SqlParameter>();
+                    SqlParameter tempParameter = new SqlParameter() { ParameterName = "QuoteNumber", Value = quoteNubmer };
+                    allParameters.Add(tempParameter);
+
+                    tempParameter = new SqlParameter() { ParameterName = "LineID", Value = lineID };
+                    allParameters.Add(tempParameter);
+
+                    tempParameter = new SqlParameter() { ParameterName = "Quantity", Value = item.Quantity };
+                    allParameters.Add(tempParameter);
+
+
+                    tempParameter = new SqlParameter() { ParameterName = "Width", Value = item.Width };
+                    allParameters.Add(tempParameter);
+
+                    tempParameter = new SqlParameter() { ParameterName = "Height", Value = item.Height };
+                    allParameters.Add(tempParameter);
+
+                    tempParameter = new SqlParameter() { ParameterName = "Price", Value = item.Price };
+                    allParameters.Add(tempParameter);
+
+                    var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertLineCutoutDetails, allParameters.ToArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        private static void SaveLineItemInsulationDetails(string quoteNubmer, int lineID, NewQuoteItemEntity currentLineItem)
+        {
+            try
+            {
+                List<SqlParameter> allParameters;
+
+                allParameters = new List<SqlParameter>();
+                SqlParameter tempParameter = new SqlParameter() { ParameterName = "QuoteNumber", Value = quoteNubmer };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "LineID", Value = lineID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "GlassType1Index", Value = currentLineItem.GlassType1.GlassTypeID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Thickness1Index", Value = currentLineItem.GlassType1.ThicknessID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "IsTemp1", Value = currentLineItem.GlassType1.IsTempered };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Sqft", Value = currentLineItem.GlassType1.SqFt };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Total", Value = currentLineItem.GlassType1.Total };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "GlassType2Index", Value = currentLineItem.GlassType2.GlassTypeID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Thickness2Index", Value = currentLineItem.GlassType2.ThicknessID };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "IsTemp2", Value = currentLineItem.GlassType2.IsTempered };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "MaterialCost", Value = currentLineItem.MaterialCost };
+                allParameters.Add(tempParameter);
+
+                 tempParameter = new SqlParameter() { ParameterName = "InsulationTier", Value = currentLineItem.InsulationTier };
+                allParameters.Add(tempParameter);
+
+                 tempParameter = new SqlParameter() { ParameterName = "InsulationTierTotal", Value = currentLineItem.InsulationTierTotal };
+                allParameters.Add(tempParameter);
+
+                  tempParameter = new SqlParameter() { ParameterName = "InsulationTotal", Value = currentLineItem.InsulationTotal };
+                allParameters.Add(tempParameter);
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertLineItemInsulationDetails, allParameters.ToArray());
             }
             catch (Exception ex)
             {
@@ -2166,5 +2373,7 @@ namespace GlassProductManager
             }
             return worksheetItemDetails;
         }
+
+
     }
 }

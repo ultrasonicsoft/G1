@@ -10,3 +10,6 @@ DELETE FROM dbo.QuoteLineItems
 DELETE FROM dbo.SaleOrder
 DELETE FROM dbo.Worksheet
 DELETE FROM dbo.WorksheetLineItem
+DELETE FROM dbo.LineItemDetails
+DELETE FROM dbo.LineCutoutDetails
+DELETE FROM dbo.LineItemInsulationDetails

@@ -43,6 +43,7 @@ namespace GlassProductManager
         private double _cutoutTotal;
         private double _pricePerUnit;
         private string _shape;
+        private int _shapeID;
         private string _thickness;
 
         //Rates
@@ -56,6 +57,11 @@ namespace GlassProductManager
         private double _patchRate = 0;
         private double _holeRate = 0;
         private int _minimumTotalSqft = 0;
+
+        internal float MaterialCost = 0;
+        internal float InsulationTier = 0;
+        internal float InsulationTierTotal = 0;
+        internal float InsulationTotal = 0;
 
 
         internal ObservableCollection<CutoutData> _allCutoutData = new ObservableCollection<CutoutData>();
@@ -133,6 +139,12 @@ namespace GlassProductManager
         {
             get { return _shape; }
             set { _shape = value; }
+        }
+
+        internal int ShapeID
+        {
+            get { return _shapeID; }
+            set { _shapeID = value; }
         }
 
         internal string Thickness

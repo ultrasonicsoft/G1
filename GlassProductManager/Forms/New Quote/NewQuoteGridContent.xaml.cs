@@ -37,6 +37,7 @@ namespace GlassProductManager
             get { return _allQuoteData; }
             set { _allQuoteData = value; }
         }
+        internal ObservableCollection<NewQuoteItemEntity> allLineItemDetails = new ObservableCollection<NewQuoteItemEntity>();
 
         public NewQuoteGridContent()
         {
@@ -450,7 +451,7 @@ namespace GlassProductManager
                         BusinessLogic.UpdateQuoteHeader(header, true);
 
                         BusinessLogic.DeleteQuoteItems(txtQuoteNumber.Text);
-                        BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData);
+                        BusinessLogic.SaveQuoteItems(txtQuoteNumber.Text, allQuoteData, allLineItemDetails);
 
                         QuoteFooter footer = BuildQuoteFooter();
                         BusinessLogic.UpdateQuoteFooter(txtQuoteNumber.Text, footer);
@@ -486,7 +487,7 @@ namespace GlassProductManager
                 QuoteHeader header = BuildQuoteHeader(quoteNumber);
                 BusinessLogic.SaveQuoteHeader(header);
 
-                BusinessLogic.SaveQuoteItems(quoteNumber, allQuoteData);
+                BusinessLogic.SaveQuoteItems(quoteNumber, allQuoteData, allLineItemDetails);
 
                 QuoteFooter footer = BuildQuoteFooter();
                 BusinessLogic.SaveQuoteFooter(quoteNumber, footer);
@@ -1078,6 +1079,8 @@ namespace GlassProductManager
 
                 allQuoteData.Clear();
                 dgQuoteItems.ItemsSource = allQuoteData;
+
+                allLineItemDetails = new ObservableCollection<NewQuoteItemEntity>();
             }
             catch (Exception ex)
             {
