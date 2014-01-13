@@ -136,12 +136,12 @@
                                 <CheckBox Name="cbIsStraightPolish" Content="Straight Polish?" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Checked="cbIsStraightPolish_Checked" Unchecked="cbIsStraightPolish_Unchecked" TabIndex="60" />
 
                                 <Label Content="Total Inches:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" />
-                                <TextBox Name="txtStraightPolishTotalInches" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" TextChanged="txtStraightPolishTotalInches_TextChanged" LostFocus="ResetTextBox" GotFocus="ClearTextBox" TabIndex="61" />
+                                <TextBox Name="txtStraightPolishTotalInches" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" TextChanged="txtStraightPolishTotalInches_TextChanged" LostFocus="ResetTextBox" GotFocus="ClearTextBox" TabIndex="63" />
 
                                 <Label Content="Long Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" />
-                                <TextBox Name="txtStraightPolishLongSide" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" LostFocus="ResetTextBox" TextChanged="txtStraightPolishLongSide_TextChanged" GotFocus="ClearTextBox" TabIndex="62"/>
+                                <TextBox Name="txtStraightPolishLongSide" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" LostFocus="ResetTextBox" TextChanged="txtStraightPolishLongSide_TextChanged" GotFocus="ClearTextBox" TabIndex="61"/>
                                 <Label Content="Short Sides #:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="5" />
-                                <TextBox Name="txtStraightPolishShortSide" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" TextChanged="txtStraightPolishShortSide_TextChanged" LostFocus="ResetTextBox" GotFocus="ClearTextBox" TabIndex="63"/>
+                                <TextBox Name="txtStraightPolishShortSide" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="7" TextChanged="txtStraightPolishShortSide_TextChanged" LostFocus="ResetTextBox" GotFocus="ClearTextBox" TabIndex="62"/>
                             </Grid>
                         </GroupBox>
 

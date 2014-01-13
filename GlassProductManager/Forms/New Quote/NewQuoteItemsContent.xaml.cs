@@ -29,6 +29,8 @@ namespace GlassProductManager
     {
         NewQuoteItemEntity currentItem = null;
         private bool isReset = false;
+        private string oldValue = string.Empty; 
+
         public ObservableCollection<CutoutData> allCutoutData
         {
             get { return currentItem._allCutoutData; }
@@ -262,7 +264,7 @@ namespace GlassProductManager
             txtStraightPolishTotalInches.IsEnabled = true;
             txtStraightPolishLongSide.IsEnabled = true;
             txtStraightPolishShortSide.IsEnabled = true;
-            txtStraightPolishTotalInches.Focus();
+            txtStraightPolishLongSide.Focus();
 
             currentItem.IsStraightPolish = true;
             UpdateCurrentTotal();
@@ -271,11 +273,37 @@ namespace GlassProductManager
         private void txtStraightPolishLongSide_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetQuoteValidationError(txtStraightPolishLongSide, "StraightPolishLongSide");
+            UpdateStraightPolishTotal();
         }
-
         private void txtStraightPolishShortSide_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetQuoteValidationError(txtStraightPolishShortSide, "StraightPolishShortSide");
+            UpdateStraightPolishTotal();
+        }
+        private void UpdateStraightPolishTotal()
+        {
+            if (txtStraightPolishLongSide == null || txtStraightPolishShortSide == null || txtGlassWidthCharged == null || txtGlassHeightCharged == null || txtGlassHeightCharged == null || txtStraightPolishTotalInches == null)
+            {
+                return;
+            }
+
+            int numberOfLongSide = 0;
+            int numberOfShortSide = 0;
+            int longSide = 0;
+            int shortSide = 0;
+            int.TryParse(txtStraightPolishLongSide.Text, out numberOfLongSide);
+            int.TryParse(txtStraightPolishShortSide.Text, out numberOfShortSide);
+            int.TryParse(txtGlassWidthCharged.Text, out longSide);
+            int.TryParse(txtGlassHeightCharged.Text, out shortSide);
+
+            if(longSide<shortSide)
+            {
+                int temp = longSide;
+                longSide = shortSide;
+                shortSide = temp;
+            }
+            int total = (longSide * numberOfLongSide) + (shortSide * numberOfShortSide);
+            txtStraightPolishTotalInches.Text = total.ToString();
         }
 
         private void txtStraightPolishTotalInches_TextChanged(object sender, TextChangedEventArgs e)
@@ -343,7 +371,7 @@ namespace GlassProductManager
             txtMiterLongSide.IsEnabled = true;
             txtMiterShortSide.IsEnabled = true;
 
-            txtMiterTotalInches.Focus();
+            txtMiterLongSide.Focus();
 
             currentItem.IsMiter = true;
             UpdateCurrentTotal();
@@ -769,12 +797,39 @@ namespace GlassProductManager
                 {
                     txtMiterLongSide.Text = string.IsNullOrEmpty(txtMiterLongSide.Text) ? "0" : txtMiterLongSide.Text;
                     currentItem.MiterLongSide = int.Parse(txtMiterLongSide.Text);
+                    UpdateMiterTotalInches();
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
             }
+        }
+
+        private void UpdateMiterTotalInches()
+        {
+            if (txtMiterLongSide == null || txtMiterShortSide == null || txtGlassWidthCharged == null || txtGlassHeightCharged == null || txtGlassHeightCharged == null || txtMiterTotalInches == null)
+            {
+                return;
+            }
+
+            int numberOfLongSide = 0;
+            int numberOfShortSide = 0;
+            int longSide = 0;
+            int shortSide = 0;
+            int.TryParse(txtMiterLongSide.Text, out numberOfLongSide);
+            int.TryParse(txtMiterShortSide.Text, out numberOfShortSide);
+            int.TryParse(txtGlassWidthCharged.Text, out longSide);
+            int.TryParse(txtGlassHeightCharged.Text, out shortSide);
+
+            if (longSide < shortSide)
+            {
+                int temp = longSide;
+                longSide = shortSide;
+                shortSide = temp;
+            }
+            int total = (longSide * numberOfLongSide) + (shortSide * numberOfShortSide);
+            txtMiterTotalInches.Text = total.ToString();
         }
         private void txtMiterShortSide_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -787,6 +842,7 @@ namespace GlassProductManager
                 {
                     txtMiterShortSide.Text = string.IsNullOrEmpty(txtMiterShortSide.Text) ? "0" : txtMiterShortSide.Text;
                     currentItem.MiterShortSide = int.Parse(txtMiterShortSide.Text);
+                    UpdateMiterTotalInches();
                 }
             }
             catch (Exception ex)
@@ -933,6 +989,8 @@ namespace GlassProductManager
                     currentItem.GlassWidthCharged = int.Parse(txtGlassWidthCharged.Text);
 
                     UpdateTotalSqft();
+                    UpdateStraightPolishTotal();
+                    UpdateMiterTotalInches();
                 }
             }
             catch (Exception ex)
@@ -973,6 +1031,9 @@ namespace GlassProductManager
                     txtGlassHeightCharged.Text = string.IsNullOrEmpty(txtGlassHeightCharged.Text) ? "0" : txtGlassHeightCharged.Text;
                     currentItem.GlassHeightCharged = int.Parse(txtGlassHeightCharged.Text);
                     UpdateTotalSqft();
+                    UpdateStraightPolishTotal();
+                    UpdateMiterTotalInches();
+
                 }
             }
             catch (Exception ex)
@@ -1354,6 +1415,7 @@ namespace GlassProductManager
             //{
             //    input.Text = string.Empty;
             //}
+            oldValue = input.Text.ToString();
             input.Text = string.Empty;
 
         }
@@ -1362,12 +1424,18 @@ namespace GlassProductManager
             try
             {
                 TextBox input = sender as TextBox;
-                if (false == Helper.IsNumberOnly(input))
+                if (string.IsNullOrEmpty(oldValue) == false && oldValue != "0" && string.IsNullOrEmpty(input.Text) )
+                {
+                    input.Text = string.IsNullOrEmpty(oldValue) ? "0" : oldValue;
+                }
+                else if (false == Helper.IsNumberOnly(input))
                 {
                     input.Text = "0";
                 }
+                
                 else
                 {
+                    //input.Text = string.IsNullOrEmpty(oldValue) ? "0" : oldValue;
                     input.Text = string.IsNullOrEmpty(input.Text) ? "0" : input.Text;
                 }
             }
