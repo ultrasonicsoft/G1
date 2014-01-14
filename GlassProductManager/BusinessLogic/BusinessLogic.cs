@@ -776,6 +776,9 @@ namespace GlassProductManager
                 tempParameter = new SqlParameter() { ParameterName = "Hinges", Value = currentLineItem.Hinges };
                 allParameters.Add(tempParameter);
 
+                tempParameter = new SqlParameter() { ParameterName = "CutoutTotal", Value = currentLineItem.CutoutTotal };
+                allParameters.Add(tempParameter);
+
                 var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertLineItemDetails, allParameters.ToArray());
 
                 if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
@@ -851,7 +854,10 @@ namespace GlassProductManager
                 tempParameter = new SqlParameter() { ParameterName = "Sqft", Value = currentLineItem.GlassType1.SqFt };
                 allParameters.Add(tempParameter);
 
-                tempParameter = new SqlParameter() { ParameterName = "Total", Value = currentLineItem.GlassType1.Total };
+                tempParameter = new SqlParameter() { ParameterName = "Total1", Value = currentLineItem.GlassType1.Total };
+                allParameters.Add(tempParameter);
+
+                tempParameter = new SqlParameter() { ParameterName = "Total2", Value = currentLineItem.GlassType2.Total };
                 allParameters.Add(tempParameter);
 
                 tempParameter = new SqlParameter() { ParameterName = "GlassType2Index", Value = currentLineItem.GlassType2.GlassTypeID };
@@ -2374,6 +2380,95 @@ namespace GlassProductManager
             return worksheetItemDetails;
         }
 
+        internal static NewQuoteItemEntity GetLineItemDetails(string quoteNumber, int lineID)
+        {
+            NewQuoteItemEntity item = null;
+            try
+            {
+                SqlParameter pQuoteNumber = new SqlParameter();
+                pQuoteNumber.ParameterName = "quoteNumber";
+                pQuoteNumber.Value = quoteNumber;
 
+                SqlParameter pLineID = new SqlParameter();
+                pLineID.ParameterName = "lineID";
+                pLineID.Value = lineID;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetLineItemInformation, pQuoteNumber, pLineID);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return item;
+
+                item = new NewQuoteItemEntity();
+                if(result.Tables.Count>0 )
+                {
+                    item.GlassTypeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.SelectedGlassIndex].ToString());
+                    item.ThicknessID = int.Parse(result.Tables[0].Rows[0][ColumnNames.SelectedThicknessIndex].ToString());
+                    item.IsLogoRequired = bool.Parse(result.Tables[0].Rows[0][ColumnNames.IsLogo].ToString());
+                    item.IsTempered = bool.Parse(result.Tables[0].Rows[0][ColumnNames.IsTempered].ToString());
+                    item.ShapeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.SelectedShapeIndex].ToString());
+                    item.GlassWidth = int.Parse(result.Tables[0].Rows[0][ColumnNames.ActualWidth].ToString());
+                    item.GlassWidthFraction = result.Tables[0].Rows[0][ColumnNames.ActualWidthFraction].ToString();
+                    item.GlassHeight = int.Parse(result.Tables[0].Rows[0][ColumnNames.ActualHeight].ToString());
+                    item.GlassHeightFraction = result.Tables[0].Rows[0][ColumnNames.ActualHeightFraction].ToString();
+                    item.Quantity = int.Parse(result.Tables[0].Rows[0][ColumnNames.Quantity].ToString());
+                    item.TotalSqFT = int.Parse(result.Tables[0].Rows[0][ColumnNames.ActualTotalSqft].ToString());
+                    item.GlassWidthCharged = int.Parse(result.Tables[0].Rows[0][ColumnNames.ChargedWidth].ToString());
+                    item.GlassHeightCharged = int.Parse(result.Tables[0].Rows[0][ColumnNames.ChargedHeight].ToString());
+                    item.TotalSqFTCharged = int.Parse(result.Tables[0].Rows[0][ColumnNames.ChargedTotal].ToString());
+                    item.StraightPolishTotalInches = int.Parse(result.Tables[0].Rows[0][ColumnNames.StraightTotalPolish].ToString());
+                    item.StraightPolishLongSide = int.Parse(result.Tables[0].Rows[0][ColumnNames.StraightLongSide].ToString());
+                    item.StraightPolishShortSide = int.Parse(result.Tables[0].Rows[0][ColumnNames.StraightShortSide].ToString());
+                    item.CustomPolishTotalInches = int.Parse(result.Tables[0].Rows[0][ColumnNames.CustomTotalPolish].ToString());
+                    item.MiterTotalInches = int.Parse(result.Tables[0].Rows[0][ColumnNames.MiterTotalPolish].ToString());
+                    item.MiterLongSide = int.Parse(result.Tables[0].Rows[0][ColumnNames.MiterLongSide].ToString());
+                    item.MiterShortSide = int.Parse(result.Tables[0].Rows[0][ColumnNames.MiterShortSide].ToString());
+                    item.Notches = int.Parse(result.Tables[0].Rows[0][ColumnNames.Notches].ToString());
+                    item.Patches = int.Parse(result.Tables[0].Rows[0][ColumnNames.Patches].ToString());
+                    item.Holes = int.Parse(result.Tables[0].Rows[0][ColumnNames.Holes].ToString());
+                    item.Hinges = int.Parse(result.Tables[0].Rows[0][ColumnNames.Hinges].ToString());
+                    item.CutoutTotal = int.Parse(result.Tables[0].Rows[0][ColumnNames.CutoutTotal].ToString());
+                }
+                if(result.Tables.Count>1)
+                {
+                    item._allCutoutData = new ObservableCollection<CutoutData>();
+                    CutoutData tempItem = null;
+                    for (int rowIndex = 0; rowIndex < result.Tables[1].Rows.Count; rowIndex++)
+                    {
+                        tempItem = new CutoutData();
+                        tempItem.Quantity = int.Parse(result.Tables[1].Rows[rowIndex][ColumnNames.Quantity].ToString());
+                        tempItem.Width = int.Parse(result.Tables[1].Rows[rowIndex][ColumnNames.Width].ToString());
+                        tempItem.Height = int.Parse(result.Tables[1].Rows[rowIndex][ColumnNames.Height].ToString());
+                        tempItem.Price = int.Parse(result.Tables[1].Rows[rowIndex][ColumnNames.Price].ToString());
+                        item._allCutoutData.Add(tempItem);
+                    }
+                }
+                if(result.Tables.Count>2)
+                {
+                    item.GlassType1 = new InsulationDetails();
+                    item.GlassType2 = new InsulationDetails();
+
+                    item.GlassType1.GlassTypeID = int.Parse(result.Tables[2].Rows[0][ColumnNames.GlassType1Index].ToString());
+                    item.GlassType1.ThicknessID = int.Parse(result.Tables[2].Rows[0][ColumnNames.Thickness1Index].ToString());
+                    item.GlassType1.IsTempered = bool.Parse(result.Tables[2].Rows[0][ColumnNames.IsTemp1].ToString());
+                    item.GlassType1.SqFt = int.Parse(result.Tables[2].Rows[0][ColumnNames.Sqft].ToString());
+                    item.GlassType1.Total = int.Parse(result.Tables[2].Rows[0][ColumnNames.Total1].ToString());
+                    item.GlassType2.GlassTypeID = int.Parse(result.Tables[2].Rows[0][ColumnNames.GlassType2Index].ToString());
+                    item.GlassType2.ThicknessID = int.Parse(result.Tables[2].Rows[0][ColumnNames.Thickness2Index].ToString());
+                    item.GlassType2.IsTempered = bool.Parse(result.Tables[2].Rows[0][ColumnNames.IsTemp2].ToString());
+                    item.GlassType2.SqFt = int.Parse(result.Tables[2].Rows[0][ColumnNames.Sqft].ToString());
+                    item.GlassType2.Total = int.Parse(result.Tables[2].Rows[0][ColumnNames.Total2].ToString());
+                    item.MaterialCost = int.Parse(result.Tables[2].Rows[0][ColumnNames.MaterialCost].ToString());
+                    item.InsulationTier= int.Parse(result.Tables[2].Rows[0][ColumnNames.InsulationTier].ToString());
+                    item.InsulationTierTotal = int.Parse(result.Tables[2].Rows[0][ColumnNames.InsulationTierTotal].ToString());
+                    item.InsulationTotal = int.Parse(result.Tables[2].Rows[0][ColumnNames.InsulationTotal].ToString());
+                    item.IsInsulation = bool.Parse(result.Tables[2].Rows[0][ColumnNames.IsInsulate].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return item;
+        }
     }
 }

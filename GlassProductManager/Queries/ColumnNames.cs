@@ -127,5 +127,49 @@ namespace GlassProductManager
         internal const string ModifiedOn = "ModifiedOn";
         internal const string ItemID = "ItemID";
 
+        internal const string SelectedGlassIndex = "SelectedGlassIndex";
+        internal const string SelectedThicknessIndex = "SelectedThicknessIndex";
+        internal const string IsTempered = "IsTempered";
+        internal const string SelectedShapeIndex = "SelectedShapeIndex";
+        internal const string ActualWidth = "ActualWidth";
+        internal const string ActualWidthFraction = "ActualWidthFraction";
+        internal const string ActualHeight = "ActualHeight";
+        internal const string ActualHeightFraction = "ActualHeightFraction";
+        internal const string ActualTotalSqft = "ActualTotalSqft";
+        internal const string ChargedWidth = "ChargedWidth";
+        internal const string ChargedHeight = "ChargedHeight";
+        internal const string ChargedTotal = "ChargedTotal";
+        internal const string StraightTotalPolish = "StraightTotalPolish";
+        internal const string StraightLongSide = "StraightLongSide";
+        internal const string StraightShortSide = "StraightShortSide";
+        internal const string CustomTotalPolish = "CustomTotalPolish";
+        internal const string MiterTotalPolish = "MiterTotalPolish";
+        internal const string MiterLongSide = "MiterLongSide";
+        internal const string MiterShortSide = "MiterShortSide";
+        internal const string Notches = "Notches";
+        internal const string Patches = "Patches";
+        internal const string Holes = "Holes";
+        internal const string Hinges = "Hinges";
+
+        internal const string Width = "Width";
+        internal const string Height = "Height";
+        internal const string Price = "Price";
+
+        internal const string GlassType1Index = "GlassType1Index";
+        internal const string Thickness1Index = "Thickness1Index";
+        internal const string IsTemp1 = "IsTemp1";
+        internal const string Total1 = "Total1";
+        internal const string Total2 = "Total2";
+        internal const string Sqft = "Sqft";
+        internal const string GlassType2Index = "GlassType2Index";
+        internal const string Thickness2Index = "Thickness2Index";
+        internal const string IsTemp2 = "IsTemp2";
+        internal const string MaterialCost = "MaterialCost";
+        internal const string InsulationTier = "InsulationTier";
+        internal const string InsulationTierTotal = "InsulationTierTotal";
+        internal const string InsulationTotal = "InsulationTotal";
+        internal const string IsInsulate = "IsInsulate";
+        internal const string CutoutTotal = "CutoutTotal";
+
     }
 }

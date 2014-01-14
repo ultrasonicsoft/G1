@@ -2118,5 +2118,33 @@ namespace GlassProductManager
         {
             EnableShippingAddressControls(false);
         }
+
+        private void dgQuoteItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
+            if(selectedItem == null)
+            {
+                return;
+            }
+            NewQuoteItemEntity lineItem = BusinessLogic.GetLineItemDetails(txtQuoteNumber.Text, selectedItem.LineID);
+             Dashboard parent = Window.GetWindow(this) as Dashboard;
+             if (parent != null)
+             {
+                 NewQuoteContent content = parent.ucMainContent.CurrentPage as NewQuoteContent;
+                 if (content != null)
+                 {
+                     NewQuoteItemsContent item = content.ucNewQuoteItems.CurrentPage as NewQuoteItemsContent;
+                     if (item != null)
+                     {
+                         if (item.currentItem == null)
+                         {
+                             item.currentItem = new NewQuoteItemEntity();
+                         }
+                         item.currentItem = lineItem;
+                         item.FillLineItemDetails();
+                     }
+                 }
+             }
+        }
     }
 }

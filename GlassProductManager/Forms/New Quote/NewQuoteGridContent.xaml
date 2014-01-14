@@ -157,7 +157,7 @@
                             <Button Name="btnAddNewLineItem" Content="Add Line Item"   Width="100" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Click="btnAddNewLineItem_Click" TabIndex="26" />
                             <Button Name="btnDeleteLineItem" Content="Delete Line Item"  Width="100" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Click="btnDeleteLineItem_Click" TabIndex="27" />
                         </Grid>
-                        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="True" DataGridCell.Selected="DataGrid_GotFocus" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="12" Grid.ColumnSpan="6" SelectionMode="Extended" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgQuoteItems_LostFocus" CellEditEnding="dgQuoteItems_CellEditEnding" TabIndex="28"  >
+                        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="True" DataGridCell.Selected="DataGrid_GotFocus" Name="dgQuoteItems" Margin="0,10,0,0" Grid.Row="12" Grid.ColumnSpan="6" SelectionMode="Extended" ItemsSource="{Binding allQuoteData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" LostFocus="dgQuoteItems_LostFocus" CellEditEnding="dgQuoteItems_CellEditEnding" TabIndex="28" SelectionChanged="dgQuoteItems_SelectionChanged"  >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Line #" Binding="{Binding LineID}" Width="65" SortDirection="Ascending"/>
                                 <!--<DataGridTextColumn.CellStyle>

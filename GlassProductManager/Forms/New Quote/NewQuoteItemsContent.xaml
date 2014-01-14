@@ -287,7 +287,7 @@
                                 <Label Content="Total" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="4" />
                                 <TextBox  Name="txtGlassType1Total" IsEnabled="False" Text="0" HorizontalAlignment="Left" Height="23" Width="50" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" IsReadOnly="True" />
 
-                                <Label Content="Glass Type 1"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
+                                <Label Content="Glass Type 2"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
                                 <ComboBox Name="cmbGlassType2" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Grid.Row="3" Grid.Column="0" SelectionChanged="cmbGlassType2_SelectionChanged" TabIndex="86" />
                                 <Label Content="Thickness" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" />
                                 <ComboBox Name="cmbThickness2" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70" Grid.Row="3" Grid.Column="1" SelectionChanged="cmbThickness2_SelectionChanged" TabIndex="87" />

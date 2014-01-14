@@ -319,6 +319,7 @@ namespace GlassProductManager
             }
         }
 
+
         public bool IsPatches
         {
             get { return _isPatches; }
