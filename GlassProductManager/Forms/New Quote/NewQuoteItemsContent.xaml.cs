@@ -878,6 +878,11 @@ namespace GlassProductManager
         {
             try
             {
+                if(currentItem.Quantity <=0)
+                {
+                    Helper.ShowErrorMessageBox("Quantity can not be zero!");
+                    return;
+                }
                 Dashboard parent = Window.GetWindow(this) as Dashboard;
                 if (parent != null)
                 {
