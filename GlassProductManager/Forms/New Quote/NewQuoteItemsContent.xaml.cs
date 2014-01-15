@@ -27,7 +27,7 @@ namespace GlassProductManager
     /// </summary>
     public partial class NewQuoteItemsContent : UserControl
     {
-        internal NewQuoteItemEntity currentItem = null;
+        public NewQuoteItemEntity currentItem = null;
         private bool isReset = false;
         private string oldValue = string.Empty;
 

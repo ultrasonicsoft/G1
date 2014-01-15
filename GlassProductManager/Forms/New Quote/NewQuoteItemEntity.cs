@@ -8,7 +8,7 @@ using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
-    internal class NewQuoteItemEntity
+    public class NewQuoteItemEntity
     {
         private double _currentTotal = 0;
 

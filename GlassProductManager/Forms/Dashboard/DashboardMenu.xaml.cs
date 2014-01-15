@@ -87,7 +87,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-          
+
         }
 
         internal void ShowCurrentPage(System.Windows.Controls.Primitives.ToggleButton selectedOption, UserControl currentPage = null)
@@ -101,11 +101,15 @@ namespace GlassProductManager
 
                     if (newQuote != null && selectedOption != btnCreateNewQuote && IsIndirectCall == false)
                     {
-                        var result = Helper.ShowQuestionMessageBox("All your current Quote change will be lost. Are you sure to leave Quote page?");
-                        if (result != MessageBoxResult.Yes)
+                        NewQuoteGridContent gridContent = newQuote.ucNewQuoteGrid.CurrentPage as NewQuoteGridContent;
+                        if (gridContent != null && gridContent._allQuoteData.Count > 0)
                         {
-                            selectedOption.IsChecked = false;
-                            return;
+                            var result = Helper.ShowQuestionMessageBox("All your current Quote change will be lost. Are you sure to leave Quote page?");
+                            if (result != MessageBoxResult.Yes)
+                            {
+                                selectedOption.IsChecked = false;
+                                return;
+                            }
                         }
                     }
                 }
@@ -134,7 +138,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            
+
         }
 
         private void btnHome_Checked(object sender, RoutedEventArgs e)
@@ -199,7 +203,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void btnBackupDatabase_Checked(object sender, RoutedEventArgs e)
@@ -214,8 +218,8 @@ namespace GlassProductManager
             manager.SetupBackupFolder(dbBackupFolder);
             manager.BackupDatabase(backupFileName, Constants.DatabaseServerName, Constants.DatabaseName);
             string message = "Database backup done! Do you want to open backup folder?";
-            var result = Helper.ShowQuestionMessageBox(message, "Case Control System",MessageBoxButton.YesNo);
-            
+            var result = Helper.ShowQuestionMessageBox(message, "Case Control System", MessageBoxButton.YesNo);
+
             if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
             {
                 System.Diagnostics.Process.Start(dbBackupFolder);

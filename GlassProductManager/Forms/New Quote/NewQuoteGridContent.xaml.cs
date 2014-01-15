@@ -30,7 +30,7 @@ namespace GlassProductManager
     /// </summary>
     public partial class NewQuoteGridContent : UserControl
     {
-        private ObservableCollection<QuoteGridEntity> _allQuoteData = new ObservableCollection<QuoteGridEntity>();
+        public ObservableCollection<QuoteGridEntity> _allQuoteData = new ObservableCollection<QuoteGridEntity>();
 
         public ObservableCollection<QuoteGridEntity> allQuoteData
         {
