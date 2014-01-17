@@ -4,7 +4,8 @@
 4. DueDate = Requested date
 5. Barcode printing - Print All and Print Selected
 
-For IIS 8.5, Go to Application Pool -> Select IIS APPPOOL\DefaultAppPool -> Change Identity to Network Service -> Give full right on Virtual directory to Network Service
+For IIS 8.5, Go to Application Pool -> Select IIS APPPOOL\DefaultAppPool -> Change Identity to Network Service -
+> Give full right on Virtual directory to Network Service
 In SQL Server, Create new login for Network service -> make it dbowner for GlassManager
 In Windows feature -> Select WCF for IIS
 

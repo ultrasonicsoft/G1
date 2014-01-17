@@ -347,9 +347,9 @@
     <Content Include="Database\3 - CustomerDefaultData.sql" />
     <Content Include="Database\DeleteCustomerData.sql" />
     <Content Include="Database\GlassManagerDB.sql" />
-    <Resource Include="logo.jpg">
+    <None Include="logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </None>
     <Resource Include="Images\validate.png" />
   </ItemGroup>
   <ItemGroup />
