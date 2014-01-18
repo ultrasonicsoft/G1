@@ -2470,5 +2470,83 @@ namespace GlassProductManager
             }
             return item;
         }
+
+        internal static ObservableCollection<BarcodeLabel> GetPrintJobQueue()
+        {
+            ObservableCollection<BarcodeLabel> printJobqueue = null;
+            try
+            {
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetPrintJobQueue);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return printJobqueue;
+
+                printJobqueue = new ObservableCollection<BarcodeLabel>();
+                BarcodeLabel item = new BarcodeLabel();
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    item = new BarcodeLabel();
+                    item.ID = int.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.ID].ToString());
+                    item.LineID = int.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.LineID].ToString());
+                    item.ItemID = int.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.ItemID].ToString());
+                    item.WSNumber = result.Tables[0].Rows[rowIndex][ColumnNames.WSNumber].ToString();
+
+                    printJobqueue.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return printJobqueue;
+        }
+
+        internal static BarcodeEntity GetSpecificBarcodeDetail(string wsNumber, int lineID)
+        {
+            BarcodeEntity barcode = null;
+            try
+            {
+                SqlParameter pWsNumber = new SqlParameter();
+                pWsNumber.ParameterName = "wsNumber";
+                pWsNumber.Value = wsNumber;
+
+                SqlParameter pLineID = new SqlParameter();
+                pLineID.ParameterName = "lineID";
+                pLineID.Value = lineID;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetSpecificBarcodeDetail, pWsNumber, pLineID);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return barcode;
+
+                barcode = new BarcodeEntity();
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    barcode.LastName = result.Tables[0].Rows[0][ColumnNames.LastName].ToString();
+                    barcode.FirstName = result.Tables[0].Rows[0][ColumnNames.FirstName].ToString();
+                    barcode.SalesOrder = result.Tables[0].Rows[0][ColumnNames.SONumber].ToString();
+                    barcode.Worksheet = result.Tables[0].Rows[0][ColumnNames.WSNumber].ToString();
+                    barcode.OrderDate = result.Tables[0].Rows[0][ColumnNames.CreatedOn].ToString();
+                    barcode.CustomerPO = result.Tables[0].Rows[0][ColumnNames.CustomerPO].ToString();
+                    barcode.Description = result.Tables[0].Rows[0][ColumnNames.Description].ToString();
+                    barcode.SqFt = result.Tables[0].Rows[0][ColumnNames.SqFt].ToString();
+                    barcode.Size = result.Tables[0].Rows[0][ColumnNames.Dimension].ToString();
+                    barcode.Logo = result.Tables[0].Rows[0][ColumnNames.IsLogo].ToString() == "False" ? "No" : "Yes";
+                    barcode.Quantity = result.Tables[0].Rows[0][ColumnNames.Quantity].ToString();
+                    barcode.Line = result.Tables[0].Rows[0][ColumnNames.LineID].ToString();
+                    barcode.DueDate = result.Tables[0].Rows[0][ColumnNames.RequestedShipDate].ToString();
+                    barcode.Shape = result.Tables[0].Rows[0][ColumnNames.Shape].ToString();
+                    if (barcode.Shape.Equals("Quadrilateral"))
+                    {
+                        barcode.Shape = "Square";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return barcode;
+        }
     }
 }

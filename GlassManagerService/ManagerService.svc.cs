@@ -64,7 +64,14 @@ namespace GlassProductManager
 
         public void PrintBarcodeLabel(BarcodeLabel item)
         {
-            int i = 0;
+            try
+            {
+                BusinessLogic.AddJobToPrintQueue(item);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
             //GlassProductManager.BarcodePrinter.PrintLineItem(item.WSNumber, item.LineID, item.ItemID);
         }
     }

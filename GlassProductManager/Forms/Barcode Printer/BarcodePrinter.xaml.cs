@@ -30,11 +30,18 @@ namespace GlassProductManager
     public partial class BarcodePrinter : UserControl
     {
         private ObservableCollection<QuoteGridEntity> _allQuoteData = new ObservableCollection<QuoteGridEntity>();
+        private ObservableCollection<BarcodeLabel> _allPrintQueueJobs = new ObservableCollection<BarcodeLabel>();
 
         public ObservableCollection<QuoteGridEntity> allQuoteData
         {
             get { return _allQuoteData; }
             set { _allQuoteData = value; }
+        }
+
+        public ObservableCollection<BarcodeLabel> allPrintQueueJobs
+        {
+            get { return _allPrintQueueJobs; }
+            set { _allPrintQueueJobs = value; }
         }
 
         public BarcodePrinter()
@@ -65,6 +72,21 @@ namespace GlassProductManager
             FillSmartSearchData();
 
             FillAllWorksheetNumbers();
+
+            FillPrintJobQueue();
+        }
+
+        private void FillPrintJobQueue()
+        {
+            try
+            {
+                var result = BusinessLogic.GetPrintJobQueue();
+                dgPrintQueue.ItemsSource = result;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void FillAllWorksheetNumbers()
@@ -336,69 +358,7 @@ namespace GlassProductManager
                 int currentLineItemQuantity = int.Parse(barcode.Quantity);
                 for (int index = 0; index < currentLineItemQuantity; index++)
                 {
-                    // Open a label format specifying the default printer 
-                    LabelFormatDocument btFormat = btEngine.Documents.Open(fileName);
-
-                    if (btFormat.SubStrings[BarCodeConstants.CustomerName] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.CustomerName].Value = barcode.LastName + " " + barcode.FirstName;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.CurrentQuantity] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.CurrentQuantity].Value = (index + 1).ToString();
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.TotalQuantity] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.TotalQuantity].Value = barcode.Quantity;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.SalesOrder] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.SalesOrder].Value = barcode.SalesOrder;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.OrderDate] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.OrderDate].Value = barcode.OrderDate;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.CustomerPO] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.CustomerPO].Value = barcode.CustomerPO;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.Worksheet] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.Worksheet].Value = barcode.Worksheet;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.Size] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.Size].Value = barcode.Size;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.SQFT] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.SQFT].Value = barcode.SqFt;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.Logo] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.Logo].Value = barcode.Logo;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.Description] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.Description].Value = barcode.Description;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.BarcodeItem] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = txtWSNumber.Text + "-" + barcode.Line + "-" + (index + 1).ToString();
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.DueDate] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.DueDate].Value = barcode.DueDate;
-                    }
-                    if (btFormat.SubStrings[BarCodeConstants.GlassShape] != null)
-                    {
-                        btFormat.SubStrings[BarCodeConstants.GlassShape].Value = barcode.Shape;
-                    }
-                    string printerName = cmbPrinterSelection.SelectedValue.ToString();
-                    btFormat = btEngine.Documents.Open(fileName, printerName);
-                    // Print the label 
-                    result = btFormat.Print();
+                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, index);
                 }
             }
             catch (Exception ex)
@@ -408,9 +368,112 @@ namespace GlassProductManager
             return result;
         }
 
-        public static void PrintLineItem(string wsNumber, int lineID, int itemID)
+        private Result PrintIndividualLineItem(Engine btEngine, string fileName, BarcodeEntity barcode, Result result, int itemID)
         {
-            int i = 0;
+            // Open a label format specifying the default printer 
+            LabelFormatDocument btFormat = btEngine.Documents.Open(fileName);
+
+            if (btFormat.SubStrings[BarCodeConstants.CustomerName] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.CustomerName].Value = barcode.LastName + " " + barcode.FirstName;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.CurrentQuantity] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.CurrentQuantity].Value = (itemID + 1).ToString();
+            }
+            if (btFormat.SubStrings[BarCodeConstants.TotalQuantity] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.TotalQuantity].Value = barcode.Quantity;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.SalesOrder] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.SalesOrder].Value = barcode.SalesOrder;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.OrderDate] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.OrderDate].Value = barcode.OrderDate;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.CustomerPO] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.CustomerPO].Value = barcode.CustomerPO;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.Worksheet] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.Worksheet].Value = barcode.Worksheet;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.Size] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.Size].Value = barcode.Size;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.SQFT] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.SQFT].Value = barcode.SqFt;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.Logo] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.Logo].Value = barcode.Logo;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.Description] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.Description].Value = barcode.Description;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.BarcodeItem] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = txtWSNumber.Text + "-" + barcode.Line + "-" + (itemID + 1).ToString();
+            }
+            if (btFormat.SubStrings[BarCodeConstants.DueDate] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.DueDate].Value = barcode.DueDate;
+            }
+            if (btFormat.SubStrings[BarCodeConstants.GlassShape] != null)
+            {
+                btFormat.SubStrings[BarCodeConstants.GlassShape].Value = barcode.Shape;
+            }
+            string printerName = cmbPrinterSelection.SelectedValue.ToString();
+            btFormat = btEngine.Documents.Open(fileName, printerName);
+            // Print the label 
+            result = btFormat.Print();
+            return result;
+        }
+
+        public  void PrintLineItem(string wsNumber, int lineID, int itemID)
+        {
+            // Initialize and start a new engine 
+            try
+            {
+                BarcodeEntity barcode = BusinessLogic.GetSpecificBarcodeDetail(wsNumber, lineID);
+
+                if (barcode == null)
+                {
+                    Helper.ShowErrorMessageBox("No data found for printing barcode!");
+                    return;
+                }
+
+                using (Engine btEngine = new Engine())
+                {
+                    btEngine.Start();
+
+                    //TODO: corret logic
+                    Result result = Result.Failure;
+
+                    string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\" + BarCodeConstants.BarcodeTemplateFileName;
+                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, itemID);
+
+                    if (result == Result.Success)
+                    {
+                        Helper.ShowInformationMessageBox("Barcoded printing successfully!");
+                    }
+                    else
+                    {
+                        Helper.ShowInformationMessageBox("Barcoded printing failed!");
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
 
         private void cmbWorksheetNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -427,27 +490,48 @@ namespace GlassProductManager
         {
             try
             {
-                using (Engine btEngine = new Engine())
+                // Open a label format specifying a different printer 
+                if (cmbPrinterSelection.SelectedValue == null)
                 {
-                    btEngine.Start();
-                    string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\" + BarCodeConstants.BarcodeTemplateFileName;
+                    Helper.ShowErrorMessageBox("Please select printer!");
+                    return;
+                }
 
-                    List<BarcodeEntity> allBarcodeData = BusinessLogic.GetBarcodeDetails(txtQuoteNumber.Text);
-                    if (allBarcodeData == null)
+                if (cbPrintQueue.IsChecked.Value)
+                {
+                    // Print queue barcode
+                    BarcodeLabel selectedJob = dgPrintQueue.SelectedItem as BarcodeLabel;
+                    if(selectedJob == null)
                     {
-                        Helper.ShowErrorMessageBox("No data found for printing barcode!");
                         return;
                     }
-                    foreach (QuoteGridEntity item in dgQuoteItems.SelectedItems)
+                    PrintLineItem(selectedJob.WSNumber, selectedJob.LineID, selectedJob.ItemID-1);
+                }
+                else
+                {
+                    // Print selected worksheet barcodes
+                    using (Engine btEngine = new Engine())
                     {
-                        if (item != null)
+                        btEngine.Start();
+                        string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\" + BarCodeConstants.BarcodeTemplateFileName;
+
+                        List<BarcodeEntity> allBarcodeData = BusinessLogic.GetBarcodeDetails(txtQuoteNumber.Text);
+                        if (allBarcodeData == null)
                         {
-                            BarcodeEntity barcode = allBarcodeData.FirstOrDefault(x => int.Parse(x.Line) == item.LineID);
-                            if (barcode == null)
+                            Helper.ShowErrorMessageBox("No data found for printing barcode!");
+                            return;
+                        }
+                        foreach (QuoteGridEntity item in dgQuoteItems.SelectedItems)
+                        {
+                            if (item != null)
                             {
-                                continue;
+                                BarcodeEntity barcode = allBarcodeData.FirstOrDefault(x => int.Parse(x.Line) == item.LineID);
+                                if (barcode == null)
+                                {
+                                    continue;
+                                }
+                                PrintLineItem(btEngine, fileName, barcode);
                             }
-                            PrintLineItem(btEngine, fileName, barcode);
                         }
                     }
                 }
@@ -456,6 +540,18 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
+        }
+
+        private void cbPrintQueue_Checked(object sender, RoutedEventArgs e)
+        {
+            dgPrintQueue.IsEnabled = true;
+            dgQuoteItems.IsEnabled = false;
+        }
+
+        private void cbPrintQueue_Unchecked(object sender, RoutedEventArgs e)
+        {
+            dgQuoteItems.IsEnabled = false;
+            dgPrintQueue.IsEnabled = true;
         }
     }
 }

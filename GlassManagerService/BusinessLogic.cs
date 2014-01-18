@@ -106,5 +106,29 @@ namespace GlassProductManager
                 throw;
             }
         }
+
+        internal static void AddJobToPrintQueue(BarcodeLabel item)
+        {
+            try
+            {
+                 SqlParameter pWSNumber = new SqlParameter();
+                pWSNumber.ParameterName = "WSNumber";
+                pWSNumber.Value = item.WSNumber;
+
+                SqlParameter pLineID = new SqlParameter();
+                pLineID.ParameterName = "lineID";
+                pLineID.Value = item.LineID;
+
+                SqlParameter pItemID = new SqlParameter();
+                pItemID.ParameterName = "itemID";
+                pItemID.Value = item.ItemID;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddJobToPrintQueue, pWSNumber, pLineID, pItemID);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

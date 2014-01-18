@@ -89,5 +89,7 @@ namespace GlassProductManager
         internal const string InsertLineCutoutDetails = "[InsertLineCutoutDetails]";
         internal const string InsertLineItemInsulationDetails = "[InsertLineItemInsulationDetails]";
         internal const string GetLineItemInformation = "[GetLineItemInformation]";
+        internal const string GetPrintJobQueue = "[GetPrintJobQueue]";
+        internal const string GetSpecificBarcodeDetail = "[GetSpecificBarcodeDetail]";
     }
 }

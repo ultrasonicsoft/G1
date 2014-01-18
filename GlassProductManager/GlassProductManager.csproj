@@ -88,6 +88,7 @@
     <Compile Include="Classes\InvoicePaymentEntity.cs" />
     <Compile Include="Classes\BarcodeEntity.cs" />
     <Compile Include="Classes\PdfPrintingSetting.cs" />
+    <Compile Include="Classes\BarcodeLabel.cs" />
     <Compile Include="Classes\WorksheetLineItemEntity.cs" />
     <Compile Include="Classes\WorksheetEntity.cs" />
     <Compile Include="Classes\SaleOrderEntity.cs" />
