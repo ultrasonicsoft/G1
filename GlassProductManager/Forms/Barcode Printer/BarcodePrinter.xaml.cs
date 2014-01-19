@@ -379,7 +379,7 @@ namespace GlassProductManager
                 int currentLineItemQuantity = int.Parse(barcode.Quantity);
                 for (int index = 0; index < currentLineItemQuantity; index++)
                 {
-                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, index);
+                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, index,txtWSNumber.Text);
                 }
             }
             catch (Exception ex)
@@ -389,7 +389,7 @@ namespace GlassProductManager
             return result;
         }
 
-        private Result PrintIndividualLineItem(Engine btEngine, string fileName, BarcodeEntity barcode, Result result, int itemID)
+        private Result PrintIndividualLineItem(Engine btEngine, string fileName, BarcodeEntity barcode, Result result, int itemID,string wsNumber)
         {
             // Open a label format specifying the default printer 
             LabelFormatDocument btFormat = btEngine.Documents.Open(fileName);
@@ -440,7 +440,7 @@ namespace GlassProductManager
             }
             if (btFormat.SubStrings[BarCodeConstants.BarcodeItem] != null)
             {
-                btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = txtWSNumber.Text + "-" + barcode.Line + "-" + (itemID + 1).ToString();
+                btFormat.SubStrings[BarCodeConstants.BarcodeItem].Value = wsNumber + "-" + barcode.Line + "-" + (itemID + 1).ToString();
             }
             if (btFormat.SubStrings[BarCodeConstants.DueDate] != null)
             {
@@ -478,7 +478,7 @@ namespace GlassProductManager
                     Result result = Result.Failure;
 
                     string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\" + BarCodeConstants.BarcodeTemplateFileName;
-                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, itemID);
+                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, itemID,barcode.Worksheet);
 
                     if (result == Result.Success)
                     {
