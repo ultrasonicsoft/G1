@@ -343,8 +343,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="AppLogo.jpg" />
-    <Content Include="Database\1 - EmptyTables.sql" />
-    <Content Include="Database\2 - StoredProcedures.sql" />
+    <Content Include="Database\1 - EmptyTables and SP.sql" />
     <Content Include="Database\3 - CustomerDefaultData.sql" />
     <Content Include="Database\DeleteCustomerData.sql" />
     <Content Include="Database\GlassManagerDB.sql" />
