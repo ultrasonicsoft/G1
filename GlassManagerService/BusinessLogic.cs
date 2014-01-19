@@ -115,6 +115,10 @@ namespace GlassProductManager
                 pWSNumber.ParameterName = "WSNumber";
                 pWSNumber.Value = item.WSNumber;
 
+                SqlParameter pUserName = new SqlParameter();
+                pUserName.ParameterName = "userName";
+                pUserName.Value = item.UserName;
+
                 SqlParameter pLineID = new SqlParameter();
                 pLineID.ParameterName = "lineID";
                 pLineID.Value = item.LineID;
@@ -123,7 +127,7 @@ namespace GlassProductManager
                 pItemID.ParameterName = "itemID";
                 pItemID.Value = item.ItemID;
 
-                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddJobToPrintQueue, pWSNumber, pLineID, pItemID);
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.AddJobToPrintQueue, pWSNumber, pLineID, pItemID, pUserName);
             }
             catch (Exception ex)
             {

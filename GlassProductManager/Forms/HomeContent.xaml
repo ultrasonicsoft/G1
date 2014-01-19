@@ -6,7 +6,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Label Content="Glass Product Manager" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Label Name="lblNotification" Grid.Column="0"  Content="[Notification]" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Foreground="Yellow"/>
+        <Button Name="btnOpenNotification" Grid.Column="1" Width="120" Height="40" Margin="10,0,0,0" Content="Open Notification" HorizontalAlignment="Left" VerticalAlignment="Center" Click="btnOpenNotification_Click"/>
     </Grid>
 </UserControl>

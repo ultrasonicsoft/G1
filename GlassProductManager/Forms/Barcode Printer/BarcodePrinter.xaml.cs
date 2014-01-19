@@ -299,19 +299,40 @@ namespace GlassProductManager
                     return;
                 }
 
-                List<BarcodeEntity> barcode = BusinessLogic.GetBarcodeDetails(txtQuoteNumber.Text);
-
-                if (barcode == null)
+                if (cbPrintQueue.IsChecked.Value)
                 {
-                    Helper.ShowErrorMessageBox("No data found for printing barcode!");
-                    return;
+                    PrintAllLabelFromQueue();
                 }
-                PrintBarcode(barcode);
+                else
+                {
+                    List<BarcodeEntity> barcode = BusinessLogic.GetBarcodeDetails(txtQuoteNumber.Text);
+
+                    if (barcode == null)
+                    {
+                        Helper.ShowErrorMessageBox("No data found for printing barcode!");
+                        return;
+                    }
+                    PrintBarcode(barcode);
+                }
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
             }
+        }
+
+        private void PrintAllLabelFromQueue()
+        {
+            // Print queue barcode
+            foreach (BarcodeLabel item in dgPrintQueue.Items)
+            {
+                if (item == null)
+                {
+                    return;
+                }
+                PrintLineItemFromQueue(item.ID, item.WSNumber, item.LineID, item.ItemID - 1);
+            }
+            Helper.ShowInformationMessageBox("All labels have been printed successfully!");
         }
 
         private void PrintBarcode(List<BarcodeEntity> allBarcodeData)
@@ -436,7 +457,7 @@ namespace GlassProductManager
             return result;
         }
 
-        public  void PrintLineItem(string wsNumber, int lineID, int itemID)
+        public  void PrintLineItemFromQueue(int id, string wsNumber, int lineID, int itemID)
         {
             // Initialize and start a new engine 
             try
@@ -461,7 +482,9 @@ namespace GlassProductManager
 
                     if (result == Result.Success)
                     {
-                        Helper.ShowInformationMessageBox("Barcoded printing successfully!");
+                        BusinessLogic.RemoveLabelFromPrintQueue(id);
+                        FillPrintJobQueue();
+                        //Helper.ShowInformationMessageBox("Barcoded printing successfully!");
                     }
                     else
                     {
@@ -505,7 +528,8 @@ namespace GlassProductManager
                     {
                         return;
                     }
-                    PrintLineItem(selectedJob.WSNumber, selectedJob.LineID, selectedJob.ItemID-1);
+                    PrintLineItemFromQueue(selectedJob.ID, selectedJob.WSNumber, selectedJob.LineID, selectedJob.ItemID-1);
+                    Helper.ShowInformationMessageBox("Label has been printed successfully!");
                 }
                 else
                 {

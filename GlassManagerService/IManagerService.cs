@@ -204,6 +204,7 @@ namespace GlassProductManager
     public class BarcodeLabel
     {
         string wsNumber;
+        string userName;
         int lineID;
         int itemID;
 
@@ -212,6 +213,13 @@ namespace GlassProductManager
         {
             get { return wsNumber; }
             set { wsNumber = value; }
+        }
+
+        [DataMember(Name = "UserName")]
+        public string UserName
+        {
+            get { return userName; }
+            set { userName = value; }
         }
 
         [DataMember(Name = "LineID")]

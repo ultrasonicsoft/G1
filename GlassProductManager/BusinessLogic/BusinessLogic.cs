@@ -2490,6 +2490,7 @@ namespace GlassProductManager
                     item.LineID = int.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.LineID].ToString());
                     item.ItemID = int.Parse(result.Tables[0].Rows[rowIndex][ColumnNames.ItemID].ToString());
                     item.WSNumber = result.Tables[0].Rows[rowIndex][ColumnNames.WSNumber].ToString();
+                    item.UserName = result.Tables[0].Rows[rowIndex][ColumnNames.UserName].ToString();
 
                     printJobqueue.Add(item);
                 }
@@ -2547,6 +2548,41 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
             return barcode;
+        }
+
+        internal static int GetPrintQueueNotificationCount()
+        {
+            int printQueueCount = 0;
+            try
+            {
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetPrintQueueNotificationCount);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return printQueueCount;
+
+                printQueueCount = int.Parse(result.Tables[0].Rows[0][ColumnNames.TotalCount].ToString());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return printQueueCount;
+        }
+
+        internal static void RemoveLabelFromPrintQueue(int id)
+        {
+            try
+            {
+                SqlParameter pID = new SqlParameter();
+                pID.ParameterName = "id";
+                pID.Value = id;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.RemoveLabelFromPrintQueue, pID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace GlassProductManager
         private int _itemID;
         private int _id;
         private string _wsNumber;
+        private string _userName;
       
 
         public string WSNumber
@@ -21,6 +22,15 @@ namespace GlassProductManager
             get { return _wsNumber; }
             set { _wsNumber = value;
             OnPropertyChanged("WSNumber");
+            }
+        }
+        public string UserName
+        {
+            get { return _userName; }
+            set
+            {
+                _userName = value;
+                OnPropertyChanged("UserName");
             }
         }
 

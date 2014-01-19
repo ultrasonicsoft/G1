@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ultrasonicsoft.Products;
 
 namespace GlassProductManager
 {
@@ -23,6 +24,33 @@ namespace GlassProductManager
         public HomeContent()
         {
             InitializeComponent();
+
+            GetPrintQueueNotificationCount();
+        }
+
+        private void GetPrintQueueNotificationCount()
+        {
+            int result = BusinessLogic.GetPrintQueueNotificationCount();
+            lblNotification.Content = string.Format("Total label printing requests in queue: {0}", result);
+        }
+
+        private void btnOpenNotification_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Dashboard parent = Window.GetWindow(this) as Dashboard;
+                if (parent != null)
+                {
+                    DashboardMenu sideMenu = parent.ucDashboardMenu.CurrentPage as DashboardMenu;
+                    DashboardHelper.ChangeDashboardSelection(parent, sideMenu.btnBarcodePrinter);
+                    BarcodePrinter barcodePrinter = new BarcodePrinter();
+                    parent.ucMainContent.ShowPage(barcodePrinter);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
         }
     }
 }

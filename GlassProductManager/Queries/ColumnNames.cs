@@ -170,6 +170,7 @@ namespace GlassProductManager
         internal const string InsulationTotal = "InsulationTotal";
         internal const string IsInsulate = "IsInsulate";
         internal const string CutoutTotal = "CutoutTotal";
+        internal const string TotalCount = "TotalCount";
 
     }
 }
