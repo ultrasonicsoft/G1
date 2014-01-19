@@ -11,6 +11,7 @@ namespace GlassProductManager
         internal const string GetWorksheetItemDetails = "GetWorksheetItemDetails";
         internal const string UpdateGlassItemStatus = "UpdateGlassItemStatus";
         internal const string AddJobToPrintQueue = "AddJobToPrintQueue";
+        internal const string IsValidWorksheetLineItem = "IsValidWorksheetLineItem";
 
     }
 }

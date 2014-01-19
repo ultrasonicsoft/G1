@@ -130,5 +130,37 @@ namespace GlassProductManager
                 throw;
             }
         }
+
+        internal static bool IsValidWorksheetLineItem(BarcodeLabel item)
+        {
+            bool isValidWSItem = false;
+            try
+            {
+                SqlParameter pWSNumber = new SqlParameter();
+                pWSNumber.ParameterName = "WSNumber";
+                pWSNumber.Value = item.WSNumber;
+
+                SqlParameter pLineID = new SqlParameter();
+                pLineID.ParameterName = "lineID";
+                pLineID.Value = item.LineID;
+
+                SqlParameter pItemID = new SqlParameter();
+                pItemID.ParameterName = "itemID";
+                pItemID.Value = item.ItemID;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.IsValidWorksheetLineItem, pWSNumber, pLineID, pItemID);
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                {
+                    return isValidWSItem;
+                }
+
+                isValidWSItem = bool.Parse(result.Tables[0].Rows[0][ColumnNames.Status].ToString());
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return isValidWSItem;
+        }
     }
 }

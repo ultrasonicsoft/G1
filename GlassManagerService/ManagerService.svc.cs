@@ -62,16 +62,22 @@ namespace GlassProductManager
             BusinessLogic.UpdateGlassItemStatus(item.ID.ToString(), item.Status);
         }
 
-        public void PrintBarcodeLabel(BarcodeLabel item)
+        public bool PrintBarcodeLabel(BarcodeLabel item)
         {
+            bool isValidItem = false;
             try
             {
-                BusinessLogic.AddJobToPrintQueue(item);
+                isValidItem = BusinessLogic.IsValidWorksheetLineItem(item);
+                if (isValidItem)
+                {
+                    BusinessLogic.AddJobToPrintQueue(item);
+                }
             }
             catch (Exception ex)
             {
                 throw;
             }
+            return isValidItem;
             //GlassProductManager.BarcodePrinter.PrintLineItem(item.WSNumber, item.LineID, item.ItemID);
         }
     }

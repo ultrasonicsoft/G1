@@ -51,7 +51,7 @@ namespace GlassProductManager
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
           )]
-        void PrintBarcodeLabel(BarcodeLabel item);
+        bool PrintBarcodeLabel(BarcodeLabel item);
     }
 
 
