@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
         <Expander Grid.Row="0" Margin="0,10,0,0" Header="Edit Price Settings" DockPanel.Dock="Top" Foreground="White"
                           VerticalAlignment="Top"  Name="expdEditSettings"  
-                          FontWeight="Bold" FontSize="13" IsExpanded="True" Expanded="expdEditSettings_Expanded">
+                          FontWeight="Bold" FontSize="13" IsExpanded="True" Expanded="expdEditSettings_Expanded" Collapsed="expdEditSettings_Collapsed">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -233,7 +233,7 @@
         </Expander>
         <Expander Grid.Row="1" Margin="0,10,0,0" Header="Price Table" DockPanel.Dock="Top" Foreground="White"
                           VerticalAlignment="Top"  Name="expdShowPriceTable"  
-                          FontWeight="Bold" FontSize="13" Expanded="expdShowPriceTable_Expanded" >
+                          FontWeight="Bold" FontSize="13" Expanded="expdShowPriceTable_Expanded" Collapsed="expdShowPriceTable_Collapsed" >
 
             <DataGrid AutoGenerateColumns="False"  IsReadOnly="True" Name="dgPriceTable" Margin="0,10,0,0" Grid.Row="11" Grid.ColumnSpan="6" SelectionMode="Single" ItemsSource="{Binding allPriceTableData, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"  >
                 <DataGrid.Columns>

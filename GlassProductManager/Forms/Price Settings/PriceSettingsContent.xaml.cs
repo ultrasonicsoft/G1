@@ -893,7 +893,12 @@ namespace GlassProductManager
                 return;
             expdEditSettings.IsExpanded = false;
         }
-
+        private void expdShowPriceTable_Collapsed(object sender, RoutedEventArgs e)
+        {
+            if (expdEditSettings == null)
+                return;
+            expdEditSettings.IsExpanded = true;
+        }
         private void expdEditSettings_Expanded(object sender, RoutedEventArgs e)
         {
             if (expdShowPriceTable == null)
@@ -901,6 +906,15 @@ namespace GlassProductManager
             expdShowPriceTable.IsExpanded = false;
 
         }
+
+        private void expdEditSettings_Collapsed(object sender, RoutedEventArgs e)
+        {
+            if (expdShowPriceTable == null)
+                return;
+            expdShowPriceTable.IsExpanded = true;
+        }
+
+       
 
     }
 }
