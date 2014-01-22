@@ -93,5 +93,6 @@ namespace GlassProductManager
         internal const string GetSpecificBarcodeDetail = "[GetSpecificBarcodeDetail]";
         internal const string GetPrintQueueNotificationCount = "[GetPrintQueueNotificationCount]";
         internal const string RemoveLabelFromPrintQueue = "[RemoveLabelFromPrintQueue]";
+        internal const string GetAllPriceData = "[GetAllPriceData]";
     }
 }

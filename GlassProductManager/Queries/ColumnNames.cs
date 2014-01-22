@@ -172,5 +172,13 @@ namespace GlassProductManager
         internal const string CutoutTotal = "CutoutTotal";
         internal const string TotalCount = "TotalCount";
 
+        internal const string GlassType = "GlassType";
+        internal const string Thickness = "Thickness";
+        internal const string CutSQFT = "CutSQFT";
+        internal const string TemperedSQFT = "TemperedSQFT";
+        internal const string PolishStraight = "PolishStraight";
+        internal const string PolishShape = "PolishShape";
+        internal const string MiterRate = "MiterRate";
+
     }
 }

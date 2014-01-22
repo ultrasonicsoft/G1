@@ -84,6 +84,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\PriceEntity.cs" />
     <Compile Include="Classes\InvoiceEntity.cs" />
     <Compile Include="Classes\InvoicePaymentEntity.cs" />
     <Compile Include="Classes\BarcodeEntity.cs" />

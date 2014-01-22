@@ -672,9 +672,9 @@ namespace GlassProductManager
 
                     // Save line item details
                     currentLineItem = allLineItems[counter];
-                    
+
                     SaveLineItemDetails(quoteNumber, item.LineID, currentLineItem);
-                    
+
                     SaveLineItemCutoutDetails(quoteNumber, item.LineID, currentLineItem);
 
                     SaveLineItemInsulationDetails(quoteNumber, item.LineID, currentLineItem);
@@ -872,13 +872,13 @@ namespace GlassProductManager
                 tempParameter = new SqlParameter() { ParameterName = "MaterialCost", Value = currentLineItem.MaterialCost };
                 allParameters.Add(tempParameter);
 
-                 tempParameter = new SqlParameter() { ParameterName = "InsulationTier", Value = currentLineItem.InsulationTier };
+                tempParameter = new SqlParameter() { ParameterName = "InsulationTier", Value = currentLineItem.InsulationTier };
                 allParameters.Add(tempParameter);
 
-                 tempParameter = new SqlParameter() { ParameterName = "InsulationTierTotal", Value = currentLineItem.InsulationTierTotal };
+                tempParameter = new SqlParameter() { ParameterName = "InsulationTierTotal", Value = currentLineItem.InsulationTierTotal };
                 allParameters.Add(tempParameter);
 
-                  tempParameter = new SqlParameter() { ParameterName = "InsulationTotal", Value = currentLineItem.InsulationTotal };
+                tempParameter = new SqlParameter() { ParameterName = "InsulationTotal", Value = currentLineItem.InsulationTotal };
                 allParameters.Add(tempParameter);
 
                 var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.InsertLineItemInsulationDetails, allParameters.ToArray());
@@ -2399,7 +2399,7 @@ namespace GlassProductManager
                     return item;
 
                 item = new NewQuoteItemEntity();
-                if(result.Tables.Count>0 )
+                if (result.Tables.Count > 0)
                 {
                     item.GlassTypeID = int.Parse(result.Tables[0].Rows[0][ColumnNames.SelectedGlassIndex].ToString());
                     item.ThicknessID = int.Parse(result.Tables[0].Rows[0][ColumnNames.SelectedThicknessIndex].ToString());
@@ -2428,7 +2428,7 @@ namespace GlassProductManager
                     item.Hinges = int.Parse(result.Tables[0].Rows[0][ColumnNames.Hinges].ToString());
                     item.CutoutTotal = int.Parse(result.Tables[0].Rows[0][ColumnNames.CutoutTotal].ToString());
                 }
-                if(result.Tables.Count>1)
+                if (result.Tables.Count > 1)
                 {
                     item._allCutoutData = new ObservableCollection<CutoutData>();
                     CutoutData tempItem = null;
@@ -2442,7 +2442,7 @@ namespace GlassProductManager
                         item._allCutoutData.Add(tempItem);
                     }
                 }
-                if(result.Tables.Count>2)
+                if (result.Tables.Count > 2)
                 {
                     item.GlassType1 = new InsulationDetails();
                     item.GlassType2 = new InsulationDetails();
@@ -2458,7 +2458,7 @@ namespace GlassProductManager
                     item.GlassType2.SqFt = int.Parse(result.Tables[2].Rows[0][ColumnNames.Sqft].ToString());
                     item.GlassType2.Total = int.Parse(result.Tables[2].Rows[0][ColumnNames.Total2].ToString());
                     item.MaterialCost = int.Parse(result.Tables[2].Rows[0][ColumnNames.MaterialCost].ToString());
-                    item.InsulationTier= int.Parse(result.Tables[2].Rows[0][ColumnNames.InsulationTier].ToString());
+                    item.InsulationTier = int.Parse(result.Tables[2].Rows[0][ColumnNames.InsulationTier].ToString());
                     item.InsulationTierTotal = int.Parse(result.Tables[2].Rows[0][ColumnNames.InsulationTierTotal].ToString());
                     item.InsulationTotal = int.Parse(result.Tables[2].Rows[0][ColumnNames.InsulationTotal].ToString());
                     item.IsInsulation = bool.Parse(result.Tables[2].Rows[0][ColumnNames.IsInsulate].ToString());
@@ -2583,6 +2583,53 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
+        }
+
+        internal static ObservableCollection<PriceEntity> GetAllPriceData()
+        {
+            ObservableCollection<PriceEntity> allPriceData = null;
+            try
+            {
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetAllPriceData);
+
+                if (result == null || result.Tables == null || result.Tables.Count == 0 || result.Tables[0].Rows.Count == 0)
+                    return allPriceData;
+
+                allPriceData = new ObservableCollection<PriceEntity>();
+                object dbValue = null;
+                PriceEntity item = null;
+                for (int rowIndex = 0; rowIndex < result.Tables[0].Rows.Count; rowIndex++)
+                {
+                    item = new PriceEntity();
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.GlassType];
+                    item.GlassType = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.Thickness];
+                    item.Thickness = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.CutSQFT];
+                    item.CutSQFT = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.TemperedSQFT];
+                    item.TemperedSQFT = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.PolishStraight];
+                    item.PolishStraight = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.PolishShape];
+                    item.PolishShape = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    dbValue = result.Tables[0].Rows[rowIndex][ColumnNames.MiterRate];
+                    item.MiterRate = dbValue == DBNull.Value ? string.Empty : dbValue.ToString();
+
+                    allPriceData.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return allPriceData;
         }
     }
 }

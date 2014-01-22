@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,14 @@ namespace GlassProductManager
         private UserAction _thicknessAction = UserAction.Cancel;
         private UserAction _holeAction = UserAction.Cancel;
 
+        private ObservableCollection<PriceEntity> _allPriceTableData = new ObservableCollection<PriceEntity>();
+
+        public ObservableCollection<PriceEntity> allPriceTableData
+        {
+            get { return _allPriceTableData; }
+            set { _allPriceTableData = value; }
+        }
+
         public PriceSettingsContent()
         {
             InitializeComponent();
@@ -44,7 +53,19 @@ namespace GlassProductManager
             FillMiscRates();
 
             FillThicknesses();
+
             SetGlassDetailsControlsStatus(true);
+
+            FillPriceTableData();
+        }
+
+        private void FillPriceTableData()
+        {
+            allPriceTableData  = BusinessLogic.GetAllPriceData();
+            if (allPriceTableData == null)
+                return;
+            dgPriceTable.ItemsSource = allPriceTableData;
+
         }
 
         private void FillThicknesses()
@@ -864,6 +885,21 @@ namespace GlassProductManager
             btnCancelMiscRate.IsEnabled = false;
 
             FillMiscRates();
+        }
+
+        private void expdShowPriceTable_Expanded(object sender, RoutedEventArgs e)
+        {
+            if (expdEditSettings == null)
+                return;
+            expdEditSettings.IsExpanded = false;
+        }
+
+        private void expdEditSettings_Expanded(object sender, RoutedEventArgs e)
+        {
+            if (expdShowPriceTable == null)
+                return;
+            expdShowPriceTable.IsExpanded = false;
+
         }
 
     }
