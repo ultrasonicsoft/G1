@@ -94,5 +94,6 @@ namespace GlassProductManager
         internal const string GetPrintQueueNotificationCount = "[GetPrintQueueNotificationCount]";
         internal const string RemoveLabelFromPrintQueue = "[RemoveLabelFromPrintQueue]";
         internal const string GetAllPriceData = "[GetAllPriceData]";
+        internal const string DeletePrintReuqest = "[DeletePrintReuqest]";
     }
 }

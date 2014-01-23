@@ -577,5 +577,22 @@ namespace GlassProductManager
             dgQuoteItems.IsEnabled = false;
             dgPrintQueue.IsEnabled = true;
         }
+
+        private void btnDeletePrintRequest_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (BarcodeLabel item in dgPrintQueue.SelectedItems)
+            {
+                if (item == null)
+                    continue;
+                BusinessLogic.DeletePrintReuqest(item.ID);
+            }
+            Helper.ShowInformationMessageBox("Print request deleted successfully!");
+            FillPrintJobQueue();
+        }
+
+        private void btnRefreshPrintQueue_Click(object sender, RoutedEventArgs e)
+        {
+            FillPrintJobQueue();
+        }
     }
 }

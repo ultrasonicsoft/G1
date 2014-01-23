@@ -2631,5 +2631,21 @@ namespace GlassProductManager
             }
             return allPriceData;
         }
+
+        internal static void DeletePrintReuqest(int id)
+        {
+            try
+            {
+                SqlParameter pID = new SqlParameter();
+                pID.ParameterName = "id";
+                pID.Value = id;
+
+                var result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.DeletePrintReuqest, pID);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
     }
 }
