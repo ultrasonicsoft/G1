@@ -1499,6 +1499,9 @@ namespace GlassProductManager
         internal void FillLineItemDetails()
         {
             // Fil glass info
+            if (currentItem == null)
+                return;
+
             cmbGlassType.SelectedValue = currentItem.GlassTypeID;
             FillThicknessForSelectedGlassType();
             cmbThickness.SelectedValue = currentItem.ThicknessID;
