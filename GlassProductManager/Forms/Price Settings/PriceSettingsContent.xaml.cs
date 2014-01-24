@@ -892,6 +892,7 @@ namespace GlassProductManager
             if (expdEditSettings == null)
                 return;
             expdEditSettings.IsExpanded = false;
+            FillPriceTableData();
         }
         private void expdShowPriceTable_Collapsed(object sender, RoutedEventArgs e)
         {
