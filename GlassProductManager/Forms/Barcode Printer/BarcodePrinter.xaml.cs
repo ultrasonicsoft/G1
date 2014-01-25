@@ -21,6 +21,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Seagull.BarTender.Print;
 using Ultrasonicsoft.Products;
+using Seagull.BarTender.PrintServer;
+using Seagull.BarTender.PrintServer.Tasks;
 
 namespace GlassProductManager
 {
@@ -124,7 +126,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void FillLeadTimeTypes()
@@ -140,12 +142,12 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void FillLeadTime()
         {
-              try
+            try
             {
                 var result = BusinessLogic.GetAllLeadTime();
                 cmbLeadTime.DisplayMemberPath = ColumnNames.LeadTime;
@@ -156,7 +158,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-          
+
         }
 
         private void FillPaymentTypes()
@@ -173,7 +175,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            
+
         }
 
         private void OpenSelectedWorksheet(string quoteNumber)
@@ -312,7 +314,7 @@ namespace GlassProductManager
                         Helper.ShowErrorMessageBox("No data found for printing barcode!");
                         return;
                     }
-                    PrintBarcode(barcode);
+                    PrintAllBarcode(barcode);
                 }
             }
             catch (Exception ex)
@@ -335,7 +337,7 @@ namespace GlassProductManager
             Helper.ShowInformationMessageBox("All labels have been printed successfully!");
         }
 
-        private void PrintBarcode(List<BarcodeEntity> allBarcodeData)
+        private void PrintAllBarcode(List<BarcodeEntity> allBarcodeData)
         {
             // Initialize and start a new engine 
             try
@@ -344,15 +346,24 @@ namespace GlassProductManager
                 {
                     btEngine.Start();
 
-                    //TODO: corret logic
                     Result result = Result.Failure;
-
-                    string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\" + BarCodeConstants.BarcodeTemplateFileName;
+                    List<LabelFormatDocument> allBarcodeLabels = new List<LabelFormatDocument>();
+                    LabelFormatDocument currentBarcodeLabel = null;
+                    int currentLineItemQuantity = 0;
+                    string selectedPrinterName = cmbPrinterSelection.SelectedValue.ToString();
                     foreach (BarcodeEntity barcode in allBarcodeData)
                     {
-                        result = PrintLineItem(btEngine, fileName, barcode);
+                        result = PrintLineItem(btEngine, Constants.BarCodeLabelTemplateFileName, barcode);
+                        //currentLineItemQuantity = int.Parse(barcode.Quantity);
+                        //for (int index = 0; index < currentLineItemQuantity; index++)
+                        //{
+                        //    currentBarcodeLabel = btEngine.Documents.Open(Constants.BarCodeLabelTemplateFileName);
+                        //    currentBarcodeLabel = GetBarcodeLabel(currentBarcodeLabel, barcode, index, txtWSNumber.Text);
+                        //    currentBarcodeLabel = btEngine.Documents.Open(Constants.BarCodeLabelTemplateFileName, selectedPrinterName);
+                        //    allBarcodeLabels.Add(currentBarcodeLabel);
+                        //}
                     }
-
+                    //TestBatchPrint(allBarcodeLabels);
                     if (result == Result.Success)
                     {
                         Helper.ShowInformationMessageBox("Barcoded printing successfully!");
@@ -379,7 +390,7 @@ namespace GlassProductManager
                 int currentLineItemQuantity = int.Parse(barcode.Quantity);
                 for (int index = 0; index < currentLineItemQuantity; index++)
                 {
-                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, index,txtWSNumber.Text);
+                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, index, txtWSNumber.Text);
                 }
             }
             catch (Exception ex)
@@ -389,11 +400,56 @@ namespace GlassProductManager
             return result;
         }
 
-        private Result PrintIndividualLineItem(Engine btEngine, string fileName, BarcodeEntity barcode, Result result, int itemID,string wsNumber)
+        private Result PrintIndividualLineItem(Engine btEngine, string fileName, BarcodeEntity barcode, Result result, int itemID, string wsNumber)
         {
             // Open a label format specifying the default printer 
             LabelFormatDocument btFormat = btEngine.Documents.Open(fileName);
 
+            btFormat = GetBarcodeLabel(btFormat, barcode, itemID, wsNumber);
+
+            string printerName = cmbPrinterSelection.SelectedValue.ToString();
+            btFormat = btEngine.Documents.Open(fileName, printerName);
+
+            // Print the label 
+               int waitForCompletionTimeout = 10000; // 10 seconds
+               Messages messages;
+               string messageString = "\n\nMessages:";
+               result = btFormat.Print("test", waitForCompletionTimeout, out messages);
+               foreach (Seagull.BarTender.Print.Message message in messages)
+               {
+                   messageString += "\n\n" + message.Text;
+               }
+
+               if (result == Result.Failure)
+               {
+                   string labelInfo = string.Format("WS: {0} ID: {1} Message: {2} ->", wsNumber, itemID, messageString);
+                   MessageBox.Show("Print Failed for: " + messageString);
+                   Logger.LogMessage("Error:" + labelInfo);
+               }
+               else
+               {
+                   string labelInfo = string.Format("WS: {0} ID: {1} Message: {2} ->", wsNumber, itemID, messageString);
+                   MessageBox.Show("Label was successfully sent to printer." + messageString);
+                   Logger.LogMessage("Log:" + labelInfo);
+               }
+            return result;
+        }
+
+        private Result PrintLabel(LabelFormatDocument label)
+        {
+            Result result = Result.Failure;
+            try
+            {
+                result = label.Print();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return result;
+        }
+        private LabelFormatDocument GetBarcodeLabel(LabelFormatDocument btFormat, BarcodeEntity barcode, int itemID, string wsNumber)
+        {
             if (btFormat.SubStrings[BarCodeConstants.CustomerName] != null)
             {
                 btFormat.SubStrings[BarCodeConstants.CustomerName].Value = barcode.LastName + " " + barcode.FirstName;
@@ -450,14 +506,10 @@ namespace GlassProductManager
             {
                 btFormat.SubStrings[BarCodeConstants.GlassShape].Value = barcode.Shape;
             }
-            string printerName = cmbPrinterSelection.SelectedValue.ToString();
-            btFormat = btEngine.Documents.Open(fileName, printerName);
-            // Print the label 
-            result = btFormat.Print();
-            return result;
+            return btFormat;
         }
 
-        public  void PrintLineItemFromQueue(int id, string wsNumber, int lineID, int itemID)
+        public void PrintLineItemFromQueue(int id, string wsNumber, int lineID, int itemID)
         {
             // Initialize and start a new engine 
             try
@@ -478,7 +530,7 @@ namespace GlassProductManager
                     Result result = Result.Failure;
 
                     string fileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\" + BarCodeConstants.BarcodeTemplateFileName;
-                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, itemID,barcode.Worksheet);
+                    result = PrintIndividualLineItem(btEngine, fileName, barcode, result, itemID, barcode.Worksheet);
 
                     if (result == Result.Success)
                     {
@@ -498,7 +550,6 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
         }
-
         private void cmbWorksheetNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             OpenWorksheet();
@@ -524,11 +575,11 @@ namespace GlassProductManager
                 {
                     // Print queue barcode
                     BarcodeLabel selectedJob = dgPrintQueue.SelectedItem as BarcodeLabel;
-                    if(selectedJob == null)
+                    if (selectedJob == null)
                     {
                         return;
                     }
-                    PrintLineItemFromQueue(selectedJob.ID, selectedJob.WSNumber, selectedJob.LineID, selectedJob.ItemID-1);
+                    PrintLineItemFromQueue(selectedJob.ID, selectedJob.WSNumber, selectedJob.LineID, selectedJob.ItemID - 1);
                     Helper.ShowInformationMessageBox("Label has been printed successfully!");
                 }
                 else
@@ -593,6 +644,39 @@ namespace GlassProductManager
         private void btnRefreshPrintQueue_Click(object sender, RoutedEventArgs e)
         {
             FillPrintJobQueue();
+            //TestBatchPrint();
+        }
+        private void TestBatchPrint(List<LabelFormatDocument> allBarcodeLabels)
+        {
+            // Initialize a new TaskManager object. 
+            using (TaskManager btTaskManager = new TaskManager())
+            {
+                // Start a task engine.
+                btTaskManager.Start(1);
+
+                // Create a group task.
+                GroupTask groupTask = new GroupTask();
+
+                List<BarcodeEntity> barcode = BusinessLogic.GetBarcodeDetails(txtQuoteNumber.Text);
+
+                if (barcode == null)
+                {
+                    Helper.ShowErrorMessageBox("No data found for printing barcode!");
+                    return;
+                }
+                foreach (LabelFormatDocument currentLabel in allBarcodeLabels)
+                {
+                    groupTask.Add(new PrintLabelFormatTask(currentLabel));
+                }
+                // Add two printing tasks to the group task.
+                //groupTask.Add(new PrintLabelFormatTask(@"C:\Format2.btw"));
+                // Execute the tasks asynchronously for performance.
+                btTaskManager.TaskQueue.QueueTask(groupTask);
+
+                // Stop the task engine. // Ten second timeout gives tasks time to finish.
+                btTaskManager.Stop(10000, true);
+            }
+
         }
     }
 }

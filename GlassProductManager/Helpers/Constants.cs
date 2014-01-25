@@ -22,6 +22,7 @@ namespace GlassProductManager
         internal const string DatabaseName = "GlassManagerDB";
         internal const string BackupExtension = ".bak";
         internal const string DatabaseServerName = @"localhost\SQLEXPRESS";
+        internal static string BarCodeLabelTemplateFileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\" + BarCodeConstants.BarcodeTemplateFileName;
 
     }
 

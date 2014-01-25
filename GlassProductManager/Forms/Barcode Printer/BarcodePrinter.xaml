@@ -177,7 +177,7 @@
                                 <DataGridTextColumn Header="Requested by User Name" Binding="{Binding UserName}" Width="170" />
                             </DataGrid.Columns>
                         </DataGrid>
-                        
+
                         <CheckBox Name="cbPrintQueue" Content="Print label from Queue" FontSize="12" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Center" Margin="0,5,0,0"  Grid.Row="12"  VerticalAlignment="Center" Checked="cbPrintQueue_Checked" Unchecked="cbPrintQueue_Unchecked"/>
 
                         <Label  Name="lblAdditionalInstruction" Content="Select Printer:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="21" Grid.Column="0" Grid.ColumnSpan="2" />
@@ -185,17 +185,17 @@
                         <ComboBox Name="cmbPrinterSelection" Width="200" ItemsSource="{x:Static Printing:PrinterSettings.InstalledPrinters}" Grid.Row="21" Grid.Column="1" Grid.ColumnSpan="3" SelectionChanged="cmbPrinterSelection_SelectionChanged" HorizontalAlignment="Left" />
                         <!--<TextBox Name="txtAdditionalInstruction"  Margin="10,0,0,0" TextWrapping="Wrap" Width="750" Height="100"  HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="7" Grid.RowSpan="5" AcceptsReturn="True" />-->
 
-                        <Grid Grid.Row="21" Grid.Column="4"  Grid.ColumnSpan="6" HorizontalAlignment="Left">
+                        <Grid Grid.Row="21" Grid.Column="4"  Grid.ColumnSpan="6" HorizontalAlignment="Left" Width="450">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition  Width="100"/>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="btnPrint" Content="Print All"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="0" Width="75" Click="btnPrint_Click" />
+                            <Button Name="btnPrint" Content="Print All"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="0" Width="75" Click="btnPrint_Click" Margin="0,0,0,1" />
                             <Button Name="btnPrintSelected" Content="Print Selected"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="1" Width="75" Click="btnPrintSelected_Click" Margin="0,0,0,1" />
                             <Button Name="btnDeletePrintRequest" Content="Delete Print Request"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="2" Width="110" Margin="0,0,0,1" Click="btnDeletePrintRequest_Click" />
-                            <Button Name="btnRefreshPrintQueue" Content="Refresh Queue"  HorizontalAlignment="Left"  VerticalAlignment="Bottom" Grid.Column="3" Width="110" Margin="0,0,0,1" Click="btnRefreshPrintQueue_Click"  />
+                            <Button Name="btnRefreshPrintQueue" Content="Refresh Queue"  VerticalAlignment="Bottom" Grid.Column="3" Margin="0,0,-9,1" Click="btnRefreshPrintQueue_Click"  />
                             <!--<Button Name="btnExportPdf" Content="Export PDF"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="1" Width="75" Click="btnExportPdf_Click" />
                             <Button Name="btnSendToInvoice" Content="Send to Invoice"  HorizontalAlignment="Left"  VerticalAlignment="Center" Grid.Row="17" Grid.Column="2" Width="100" Click="btnSendToInvoice_Click" />-->
                         </Grid>
