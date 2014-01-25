@@ -423,13 +423,13 @@ namespace GlassProductManager
                if (result == Result.Failure)
                {
                    string labelInfo = string.Format("WS: {0} ID: {1} Message: {2} ->", wsNumber, itemID, messageString);
-                   MessageBox.Show("Print Failed for: " + messageString);
+                   //MessageBox.Show("Print Failed for: " + messageString);
                    Logger.LogMessage("Error:" + labelInfo);
                }
                else
                {
                    string labelInfo = string.Format("WS: {0} ID: {1} Message: {2} ->", wsNumber, itemID, messageString);
-                   MessageBox.Show("Label was successfully sent to printer." + messageString);
+                   //MessageBox.Show("Label was successfully sent to printer." + messageString);
                    Logger.LogMessage("Log:" + labelInfo);
                }
             return result;

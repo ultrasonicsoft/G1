@@ -1068,6 +1068,7 @@ namespace GlassProductManager
             cbIsNewClient.IsChecked = true;
             cmbCustomers.SelectedIndex = -1;
             cbIsShipToSameAddress.IsChecked = false;
+            cmbQuoteStatus.SelectedIndex = 0;
         }
 
         private void ResetQuoteItems()
@@ -2127,6 +2128,10 @@ namespace GlassProductManager
                 return;
             }
             NewQuoteItemEntity lineItem = BusinessLogic.GetLineItemDetails(txtQuoteNumber.Text, selectedItem.LineID);
+            if(lineItem == null)
+            {
+                return;
+            }
              Dashboard parent = Window.GetWindow(this) as Dashboard;
              if (parent != null)
              {
