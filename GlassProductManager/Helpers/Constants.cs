@@ -23,7 +23,13 @@ namespace GlassProductManager
         internal const string BackupExtension = ".bak";
         internal const string DatabaseServerName = @"localhost\SQLEXPRESS";
         internal static string BarCodeLabelTemplateFileName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\" + BarCodeConstants.BarcodeTemplateFileName;
-
+        //If maximum line items are up to 11 then we can print single page with footer
+        internal const int MAXIMUM_LINE_ITEM_ON_FIRST_PAGE = 11;
+        // If maximum line items are more than 11 then we will print 13 items on first page and rest on next pages
+        internal const int LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES = 13;
+        internal const float PDF_ZOOM_FACTOR = 0.5F;
+        internal const int PDF_PAGE_ALL_MARGIN = 72;
+        internal const int MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE = 18;
     }
 
     class BarCodeConstants

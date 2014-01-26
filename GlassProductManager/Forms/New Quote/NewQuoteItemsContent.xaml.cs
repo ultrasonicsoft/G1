@@ -922,8 +922,6 @@ namespace GlassProductManager
                             newItem.IsLogo = currentItem.IsLogoRequired;
                             grid.allQuoteData.Add(newItem);
 
-
-
                             grid.allLineItemDetails.Add(currentItem);
                             //ResetAllControls();
                         }

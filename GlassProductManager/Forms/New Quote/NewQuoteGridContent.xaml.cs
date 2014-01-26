@@ -1238,27 +1238,8 @@ namespace GlassProductManager
         {
             try
             {
-                string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                string clientName = string.Empty;
+                string completeFilePath = GetQuotePageFileName();
 
-                int customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
-
-                if (string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) == false && string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
-                {
-                    clientName = string.Format("{0} {1} {2}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim(), customerID.ToString());
-                }
-                else
-                {
-                    clientName = string.Format("{0} {1}", txtSoldToFirstName.Text.Trim(), customerID.ToString());
-                }
-                string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Quote + Constants.FolderSeparator;
-                string filename = string.Format(Constants.QuoteFileName, txtQuoteNumber.Text);
-                string completeFilePath = relativePath + Constants.FolderSeparator + filename;
-
-                if (Directory.Exists(relativePath) == false)
-                {
-                    Directory.CreateDirectory(relativePath);
-                }
                 if (File.Exists(completeFilePath) == true)
                 {
                     var result1 = Helper.ShowQuestionMessageBox("Quote with same number already exists. Do you want to overwrite it?");
@@ -1268,51 +1249,165 @@ namespace GlassProductManager
                     }
                 }
 
-                // Create a new PDF document
-                PdfDocument document = new PdfDocument();
-
-                // Create an empty page
-                PdfPage page = document.AddPage();
-
-                // Get an XGraphics object for drawing
-                XGraphics gfx = XGraphics.FromPdfPage(page);
-
-                // Print Company Logo
-                PrintLogo(gfx);
-                PrintQuoteHeader(gfx, PdfPrintingSetting.NormalFont);
-
-                XPen pen = new XPen(XColors.Black, 1);
-                gfx.DrawRoundedRectangle(pen, 80, 180, 1100, 200, 30, 20);
-
-                PrintSoldToAddress(gfx, PdfPrintingSetting.NormalFont);
-                PrintShipToAddress(gfx, PdfPrintingSetting.NormalFont);
-                PrintShippingDetails(gfx, PdfPrintingSetting.NormalFont);
-                PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont);
-                PrintQuoteFooter(gfx, PdfPrintingSetting.NormalFont);
-
-                //PrinterSettings settings = new PrinterSettings();
-                //PrintDialog oDiaLog = new PrintDialog();
-                //if (oDiaLog.ShowDialog().Value )
-                //{
-
-                //    PDFPrintSettings pdfPrintSettings = new PDFPrintSettings(oDiaLog.PrinterSettings);
-                //    this.PdfDocument.Print(pdfPrintSettings); // Here PDFDocument is document of PDF sharp objects.
-
-                //}
-
-
-                // Save the document...
-                document.Save(completeFilePath);
-                // ...and start a viewer.
-                var result = Helper.ShowQuestionMessageBox("File Saved. Do you want to open it now?");
-                if (result == MessageBoxResult.Yes)
+                if (dgQuoteItems.Items.Count <= Constants.MAXIMUM_LINE_ITEM_ON_FIRST_PAGE)
                 {
-                    Process.Start(completeFilePath);
+                    PrintSinglePageQuote(completeFilePath);
+                }
+                else
+                {
+                    PrintMultiplePagesQuote(completeFilePath);
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
+            }
+        }
+
+        private void PrintMultiplePagesQuote(string completeFilePath)
+        {
+            // Create a new PDF document
+            PdfDocument document = new PdfDocument();
+            
+            PrintFirstQuotePage(document);
+            if (dgQuoteItems.Items.Count > Constants.MAXIMUM_LINE_ITEM_ON_FIRST_PAGE * 2)
+            {
+                PrintMiddleQuotePage(document);
+            }
+            PrintLastQuotePage(document);
+
+            // Save the document...
+            document.Save(completeFilePath);
+            // ...and start a viewer.
+            var result = Helper.ShowQuestionMessageBox("File Saved. Do you want to open it now?");
+            if (result == MessageBoxResult.Yes)
+            {
+                Process.Start(completeFilePath);
+            }
+        }
+        private void PrintFirstQuotePage(PdfDocument document)
+        {
+            // Create an empty page
+            PdfPage firstPage = document.AddPage();
+
+            // set Page margin for all sides as 1 inch = 72 px
+            firstPage.TrimMargins.All = Constants.PDF_PAGE_ALL_MARGIN;
+
+            // Get an XGraphics object for drawing
+            XGraphics gfx = XGraphics.FromPdfPage(firstPage);
+            gfx.ScaleTransform(Constants.PDF_ZOOM_FACTOR);
+
+            // Print Company Logo
+            PrintLogo(gfx);
+            PrintQuoteHeader(gfx, PdfPrintingSetting.NormalFont);
+
+            XPen pen = new XPen(XColors.Black, 1);
+            gfx.DrawRoundedRectangle(pen, 80, 180, 1100, 200, 30, 20);
+
+            PrintSoldToAddress(gfx, PdfPrintingSetting.NormalFont);
+            PrintShipToAddress(gfx, PdfPrintingSetting.NormalFont);
+            PrintShippingDetails(gfx, PdfPrintingSetting.NormalFont);
+            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, 0, Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES,true,false,false);
+        }
+
+        private void PrintMiddleQuotePage(PdfDocument document)
+        {
+            // Print line items
+            int numberOfPages = (int)Math.Ceiling((dgQuoteItems.Items.Count - Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES) / (double)Constants.MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE);
+            int startLineItem = Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES;
+            int lastLineItemOnPage = 0;
+            for (int pageIndex = 0; pageIndex < numberOfPages-1; pageIndex++)
+            {
+                // Create an empty page
+                PdfPage middlePage = document.AddPage();
+                // set Page margin for all sides as 1 inch = 72 px
+                middlePage.TrimMargins.All = Constants.PDF_PAGE_ALL_MARGIN;
+
+                // Set zoom factor
+                XGraphics gfx = XGraphics.FromPdfPage(middlePage);
+                gfx.ScaleTransform(Constants.PDF_ZOOM_FACTOR);
+                lastLineItemOnPage = startLineItem + Constants.MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE;
+                PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, startLineItem, lastLineItemOnPage, false, true,false);
+                startLineItem = lastLineItemOnPage;
+            }
+        }
+        private void PrintLastQuotePage(PdfDocument document)
+        {
+            // Create an empty page
+            PdfPage lastPage = document.AddPage();
+
+            // set Page margin for all sides as 1 inch = 72 px
+            lastPage.TrimMargins.All = Constants.PDF_PAGE_ALL_MARGIN;
+            
+            //Get an XGraphics object for drawing
+            XGraphics gfx = XGraphics.FromPdfPage(lastPage);
+            gfx.ScaleTransform(Constants.PDF_ZOOM_FACTOR);
+
+            int numberOfPages = (int)Math.Ceiling((dgQuoteItems.Items.Count - Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES) / (double)Constants.MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE);
+            int startLineItemOnLastPage = Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES + (Constants.MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE * (numberOfPages - 1));
+            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, startLineItemOnLastPage,dgQuoteItems.Items.Count,false,false,true);
+            PrintQuoteFooter(gfx, PdfPrintingSetting.NormalFont,true);
+
+        }
+      
+
+        private string GetQuotePageFileName()
+        {
+            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string clientName = string.Empty;
+
+            int customerID = BusinessLogic.GetCustomerID(txtQuoteNumber.Text);
+
+            if (string.IsNullOrWhiteSpace(txtSoldToFirstName.Text) == false && string.IsNullOrWhiteSpace(txtSoldToLastName.Text) == false)
+            {
+                clientName = string.Format("{0} {1} {2}", txtSoldToFirstName.Text.Trim(), txtSoldToLastName.Text.Trim(), customerID.ToString());
+            }
+            else
+            {
+                clientName = string.Format("{0} {1}", txtSoldToFirstName.Text.Trim(), customerID.ToString());
+            }
+            string relativePath = folderPath + Constants.FolderSeparator + Constants.RootDirectory + Constants.FolderSeparator + clientName + Constants.FolderSeparator + Constants.Quote + Constants.FolderSeparator;
+            string filename = string.Format(Constants.QuoteFileName, txtQuoteNumber.Text);
+            string completeFilePath = relativePath + Constants.FolderSeparator + filename;
+
+            if (Directory.Exists(relativePath) == false)
+            {
+                Directory.CreateDirectory(relativePath);
+            }
+            return completeFilePath;
+        }
+
+        private void PrintSinglePageQuote(string completeFilePath)
+        {
+            // Create a new PDF document
+            PdfDocument document = new PdfDocument();
+
+            // Create an empty page
+            PdfPage page = document.AddPage();
+
+            // Get an XGraphics object for drawing
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+            gfx.ScaleTransform(Constants.PDF_ZOOM_FACTOR);
+
+            // Print Company Logo
+            PrintLogo(gfx);
+            PrintQuoteHeader(gfx, PdfPrintingSetting.NormalFont);
+
+            XPen pen = new XPen(XColors.Black, 1);
+            gfx.DrawRoundedRectangle(pen, 80, 180, 1100, 200, 30, 20);
+           
+            PrintSoldToAddress(gfx, PdfPrintingSetting.NormalFont);
+            PrintShipToAddress(gfx, PdfPrintingSetting.NormalFont);
+            PrintShippingDetails(gfx, PdfPrintingSetting.NormalFont);
+            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont,0, dgQuoteItems.Items.Count, false,false,false);
+            PrintQuoteFooter(gfx, PdfPrintingSetting.NormalFont,false);
+            // Save the document...
+            document.Save(completeFilePath);
+            // ...and start a viewer.
+            var result = Helper.ShowQuestionMessageBox("File Saved. Do you want to open it now?");
+            if (result == MessageBoxResult.Yes)
+            {
+                Process.Start(completeFilePath);
             }
         }
 
@@ -1323,7 +1418,6 @@ namespace GlassProductManager
                 XImage image = XImage.FromFile("Logo.jpg");
                 const double dx = 350, dy = 140;
                 //gfx.TranslateTransform(dx / 2, dy / 2);
-                gfx.ScaleTransform(0.5);
                 //gfx.TranslateTransform(-dx / 2, -dy / 2);
                 double width = image.PixelWidth * 72 / image.HorizontalResolution;
                 double height = image.PixelHeight * 72 / image.HorizontalResolution;
@@ -1635,15 +1729,31 @@ namespace GlassProductManager
             }
         }
 
-        private void PrintQuoteDetails(XGraphics gfx, XFont font)
+        private void PrintQuoteDetails(XGraphics gfx, XFont font, int startLineItem, int numberOfLineItems, bool isFirstPageOfQuote, bool isMiddlePageOfQuote, bool isLastPage)
         {
             try
             {
                 int xStartDetailRect = 10;
                 int yStartDetailRect = 400;
+                if(startLineItem!=0)
+                {
+                    yStartDetailRect = 40;
+                }
                 int widthDetailRect = 1180;
-                int heightDetailRect = 700;
 
+                int heightDetailRect = 950;
+                if(isFirstPageOfQuote == true)
+                {
+                    heightDetailRect = 1150;
+                }
+                else if (isMiddlePageOfQuote == true)
+                {
+                    heightDetailRect = 1550;
+                }
+                else if (isLastPage == true)
+                {
+                    heightDetailRect = 1350;
+                }
                 int heightHeaderRect = 50;
 
                 int xLineColumn = 90;
@@ -1676,7 +1786,7 @@ namespace GlassProductManager
                 gfx.DrawString("Description", font, brush, new XRect(xQuantityColumn + 65, yStartDetailRect + 15, xDescriptionColumn, heightHeaderRect), format);
                 gfx.DrawString("Dimension (in)", font, brush, new XRect(xDescriptionColumn + 15, yStartDetailRect + 15, xDimensionColumn, heightHeaderRect), format);
                 gfx.DrawString("Sq.Ft.", font, brush, new XRect(xDimensionColumn + 15, yStartDetailRect + 15, xSqFtColumn, heightHeaderRect), format);
-                gfx.DrawString("Price/Pc ($)", font, brush, new XRect(xSqFtColumn + 15, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
+                gfx.DrawString("Price/Pc($)", font, brush, new XRect(xSqFtColumn + 10, yStartDetailRect + 15, xUnitPriceColumn, heightHeaderRect), format);
                 gfx.DrawString("Total ($)", font, brush, new XRect(xUnitPriceColumn + 15, yStartDetailRect + 15, xTotalColumn, heightHeaderRect), format);
 
                 int yQuoteItemOffset = yStartDetailRect + 45;
@@ -1687,8 +1797,22 @@ namespace GlassProductManager
                 //gfx.DrawRectangle(XBrushes.SeaShell, rect);
                 //tf.Alignment = ParagraphAlignment.Left;
                 XRect rect;
+                int counter = 0;
                 foreach (QuoteGridEntity selectedLineItem in allQuoteData)
                 {
+                    // Start printing from specific line item
+                    if(startLineItem !=0 && counter<startLineItem)
+                    {
+                        counter++;
+                        continue;
+                    }
+                    // Print only number of line items provided
+                    if (counter >= numberOfLineItems)
+                    {
+                        break;
+                    }
+                    counter++;
+
                     if (selectedLineItem == null || selectedLineItem.Description == null || selectedLineItem.Dimension == null)
                         continue;
 
@@ -1697,7 +1821,7 @@ namespace GlassProductManager
                     gfx.DrawString(selectedLineItem.LineID.ToString(), font, brush, new XRect(xStartDetailRect + 40, yQuoteItemOffset + yOffset, xLineColumn, heightHeaderRect), format);
                     gfx.DrawString(selectedLineItem.Quantity.ToString(), font, brush, new XRect(xLineColumn + 25, yQuoteItemOffset + yOffset, xQuantityColumn, heightHeaderRect), format);
 
-                    rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + 100);
+                    rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn-150, heightHeaderRect + 300);
                     tf.DrawString(selectedLineItem.Description, font, XBrushes.Black, rect, XStringFormats.TopLeft);
                     //gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + size.Height), format);
 
@@ -1706,7 +1830,7 @@ namespace GlassProductManager
                     gfx.DrawString(selectedLineItem.UnitPrice, font, brush, new XRect(xSqFtColumn + 15, yQuoteItemOffset + yOffset, xUnitPriceColumn, heightHeaderRect), format);
                     gfx.DrawString(double.Parse(selectedLineItem.Total).ToString("0.00"), font, brush, new XRect(xUnitPriceColumn + 15, yQuoteItemOffset + yOffset, xTotalColumn, heightHeaderRect), format);
 
-                    yQuoteItemOffset += 50;
+                    yQuoteItemOffset += 80;
                 }
             }
             catch (Exception ex)
@@ -1716,17 +1840,21 @@ namespace GlassProductManager
        
         }
 
-        private void PrintQuoteFooter(XGraphics gfx, XFont font)
+        private void PrintQuoteFooter(XGraphics gfx, XFont font, bool isLastPage)
         {
             try
             {
                 int xBaseOffset = 900;
                 int xIncrementalOffset = 1080;
-                int yBaseOffset = 1150;
+                int yBaseOffset = 1375;
                 int yIncrementalOffset = 25;
                 int labelWidth = 100;
                 int labelHeight = 100;
 
+                if(isLastPage)
+                {
+                    yBaseOffset = 1450;
+                }
                 // Print Quote Number
                 gfx.DrawString(lblSubTotalCaption.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
                   new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
