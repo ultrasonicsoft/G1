@@ -205,6 +205,27 @@
                     </Grid>
                 </GroupBox>
 
+                <GroupBox Header="Tax Rate" HorizontalAlignment="Left"  VerticalAlignment="Top"   Width="500" Height="120" Grid.Row="9" Grid.Column="0" Grid.RowSpan="2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Content="Tax Rate" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                        <TextBox Name="txtTaxRate" IsReadOnly="True" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" TextChanged="txtTaxRate_TextChanged" Margin="0,4,1,4"/>
+                        <Button Name="btnEditTaxRate" Content="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="1" Click="btnEditTaxRate_Click" />
+                        <Button Name="btnSaveTaxRate" IsEnabled="False" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="2" Click="btnSaveTaxRate_Click" />
+                        <Button Name="btnCancelTaxRate" IsEnabled="False" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"  Grid.Row="2" Grid.Column="3" Click="btnCancelTaxRate_Click" />
+                    </Grid>
+                </GroupBox>
+
+
                 <GroupBox Header="Hole Rates" HorizontalAlignment="Left"  VerticalAlignment="Top"  Width="500" Height="120" Grid.Row="7" Grid.Column="1" Grid.RowSpan="3">
                     <Grid>
                         <Grid.RowDefinitions>

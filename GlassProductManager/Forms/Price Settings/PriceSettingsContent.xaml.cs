@@ -52,6 +52,8 @@ namespace GlassProductManager
 
             FillMiscRates();
 
+            FillTaxRates();
+
             FillThicknesses();
 
             SetGlassDetailsControlsStatus(true);
@@ -95,6 +97,22 @@ namespace GlassProductManager
                 txtHingeRate.Text = result.HingeRate.ToString();
                 txtPatchRate.Text = result.PatchRate.ToString();
                 txtMinimumTotalSqft.Text = result.MinimumTotalSqft.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        private void FillTaxRates()
+        {
+            try
+            {
+                var result = BusinessLogic.GetTaxRates();
+                if (result == null)
+                    return;
+
+                txtTaxRate.Text = result.ToString();
             }
             catch (Exception ex)
             {
@@ -915,7 +933,59 @@ namespace GlassProductManager
             expdShowPriceTable.IsExpanded = true;
         }
 
-       
+        private void btnEditTaxRate_Click(object sender, RoutedEventArgs e)
+        {
+            txtTaxRate.IsReadOnly = false;
 
+            btnEditTaxRate.IsEnabled = false;
+            btnSaveTaxRate.IsEnabled = true;
+            btnCancelTaxRate.IsEnabled = true;
+        }
+
+        private void btnSaveTaxRate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+              
+                double taxRate = double.Parse(txtTaxRate.Text);
+
+                if (BusinessLogic.UpdateTaxRate(taxRate))
+                {
+                    Helper.ShowInformationMessageBox("Tax Rates updated successfully!");
+                }
+                else
+                {
+                    Helper.ShowErrorMessageBox("Error while saving Tax Rates. Kindly contact your vendor.");
+                }
+                txtTaxRate.IsReadOnly = true;
+
+                btnEditTaxRate.IsEnabled = true;
+                btnSaveTaxRate.IsEnabled = false;
+                btnCancelTaxRate.IsEnabled = false;
+                FillTaxRates();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+        }
+
+        private void btnCancelTaxRate_Click(object sender, RoutedEventArgs e)
+        {
+            txtTaxRate.IsReadOnly = true;
+
+            btnEditTaxRate.IsEnabled = true;
+            btnSaveTaxRate.IsEnabled = false;
+            btnCancelTaxRate.IsEnabled = false;
+            FillTaxRates();
+        }
+
+        private void txtTaxRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (btnEditTaxRate.IsEnabled == false)
+            {
+                btnSaveTaxRate.IsEnabled = Helper.IsValidCurrency(txtTaxRate);
+            }
+        }
     }
 }

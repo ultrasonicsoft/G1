@@ -39,6 +39,8 @@ namespace GlassProductManager
         }
         internal ObservableCollection<NewQuoteItemEntity> allLineItemDetails = new ObservableCollection<NewQuoteItemEntity>();
 
+        private double applyTaxInPercentage = 0;
+
         public NewQuoteGridContent()
         {
             InitializeComponent();
@@ -90,7 +92,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            
+
         }
 
         private void FillCustomerNames()
@@ -127,7 +129,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void FillQuoteStatus()
@@ -144,7 +146,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-          
+
         }
 
         private void FillAllQuoteNumbers()
@@ -161,7 +163,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void SetOperatorAccess()
@@ -250,10 +252,11 @@ namespace GlassProductManager
                 {
                     grandTotal = grandTotal + rushOrder;
                 }
-                double tax = double.Parse(txtTax.Text);
-                if (tax > 0)
+                //double tax = double.Parse(txtTax.Text);
+                if (applyTaxInPercentage> 0)
                 {
-                    grandTotal = grandTotal + tax;
+                    grandTotal = subTotal + (applyTaxInPercentage / 100) * subTotal;
+                    //grandTotal = grandTotal + applyTaxInPercentage;
                 }
 
                 lblGrandTotal.Content = "$ " + grandTotal.ToString("0.00");
@@ -356,7 +359,8 @@ namespace GlassProductManager
             txtDiscount.Text = "0.00";
             txtDelivery.Text = "0.00";
             txtRushOrder.Text = "0.00";
-            txtTax.Text = "0.00";
+            //txtTax.Text = "0.00";
+            applyTaxInPercentage = 0.00;
             lblGrandTotal.Content = "0.00";
         }
 
@@ -570,7 +574,8 @@ namespace GlassProductManager
                 footer.Delivery = double.Parse(txtDelivery.Text);
                 footer.IsRushOrder = cbRush.IsChecked.Value == true;
                 footer.RushOrder = double.Parse(txtRushOrder.Text);
-                footer.Tax = double.Parse(txtTax.Text);
+                footer.Tax = applyTaxInPercentage;
+                //footer.Tax = double.Parse(txtTax.Text);
                 footer.GrandTotal = double.Parse(lblGrandTotal.Content.ToString().Replace("$ ", string.Empty));
             }
             catch (Exception ex)
@@ -766,28 +771,28 @@ namespace GlassProductManager
 
         private void txtTax_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (Helper.IsValidCurrency(txtTax))
-            {
-                if (allQuoteData.Count > 0)
-                {
-                    txtTax.Text = string.IsNullOrEmpty(txtTax.Text) ? "0.00" : txtTax.Text;
-                }
-            }
-            else
-            {
-                txtTax.Text = "0.00";
-            }
+            //if (Helper.IsValidCurrency(txtTax))
+            //{
+            //    if (allQuoteData.Count > 0)
+            //    {
+            //        txtTax.Text = string.IsNullOrEmpty(txtTax.Text) ? "0.00" : txtTax.Text;
+            //    }
+            //}
+            //else
+            //{
+            //    txtTax.Text = "0.00";
+            //}
         }
 
         private void txtTax_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Helper.IsValidCurrency(txtTax))
-            {
-                if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtTax.Text) == false)
-                {
-                    UpdateQuoteTotal();
-                }
-            }
+            //if (Helper.IsValidCurrency(txtTax))
+            //{
+            //    if (allQuoteData.Count > 0 && string.IsNullOrEmpty(txtTax.Text) == false)
+            //    {
+            //        UpdateQuoteTotal();
+            //    }
+            //}
         }
 
         private void cbRush_Unchecked(object sender, RoutedEventArgs e)
@@ -822,7 +827,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
 
         }
 
@@ -848,7 +853,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-          
+
         }
 
         private void btnOpenQuote_Click(object sender, RoutedEventArgs e)
@@ -885,7 +890,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void OpenSelectedQuote(string quoteNumber)
@@ -951,7 +956,7 @@ namespace GlassProductManager
                 txtDelivery.Text = result.Footer.Delivery.ToString("0.00");
                 cbRush.IsChecked = result.Footer.IsRushOrder;
                 txtRushOrder.Text = result.Footer.RushOrder.ToString("0.00");
-                txtTax.Text = result.Footer.Tax.ToString("0.00");
+                //txtTax.Text = result.Footer.Tax.ToString("0.00");
                 lblGrandTotal.Content = result.Footer.GrandTotal.ToString("0.00");
 
                 #endregion
@@ -960,7 +965,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-          
+
         }
 
         private void SetShipToDetails(CustomerDetails shipTo)
@@ -1010,7 +1015,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-            
+
         }
 
         private void btnNewQuote_Click(object sender, RoutedEventArgs e)
@@ -1028,7 +1033,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-         
+
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -1047,7 +1052,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void ResetQuote()
@@ -1087,7 +1092,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void ResetShipTo()
@@ -1121,7 +1126,8 @@ namespace GlassProductManager
             txtDelivery.Text = "0.00";
             cbRush.IsChecked = false;
             txtRushOrder.Text = "0.00";
-            txtTax.Text = "0.00";
+            //txtTax.Text = "0.00";
+            cbApplyTax.IsChecked = false;
             lblGrandTotal.Content = "0.00";
         }
 
@@ -1268,7 +1274,7 @@ namespace GlassProductManager
         {
             // Create a new PDF document
             PdfDocument document = new PdfDocument();
-            
+
             PrintFirstQuotePage(document);
             if (dgQuoteItems.Items.Count > Constants.MAXIMUM_LINE_ITEM_ON_FIRST_PAGE * 2)
             {
@@ -1307,7 +1313,7 @@ namespace GlassProductManager
             PrintSoldToAddress(gfx, PdfPrintingSetting.NormalFont);
             PrintShipToAddress(gfx, PdfPrintingSetting.NormalFont);
             PrintShippingDetails(gfx, PdfPrintingSetting.NormalFont);
-            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, 0, Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES,true,false,false);
+            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, 0, Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES, true, false, false);
         }
 
         private void PrintMiddleQuotePage(PdfDocument document)
@@ -1316,7 +1322,7 @@ namespace GlassProductManager
             int numberOfPages = (int)Math.Ceiling((dgQuoteItems.Items.Count - Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES) / (double)Constants.MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE);
             int startLineItem = Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES;
             int lastLineItemOnPage = 0;
-            for (int pageIndex = 0; pageIndex < numberOfPages-1; pageIndex++)
+            for (int pageIndex = 0; pageIndex < numberOfPages - 1; pageIndex++)
             {
                 // Create an empty page
                 PdfPage middlePage = document.AddPage();
@@ -1327,7 +1333,7 @@ namespace GlassProductManager
                 XGraphics gfx = XGraphics.FromPdfPage(middlePage);
                 gfx.ScaleTransform(Constants.PDF_ZOOM_FACTOR);
                 lastLineItemOnPage = startLineItem + Constants.MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE;
-                PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, startLineItem, lastLineItemOnPage, false, true,false);
+                PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, startLineItem, lastLineItemOnPage, false, true, false);
                 startLineItem = lastLineItemOnPage;
             }
         }
@@ -1338,18 +1344,18 @@ namespace GlassProductManager
 
             // set Page margin for all sides as 1 inch = 72 px
             lastPage.TrimMargins.All = Constants.PDF_PAGE_ALL_MARGIN;
-            
+
             //Get an XGraphics object for drawing
             XGraphics gfx = XGraphics.FromPdfPage(lastPage);
             gfx.ScaleTransform(Constants.PDF_ZOOM_FACTOR);
 
             int numberOfPages = (int)Math.Ceiling((dgQuoteItems.Items.Count - Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES) / (double)Constants.MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE);
             int startLineItemOnLastPage = Constants.LINE_ITEMS_ON_FIRST_PAGE_MULTIPLE_PAGES + (Constants.MAXIMUM_LINE_ITEM_ON_MIDDLE_PAGE * (numberOfPages - 1));
-            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, startLineItemOnLastPage,dgQuoteItems.Items.Count,false,false,true);
-            PrintQuoteFooter(gfx, PdfPrintingSetting.NormalFont,true);
+            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, startLineItemOnLastPage, dgQuoteItems.Items.Count, false, false, true);
+            PrintQuoteFooter(gfx, PdfPrintingSetting.NormalFont, true);
 
         }
-      
+
 
         private string GetQuotePageFileName()
         {
@@ -1395,12 +1401,12 @@ namespace GlassProductManager
 
             XPen pen = new XPen(XColors.Black, 1);
             gfx.DrawRoundedRectangle(pen, 80, 180, 1100, 200, 30, 20);
-           
+
             PrintSoldToAddress(gfx, PdfPrintingSetting.NormalFont);
             PrintShipToAddress(gfx, PdfPrintingSetting.NormalFont);
             PrintShippingDetails(gfx, PdfPrintingSetting.NormalFont);
-            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont,0, dgQuoteItems.Items.Count, false,false,false);
-            PrintQuoteFooter(gfx, PdfPrintingSetting.NormalFont,false);
+            PrintQuoteDetails(gfx, PdfPrintingSetting.NormalFont, 0, dgQuoteItems.Items.Count, false, false, false);
+            PrintQuoteFooter(gfx, PdfPrintingSetting.NormalFont, false);
             // Save the document...
             document.Save(completeFilePath);
             // ...and start a viewer.
@@ -1427,7 +1433,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-         
+
         }
 
         private void PrintQuoteHeader(XGraphics gfx, XFont font)
@@ -1587,7 +1593,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
         private void PrintShipToAddress(XGraphics gfx, XFont font)
         {
@@ -1617,7 +1623,7 @@ namespace GlassProductManager
                      new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
                      XStringFormat.TopLeft);
                 }
-                else if(false == string.IsNullOrEmpty(txtShiptoFirstName.Text) && string.IsNullOrEmpty(txtShiptoLastName.Text)== true)
+                else if (false == string.IsNullOrEmpty(txtShiptoFirstName.Text) && string.IsNullOrEmpty(txtShiptoLastName.Text) == true)
                 {
                     gfx.DrawString(string.Format("{0}", txtShiptoFirstName.Text), font, XBrushes.Black,
                      new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
@@ -1678,7 +1684,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void PrintShippingDetails(XGraphics gfx, XFont font)
@@ -1735,14 +1741,14 @@ namespace GlassProductManager
             {
                 int xStartDetailRect = 10;
                 int yStartDetailRect = 400;
-                if(startLineItem!=0)
+                if (startLineItem != 0)
                 {
                     yStartDetailRect = 40;
                 }
                 int widthDetailRect = 1180;
 
                 int heightDetailRect = 950;
-                if(isFirstPageOfQuote == true)
+                if (isFirstPageOfQuote == true)
                 {
                     heightDetailRect = 1150;
                 }
@@ -1801,7 +1807,7 @@ namespace GlassProductManager
                 foreach (QuoteGridEntity selectedLineItem in allQuoteData)
                 {
                     // Start printing from specific line item
-                    if(startLineItem !=0 && counter<startLineItem)
+                    if (startLineItem != 0 && counter < startLineItem)
                     {
                         counter++;
                         continue;
@@ -1821,7 +1827,7 @@ namespace GlassProductManager
                     gfx.DrawString(selectedLineItem.LineID.ToString(), font, brush, new XRect(xStartDetailRect + 40, yQuoteItemOffset + yOffset, xLineColumn, heightHeaderRect), format);
                     gfx.DrawString(selectedLineItem.Quantity.ToString(), font, brush, new XRect(xLineColumn + 25, yQuoteItemOffset + yOffset, xQuantityColumn, heightHeaderRect), format);
 
-                    rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn-150, heightHeaderRect + 300);
+                    rect = new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn - 150, heightHeaderRect + 300);
                     tf.DrawString(selectedLineItem.Description, font, XBrushes.Black, rect, XStringFormats.TopLeft);
                     //gfx.DrawString(selectedLineItem.Description, font, brush, new XRect(xQuantityColumn + 15, yQuoteItemOffset + yOffset, xDescriptionColumn, heightHeaderRect + size.Height), format);
 
@@ -1837,7 +1843,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-       
+
         }
 
         private void PrintQuoteFooter(XGraphics gfx, XFont font, bool isLastPage)
@@ -1851,7 +1857,7 @@ namespace GlassProductManager
                 int labelWidth = 100;
                 int labelHeight = 100;
 
-                if(isLastPage)
+                if (isLastPage)
                 {
                     yBaseOffset = 1450;
                 }
@@ -1905,10 +1911,10 @@ namespace GlassProductManager
                 }
 
                 yBaseOffset += yIncrementalOffset;
-                gfx.DrawString(lblTax.Content.ToString(), PdfPrintingSetting.BoldFont, XBrushes.Black,
+                gfx.DrawString("Tax (%): ", PdfPrintingSetting.BoldFont, XBrushes.Black,
                   new XRect(xBaseOffset, yBaseOffset, labelWidth, labelHeight),
                   XStringFormat.TopLeft);
-                gfx.DrawString(txtTax.Text, font, XBrushes.Black,
+                gfx.DrawString(applyTaxInPercentage.ToString("0.00"), font, XBrushes.Black,
                 new XRect(xIncrementalOffset, yBaseOffset, labelWidth, labelHeight),
                 XStringFormat.TopLeft);
 
@@ -1942,7 +1948,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void txtShipToPhone_LostFocus(object sender, RoutedEventArgs e)
@@ -2178,7 +2184,7 @@ namespace GlassProductManager
             {
                 Logger.LogException(ex);
             }
-           
+
         }
 
         private void cmbQuoteNumbers_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2251,33 +2257,51 @@ namespace GlassProductManager
         private void dgQuoteItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             QuoteGridEntity selectedItem = dgQuoteItems.SelectedItem as QuoteGridEntity;
-            if(selectedItem == null)
+            if (selectedItem == null)
             {
                 return;
             }
             NewQuoteItemEntity lineItem = BusinessLogic.GetLineItemDetails(txtQuoteNumber.Text, selectedItem.LineID);
-            if(lineItem == null)
+            if (lineItem == null)
             {
                 return;
             }
-             Dashboard parent = Window.GetWindow(this) as Dashboard;
-             if (parent != null)
-             {
-                 NewQuoteContent content = parent.ucMainContent.CurrentPage as NewQuoteContent;
-                 if (content != null)
-                 {
-                     NewQuoteItemsContent item = content.ucNewQuoteItems.CurrentPage as NewQuoteItemsContent;
-                     if (item != null)
-                     {
-                         if (item.currentItem == null)
-                         {
-                             item.currentItem = new NewQuoteItemEntity();
-                         }
-                         item.currentItem = lineItem;
-                         item.FillLineItemDetails();
-                     }
-                 }
-             }
+            Dashboard parent = Window.GetWindow(this) as Dashboard;
+            if (parent != null)
+            {
+                NewQuoteContent content = parent.ucMainContent.CurrentPage as NewQuoteContent;
+                if (content != null)
+                {
+                    NewQuoteItemsContent item = content.ucNewQuoteItems.CurrentPage as NewQuoteItemsContent;
+                    if (item != null)
+                    {
+                        if (item.currentItem == null)
+                        {
+                            item.currentItem = new NewQuoteItemEntity();
+                        }
+                        item.currentItem = lineItem;
+                        item.FillLineItemDetails();
+                    }
+                }
+            }
+        }
+
+        private void cbApplyTax_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0)
+            {
+                applyTaxInPercentage = 0;
+                UpdateQuoteTotal();
+            }
+        }
+
+        private void cbApplyTax_Checked(object sender, RoutedEventArgs e)
+        {
+            if (allQuoteData.Count > 0)
+            {
+                applyTaxInPercentage = BusinessLogic.GetTaxRates();
+                UpdateQuoteTotal();
+            }
         }
     }
 }

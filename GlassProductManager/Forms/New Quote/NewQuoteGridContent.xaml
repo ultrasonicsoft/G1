@@ -225,8 +225,9 @@
                         <Label Name="lblRushOrder" Content="Rush Order:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="17" Grid.Column="4" />
                         <TextBox  Name="txtRushOrder" Text="0.00" Height="27" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="17" Grid.Column="5" TextChanged="txtRushOrder_TextChanged" LostFocus="txtRushOrder_LostFocus" GotFocus="ClearTextBox" TabIndex="34"/>
 
-                        <Label Name="lblTax" Content="Tax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="18" Grid.Column="4" />
-                        <TextBox  Name="txtTax" Text="0.00" Height="27" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="18" Grid.Column="5" LostFocus="txtTax_LostFocus" TextChanged="txtTax_TextChanged" GotFocus="ClearTextBox" TabIndex="35"/>
+                        <!--<Label Name="lblTax" Content="Tax:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="18" Grid.Column="4" />
+                        <TextBox  Name="txtTax" Text="0.00" Height="27" TextWrapping="Wrap" Width="100"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="18" Grid.Column="5" LostFocus="txtTax_LostFocus" TextChanged="txtTax_TextChanged" GotFocus="ClearTextBox" TabIndex="35"/>-->
+                        <CheckBox Name="cbApplyTax" Content="Apply Tax" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="18" Grid.Column="5" Unchecked="cbApplyTax_Unchecked" Checked="cbApplyTax_Checked" TabIndex="33" />
 
                         <Label Name="lblGrandTotalCaption" Content="Grand Total:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="19" Grid.Column="4" />
                         <Label Name="lblGrandTotal" Content="$ 0.00" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="19" Grid.Column="5" FontWeight="ExtraBold" FontSize="14" />

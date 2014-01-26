@@ -179,6 +179,7 @@ namespace GlassProductManager
         internal const string PolishStraight = "PolishStraight";
         internal const string PolishShape = "PolishShape";
         internal const string MiterRate = "MiterRate";
+        internal const string TaxRate = "TaxRate";
 
     }
 }

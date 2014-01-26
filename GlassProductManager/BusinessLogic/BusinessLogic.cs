@@ -2647,5 +2647,46 @@ namespace GlassProductManager
                 Logger.LogException(ex);
             }
         }
+
+        internal static double GetTaxRates()
+        {
+            double taxRate = 0;
+            DataSet result = null;
+            try
+            {
+                result = SQLHelper.ExecuteStoredProcedure(StoredProcedures.GetTaxRates);
+                if (result == null || result.Tables == null || result.Tables.Count == 0)
+                    return taxRate;
+                object dbValue = result.Tables[0].Rows[0][ColumnNames.TaxRate];
+                if(dbValue == DBNull.Value)
+                    return taxRate;
+                taxRate = double.Parse(dbValue.ToString());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+            return taxRate;
+        }
+        internal static bool UpdateTaxRate(double taxRate)
+        {
+            bool result = true;
+            try
+            {
+                SqlParameter pTaxRate = new SqlParameter();
+                pTaxRate.ParameterName = "taxRate";
+                pTaxRate.Value = taxRate;
+
+                SQLHelper.ExecuteStoredProcedure(StoredProcedures.UpdateTaxRate, pTaxRate);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                result = false;
+            }
+            return result;
+        }
     }
+
+   
 }

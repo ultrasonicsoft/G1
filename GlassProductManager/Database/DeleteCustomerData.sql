@@ -13,3 +13,4 @@ DELETE FROM dbo.WorksheetLineItem
 DELETE FROM dbo.LineItemDetails
 DELETE FROM dbo.LineCutoutDetails
 DELETE FROM dbo.LineItemInsulationDetails
+DELETE FROM dbo.ReprintQueue
