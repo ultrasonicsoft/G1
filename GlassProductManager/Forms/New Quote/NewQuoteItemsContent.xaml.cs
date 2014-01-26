@@ -213,14 +213,14 @@ namespace GlassProductManager
             {
                 if (string.IsNullOrEmpty(txtTotalSqFtCharged.Text) == false && currentItem != null)
                 {
-                    int chargedTotalSqft = int.Parse(txtTotalSqFt.Text);
+                    double chargedTotalSqft = double.Parse(txtTotalSqFt.Text);
                     if (chargedTotalSqft < currentItem.MinimumTotalSqft && isReset == false)
                     {
                         txtTotalSqFtCharged.Text = currentItem.MinimumTotalSqft.ToString();
                     }
                     txtSqFt1.Text = txtTotalSqFtCharged.Text;
                 }
-                SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged");
+                SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged",true);
             }
             catch (Exception ex)
             {
@@ -230,7 +230,7 @@ namespace GlassProductManager
 
         private void txtTotalSqFt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT", true, true);
+            SetQuoteValidationError(txtTotalSqFt, "TotalSqFT", true, false);
         }
 
         private void SetQuoteValidationError(TextBox input, string propertyName, bool isDecimalCheck = false, bool isInteger = false)
@@ -246,13 +246,20 @@ namespace GlassProductManager
                 }
                 else if (isDecimalCheck == true && isInteger == false && Helper.IsValidCurrency(input))
                 {
-                    currentItem.TotalSqFT = double.Parse(input.Text);
+                    if (propertyName.Equals("TotalSqFT"))
+                    {
+                        currentItem.TotalSqFT = double.Parse(input.Text);
+                    }
+                    else if (propertyName.Equals("TotalSqFTCharged"))
+                    {
+                        currentItem.TotalSqFTCharged = double.Parse(input.Text);
+                    }
                     //NewItemsChanged(input.Text, propertyName);
                 }
-                else if (isInteger == true && Helper.IsNumberOnly(input))
-                {
-                    currentItem.TotalSqFT = int.Parse(input.Text);
-                }
+                //else if (isInteger == true && Helper.IsNumberOnly(input))
+                //{
+                //    currentItem.TotalSqFT = int.Parse(input.Text);
+                //}
             }
             catch (Exception ex)
             {
@@ -903,7 +910,7 @@ namespace GlassProductManager
                             // item description string have charged dimension of glass to be print on quote
                             newItem.Description = currentItem.GetDescriptionString();
                             newItem.Dimension = GetDimensionString();
-                            newItem.TotalSqFt = currentItem.TotalSqFTCharged.ToString();
+                            newItem.TotalSqFt = currentItem.TotalSqFTCharged;
                             newItem.UnitPrice = currentItem.PricePerUnit.ToString("0.00");
                             newItem.Total = currentItem.CurrentTotal.ToString("0.00");
                             newItem.Shape = currentItem.Shape;
@@ -918,7 +925,7 @@ namespace GlassProductManager
                             // Actual description string have action dimension of glass to be sent to worker for cutting glass
                             newItem.ActualDescription = currentItem.GetDescriptionString(true);
                             newItem.ActualDimension = GetActualDimensionString();
-                            newItem.ActualTotalSQFT = currentItem.TotalSqFT.ToString();
+                            newItem.ActualTotalSQFT = currentItem.TotalSqFT;
                             newItem.IsLogo = currentItem.IsLogoRequired;
                             grid.allQuoteData.Add(newItem);
 
@@ -1088,8 +1095,9 @@ namespace GlassProductManager
                 }
                 txtGlassHeightCharged.Text = height.ToString();
                 double totalSqft = (width * height) / 144.0;
-                txtTotalSqFt.Text = totalSqft.ToString("0");
-                txtTotalSqFtCharged.Text = Math.Ceiling(totalSqft).ToString("0");
+                txtTotalSqFt.Text = totalSqft.ToString("0.00");
+                //txtTotalSqFtCharged.Text = Math.Ceiling(totalSqft).ToString("0");
+                txtTotalSqFtCharged.Text = totalSqft.ToString("0.00");
             }
             catch (Exception ex)
             {
@@ -1477,7 +1485,7 @@ namespace GlassProductManager
 
         private void txtTotalSqFtCharged_LostFocus(object sender, RoutedEventArgs e)
         {
-            txtTotalSqFtCharged.Text = currentItem.TotalSqFTCharged.ToString();
+            txtTotalSqFtCharged.Text = currentItem.TotalSqFTCharged.ToString("0.00");
         }
 
         private void cbInsulationDetails_Checked(object sender, RoutedEventArgs e)

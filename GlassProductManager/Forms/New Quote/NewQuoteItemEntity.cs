@@ -15,7 +15,7 @@ namespace GlassProductManager
         private int _glassTypeID;
         private int _thicknessID;
         private double _totalSqFT;
-        private int _totalSqFTCharged;
+        private double _totalSqFTCharged;
         private int _quantity;
         private bool _isTempered;
         private bool _isMiter;
@@ -106,7 +106,7 @@ namespace GlassProductManager
             }
         }
 
-        internal int TotalSqFTCharged
+        internal double TotalSqFTCharged
         {
             get { return _totalSqFTCharged; }
             set

@@ -616,7 +616,7 @@ namespace GlassProductManager
 
                     pSqFt = new SqlParameter();
                     pSqFt.ParameterName = "SqFt";
-                    pSqFt.Value = double.Parse(item.TotalSqFt);
+                    pSqFt.Value = double.Parse(item.TotalSqFt.ToString());
 
                     pPricePerUnit = new SqlParameter();
                     pPricePerUnit.ParameterName = "PricePerUnit";
@@ -636,7 +636,7 @@ namespace GlassProductManager
 
                     pActualTotalSQFT = new SqlParameter();
                     pActualTotalSQFT.ParameterName = "ActualTotalSQFT";
-                    pActualTotalSQFT.Value = item.ActualTotalSQFT ?? item.TotalSqFt;
+                    pActualTotalSQFT.Value = item.ActualTotalSQFT.ToString("0.00") ?? item.TotalSqFt.ToString("0.00");
 
                     pIsLogo = new SqlParameter();
                     pIsLogo.ParameterName = "IsLogo";
@@ -1061,7 +1061,7 @@ namespace GlassProductManager
                     lineItem.Quantity = int.Parse(currentRow[ColumnNames.Quantity].ToString());
                     lineItem.Description = currentRow[ColumnNames.Description].ToString();
                     lineItem.Dimension = currentRow[ColumnNames.Dimension].ToString();
-                    lineItem.TotalSqFt = currentRow[ColumnNames.SqFt].ToString();
+                    lineItem.TotalSqFt = double.Parse(currentRow[ColumnNames.SqFt].ToString());
                     lineItem.UnitPrice = double.Parse(currentRow[ColumnNames.PricePerUnit].ToString()).ToString("0.00");
                     lineItem.Total = double.Parse(currentRow[ColumnNames.Total].ToString()).ToString("0.00");
 

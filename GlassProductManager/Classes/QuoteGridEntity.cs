@@ -14,11 +14,11 @@ namespace GlassProductManager
         private int _quantity;
         private string _description;
         private string _dimension;
-        private string _totalSqFt;
+        private double _totalSqFt;
         private string _unitPrice;
         private string _total;
         private string _actualDimension;
-        private string _actualTotalSQFT;
+        private double _actualTotalSQFT;
         private bool _isLogo;
         private string _actualDescription;
         private string _shape;
@@ -46,7 +46,7 @@ namespace GlassProductManager
             set { _actualDimension = value; }
         }
 
-        public string ActualTotalSQFT
+        public double ActualTotalSQFT
         {
             get { return _actualTotalSQFT; }
             set { _actualTotalSQFT = value; }
@@ -129,7 +129,7 @@ namespace GlassProductManager
             }
         }
 
-        public string TotalSqFt
+        public double TotalSqFt
         {
             get { return _totalSqFt; }
             set
