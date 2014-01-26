@@ -220,7 +220,7 @@ namespace GlassProductManager
                     }
                     txtSqFt1.Text = txtTotalSqFtCharged.Text;
                 }
-                SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged",true);
+                SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged", true);
             }
             catch (Exception ex)
             {
@@ -885,7 +885,7 @@ namespace GlassProductManager
         {
             try
             {
-                if(currentItem.Quantity <=0)
+                if (currentItem.Quantity <= 0)
                 {
                     Helper.ShowErrorMessageBox("Quantity can not be zero!");
                     return;
@@ -1084,20 +1084,40 @@ namespace GlassProductManager
             {
                 double width = double.Parse(txtGlassWidth.Text);
                 double height = double.Parse(txtGlassHeight.Text);
+                double widthCharged = 0;
+                double heightCharged = 0;
+
+                string[] fractionParts;
+                int value1;
+                int value2;
+                double widthFraction = 0;
+                double heightFraction = 0;
                 if (txtGlassWidthFraction.Text.Equals("x/y") == false)
                 {
-                    width++;
+                    fractionParts = txtGlassWidthFraction.Text.Split('/');
+                    value1 = int.Parse(fractionParts[0]);
+                    value2 = int.Parse(fractionParts[1]);
+                    widthFraction = Math.Round((double)value1 / value2, 2);
+                    widthCharged = width + 1;
                 }
                 txtGlassWidthCharged.Text = width.ToString();
                 if (txtGlassHeightFraction.Text.Equals("x/y") == false)
                 {
-                    height++;
+                    fractionParts = txtGlassHeightFraction.Text.Split('/');
+                    value1 = int.Parse(fractionParts[0]);
+                    value2 = int.Parse(fractionParts[1]);
+                    heightFraction = Math.Round((double)value1 / value2, 2);
+                    heightCharged = height + 1;
                 }
                 txtGlassHeightCharged.Text = height.ToString();
-                double totalSqft = (width * height) / 144.0;
+                //double totalSqft = (width * height) / 144.0;
+
+
+                double totalSqft = ((width + widthFraction) * (height + heightFraction)) / 144.0;
                 txtTotalSqFt.Text = totalSqft.ToString("0.00");
                 //txtTotalSqFtCharged.Text = Math.Ceiling(totalSqft).ToString("0");
-                txtTotalSqFtCharged.Text = totalSqft.ToString("0.00");
+                txtTotalSqFtCharged.Text = ((widthCharged * heightCharged) / 144.0).ToString("0.00");
+                //txtTotalSqFtCharged.Text = totalSqft.ToString("0.00");
             }
             catch (Exception ex)
             {
@@ -1591,7 +1611,7 @@ namespace GlassProductManager
             {
                 cmbGlassType1.SelectedValue = currentItem.GlassType1.GlassTypeID;
                 UpdateInsulationThickness1();
-                cmbThickness1.SelectedValue = currentItem.GlassType1.ThicknessID;                
+                cmbThickness1.SelectedValue = currentItem.GlassType1.ThicknessID;
                 cmbTemp1.SelectedIndex = currentItem.GlassType1.IsTempered ? 0 : 1;
                 txtSqFt1.Text = currentItem.GlassType1.SqFt.ToString();
                 txtGlassType1Total.Text = currentItem.GlassType1.Total.ToString();
@@ -1602,7 +1622,7 @@ namespace GlassProductManager
                 cmbTemp2.SelectedIndex = currentItem.GlassType2.IsTempered ? 0 : 1;
                 txtSqFt2.Text = currentItem.GlassType1.SqFt.ToString();
                 txtGlassType2Total.Text = currentItem.GlassType2.Total.ToString();
-                
+
                 lblMaterialCost.Content = currentItem.MaterialCost.ToString("0.00");
                 lblInsulationTier.Content = currentItem.InsulationTier.ToString("0.00");
                 lblInsulationTierTotal.Content = currentItem.InsulationTierTotal.ToString("0.00");
