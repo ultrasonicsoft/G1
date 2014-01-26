@@ -941,7 +941,16 @@ namespace GlassProductManager
 
                 allQuoteData = result.LineItems;
                 dgQuoteItems.ItemsSource = allQuoteData;
-
+                allLineItemDetails = new ObservableCollection<NewQuoteItemEntity>();
+                foreach (QuoteGridEntity item in allQuoteData)
+                {
+                    NewQuoteItemEntity lineItem = BusinessLogic.GetLineItemDetails(txtQuoteNumber.Text, item.LineID);
+                    if (lineItem == null)
+                    {
+                        continue;
+                    }
+                    allLineItemDetails.Add(lineItem);
+                }
                 #endregion
 
                 #region Fill Footer Information
