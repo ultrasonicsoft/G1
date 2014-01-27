@@ -15,7 +15,7 @@ namespace GlassProductManager
         public int ThicknessID { get; set; }
         public string Thickness { get; set; }
         public bool IsTempered { get; set; }
-        public int SqFt { get; set; }
+        public double SqFt { get; set; }
         public double Total { get; set; }
     }
 

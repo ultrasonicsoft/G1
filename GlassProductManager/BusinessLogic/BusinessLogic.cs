@@ -140,7 +140,7 @@ namespace GlassProductManager
             return result;
         }
 
-        internal static double GetInsulationTierCost(int sqft)
+        internal static double GetInsulationTierCost(double sqft)
         {
             double insulationCost = 0;
             DataSet result = null;

@@ -219,6 +219,7 @@ namespace GlassProductManager
                         txtTotalSqFtCharged.Text = currentItem.MinimumTotalSqft.ToString();
                     }
                     txtSqFt1.Text = txtTotalSqFtCharged.Text;
+                    txtSqFt2.Text = txtTotalSqFtCharged.Text;
                 }
                 SetQuoteValidationError(txtTotalSqFtCharged, "TotalSqFTCharged", true);
             }
@@ -689,7 +690,7 @@ namespace GlassProductManager
                 {
                     currentGlassType.IsTempered = isTempered.SelectedValue.ToString() == "Yes";
                 }
-                currentGlassType.SqFt = int.Parse(currentSQFT.Text);
+                currentGlassType.SqFt = double.Parse(currentSQFT.Text);
 
                 if (currentGlassType.IsTempered)
                 {
@@ -700,7 +701,7 @@ namespace GlassProductManager
                     currentGlassType.Total = currentGlassType.SqFt == 0 ? 0 : currentGlassType.SqFt * _cutsqftRate;
                 }
 
-                currentGlassTotal.Text = currentGlassType.Total.ToString();
+                currentGlassTotal.Text = currentGlassType.Total.ToString("0.00");
 
                 UpdateInsulationTotal();
             }
@@ -756,7 +757,7 @@ namespace GlassProductManager
         {
             try
             {
-                if (Helper.IsNumberOnly(txtSqFt1))
+                if (Helper.IsValidCurrency(txtSqFt1))
                 {
                     if (currentItem == null)
                         return;
@@ -1100,7 +1101,7 @@ namespace GlassProductManager
                     widthFraction = Math.Round((double)value1 / value2, 2);
                     widthCharged = width + 1;
                 }
-                txtGlassWidthCharged.Text = width.ToString();
+                txtGlassWidthCharged.Text = widthCharged.ToString();
                 if (txtGlassHeightFraction.Text.Equals("x/y") == false)
                 {
                     fractionParts = txtGlassHeightFraction.Text.Split('/');
@@ -1109,7 +1110,7 @@ namespace GlassProductManager
                     heightFraction = Math.Round((double)value1 / value2, 2);
                     heightCharged = height + 1;
                 }
-                txtGlassHeightCharged.Text = height.ToString();
+                txtGlassHeightCharged.Text = heightCharged.ToString();
                 //double totalSqft = (width * height) / 144.0;
 
 
@@ -1614,14 +1615,14 @@ namespace GlassProductManager
                 cmbThickness1.SelectedValue = currentItem.GlassType1.ThicknessID;
                 cmbTemp1.SelectedIndex = currentItem.GlassType1.IsTempered ? 0 : 1;
                 txtSqFt1.Text = currentItem.GlassType1.SqFt.ToString();
-                txtGlassType1Total.Text = currentItem.GlassType1.Total.ToString();
+                txtGlassType1Total.Text = currentItem.GlassType1.Total.ToString("0.00");
 
                 cmbGlassType2.SelectedValue = currentItem.GlassType2.GlassTypeID;
                 UpdateInsulationThickness2();
                 cmbThickness2.SelectedValue = currentItem.GlassType2.ThicknessID;
                 cmbTemp2.SelectedIndex = currentItem.GlassType2.IsTempered ? 0 : 1;
                 txtSqFt2.Text = currentItem.GlassType1.SqFt.ToString();
-                txtGlassType2Total.Text = currentItem.GlassType2.Total.ToString();
+                txtGlassType2Total.Text = currentItem.GlassType2.Total.ToString("0.00");
 
                 lblMaterialCost.Content = currentItem.MaterialCost.ToString("0.00");
                 lblInsulationTier.Content = currentItem.InsulationTier.ToString("0.00");
